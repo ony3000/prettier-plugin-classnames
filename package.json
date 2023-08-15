@@ -51,5 +51,8 @@
   },
   "peerDependencies": {
     "prettier": "~2.8.4"
+  },
+  "optionalDependencies": {
+    "classnames": "2.3.2"
   }
 }
