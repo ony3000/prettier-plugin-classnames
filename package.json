@@ -1,12 +1,12 @@
 {
-  "name": "node-library-template",
+  "name": "prettier-plugin-classnames",
   "version": "0.0.0",
-  "description": "Template repository for library project.",
-  "repository": "https://github.com/ony3000/node-library-template",
+  "description": "A Prettier plugin to format multi-line class names.",
+  "repository": "https://github.com/ony3000/prettier-plugin-classnames",
   "keywords": [
-    "node",
-    "library",
-    "template"
+    "prettier",
+    "plugin",
+    "classnames"
   ],
   "author": "Hyeonjong <nianelo4@gmail.com>",
   "license": "MIT",
@@ -15,12 +15,12 @@
     "dist"
   ],
   "types": "./dist/index.d.ts",
-  "main": "./dist/demo-lib.umd.cjs",
-  "module": "./dist/demo-lib.js",
+  "main": "./dist/prettier-plugin-classnames.umd.cjs",
+  "module": "./dist/prettier-plugin-classnames.js",
   "exports": {
     ".": {
-      "import": "./dist/demo-lib.js",
-      "require": "./dist/demo-lib.umd.cjs"
+      "import": "./dist/prettier-plugin-classnames.js",
+      "require": "./dist/prettier-plugin-classnames.umd.cjs"
     }
   },
   "scripts": {
