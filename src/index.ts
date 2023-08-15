@@ -1,5 +1,9 @@
 import type { Plugin } from 'prettier';
 
-const classnamesPlugin: Plugin = {};
+import { parsers } from './parsers';
+
+const classnamesPlugin: Plugin = {
+  parsers,
+};
 
 export default classnamesPlugin;
