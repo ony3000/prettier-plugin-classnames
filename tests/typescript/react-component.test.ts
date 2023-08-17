@@ -8,27 +8,7 @@ const options = {
 
 const fixtures: Fixture[] = [
   {
-    name: 'className attribute only #1 (short enough)',
-    input: `
-export function Callout({ children }) {
-  return (
-    <div className="rounded-xl border border-zinc-400/30 bg-gray-100/50 px-4 py-4">
-      {children}
-    </div>
-  );
-}
-`,
-    output: `export function Callout({ children }) {
-  return (
-    <div className="rounded-xl border border-zinc-400/30 bg-gray-100/50 px-4 py-4">
-      {children}
-    </div>
-  );
-}
-`,
-  },
-  {
-    name: 'className attribute only #2',
+    name: 'enclosed in quotes #1',
     input: `
 export function Callout({ children }) {
   return (
@@ -40,10 +20,7 @@ export function Callout({ children }) {
 `,
     output: `export function Callout({ children }) {
   return (
-    <div
-      className="rounded-xl border border-zinc-400/30 bg-gray-100/50 px-4 py-4
-        dark:border-neutral-500/30 dark:bg-neutral-900/50"
-    >
+    <div className="rounded-xl border border-zinc-400/30 bg-gray-100/50 px-4 py-4 dark:border-neutral-500/30 dark:bg-neutral-900/50">
       {children}
     </div>
   );
@@ -51,84 +28,11 @@ export function Callout({ children }) {
 `,
   },
   {
-    name: 'className attribute only #3 (self closing tag)',
-    input: `
-export function Callout() {
-  return (
-    <div className="rounded-xl border border-zinc-400/30 bg-gray-100/50 px-4 py-4 dark:border-neutral-500/30 dark:bg-neutral-900/50" />
-  );
-}
-`,
-    output: `export function Callout() {
-  return (
-    <div
-      className="rounded-xl border border-zinc-400/30 bg-gray-100/50 px-4 py-4
-        dark:border-neutral-500/30 dark:bg-neutral-900/50"
-    />
-  );
-}
-`,
-  },
-  {
-    name: 'along with other attributes (className is the first)',
-    input: `
-export default function Callout({ children }) {
-  return (
-    <div className="rounded-xl border border-zinc-400/30 bg-gray-100/50 px-4 py-4 dark:border-neutral-500/30 dark:bg-neutral-900/50" onFocus={() => {}} onMouseOver={() => {}} tabIndex={-1} title="Callout">
-      {children}
-    </div>
-  );
-}
-`,
-    output: `export default function Callout({ children }) {
-  return (
-    <div
-      className="rounded-xl border border-zinc-400/30 bg-gray-100/50 px-4 py-4
-        dark:border-neutral-500/30 dark:bg-neutral-900/50"
-      onFocus={() => {}}
-      onMouseOver={() => {}}
-      tabIndex={-1}
-      title="Callout"
-    >
-      {children}
-    </div>
-  );
-}
-`,
-  },
-  {
-    name: 'along with other attributes (className is the last)',
-    input: `
-export default function Callout({ children }) {
-  return (
-    <div onFocus={() => {}} onMouseOver={() => {}} tabIndex={-1} title="Callout" className="rounded-xl border border-zinc-400/30 bg-gray-100/50 px-4 py-4 dark:border-neutral-500/30 dark:bg-neutral-900/50">
-      {children}
-    </div>
-  );
-}
-`,
-    output: `export default function Callout({ children }) {
-  return (
-    <div
-      onFocus={() => {}}
-      onMouseOver={() => {}}
-      tabIndex={-1}
-      title="Callout"
-      className="rounded-xl border border-zinc-400/30 bg-gray-100/50 px-4 py-4
-        dark:border-neutral-500/30 dark:bg-neutral-900/50"
-    >
-      {children}
-    </div>
-  );
-}
-`,
-  },
-  {
-    name: 'string literal as embedded expression #1 (short enough)',
+    name: 'enclosed in quotes #2 (short enough class name)',
     input: `
 export function Callout({ children }) {
   return (
-    <div className={'rounded-xl border border-zinc-400/30 bg-gray-100/50 px-4 py-4'}>
+    <div className="rounded-xl border border-zinc-400/30 bg-gray-100/50 px-4 py-4">
       {children}
     </div>
   );
@@ -136,11 +40,7 @@ export function Callout({ children }) {
 `,
     output: `export function Callout({ children }) {
   return (
-    <div
-      className={
-        "rounded-xl border border-zinc-400/30 bg-gray-100/50 px-4 py-4"
-      }
-    >
+    <div className="rounded-xl border border-zinc-400/30 bg-gray-100/50 px-4 py-4">
       {children}
     </div>
   );
@@ -148,7 +48,7 @@ export function Callout({ children }) {
 `,
   },
   {
-    name: 'string literal as embedded expression #2',
+    name: 'embedded expression #1',
     input: `
 export function Callout({ children }) {
   return (
@@ -172,11 +72,11 @@ export function Callout({ children }) {
 `,
   },
   {
-    name: 'template literal as embedded expression #1 (short enough)',
+    name: 'embedded expression #2 (short enough class name)',
     input: `
 export function Callout({ children }) {
   return (
-    <div className={\`rounded-xl border border-zinc-400/30 bg-gray-100/50 px-4 py-4\`}>
+    <div className={'rounded-xl border border-zinc-400/30 bg-gray-100/50 px-4 py-4'}>
       {children}
     </div>
   );
@@ -185,7 +85,9 @@ export function Callout({ children }) {
     output: `export function Callout({ children }) {
   return (
     <div
-      className={\`rounded-xl border border-zinc-400/30 bg-gray-100/50 px-4 py-4\`}
+      className={
+        "rounded-xl border border-zinc-400/30 bg-gray-100/50 px-4 py-4"
+      }
     >
       {children}
     </div>
@@ -194,7 +96,7 @@ export function Callout({ children }) {
 `,
   },
   {
-    name: 'template literal as embedded expression #2',
+    name: 'embedded expression #3',
     input: `
 export function Callout({ children }) {
   return (
@@ -207,12 +109,129 @@ export function Callout({ children }) {
     output: `export function Callout({ children }) {
   return (
     <div
-      className={\`rounded-xl border border-zinc-400/30 bg-gray-100/50 px-4 py-4
-        dark:border-neutral-500/30 dark:bg-neutral-900/50\`}
+      className={\`rounded-xl border border-zinc-400/30 bg-gray-100/50 px-4 py-4 dark:border-neutral-500/30 dark:bg-neutral-900/50\`}
     >
       {children}
     </div>
   );
+}
+`,
+  },
+  {
+    name: 'embedded expression #4',
+    input: `
+export function Callout({ children }) {
+  return (
+    <div className={classNames('rounded-xl border border-zinc-400/30 bg-gray-100/50 px-4 py-4 dark:border-neutral-500/30 dark:bg-neutral-900/50')}>
+      {children}
+    </div>
+  );
+}
+`,
+    output: `export function Callout({ children }) {
+  return (
+    <div
+      className={classNames(
+        \`rounded-xl border border-zinc-400/30 bg-gray-100/50 px-4 py-4
+        dark:border-neutral-500/30 dark:bg-neutral-900/50\`,
+      )}
+    >
+      {children}
+    </div>
+  );
+}
+`,
+  },
+  {
+    name: 'embedded expression #5 (short enough class name)',
+    input: `
+export function Callout({ children }) {
+  return (
+    <div className={classNames('rounded-xl border border-zinc-400/30 bg-gray-100/50 px-4 py-4')}>
+      {children}
+    </div>
+  );
+}
+`,
+    output: `export function Callout({ children }) {
+  return (
+    <div
+      className={classNames(
+        "rounded-xl border border-zinc-400/30 bg-gray-100/50 px-4 py-4",
+      )}
+    >
+      {children}
+    </div>
+  );
+}
+`,
+  },
+  {
+    name: 'embedded expression #6',
+    input: `
+export function Callout({ children }) {
+  return (
+    <div className={classNames(\`rounded-xl border border-zinc-400/30 bg-gray-100/50 px-4 py-4 dark:border-neutral-500/30 dark:bg-neutral-900/50\`)}>
+      {children}
+    </div>
+  );
+}
+`,
+    output: `export function Callout({ children }) {
+  return (
+    <div
+      className={classNames(
+        \`rounded-xl border border-zinc-400/30 bg-gray-100/50 px-4 py-4
+        dark:border-neutral-500/30 dark:bg-neutral-900/50\`,
+      )}
+    >
+      {children}
+    </div>
+  );
+}
+`,
+  },
+  {
+    name: 'variable declaration #1',
+    input: `
+export function Callout({ children }) {
+  const combination = 'rounded-xl border border-zinc-400/30 bg-gray-100/50 px-4 py-4 dark:border-neutral-500/30 dark:bg-neutral-900/50'
+
+  return (
+    <div className={combination}>
+      {children}
+    </div>
+  );
+}
+`,
+    output: `export function Callout({ children }) {
+  const combination =
+    "rounded-xl border border-zinc-400/30 bg-gray-100/50 px-4 py-4 dark:border-neutral-500/30 dark:bg-neutral-900/50";
+
+  return <div className={combination}>{children}</div>;
+}
+`,
+  },
+  {
+    name: 'variable declaration #2',
+    input: `
+export function Callout({ children }) {
+  const combination = classNames('rounded-xl border border-zinc-400/30 bg-gray-100/50 px-4 py-4 dark:border-neutral-500/30 dark:bg-neutral-900/50')
+
+  return (
+    <div className={combination}>
+      {children}
+    </div>
+  );
+}
+`,
+    output: `export function Callout({ children }) {
+  const combination = classNames(
+    \`rounded-xl border border-zinc-400/30 bg-gray-100/50 px-4 py-4
+    dark:border-neutral-500/30 dark:bg-neutral-900/50\`,
+  );
+
+  return <div className={combination}>{children}</div>;
 }
 `,
   },
