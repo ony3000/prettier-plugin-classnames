@@ -19,7 +19,6 @@ function findTargetClassNameNodes(ast: any): ClassNameNode[] {
   const keywordEnclosingRanges: NodeRange[] = [];
   const classNameNodes: ClassNameNode[] = [];
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   function recursion(node: unknown, parentNode?: unknown): void {
     if (typeof node !== 'object' || node === null || !('type' in node)) {
       return;
@@ -68,8 +67,52 @@ function findTargetClassNameNodes(ast: any): ClassNameNode[] {
         }
         break;
       }
-      case 'Literal':
-      case 'StringLiteral':
+      case 'Literal': {
+        if (
+          typeof parentNode === 'object' &&
+          parentNode !== null &&
+          'type' in parentNode &&
+          parentNode.type !== 'Property' &&
+          'value' in node &&
+          typeof node.value === 'string' &&
+          'loc' in node &&
+          typeof node.loc === 'object' &&
+          node.loc !== null &&
+          'start' in node.loc &&
+          typeof node.loc.start === 'object' &&
+          node.loc.start !== null &&
+          'line' in node.loc.start &&
+          typeof node.loc.start.line === 'number'
+        ) {
+          classNameNodes.push({
+            range: [rangeStart, rangeEnd],
+            startLineIndex: node.loc.start.line - 1,
+          });
+        }
+        break;
+      }
+      case 'StringLiteral': {
+        if (
+          typeof parentNode === 'object' &&
+          parentNode !== null &&
+          'type' in parentNode &&
+          parentNode.type !== 'ObjectProperty' &&
+          'loc' in node &&
+          typeof node.loc === 'object' &&
+          node.loc !== null &&
+          'start' in node.loc &&
+          typeof node.loc.start === 'object' &&
+          node.loc.start !== null &&
+          'line' in node.loc.start &&
+          typeof node.loc.start.line === 'number'
+        ) {
+          classNameNodes.push({
+            range: [rangeStart, rangeEnd],
+            startLineIndex: node.loc.start.line - 1,
+          });
+        }
+        break;
+      }
       case 'TemplateLiteral': {
         if (
           'loc' in node &&
@@ -209,7 +252,13 @@ function createPrinter(parserName: 'babel' | 'typescript'): Printer {
     const parser = pluginCandidate.parsers![parserName];
     const ast = parser.parse(formattedText, pluginCandidate.parsers!, options);
 
-    return parseLineByLineAndReplace(formattedText, ast, options);
+    const secondFormattedText = format(parseLineByLineAndReplace(formattedText, ast, options), {
+      ...options,
+      plugins: [pluginCandidate],
+      endOfLine: 'lf',
+    });
+
+    return secondFormattedText;
   }
 
   return {
