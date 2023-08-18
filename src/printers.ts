@@ -68,7 +68,9 @@ function findTargetClassNameNodes(ast: any): ClassNameNode[] {
         }
         break;
       }
-      case 'Literal': {
+      case 'Literal':
+      case 'StringLiteral':
+      case 'TemplateLiteral': {
         if (
           'loc' in node &&
           typeof node.loc === 'object' &&
