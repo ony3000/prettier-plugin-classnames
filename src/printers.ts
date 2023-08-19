@@ -27,7 +27,7 @@ function findTargetClassNameNodes(ast: any): ClassNameNode[] {
   const keywordEnclosingRanges: NodeRange[] = [];
   const classNameNodes: ClassNameNode[] = [];
 
-  function recursion(node: unknown, parentNode?: unknown): void {
+  function recursion(node: unknown, parentNode?: object & Record<'type', unknown>): void {
     if (!isObject(node) || !('type' in node)) {
       return;
     }
@@ -76,9 +76,7 @@ function findTargetClassNameNodes(ast: any): ClassNameNode[] {
       }
       case 'Literal': {
         if (
-          isObject(parentNode) &&
-          'type' in parentNode &&
-          parentNode.type !== 'Property' &&
+          parentNode?.type !== 'Property' &&
           'value' in node &&
           typeof node.value === 'string' &&
           'loc' in node &&
@@ -97,9 +95,7 @@ function findTargetClassNameNodes(ast: any): ClassNameNode[] {
       }
       case 'StringLiteral': {
         if (
-          isObject(parentNode) &&
-          'type' in parentNode &&
-          parentNode.type !== 'ObjectProperty' &&
+          parentNode?.type !== 'ObjectProperty' &&
           'loc' in node &&
           isObject(node.loc) &&
           'start' in node.loc &&
