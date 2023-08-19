@@ -8,6 +8,7 @@ type LineNode = {
 };
 
 type ClassNameNode = {
+  type: string;
   range: NodeRange;
   startLineIndex: number;
 };
@@ -60,6 +61,52 @@ function findTargetClassNameNodes(ast: any): ClassNameNode[] {
     }
 
     switch (node.type) {
+      case 'JSXAttribute': {
+        if (
+          parentNode?.type === 'JSXOpeningElement' &&
+          'loc' in parentNode &&
+          isObject(parentNode.loc) &&
+          'start' in parentNode.loc &&
+          isObject(parentNode.loc.start) &&
+          'line' in parentNode.loc.start &&
+          'name' in node &&
+          isObject(node.name) &&
+          'type' in node.name &&
+          node.name.type === 'JSXIdentifier' &&
+          'name' in node.name &&
+          node.name.name === 'className' &&
+          'value' in node &&
+          isObject(node.value) &&
+          'type' in node.value &&
+          (node.value.type === 'Literal' || node.value.type === 'StringLiteral') &&
+          'value' in node.value &&
+          typeof node.value.value === 'string' &&
+          'range' in node.value &&
+          isNodeRange(node.value.range) &&
+          'loc' in node.value &&
+          isObject(node.value.loc) &&
+          'start' in node.value.loc &&
+          isObject(node.value.loc.start) &&
+          'line' in node.value.loc.start &&
+          typeof node.value.loc.start.line === 'number' &&
+          'range' in node &&
+          isNodeRange(node.range) &&
+          'loc' in node &&
+          isObject(node.loc) &&
+          'start' in node.loc &&
+          isObject(node.loc.start) &&
+          'line' in node.loc.start
+        ) {
+          keywordEnclosingRanges.push([rangeStart, rangeEnd]);
+          classNameNodes.push({
+            type:
+              parentNode.loc.start.line === node.loc.start.line ? 'Attribute' : 'OwnLineAttribute',
+            range: [...node.value.range],
+            startLineIndex: node.value.loc.start.line - 1,
+          });
+        }
+        break;
+      }
       /*
       case 'CallExpression': {
         if (
@@ -149,7 +196,7 @@ function findTargetClassNameNodes(ast: any): ClassNameNode[] {
 
         return (
           keywordEnclosingRangeStart < classNameRangeStart &&
-          classNameRangeEnd < keywordEnclosingRangeEnd
+          classNameRangeEnd <= keywordEnclosingRangeEnd
         );
       }),
     )
@@ -189,7 +236,7 @@ function parseLineByLineAndReplace(
 
   let mutableFormattedText = formattedText;
 
-  targetClassNameNodes.forEach(({ range: [rangeStart, rangeEnd], startLineIndex }) => {
+  targetClassNameNodes.forEach(({ type, range: [rangeStart, rangeEnd], startLineIndex }) => {
     const { indentLevel } = lineNodes[startLineIndex];
     const enclosedClassName = mutableFormattedText.slice(rangeStart + 1, rangeEnd - 1);
     const formattedClassName = format(enclosedClassName, {
@@ -204,9 +251,18 @@ function parseLineByLineAndReplace(
       return;
     }
 
-    const substitute = `\`${formattedClassName}\``
+    let extraIndentLevel = 0;
+
+    if (type === 'Attribute') {
+      extraIndentLevel = 2;
+    } else if (type === 'OwnLineAttribute') {
+      extraIndentLevel = 1;
+    }
+
+    const quote = type === 'Attribute' || type === 'OwnLineAttribute' ? '"' : '`';
+    const substitute = `${quote}${formattedClassName}${quote}`
       .split(EOL)
-      .join(`${EOL}${indentUnit.repeat(indentLevel)}`);
+      .join(`${EOL}${indentUnit.repeat(indentLevel + extraIndentLevel)}`);
 
     mutableFormattedText = `${mutableFormattedText.slice(
       0,
