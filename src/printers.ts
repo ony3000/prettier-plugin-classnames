@@ -76,19 +76,6 @@ function findTargetClassNameNodes(ast: any): ClassNameNode[] {
           'name' in node.name &&
           node.name.name === 'className' &&
           'value' in node &&
-          isObject(node.value) &&
-          'type' in node.value &&
-          (node.value.type === 'Literal' || node.value.type === 'StringLiteral') &&
-          'value' in node.value &&
-          typeof node.value.value === 'string' &&
-          'range' in node.value &&
-          isNodeRange(node.value.range) &&
-          'loc' in node.value &&
-          isObject(node.value.loc) &&
-          'start' in node.value.loc &&
-          isObject(node.value.loc.start) &&
-          'line' in node.value.loc.start &&
-          typeof node.value.loc.start.line === 'number' &&
           'range' in node &&
           isNodeRange(node.range) &&
           'loc' in node &&
@@ -98,12 +85,33 @@ function findTargetClassNameNodes(ast: any): ClassNameNode[] {
           'line' in node.loc.start
         ) {
           keywordEnclosingRanges.push([rangeStart, rangeEnd]);
-          classNameNodes.push({
-            type:
-              parentNode.loc.start.line === node.loc.start.line ? 'Attribute' : 'OwnLineAttribute',
-            range: [...node.value.range],
-            startLineIndex: node.value.loc.start.line - 1,
-          });
+
+          const childNode = node.value;
+
+          if (
+            isObject(childNode) &&
+            'type' in childNode &&
+            (childNode.type === 'Literal' || childNode.type === 'StringLiteral') &&
+            'value' in childNode &&
+            typeof childNode.value === 'string' &&
+            'range' in childNode &&
+            isNodeRange(childNode.range) &&
+            'loc' in childNode &&
+            isObject(childNode.loc) &&
+            'start' in childNode.loc &&
+            isObject(childNode.loc.start) &&
+            'line' in childNode.loc.start &&
+            typeof childNode.loc.start.line === 'number'
+          ) {
+            classNameNodes.push({
+              type:
+                parentNode.loc.start.line === node.loc.start.line
+                  ? 'Attribute'
+                  : 'OwnLineAttribute',
+              range: [...childNode.range],
+              startLineIndex: childNode.loc.start.line - 1,
+            });
+          }
         }
         break;
       }
@@ -124,9 +132,10 @@ function findTargetClassNameNodes(ast: any): ClassNameNode[] {
               if (
                 isObject(arg) &&
                 'type' in arg &&
-                (arg.type === 'Literal' || arg.type === 'StringLiteral') &&
-                'value' in arg &&
-                typeof arg.value === 'string' &&
+                (arg.type === 'TemplateLiteral' ||
+                  ((arg.type === 'Literal' || arg.type === 'StringLiteral') &&
+                    'value' in arg &&
+                    typeof arg.value === 'string')) &&
                 'range' in arg &&
                 isNodeRange(arg.range) &&
                 'loc' in arg &&
@@ -147,10 +156,10 @@ function findTargetClassNameNodes(ast: any): ClassNameNode[] {
         }
         break;
       }
-      /*
-      case 'Literal': {
+      case 'Literal':
+      case 'StringLiteral': {
         if (
-          parentNode?.type !== 'Property' &&
+          parentNode?.type === 'JSXExpressionContainer' &&
           'value' in node &&
           typeof node.value === 'string' &&
           'loc' in node &&
@@ -161,23 +170,7 @@ function findTargetClassNameNodes(ast: any): ClassNameNode[] {
           typeof node.loc.start.line === 'number'
         ) {
           classNameNodes.push({
-            range: [rangeStart, rangeEnd],
-            startLineIndex: node.loc.start.line - 1,
-          });
-        }
-        break;
-      }
-      case 'StringLiteral': {
-        if (
-          parentNode?.type !== 'ObjectProperty' &&
-          'loc' in node &&
-          isObject(node.loc) &&
-          'start' in node.loc &&
-          isObject(node.loc.start) &&
-          'line' in node.loc.start &&
-          typeof node.loc.start.line === 'number'
-        ) {
-          classNameNodes.push({
+            type: 'StringLiteralExpression',
             range: [rangeStart, rangeEnd],
             startLineIndex: node.loc.start.line - 1,
           });
@@ -186,6 +179,7 @@ function findTargetClassNameNodes(ast: any): ClassNameNode[] {
       }
       case 'TemplateLiteral': {
         if (
+          parentNode?.type === 'JSXExpressionContainer' &&
           'loc' in node &&
           isObject(node.loc) &&
           'start' in node.loc &&
@@ -194,13 +188,13 @@ function findTargetClassNameNodes(ast: any): ClassNameNode[] {
           typeof node.loc.start.line === 'number'
         ) {
           classNameNodes.push({
+            type: 'TemplateLiteralExpression',
             range: [rangeStart, rangeEnd],
             startLineIndex: node.loc.start.line - 1,
           });
         }
         break;
       }
-       */
       default: {
         // nothing to do
         break;
@@ -281,7 +275,7 @@ function parseLineByLineAndReplace(
 
     if (type === 'Attribute') {
       extraIndentLevel = 2;
-    } else if (type === 'OwnLineAttribute') {
+    } else if (type === 'OwnLineAttribute' || type === 'TemplateLiteralExpression') {
       extraIndentLevel = 1;
     }
 
