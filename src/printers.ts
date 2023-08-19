@@ -107,7 +107,6 @@ function findTargetClassNameNodes(ast: any): ClassNameNode[] {
         }
         break;
       }
-      /*
       case 'CallExpression': {
         if (
           'callee' in node &&
@@ -119,9 +118,36 @@ function findTargetClassNameNodes(ast: any): ClassNameNode[] {
           keywords.includes(node.callee.name)
         ) {
           keywordEnclosingRanges.push([rangeStart, rangeEnd]);
+
+          if ('arguments' in node && Array.isArray(node.arguments)) {
+            node.arguments.forEach((arg: unknown) => {
+              if (
+                isObject(arg) &&
+                'type' in arg &&
+                (arg.type === 'Literal' || arg.type === 'StringLiteral') &&
+                'value' in arg &&
+                typeof arg.value === 'string' &&
+                'range' in arg &&
+                isNodeRange(arg.range) &&
+                'loc' in arg &&
+                isObject(arg.loc) &&
+                'start' in arg.loc &&
+                isObject(arg.loc.start) &&
+                'line' in arg.loc.start &&
+                typeof arg.loc.start.line === 'number'
+              ) {
+                classNameNodes.push({
+                  type: 'FunctionArgument',
+                  range: [...arg.range],
+                  startLineIndex: arg.loc.start.line - 1,
+                });
+              }
+            });
+          }
         }
         break;
       }
+      /*
       case 'Literal': {
         if (
           parentNode?.type !== 'Property' &&
