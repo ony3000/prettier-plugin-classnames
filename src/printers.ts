@@ -60,6 +60,7 @@ function findTargetClassNameNodes(ast: any): ClassNameNode[] {
     }
 
     switch (node.type) {
+      /*
       case 'CallExpression': {
         if (
           'callee' in node &&
@@ -126,6 +127,7 @@ function findTargetClassNameNodes(ast: any): ClassNameNode[] {
         }
         break;
       }
+       */
       default: {
         // nothing to do
         break;
