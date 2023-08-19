@@ -8,7 +8,7 @@ const options = {
 
 const fixtures: Fixture[] = [
   {
-    name: 'string literal',
+    name: 'string literal #1',
     input: `
 export function Callout({ children }) {
   const combination = 'rounded-xl border border-zinc-400/30 bg-gray-100/50 px-4 py-4 dark:border-neutral-500/30 dark:bg-neutral-900/50'
@@ -29,7 +29,7 @@ export function Callout({ children }) {
 `,
   },
   {
-    name: 'string literal wrapped in `classNames`',
+    name: 'string literal #2 (wrapped in `classNames`)',
     input: `
 export function Callout({ children }) {
   const combination = classNames('rounded-xl border border-zinc-400/30 bg-gray-100/50 px-4 py-4 dark:border-neutral-500/30 dark:bg-neutral-900/50')
