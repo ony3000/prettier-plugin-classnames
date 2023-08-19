@@ -14,13 +14,21 @@ type ClassNameNode = {
 
 const IS_DEBUGGING_MODE = false;
 
+function isObject(arg: unknown): arg is object {
+  return typeof arg === 'object' && arg !== null;
+}
+
+function isNodeRange(arg: unknown): arg is NodeRange {
+  return Array.isArray(arg) && arg.length === 2 && arg.every((item) => typeof item === 'number');
+}
+
 function findTargetClassNameNodes(ast: any): ClassNameNode[] {
   const keywords: string[] = ['classNames'];
   const keywordEnclosingRanges: NodeRange[] = [];
   const classNameNodes: ClassNameNode[] = [];
 
   function recursion(node: unknown, parentNode?: unknown): void {
-    if (typeof node !== 'object' || node === null || !('type' in node)) {
+    if (!isObject(node) || !('type' in node)) {
       return;
     }
 
@@ -39,11 +47,11 @@ function findTargetClassNameNodes(ast: any): ClassNameNode[] {
       recursion(value, node);
     });
 
-    if (!('range' in node) || !Array.isArray(node.range)) {
+    if (!('range' in node) || !isNodeRange(node.range)) {
       return;
     }
 
-    const [rangeStart, rangeEnd] = node.range as NodeRange;
+    const [rangeStart, rangeEnd] = node.range;
 
     if (IS_DEBUGGING_MODE) {
       if (node.type !== 'Punctuator') {
@@ -55,8 +63,7 @@ function findTargetClassNameNodes(ast: any): ClassNameNode[] {
       case 'CallExpression': {
         if (
           'callee' in node &&
-          typeof node.callee === 'object' &&
-          node.callee !== null &&
+          isObject(node.callee) &&
           'type' in node.callee &&
           node.callee.type === 'Identifier' &&
           'name' in node.callee &&
@@ -69,18 +76,15 @@ function findTargetClassNameNodes(ast: any): ClassNameNode[] {
       }
       case 'Literal': {
         if (
-          typeof parentNode === 'object' &&
-          parentNode !== null &&
+          isObject(parentNode) &&
           'type' in parentNode &&
           parentNode.type !== 'Property' &&
           'value' in node &&
           typeof node.value === 'string' &&
           'loc' in node &&
-          typeof node.loc === 'object' &&
-          node.loc !== null &&
+          isObject(node.loc) &&
           'start' in node.loc &&
-          typeof node.loc.start === 'object' &&
-          node.loc.start !== null &&
+          isObject(node.loc.start) &&
           'line' in node.loc.start &&
           typeof node.loc.start.line === 'number'
         ) {
@@ -93,16 +97,13 @@ function findTargetClassNameNodes(ast: any): ClassNameNode[] {
       }
       case 'StringLiteral': {
         if (
-          typeof parentNode === 'object' &&
-          parentNode !== null &&
+          isObject(parentNode) &&
           'type' in parentNode &&
           parentNode.type !== 'ObjectProperty' &&
           'loc' in node &&
-          typeof node.loc === 'object' &&
-          node.loc !== null &&
+          isObject(node.loc) &&
           'start' in node.loc &&
-          typeof node.loc.start === 'object' &&
-          node.loc.start !== null &&
+          isObject(node.loc.start) &&
           'line' in node.loc.start &&
           typeof node.loc.start.line === 'number'
         ) {
@@ -116,11 +117,9 @@ function findTargetClassNameNodes(ast: any): ClassNameNode[] {
       case 'TemplateLiteral': {
         if (
           'loc' in node &&
-          typeof node.loc === 'object' &&
-          node.loc !== null &&
+          isObject(node.loc) &&
           'start' in node.loc &&
-          typeof node.loc.start === 'object' &&
-          node.loc.start !== null &&
+          isObject(node.loc.start) &&
           'line' in node.loc.start &&
           typeof node.loc.start.line === 'number'
         ) {
