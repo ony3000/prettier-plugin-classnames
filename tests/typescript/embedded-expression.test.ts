@@ -8,7 +8,7 @@ const options = {
 
 const fixtures: Fixture[] = [
   {
-    name: 'embedded expression #1',
+    name: 'string literal #1',
     input: `
 export function Callout({ children }) {
   return (
@@ -21,9 +21,8 @@ export function Callout({ children }) {
     output: `export function Callout({ children }) {
   return (
     <div
-      className={
-        "rounded-xl border border-zinc-400/30 bg-gray-100/50 px-4 py-4 dark:border-neutral-500/30 dark:bg-neutral-900/50"
-      }
+      className={\`rounded-xl border border-zinc-400/30 bg-gray-100/50 px-4 py-4
+        dark:border-neutral-500/30 dark:bg-neutral-900/50\`}
     >
       {children}
     </div>
@@ -32,7 +31,7 @@ export function Callout({ children }) {
 `,
   },
   {
-    name: 'embedded expression #2 (short enough class name)',
+    name: 'string literal #2 (short enough class name)',
     input: `
 export function Callout({ children }) {
   return (
@@ -56,7 +55,7 @@ export function Callout({ children }) {
 `,
   },
   {
-    name: 'embedded expression #3',
+    name: 'template literal #1',
     input: `
 export function Callout({ children }) {
   return (
@@ -69,7 +68,8 @@ export function Callout({ children }) {
     output: `export function Callout({ children }) {
   return (
     <div
-      className={\`rounded-xl border border-zinc-400/30 bg-gray-100/50 px-4 py-4 dark:border-neutral-500/30 dark:bg-neutral-900/50\`}
+      className={\`rounded-xl border border-zinc-400/30 bg-gray-100/50 px-4 py-4
+        dark:border-neutral-500/30 dark:bg-neutral-900/50\`}
     >
       {children}
     </div>
@@ -78,7 +78,7 @@ export function Callout({ children }) {
 `,
   },
   {
-    name: 'embedded expression #4',
+    name: 'string literal #3 (wrapped in `classNames`)',
     input: `
 export function Callout({ children }) {
   return (
@@ -103,7 +103,7 @@ export function Callout({ children }) {
 `,
   },
   {
-    name: 'embedded expression #5 (short enough class name)',
+    name: 'string literal #4 (short enough class name wrapped in `classNames`)',
     input: `
 export function Callout({ children }) {
   return (
@@ -127,7 +127,7 @@ export function Callout({ children }) {
 `,
   },
   {
-    name: 'embedded expression #6',
+    name: 'template literal #2 (wrapped in `classNames`)',
     input: `
 export function Callout({ children }) {
   return (
@@ -152,7 +152,7 @@ export function Callout({ children }) {
 `,
   },
   {
-    name: 'embedded expression #7 (multiple string literal class name)',
+    name: 'string literal #5 (multiple class name)',
     input: `
 export function Callout({ children }) {
   return (
