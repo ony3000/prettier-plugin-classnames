@@ -159,7 +159,6 @@ function findTargetClassNameNodes(ast: any): ClassNameNode[] {
       case 'Literal':
       case 'StringLiteral': {
         if (
-          parentNode?.type === 'JSXExpressionContainer' &&
           'value' in node &&
           typeof node.value === 'string' &&
           'loc' in node &&
@@ -169,17 +168,24 @@ function findTargetClassNameNodes(ast: any): ClassNameNode[] {
           'line' in node.loc.start &&
           typeof node.loc.start.line === 'number'
         ) {
-          classNameNodes.push({
-            type: 'StringLiteralExpression',
-            range: [rangeStart, rangeEnd],
-            startLineIndex: node.loc.start.line - 1,
-          });
+          if (parentNode?.type === 'JSXExpressionContainer') {
+            classNameNodes.push({
+              type: 'StringLiteralExpression',
+              range: [rangeStart, rangeEnd],
+              startLineIndex: node.loc.start.line - 1,
+            });
+          } else if (parentNode?.type === 'Property' || parentNode?.type === 'ObjectProperty') {
+            classNameNodes.push({
+              type: 'StringLiteralBasedProperty',
+              range: [rangeStart, rangeEnd],
+              startLineIndex: node.loc.start.line - 1,
+            });
+          }
         }
         break;
       }
       case 'TemplateLiteral': {
         if (
-          parentNode?.type === 'JSXExpressionContainer' &&
           'loc' in node &&
           isObject(node.loc) &&
           'start' in node.loc &&
@@ -187,11 +193,19 @@ function findTargetClassNameNodes(ast: any): ClassNameNode[] {
           'line' in node.loc.start &&
           typeof node.loc.start.line === 'number'
         ) {
-          classNameNodes.push({
-            type: 'TemplateLiteralExpression',
-            range: [rangeStart, rangeEnd],
-            startLineIndex: node.loc.start.line - 1,
-          });
+          if (parentNode?.type === 'JSXExpressionContainer') {
+            classNameNodes.push({
+              type: 'TemplateLiteralExpression',
+              range: [rangeStart, rangeEnd],
+              startLineIndex: node.loc.start.line - 1,
+            });
+          } else if (parentNode?.type === 'Property' || parentNode?.type === 'ObjectProperty') {
+            classNameNodes.push({
+              type: 'TemplateLiteralBasedProperty',
+              range: [rangeStart, rangeEnd],
+              startLineIndex: node.loc.start.line - 1,
+            });
+          }
         }
         break;
       }
@@ -279,8 +293,13 @@ function parseLineByLineAndReplace(
       extraIndentLevel = 1;
     }
 
-    const quote = type === 'Attribute' || type === 'OwnLineAttribute' ? '"' : '`';
-    const substitute = `${quote}${formattedClassName}${quote}`
+    const quoteStart = `${type === 'StringLiteralBasedProperty' ? '[' : ''}${
+      type === 'Attribute' || type === 'OwnLineAttribute' ? '"' : '`'
+    }`;
+    const quoteEnd = `${type === 'Attribute' || type === 'OwnLineAttribute' ? '"' : '`'}${
+      type === 'StringLiteralBasedProperty' ? ']' : ''
+    }`;
+    const substitute = `${quoteStart}${formattedClassName}${quoteEnd}`
       .split(EOL)
       .join(`${EOL}${indentUnit.repeat(indentLevel + extraIndentLevel)}`);
 
