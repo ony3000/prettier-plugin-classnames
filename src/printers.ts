@@ -260,7 +260,9 @@ function findTargetClassNameNodes(ast: any): ClassNameNode[] {
         break;
       }
       default: {
-        nonCommentRanges.push([rangeStart, rangeEnd]);
+        if (node.type !== 'JSXText') {
+          nonCommentRanges.push([rangeStart, rangeEnd]);
+        }
         break;
       }
     }
