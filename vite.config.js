@@ -9,6 +9,14 @@ export default defineConfig({
       name: 'PrettierPluginClassnames',
       fileName: 'prettier-plugin-classnames',
     },
+    rollupOptions: {
+      external: [/^prettier/],
+      output: {
+        globals: {
+          prettier: 'prettier',
+        },
+      },
+    },
   },
   plugins: [
     dts({
