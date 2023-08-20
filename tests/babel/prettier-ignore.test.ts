@@ -104,6 +104,112 @@ export function Callout({ children }) {
 }
 `,
   },
+  {
+    name: 'ignore comment #4',
+    input: `
+/* prettier-ignore */
+export function Callout({ children }) {
+  return (
+    <div>
+      <div
+        className={classNames(
+          'bg-gray-100/50 border border-zinc-400/30 dark:bg-neutral-900/50 dark:border-neutral-500/30 px-4 py-4 rounded-xl',
+          'rounded-xl py-4 px-4 dark:border-neutral-500/30 dark:bg-neutral-900/50 border-zinc-400/30 border bg-gray-100/50',
+        )}
+      >
+        {children}
+      </div>
+      <div
+        className={classNames(
+          'bg-gray-100/50 border border-zinc-400/30 dark:bg-neutral-900/50 dark:border-neutral-500/30 px-4 py-4 rounded-xl',
+          'rounded-xl py-4 px-4 dark:border-neutral-500/30 dark:bg-neutral-900/50 border-zinc-400/30 border bg-gray-100/50',
+        )}
+      >
+        {children}
+      </div>
+    </div>
+  );
+}
+`,
+    output: `/* prettier-ignore */
+export function Callout({ children }) {
+  return (
+    <div>
+      <div
+        className={classNames(
+          'bg-gray-100/50 border border-zinc-400/30 dark:bg-neutral-900/50 dark:border-neutral-500/30 px-4 py-4 rounded-xl',
+          'rounded-xl py-4 px-4 dark:border-neutral-500/30 dark:bg-neutral-900/50 border-zinc-400/30 border bg-gray-100/50',
+        )}
+      >
+        {children}
+      </div>
+      <div
+        className={classNames(
+          'bg-gray-100/50 border border-zinc-400/30 dark:bg-neutral-900/50 dark:border-neutral-500/30 px-4 py-4 rounded-xl',
+          'rounded-xl py-4 px-4 dark:border-neutral-500/30 dark:bg-neutral-900/50 border-zinc-400/30 border bg-gray-100/50',
+        )}
+      >
+        {children}
+      </div>
+    </div>
+  );
+}
+`,
+  },
+  {
+    name: 'ignore comment #5',
+    input: `
+export function Callout({ children }) {
+  return (
+    <div>
+      {/* prettier-ignore */}
+      <div
+        className={classNames(
+          'bg-gray-100/50 border border-zinc-400/30 dark:bg-neutral-900/50 dark:border-neutral-500/30 px-4 py-4 rounded-xl',
+          'rounded-xl py-4 px-4 dark:border-neutral-500/30 dark:bg-neutral-900/50 border-zinc-400/30 border bg-gray-100/50',
+        )}
+      >
+        {children}
+      </div>
+      <div
+        className={classNames(
+          'bg-gray-100/50 border border-zinc-400/30 dark:bg-neutral-900/50 dark:border-neutral-500/30 px-4 py-4 rounded-xl',
+          'rounded-xl py-4 px-4 dark:border-neutral-500/30 dark:bg-neutral-900/50 border-zinc-400/30 border bg-gray-100/50',
+        )}
+      >
+        {children}
+      </div>
+    </div>
+  );
+}
+`,
+    output: `export function Callout({ children }) {
+  return (
+    <div>
+      {/* prettier-ignore */}
+      <div
+        className={classNames(
+          'bg-gray-100/50 border border-zinc-400/30 dark:bg-neutral-900/50 dark:border-neutral-500/30 px-4 py-4 rounded-xl',
+          'rounded-xl py-4 px-4 dark:border-neutral-500/30 dark:bg-neutral-900/50 border-zinc-400/30 border bg-gray-100/50',
+        )}
+      >
+        {children}
+      </div>
+      <div
+        className={classNames(
+          \`bg-gray-100/50 border border-zinc-400/30 dark:bg-neutral-900/50
+          dark:border-neutral-500/30 px-4 py-4 rounded-xl\`,
+          \`rounded-xl py-4 px-4 dark:border-neutral-500/30 dark:bg-neutral-900/50
+          border-zinc-400/30 border bg-gray-100/50\`,
+        )}
+      >
+        {children}
+      </div>
+    </div>
+  );
+}
+`,
+  },
 ];
 
 describe('babel/prettier-ignore', () => {

@@ -183,6 +183,33 @@ export function Callout({ children }) {
 }
 `,
   },
+  {
+    name: 'string literal #6 (multiple class name)',
+    input: `
+export function Callout({ children }) {
+  return (
+    <div className={'bg-gray-100/50 border border-zinc-400/30 dark:bg-neutral-900/50 dark:border-neutral-500/30 px-4 py-4 rounded-xl' + 'rounded-xl py-4 px-4 dark:border-neutral-500/30 dark:bg-neutral-900/50 border-zinc-400/30 border bg-gray-100/50'}>
+      {children}
+    </div>
+  );
+}
+`,
+    output: `export function Callout({ children }) {
+  return (
+    <div
+      className={
+        \`bg-gray-100/50 border border-zinc-400/30 dark:bg-neutral-900/50
+        dark:border-neutral-500/30 px-4 py-4 rounded-xl\` +
+        \`rounded-xl py-4 px-4 dark:border-neutral-500/30 dark:bg-neutral-900/50
+        border-zinc-400/30 border bg-gray-100/50\`
+      }
+    >
+      {children}
+    </div>
+  );
+}
+`,
+  },
 ];
 
 describe('typescript/embedded-expression', () => {
