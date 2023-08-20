@@ -9,6 +9,8 @@ enum ClassNameType {
   SLBP = 'StringLiteralBasedProperty',
   TLE = 'TemplateLiteralExpression',
   TLBP = 'TemplateLiteralBasedProperty',
+  USL = 'UnknownStringLiteral',
+  UTL = 'UnknownTemplateLiteral',
 }
 
 type NodeRange = [number, number];
@@ -100,32 +102,22 @@ function findTargetClassNameNodes(ast: any): ClassNameNode[] {
         ) {
           keywordEnclosingRanges.push([rangeStart, rangeEnd]);
 
-          const childNode = node.value;
+          const parentNodeStartLineNumber = parentNode.loc.start.line;
+          const nodeStartLineNumber = node.loc.start.line;
 
-          if (
-            isObject(childNode) &&
-            'type' in childNode &&
-            (childNode.type === 'Literal' || childNode.type === 'StringLiteral') &&
-            'value' in childNode &&
-            typeof childNode.value === 'string' &&
-            'range' in childNode &&
-            isNodeRange(childNode.range) &&
-            'loc' in childNode &&
-            isObject(childNode.loc) &&
-            'start' in childNode.loc &&
-            isObject(childNode.loc.start) &&
-            'line' in childNode.loc.start &&
-            typeof childNode.loc.start.line === 'number'
-          ) {
-            classNameNodes.push({
-              type:
-                parentNode.loc.start.line === node.loc.start.line
-                  ? ClassNameType.AT
-                  : ClassNameType.OLAT,
-              range: [...childNode.range],
-              startLineIndex: childNode.loc.start.line - 1,
-            });
-          }
+          classNameNodes.forEach((classNameNode) => {
+            const [classNameRangeStart, classNameRangeEnd] = classNameNode.range;
+
+            if (rangeStart <= classNameRangeStart && classNameRangeEnd <= rangeEnd) {
+              if (classNameNode.type === ClassNameType.USL) {
+                // eslint-disable-next-line no-param-reassign
+                classNameNode.type =
+                  parentNodeStartLineNumber === nodeStartLineNumber
+                    ? ClassNameType.AT
+                    : ClassNameType.OLAT;
+              }
+            }
+          });
         }
         break;
       }
@@ -143,33 +135,53 @@ function findTargetClassNameNodes(ast: any): ClassNameNode[] {
         ) {
           keywordEnclosingRanges.push([rangeStart, rangeEnd]);
 
-          if ('arguments' in node && Array.isArray(node.arguments)) {
-            node.arguments.forEach((arg: unknown) => {
+          classNameNodes.forEach((classNameNode) => {
+            const [classNameRangeStart, classNameRangeEnd] = classNameNode.range;
+
+            if (rangeStart <= classNameRangeStart && classNameRangeEnd <= rangeEnd) {
               if (
-                isObject(arg) &&
-                'type' in arg &&
-                (arg.type === 'TemplateLiteral' ||
-                  ((arg.type === 'Literal' || arg.type === 'StringLiteral') &&
-                    'value' in arg &&
-                    typeof arg.value === 'string')) &&
-                'range' in arg &&
-                isNodeRange(arg.range) &&
-                'loc' in arg &&
-                isObject(arg.loc) &&
-                'start' in arg.loc &&
-                isObject(arg.loc.start) &&
-                'line' in arg.loc.start &&
-                typeof arg.loc.start.line === 'number'
+                classNameNode.type === ClassNameType.USL ||
+                classNameNode.type === ClassNameType.UTL
               ) {
-                classNameNodes.push({
-                  type: ClassNameType.FA,
-                  range: [...arg.range],
-                  startLineIndex: arg.loc.start.line - 1,
-                });
+                // eslint-disable-next-line no-param-reassign
+                classNameNode.type = ClassNameType.FA;
               }
-            });
-          }
+            }
+          });
         }
+        break;
+      }
+      case 'JSXExpressionContainer': {
+        classNameNodes.forEach((classNameNode) => {
+          const [classNameRangeStart, classNameRangeEnd] = classNameNode.range;
+
+          if (rangeStart <= classNameRangeStart && classNameRangeEnd <= rangeEnd) {
+            if (classNameNode.type === ClassNameType.USL) {
+              // eslint-disable-next-line no-param-reassign
+              classNameNode.type = ClassNameType.SLE;
+            } else if (classNameNode.type === ClassNameType.UTL) {
+              // eslint-disable-next-line no-param-reassign
+              classNameNode.type = ClassNameType.TLE;
+            }
+          }
+        });
+        break;
+      }
+      case 'ObjectProperty':
+      case 'Property': {
+        classNameNodes.forEach((classNameNode) => {
+          const [classNameRangeStart, classNameRangeEnd] = classNameNode.range;
+
+          if (rangeStart <= classNameRangeStart && classNameRangeEnd <= rangeEnd) {
+            if (classNameNode.type === ClassNameType.USL) {
+              // eslint-disable-next-line no-param-reassign
+              classNameNode.type = ClassNameType.SLBP;
+            } else if (classNameNode.type === ClassNameType.UTL) {
+              // eslint-disable-next-line no-param-reassign
+              classNameNode.type = ClassNameType.TLBP;
+            }
+          }
+        });
         break;
       }
       case 'Literal':
@@ -186,19 +198,11 @@ function findTargetClassNameNodes(ast: any): ClassNameNode[] {
           'line' in node.loc.start &&
           typeof node.loc.start.line === 'number'
         ) {
-          if (parentNode?.type === 'JSXExpressionContainer') {
-            classNameNodes.push({
-              type: ClassNameType.SLE,
-              range: [rangeStart, rangeEnd],
-              startLineIndex: node.loc.start.line - 1,
-            });
-          } else if (parentNode?.type === 'Property' || parentNode?.type === 'ObjectProperty') {
-            classNameNodes.push({
-              type: ClassNameType.SLBP,
-              range: [rangeStart, rangeEnd],
-              startLineIndex: node.loc.start.line - 1,
-            });
-          }
+          classNameNodes.push({
+            type: ClassNameType.USL,
+            range: [rangeStart, rangeEnd],
+            startLineIndex: node.loc.start.line - 1,
+          });
         }
         break;
       }
@@ -213,19 +217,11 @@ function findTargetClassNameNodes(ast: any): ClassNameNode[] {
           'line' in node.loc.start &&
           typeof node.loc.start.line === 'number'
         ) {
-          if (parentNode?.type === 'JSXExpressionContainer') {
-            classNameNodes.push({
-              type: ClassNameType.TLE,
-              range: [rangeStart, rangeEnd],
-              startLineIndex: node.loc.start.line - 1,
-            });
-          } else if (parentNode?.type === 'Property' || parentNode?.type === 'ObjectProperty') {
-            classNameNodes.push({
-              type: ClassNameType.TLBP,
-              range: [rangeStart, rangeEnd],
-              startLineIndex: node.loc.start.line - 1,
-            });
-          }
+          classNameNodes.push({
+            type: ClassNameType.UTL,
+            range: [rangeStart, rangeEnd],
+            startLineIndex: node.loc.start.line - 1,
+          });
         }
         break;
       }
