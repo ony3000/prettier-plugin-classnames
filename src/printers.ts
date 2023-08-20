@@ -35,8 +35,13 @@ function isNodeRange(arg: unknown): arg is NodeRange {
   return Array.isArray(arg) && arg.length === 2 && arg.every((item) => typeof item === 'number');
 }
 
-function findTargetClassNameNodes(ast: any): ClassNameNode[] {
-  const keywords: string[] = ['classNames'];
+function findTargetClassNameNodes(
+  ast: any,
+  customAttributes: string[],
+  customFunctions: string[],
+): ClassNameNode[] {
+  const supportedAttributes: string[] = ['className', ...customAttributes];
+  const supportedFunctions: string[] = ['classNames', ...customFunctions];
   const nonCommentRanges: NodeRange[] = [];
   const ignoreCommentRanges: NodeRange[] = [];
   const keywordEnclosingRanges: NodeRange[] = [];
@@ -90,7 +95,8 @@ function findTargetClassNameNodes(ast: any): ClassNameNode[] {
           'type' in node.name &&
           node.name.type === 'JSXIdentifier' &&
           'name' in node.name &&
-          node.name.name === 'className' &&
+          typeof node.name.name === 'string' &&
+          supportedAttributes.includes(node.name.name) &&
           'value' in node &&
           'range' in node &&
           isNodeRange(node.range) &&
@@ -131,7 +137,7 @@ function findTargetClassNameNodes(ast: any): ClassNameNode[] {
           node.callee.type === 'Identifier' &&
           'name' in node.callee &&
           typeof node.callee.name === 'string' &&
-          keywords.includes(node.callee.name)
+          supportedFunctions.includes(node.callee.name)
         ) {
           keywordEnclosingRanges.push([rangeStart, rangeEnd]);
 
@@ -325,7 +331,13 @@ function parseLineByLineAndReplace(
   const EOL = '\n';
   const indentUnit = options.useTabs ? '\t' : ' '.repeat(options.tabWidth);
 
-  const targetClassNameNodes = findTargetClassNameNodes(ast);
+  const targetClassNameNodes = findTargetClassNameNodes(
+    ast,
+    // @ts-ignore
+    options.customAttributes,
+    // @ts-ignore
+    options.customFunctions,
+  );
   if (IS_DEBUGGING_MODE) {
     console.dir(JSON.stringify(formattedText));
     console.dir(targetClassNameNodes);
