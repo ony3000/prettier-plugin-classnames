@@ -25,8 +25,6 @@ type ClassNameNode = {
   startLineIndex: number;
 };
 
-const IS_DEBUGGING_MODE = false;
-
 function isObject(arg: unknown): arg is object {
   return typeof arg === 'object' && arg !== null;
 }
@@ -72,12 +70,6 @@ function findTargetClassNameNodes(
     }
 
     const [rangeStart, rangeEnd] = node.range;
-
-    if (IS_DEBUGGING_MODE) {
-      if (node.type !== 'Punctuator') {
-        console.dir(node);
-      }
-    }
 
     switch (node.type) {
       case 'JSXAttribute': {
@@ -272,11 +264,6 @@ function findTargetClassNameNodes(
 
   recursion(ast);
 
-  if (IS_DEBUGGING_MODE) {
-    console.log(keywordEnclosingRanges);
-    console.log(classNameNodes);
-  }
-
   const ignoringRanges = ignoreCommentRanges.map<NodeRange>((commentRange) => {
     const [, commentRangeEnd] = commentRange;
 
@@ -290,11 +277,6 @@ function findTargetClassNameNodes(
 
     return ignoringRange ?? commentRange;
   });
-
-  if (IS_DEBUGGING_MODE) {
-    console.log(ignoreCommentRanges);
-    console.log(ignoringRanges);
-  }
 
   return classNameNodes
     .filter(({ range }) =>
@@ -338,10 +320,6 @@ function parseLineByLineAndReplace(
     // @ts-ignore
     options.customFunctions,
   );
-  if (IS_DEBUGGING_MODE) {
-    console.dir(JSON.stringify(formattedText));
-    console.dir(targetClassNameNodes);
-  }
   const formattedLines = formattedText.split(EOL);
   const lineNodes: LineNode[] = formattedLines.map((line) => {
     const indentMatchResult = line.match(new RegExp(`^(${indentUnit})*`));
@@ -351,10 +329,6 @@ function parseLineByLineAndReplace(
       indentLevel,
     };
   });
-
-  if (IS_DEBUGGING_MODE) {
-    console.dir(lineNodes, { depth: null });
-  }
 
   let mutableFormattedText = formattedText;
 
