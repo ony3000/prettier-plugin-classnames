@@ -1,6 +1,16 @@
 import type { AstPath, ParserOptions, Doc, Printer, Plugin } from 'prettier';
 import { format } from 'prettier';
 
+enum ClassNameType {
+  AT = 'Attribute',
+  OLAT = 'OwnLineAttribute',
+  FA = 'FunctionArgument',
+  SLE = 'StringLiteralExpression',
+  SLBP = 'StringLiteralBasedProperty',
+  TLE = 'TemplateLiteralExpression',
+  TLBP = 'TemplateLiteralBasedProperty',
+}
+
 type NodeRange = [number, number];
 
 type LineNode = {
@@ -8,7 +18,7 @@ type LineNode = {
 };
 
 type ClassNameNode = {
-  type: string;
+  type: ClassNameType;
   range: NodeRange;
   startLineIndex: number;
 };
@@ -110,8 +120,8 @@ function findTargetClassNameNodes(ast: any): ClassNameNode[] {
             classNameNodes.push({
               type:
                 parentNode.loc.start.line === node.loc.start.line
-                  ? 'Attribute'
-                  : 'OwnLineAttribute',
+                  ? ClassNameType.AT
+                  : ClassNameType.OLAT,
               range: [...childNode.range],
               startLineIndex: childNode.loc.start.line - 1,
             });
@@ -152,7 +162,7 @@ function findTargetClassNameNodes(ast: any): ClassNameNode[] {
                 typeof arg.loc.start.line === 'number'
               ) {
                 classNameNodes.push({
-                  type: 'FunctionArgument',
+                  type: ClassNameType.FA,
                   range: [...arg.range],
                   startLineIndex: arg.loc.start.line - 1,
                 });
@@ -178,13 +188,13 @@ function findTargetClassNameNodes(ast: any): ClassNameNode[] {
         ) {
           if (parentNode?.type === 'JSXExpressionContainer') {
             classNameNodes.push({
-              type: 'StringLiteralExpression',
+              type: ClassNameType.SLE,
               range: [rangeStart, rangeEnd],
               startLineIndex: node.loc.start.line - 1,
             });
           } else if (parentNode?.type === 'Property' || parentNode?.type === 'ObjectProperty') {
             classNameNodes.push({
-              type: 'StringLiteralBasedProperty',
+              type: ClassNameType.SLBP,
               range: [rangeStart, rangeEnd],
               startLineIndex: node.loc.start.line - 1,
             });
@@ -205,13 +215,13 @@ function findTargetClassNameNodes(ast: any): ClassNameNode[] {
         ) {
           if (parentNode?.type === 'JSXExpressionContainer') {
             classNameNodes.push({
-              type: 'TemplateLiteralExpression',
+              type: ClassNameType.TLE,
               range: [rangeStart, rangeEnd],
               startLineIndex: node.loc.start.line - 1,
             });
           } else if (parentNode?.type === 'Property' || parentNode?.type === 'ObjectProperty') {
             classNameNodes.push({
-              type: 'TemplateLiteralBasedProperty',
+              type: ClassNameType.TLBP,
               range: [rangeStart, rangeEnd],
               startLineIndex: node.loc.start.line - 1,
             });
@@ -355,17 +365,17 @@ function parseLineByLineAndReplace(
 
     let extraIndentLevel = 0;
 
-    if (type === 'Attribute') {
+    if (type === ClassNameType.AT) {
       extraIndentLevel = 2;
-    } else if (type === 'OwnLineAttribute' || type === 'TemplateLiteralExpression') {
+    } else if (type === ClassNameType.OLAT || type === ClassNameType.TLE) {
       extraIndentLevel = 1;
     }
 
-    const quoteStart = `${type === 'StringLiteralBasedProperty' ? '[' : ''}${
-      type === 'Attribute' || type === 'OwnLineAttribute' ? '"' : '`'
+    const quoteStart = `${type === ClassNameType.SLBP ? '[' : ''}${
+      type === ClassNameType.AT || type === ClassNameType.OLAT ? '"' : '`'
     }`;
-    const quoteEnd = `${type === 'Attribute' || type === 'OwnLineAttribute' ? '"' : '`'}${
-      type === 'StringLiteralBasedProperty' ? ']' : ''
+    const quoteEnd = `${type === ClassNameType.AT || type === ClassNameType.OLAT ? '"' : '`'}${
+      type === ClassNameType.SLBP ? ']' : ''
     }`;
     const substitute = `${quoteStart}${formattedClassName}${quoteEnd}`
       .split(EOL)
