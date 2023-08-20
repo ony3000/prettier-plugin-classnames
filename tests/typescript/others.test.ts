@@ -2,10 +2,10 @@ import { format, baseOptions } from '../settings';
 
 const options = {
   ...baseOptions,
-  parser: 'babel',
+  parser: 'typescript',
 };
 
-describe('babel/others', () => {
+describe('typescript/others', () => {
   test('tabWidth: 4', () => {
     const input = `\nexport function Callout({ children }) {\n  return (\n    <div className="rounded-xl border border-zinc-400/30 bg-gray-100/50 px-4 py-4 dark:border-neutral-500/30 dark:bg-neutral-900/50">\n      {children}\n    </div>\n  );\n}\n`;
     const output = `export function Callout({ children }) {\n    return (\n        <div\n            className="rounded-xl border border-zinc-400/30 bg-gray-100/50 px-4 py-4\n                dark:border-neutral-500/30 dark:bg-neutral-900/50"\n        >\n            {children}\n        </div>\n    );\n}\n`;
