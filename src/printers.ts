@@ -25,6 +25,8 @@ function isNodeRange(arg: unknown): arg is NodeRange {
 
 function findTargetClassNameNodes(ast: any): ClassNameNode[] {
   const keywords: string[] = ['classNames'];
+  const nonCommentRanges: NodeRange[] = [];
+  const ignoreCommentRanges: NodeRange[] = [];
   const keywordEnclosingRanges: NodeRange[] = [];
   const classNameNodes: ClassNameNode[] = [];
 
@@ -62,6 +64,8 @@ function findTargetClassNameNodes(ast: any): ClassNameNode[] {
 
     switch (node.type) {
       case 'JSXAttribute': {
+        nonCommentRanges.push([rangeStart, rangeEnd]);
+
         if (
           parentNode?.type === 'JSXOpeningElement' &&
           'loc' in parentNode &&
@@ -116,6 +120,8 @@ function findTargetClassNameNodes(ast: any): ClassNameNode[] {
         break;
       }
       case 'CallExpression': {
+        nonCommentRanges.push([rangeStart, rangeEnd]);
+
         if (
           'callee' in node &&
           isObject(node.callee) &&
@@ -158,6 +164,8 @@ function findTargetClassNameNodes(ast: any): ClassNameNode[] {
       }
       case 'Literal':
       case 'StringLiteral': {
+        nonCommentRanges.push([rangeStart, rangeEnd]);
+
         if (
           'value' in node &&
           typeof node.value === 'string' &&
@@ -185,6 +193,8 @@ function findTargetClassNameNodes(ast: any): ClassNameNode[] {
         break;
       }
       case 'TemplateLiteral': {
+        nonCommentRanges.push([rangeStart, rangeEnd]);
+
         if (
           'loc' in node &&
           isObject(node.loc) &&
@@ -209,8 +219,38 @@ function findTargetClassNameNodes(ast: any): ClassNameNode[] {
         }
         break;
       }
+      case 'Block':
+      case 'Line': {
+        if (
+          'value' in node &&
+          typeof node.value === 'string' &&
+          node.value.match(/prettier-ignore/)
+        ) {
+          ignoreCommentRanges.push([rangeStart, rangeEnd]);
+        }
+        break;
+      }
+      case 'File': {
+        if ('comments' in node && Array.isArray(node.comments)) {
+          node.comments.forEach((comment: unknown) => {
+            if (
+              isObject(comment) &&
+              'start' in comment &&
+              typeof comment.start === 'number' &&
+              'end' in comment &&
+              typeof comment.end === 'number' &&
+              'value' in comment &&
+              typeof comment.value === 'string' &&
+              comment.value.match(/prettier-ignore/)
+            ) {
+              ignoreCommentRanges.push([comment.start, comment.end]);
+            }
+          });
+        }
+        break;
+      }
       default: {
-        // nothing to do
+        nonCommentRanges.push([rangeStart, rangeEnd]);
         break;
       }
     }
@@ -223,7 +263,35 @@ function findTargetClassNameNodes(ast: any): ClassNameNode[] {
     console.log(classNameNodes);
   }
 
+  const ignoringRanges = ignoreCommentRanges.map<NodeRange>((commentRange) => {
+    const [, commentRangeEnd] = commentRange;
+
+    const ignoringRange = nonCommentRanges
+      .filter(([nonCommentRangeStart]) => commentRangeEnd < nonCommentRangeStart)
+      .sort(
+        ([formerRangeStart, formerRangeEnd], [latterRangeStart, latterRangeEnd]) =>
+          formerRangeStart - latterRangeStart || latterRangeEnd - formerRangeEnd,
+      )
+      .at(0);
+
+    return ignoringRange ?? commentRange;
+  });
+
+  if (IS_DEBUGGING_MODE) {
+    console.log(ignoreCommentRanges);
+    console.log(ignoringRanges);
+  }
+
   return classNameNodes
+    .filter(({ range }) =>
+      ignoringRanges.every(([ignoringRangeStart, ignoringRangeEnd]) => {
+        const [classNameRangeStart, classNameRangeEnd] = range;
+
+        return !(
+          ignoringRangeStart <= classNameRangeStart && classNameRangeEnd <= ignoringRangeEnd
+        );
+      }),
+    )
     .filter(({ range }) =>
       keywordEnclosingRanges.some(([keywordEnclosingRangeStart, keywordEnclosingRangeEnd]) => {
         const [classNameRangeStart, classNameRangeEnd] = range;
