@@ -410,6 +410,7 @@ function createPrinter(parserName: 'babel' | 'typescript'): Printer {
       ...options,
       plugins: [pluginCandidate],
       endOfLine: 'lf',
+      rangeEnd: Infinity,
     });
 
     return secondFormattedText;
