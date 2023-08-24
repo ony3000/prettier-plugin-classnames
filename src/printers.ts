@@ -228,7 +228,7 @@ function findTargetClassNameNodes(
         if (
           'value' in node &&
           typeof node.value === 'string' &&
-          node.value.match(/prettier-ignore/)
+          node.value.trim() === 'prettier-ignore'
         ) {
           ignoreCommentRanges.push([rangeStart, rangeEnd]);
         }
@@ -245,7 +245,7 @@ function findTargetClassNameNodes(
               typeof comment.end === 'number' &&
               'value' in comment &&
               typeof comment.value === 'string' &&
-              comment.value.match(/prettier-ignore/)
+              comment.value.trim() === 'prettier-ignore'
             ) {
               ignoreCommentRanges.push([comment.start, comment.end]);
             }
