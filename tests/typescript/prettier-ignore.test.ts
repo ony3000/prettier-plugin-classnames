@@ -210,6 +210,60 @@ export function Callout({ children }) {
 }
 `,
   },
+  {
+    name: 'comments that contain the phrase `prettier-ignore` but do not prevent formatting #1',
+    input: `
+/**
+ * prettier-ignore
+ */
+export function Callout({ children }) {
+  return (
+    <div className={'rounded-xl border border-zinc-400/30 bg-gray-100/50 px-4 py-4 dark:border-neutral-500/30 dark:bg-neutral-900/50'}>
+      {children}
+    </div>
+  );
+}
+`,
+    output: `/**
+ * prettier-ignore
+ */
+export function Callout({ children }) {
+  return (
+    <div
+      className={\`rounded-xl border border-zinc-400/30 bg-gray-100/50 px-4 py-4
+        dark:border-neutral-500/30 dark:bg-neutral-900/50\`}
+    >
+      {children}
+    </div>
+  );
+}
+`,
+  },
+  {
+    name: 'comments that contain the phrase `prettier-ignore` but do not prevent formatting #2',
+    input: `
+// /* prettier-ignore */
+export function Callout({ children }) {
+  return (
+    <div className={'rounded-xl border border-zinc-400/30 bg-gray-100/50 px-4 py-4 dark:border-neutral-500/30 dark:bg-neutral-900/50'}>
+      {children}
+    </div>
+  );
+}
+`,
+    output: `// /* prettier-ignore */
+export function Callout({ children }) {
+  return (
+    <div
+      className={\`rounded-xl border border-zinc-400/30 bg-gray-100/50 px-4 py-4
+        dark:border-neutral-500/30 dark:bg-neutral-900/50\`}
+    >
+      {children}
+    </div>
+  );
+}
+`,
+  },
 ];
 
 describe('typescript/prettier-ignore', () => {
