@@ -15,6 +15,7 @@ specifiers:
   eslint-plugin-import: 2.27.5
   jest: 29.5.0
   prettier: ~2.8.4
+  prettier-plugin-merge: ~0.2.0
   ts-jest: 29.1.0
   typescript: 4.9.5
   vite: 4.3.9
@@ -22,6 +23,7 @@ specifiers:
 
 optionalDependencies:
   classnames: 2.3.2
+  prettier-plugin-merge: 0.2.0_prettier@2.8.4
 
 devDependencies:
   '@trivago/prettier-plugin-sort-imports': 4.1.1_prettier@2.8.4
@@ -1867,6 +1869,12 @@ packages:
     resolution: {integrity: sha512-ofrBgwpPhCD85kMKtE9RYFFq6OC1A89oW2vvgWZNCwxrUpRUILopY7lsYyMDSjc8g6U6aiO0Qubg6r4Wgt5ZnA==}
     engines: {node: ^14.15.0 || ^16.10.0 || >=18.0.0}
     dev: true
+
+  /diff/5.1.0:
+    resolution: {integrity: sha512-D+mk+qE8VC/PAUrlAU34N+VfXev0ghe5ywmpqrawphmVZc1bEfn56uo9qpyGp1p4xpzOHkSW4ztBd6L7Xx4ACw==}
+    engines: {node: '>=0.3.1'}
+    dev: false
+    optional: true
 
   /dir-glob/3.0.1:
     resolution: {integrity: sha512-WkrWp9GR4KXfKGYzOLmTuGVi1UWFfws377n9cc55/tb6DuqyF6pcQ5AbiHEshaDpY9v6oaSr2XCDidGmMwdzIA==}
@@ -3813,11 +3821,21 @@ packages:
     engines: {node: '>= 0.8.0'}
     dev: true
 
+  /prettier-plugin-merge/0.2.0_prettier@2.8.4:
+    resolution: {integrity: sha512-2iStjZCMlmBXoGstBcBYXHcNhmafSL/pwJd4mWAQVTOGXPWo1UJ77wuI22vpVgla8Pkgbn62UA51d/rBsxAwrg==}
+    requiresBuild: true
+    peerDependencies:
+      prettier: ~2.8.4
+    dependencies:
+      diff: 5.1.0
+      prettier: 2.8.4
+    dev: false
+    optional: true
+
   /prettier/2.8.4:
     resolution: {integrity: sha512-vIS4Rlc2FNh0BySk3Wkd6xmwxB0FpOndW5fisM5H8hsZSxU2VWVB5CWIkIjWvrHjIhxk2g3bfMKM87zNTrZddw==}
     engines: {node: '>=10.13.0'}
     hasBin: true
-    dev: true
 
   /pretty-format/29.5.0:
     resolution: {integrity: sha512-V2mGkI31qdttvTFX7Mt4efOqHXqJWMu4/r66Xh3Z3BwZaPfPJgp6/gbwoujRpPUtfEF6AUUWx3Jim3GCw5g/Qw==}
