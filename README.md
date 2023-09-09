@@ -56,7 +56,7 @@ Option | Default&nbsp;value | Description
 
 Because this plugin supports babel parser and typescript parser, only one plugin can be applied for overlapping parsers when used with other plugins that support either or both parsers.
 
-In this case, if the printer corresponding to the overlapping parser is not implemented in another plugin, you can add [prettier-plugin-merge](https://github.com/ony3000/prettier-plugin-merge) to configure it as follows.
+In this case, you can add [prettier-plugin-merge](https://github.com/ony3000/prettier-plugin-merge) to configure it as follows.
 
 JSON example:
 
