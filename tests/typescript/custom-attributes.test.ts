@@ -35,9 +35,9 @@ export function Callout({ children }) {
 
 describe('typescript/custom-attributes', () => {
   for (const fixture of fixtures) {
-    test(fixture.name, () => {
+    test(fixture.name, async () => {
       // @ts-ignore
-      expect(format(fixture.input, options)).toBe(fixture.output);
+      expect(await format(fixture.input, options)).toBe(fixture.output);
     });
   }
 });
