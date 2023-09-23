@@ -1,6 +1,3 @@
-import type { AstPath, ParserOptions, Doc, Printer, Plugin } from 'prettier';
-import { format } from 'prettier';
-
 enum ClassNameType {
   AT = 'Attribute',
   OLAT = 'OwnLineAttribute',
@@ -23,6 +20,13 @@ type ClassNameNode = {
   type: ClassNameType;
   range: NodeRange;
   startLineIndex: number;
+};
+
+type NarrowedParserOptions = {
+  tabWidth: number;
+  useTabs: boolean;
+  customAttributes: string[];
+  customFunctions: string[];
 };
 
 function isObject(arg: unknown): arg is object {
@@ -301,10 +305,11 @@ function findTargetClassNameNodes(
     .sort((former, latter) => latter.startLineIndex - former.startLineIndex);
 }
 
-function parseLineByLineAndReplace(
+export function parseLineByLineAndReplace(
   formattedText: string,
   ast: any,
-  options: ParserOptions,
+  options: NarrowedParserOptions,
+  format: (source: string, options?: any) => string,
 ): string {
   if (formattedText === '') {
     return formattedText;
@@ -315,9 +320,7 @@ function parseLineByLineAndReplace(
 
   const targetClassNameNodes = findTargetClassNameNodes(
     ast,
-    // @ts-ignore
     options.customAttributes,
-    // @ts-ignore
     options.customFunctions,
   );
   const formattedLines = formattedText.split(EOL);
@@ -373,55 +376,3 @@ function parseLineByLineAndReplace(
 
   return mutableFormattedText;
 }
-
-function createPrinter(parserName: 'babel' | 'typescript'): Printer {
-  function main(
-    path: AstPath,
-    options: ParserOptions,
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    print: (path: AstPath) => Doc,
-  ): Doc {
-    const plugins = options.plugins.filter((plugin) => typeof plugin !== 'string') as Plugin[];
-    const pluginCandidate = plugins.find((plugin) => plugin.parsers?.[parserName]);
-
-    if (!pluginCandidate) {
-      throw new Error('A plugin with the given parser does not exist.');
-    }
-
-    const node = path.getValue();
-
-    if (node?.comments) {
-      node.comments.forEach((comment: any) => {
-        // eslint-disable-next-line no-param-reassign
-        comment.printed = true;
-      });
-    }
-
-    const { originalText } = options;
-    const formattedText = format(originalText, {
-      ...options,
-      plugins: [pluginCandidate],
-      endOfLine: 'lf',
-    });
-    const parser = pluginCandidate.parsers![parserName];
-    const ast = parser.parse(formattedText, pluginCandidate.parsers!, options);
-
-    const secondFormattedText = format(parseLineByLineAndReplace(formattedText, ast, options), {
-      ...options,
-      plugins: [pluginCandidate],
-      endOfLine: 'lf',
-      rangeEnd: Infinity,
-    });
-
-    return secondFormattedText;
-  }
-
-  return {
-    print: main,
-  };
-}
-
-export const printers: { [astFormat: string]: Printer } = {
-  'babel-ast': createPrinter('babel'),
-  'typescript-ast': createPrinter('typescript'),
-};
