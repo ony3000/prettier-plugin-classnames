@@ -2,22 +2,20 @@
 
 A Prettier plugin that wraps verbose class name based on the `printWidth` option.
 
-**Note**: Prettier v3 is not yet supported.
-
 ![A use case for this plugin.](.github/banner.png)
 
 ## Installation
 
 ```sh
-npm install -D prettier@~2.8 prettier-plugin-classnames
+npm install -D prettier prettier-plugin-classnames
 ```
 
 ```sh
-yarn add -D prettier@~2.8 prettier-plugin-classnames
+yarn add -D prettier prettier-plugin-classnames
 ```
 
 ```sh
-pnpm add -D prettier@~2.8 prettier-plugin-classnames
+pnpm add -D prettier prettier-plugin-classnames
 ```
 
 ## Configuration
@@ -32,11 +30,21 @@ JSON:
 }
 ```
 
-JS:
+JS (CommonJS module):
 
 ```javascript
 module.exports = {
-  plugins: [require('prettier-plugin-classnames')],
+  plugins: ['prettier-plugin-classnames'],
+  customAttributes: ['className'],
+  customFunctions: ['classNames'],
+};
+```
+
+JS (ES module):
+
+```javascript
+export default {
+  plugins: ['prettier-plugin-classnames'],
   customAttributes: ['className'],
   customFunctions: ['classNames'],
 };
