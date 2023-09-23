@@ -24,8 +24,9 @@
     }
   },
   "scripts": {
-    "dev": "vite build --watch --minify=false",
-    "build": "vite build",
+    "clear": "rm -rf dist/",
+    "dev": "pnpm run clear && esbuild src/index.ts --bundle --outdir=dist --platform=node --alias:prettier3=prettier \"--external:@prettier\" \"--external:prettier\" --watch",
+    "build": "pnpm run clear && esbuild src/index.ts --bundle --outdir=dist --platform=node --alias:prettier3=prettier \"--external:@prettier\" \"--external:prettier\" --minify",
     "lint": "eslint src",
     "test:v2": "cross-env NODE_OPTIONS=--experimental-vm-modules PRETTIER_VERSION=2 jest --ci --passWithNoTests",
     "test:v3": "cross-env NODE_OPTIONS=--experimental-vm-modules PRETTIER_VERSION=3 jest --ci --passWithNoTests",
