@@ -269,6 +269,7 @@ export function Callout({ children }) {
 describe('babel/prettier-ignore', () => {
   for (const fixture of fixtures) {
     test(fixture.name, () => {
+      // @ts-ignore
       expect(format(fixture.input, options)).toBe(fixture.output);
     });
   }

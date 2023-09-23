@@ -140,6 +140,7 @@ export function Callout({ children }) {
 describe('typescript/conditional', () => {
   for (const fixture of fixtures) {
     test(fixture.name, () => {
+      // @ts-ignore
       expect(format(fixture.input, options)).toBe(fixture.output);
     });
   }

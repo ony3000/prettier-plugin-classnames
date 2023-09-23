@@ -215,6 +215,7 @@ export function Callout({ children }) {
 describe('typescript/embedded-expression', () => {
   for (const fixture of fixtures) {
     test(fixture.name, () => {
+      // @ts-ignore
       expect(format(fixture.input, options)).toBe(fixture.output);
     });
   }
