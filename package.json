@@ -22,10 +22,8 @@
     "test:v2": "cross-env NODE_OPTIONS=--experimental-vm-modules PRETTIER_VERSION=2 jest --ci --passWithNoTests",
     "test:v3": "cross-env NODE_OPTIONS=--experimental-vm-modules PRETTIER_VERSION=3 jest --ci --passWithNoTests"
   },
-  "dependencies": {
-    "@prettier/sync": "0.3.0"
-  },
   "devDependencies": {
+    "@prettier/sync": "0.3.0",
     "@trivago/prettier-plugin-sort-imports": "4.1.1",
     "@types/jest": "29.5.2",
     "@types/node": "20.2.5",
@@ -47,7 +45,13 @@
     "typescript": "4.9.5"
   },
   "peerDependencies": {
+    "@prettier/sync": "0.3.0",
     "prettier": "~2.8.4 || ~3.0.3"
+  },
+  "peerDependenciesMeta": {
+    "@prettier/sync": {
+      "optional": true
+    }
   },
   "optionalDependencies": {
     "classnames": "2.3.2"

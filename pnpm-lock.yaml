@@ -23,13 +23,11 @@ specifiers:
   ts-jest: 29.1.0
   typescript: 4.9.5
 
-dependencies:
-  '@prettier/sync': 0.3.0_prettier@3.0.3
-
 optionalDependencies:
   classnames: 2.3.2
 
 devDependencies:
+  '@prettier/sync': 0.3.0_prettier@3.0.3
   '@trivago/prettier-plugin-sort-imports': 4.1.1_prettier@3.0.3
   '@types/jest': 29.5.2
   '@types/node': 20.2.5
@@ -970,7 +968,7 @@ packages:
       prettier: ^3.0.0
     dependencies:
       prettier: 3.0.3
-    dev: false
+    dev: true
 
   /@sinclair/typebox/0.25.24:
     resolution: {integrity: sha512-XJfwUVUKDHF5ugKwIcxEgc9k8b7HbznCp6eUfWgu710hMPNIO4aw4/zB5RogDQz8nd6gyCDpU9O/m6qYEWY6yQ==}
@@ -3545,6 +3543,7 @@ packages:
     resolution: {integrity: sha512-L/4pUDMxcNa8R/EthV08Zt42WBO4h1rarVtK0K+QJG0X187OLo7l699jWw0GKuwzkPQ//jMFA/8Xm6Fh3J/DAg==}
     engines: {node: '>=14'}
     hasBin: true
+    dev: true
 
   /pretty-format/29.5.0:
     resolution: {integrity: sha512-V2mGkI31qdttvTFX7Mt4efOqHXqJWMu4/r66Xh3Z3BwZaPfPJgp6/gbwoujRpPUtfEF6AUUWx3Jim3GCw5g/Qw==}
