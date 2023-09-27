@@ -6,16 +6,16 @@ A Prettier plugin that wraps verbose class name based on the `printWidth` option
 
 ## Installation
 
-```sh
-npm install -D prettier prettier-plugin-classnames
-```
+For Prettier v2:
 
 ```sh
-yarn add -D prettier prettier-plugin-classnames
+npm install -D prettier@^2 prettier-plugin-classnames
 ```
 
+For Prettier v3:
+
 ```sh
-pnpm add -D prettier prettier-plugin-classnames
+npm install -D prettier prettier-plugin-classnames @prettier/sync
 ```
 
 ## Configuration
