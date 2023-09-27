@@ -7,7 +7,6 @@ specifiers:
   '@types/node': 20.2.5
   '@typescript-eslint/eslint-plugin': 5.54.0
   '@typescript-eslint/parser': 5.54.0
-  classnames: 2.3.2
   cross-env: 7.0.3
   esbuild: 0.17.19
   eslint: 8.35.0
@@ -22,9 +21,6 @@ specifiers:
   prettier3: npm:prettier@3.0.3
   ts-jest: 29.1.0
   typescript: 4.9.5
-
-optionalDependencies:
-  classnames: 2.3.2
 
 devDependencies:
   '@prettier/sync': 0.3.0_prettier@3.0.3
@@ -1541,12 +1537,6 @@ packages:
   /cjs-module-lexer/1.2.2:
     resolution: {integrity: sha512-cOU9usZw8/dXIXKtwa8pM0OTJQuJkxMN6w30csNRUerHfeQ5R6U3kkU/FtJeIf3M202OHfY2U8ccInBG7/xogA==}
     dev: true
-
-  /classnames/2.3.2:
-    resolution: {integrity: sha512-CSbhY4cFEJRe6/GQzIk5qXZ4Jeg5pcsP7b5peFSDpffpe1cqjASH/n9UTjBwOp6XpMSTwQ8Za2K5V02ueA7Tmw==}
-    requiresBuild: true
-    dev: false
-    optional: true
 
   /cliui/8.0.1:
     resolution: {integrity: sha512-BSeNnyus75C4//NQ9gQt1/csTXyo/8Sb+afLAkzAptFuMsod9HFokGNudZpi/oQV73hnVK+sR+5PVRMd+Dr7YQ==}
