@@ -50,7 +50,6 @@
     "prettier": "~2.8.4 || ~3.0.3"
   },
   "optionalDependencies": {
-    "classnames": "2.3.2",
-    "prettier-plugin-merge": "~0.2.0"
+    "classnames": "2.3.2"
   }
 }
