@@ -6,7 +6,11 @@
   "keywords": [
     "prettier",
     "plugin",
-    "classnames"
+    "classnames",
+    "wrap",
+    "verbose",
+    "class",
+    "tailwindcss"
   ],
   "author": "Hyeonjong <nianelo4@gmail.com>",
   "license": "MIT",
