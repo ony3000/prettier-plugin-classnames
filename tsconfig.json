@@ -12,9 +12,7 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "baseUrl": ".",
-    "paths": {
-      "@/*": ["./src/*"]
-    }
+    "paths": {}
   },
   "include": ["**/*.ts"],
   "exclude": ["node_modules"]
