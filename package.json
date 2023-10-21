@@ -8,8 +8,7 @@
   "license": "MIT",
   "scripts": {
     "lint": "eslint tests",
-    "test:v2": "cross-env NODE_OPTIONS=--experimental-vm-modules PRETTIER_VERSION=2 jest --ci --passWithNoTests",
-    "test:v3": "cross-env NODE_OPTIONS=--experimental-vm-modules PRETTIER_VERSION=3 jest --ci --passWithNoTests"
+    "test": "jest --ci --passWithNoTests"
   },
   "dependencies": {
     "prettier-plugin-classnames": "0.2.2"
