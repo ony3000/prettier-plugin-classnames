@@ -11,6 +11,9 @@
     "test:v2": "cross-env NODE_OPTIONS=--experimental-vm-modules PRETTIER_VERSION=2 jest --ci --passWithNoTests",
     "test:v3": "cross-env NODE_OPTIONS=--experimental-vm-modules PRETTIER_VERSION=3 jest --ci --passWithNoTests"
   },
+  "dependencies": {
+    "prettier-plugin-classnames": "0.2.2"
+  },
   "devDependencies": {
     "@trivago/prettier-plugin-sort-imports": "4.1.1",
     "@types/jest": "29.5.2",
