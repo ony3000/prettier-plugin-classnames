@@ -51,5 +51,6 @@
     "@prettier/sync": {
       "optional": true
     }
-  }
+  },
+  "packageManager": "pnpm@7.33.0"
 }
