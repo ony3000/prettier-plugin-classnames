@@ -40,6 +40,9 @@ importers:
       turbo: 1.10.14
       typescript: 4.9.5
 
+  src/packages/core-parts:
+    specifiers: {}
+
 packages:
 
   /@babel/code-frame/7.21.4:
