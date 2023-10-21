@@ -54,6 +54,16 @@ importers:
     devDependencies:
       '@types/prettier': 2.7.3
 
+  src/packages/v3-plugin:
+    specifiers:
+      '@prettier/sync': 0.3.0
+      core-parts: workspace:*
+      prettier: 3.0.3
+    dependencies:
+      '@prettier/sync': 0.3.0_prettier@3.0.3
+      core-parts: link:../core-parts
+      prettier: 3.0.3
+
 packages:
 
   /@babel/code-frame/7.21.4:
@@ -493,7 +503,6 @@ packages:
       prettier: ^3.0.0
     dependencies:
       prettier: 3.0.3
-    dev: true
 
   /@trivago/prettier-plugin-sort-imports/4.1.1_prettier@3.0.3:
     resolution: {integrity: sha512-dQ2r2uzNr1x6pJsuh/8x0IRA3CBUB+pWEW3J/7N98axqt7SQSm+2fy0FLNXvXGg77xEDC7KHxJlHfLYyi7PDcw==}
@@ -2076,7 +2085,6 @@ packages:
     resolution: {integrity: sha512-L/4pUDMxcNa8R/EthV08Zt42WBO4h1rarVtK0K+QJG0X187OLo7l699jWw0GKuwzkPQ//jMFA/8Xm6Fh3J/DAg==}
     engines: {node: '>=14'}
     hasBin: true
-    dev: true
 
   /punycode/2.3.0:
     resolution: {integrity: sha512-rRV+zQD8tVFys26lAGR9WUuS4iUAngJScM+ZRSKtvl5tKeZ2t5bvdNFdNHBW9FWR4guGHlgmsZ1G7BSm2wTbuA==}

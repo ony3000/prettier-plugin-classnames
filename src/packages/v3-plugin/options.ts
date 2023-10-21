@@ -1,4 +1,4 @@
-import type { SupportOptions } from 'prettier3';
+import type { SupportOptions } from 'prettier';
 
 export const options: SupportOptions = {
   customAttributes: {

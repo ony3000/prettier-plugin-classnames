@@ -1,7 +1,7 @@
 import { format as formatSync } from '@prettier/sync';
-import type { AstPath, ParserOptions, Doc, Printer, Options } from 'prettier3';
+import { parseLineByLineAndReplace } from 'core-parts';
+import type { AstPath, ParserOptions, Doc, Printer, Options } from 'prettier';
 
-import { parseLineByLineAndReplace } from '../core';
 import { parsers } from './parsers';
 
 function createPrinter(parserName: 'babel' | 'typescript'): Printer {
