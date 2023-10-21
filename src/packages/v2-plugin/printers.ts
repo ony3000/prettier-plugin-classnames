@@ -1,7 +1,6 @@
+import { parseLineByLineAndReplace } from 'core-parts';
 import type { AstPath, ParserOptions, Doc, Printer, Plugin } from 'prettier';
 import { format } from 'prettier';
-
-import { parseLineByLineAndReplace } from '../core';
 
 function createPrinter(parserName: 'babel' | 'typescript'): Printer {
   function main(
