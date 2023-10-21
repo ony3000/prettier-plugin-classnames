@@ -1,23 +1,11 @@
 {
-  "name": "prettier-plugin-classnames",
-  "version": "0.2.2",
-  "description": "A Prettier plugin that wraps verbose class name based on the `printWidth` option.",
+  "private": true,
+  "name": "testing-prettier-plugin-classnames",
+  "version": "0.0.0",
+  "description": "This is a branch for testing `prettier-plugin-classnames`.",
   "repository": "https://github.com/ony3000/prettier-plugin-classnames",
-  "keywords": [
-    "prettier",
-    "plugin",
-    "classnames",
-    "wrap",
-    "verbose",
-    "class",
-    "tailwindcss"
-  ],
   "author": "Hyeonjong <nianelo4@gmail.com>",
   "license": "MIT",
-  "files": [
-    "dist"
-  ],
-  "main": "./dist/index.js",
   "scripts": {
     "lint": "eslint tests",
     "test:v2": "cross-env NODE_OPTIONS=--experimental-vm-modules PRETTIER_VERSION=2 jest --ci --passWithNoTests",
