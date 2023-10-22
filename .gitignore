@@ -258,9 +258,3 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
-
-# turbo
-.turbo
-
-# vercel
-.vercel
