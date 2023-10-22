@@ -18,12 +18,11 @@ importers:
       eslint-import-resolver-typescript: 3.5.3
       eslint-plugin-import: 2.27.5
       prettier: 2.8.4
-      prettier3: npm:prettier@3.0.3
       turbo: 1.10.14
       typescript: 4.9.5
     devDependencies:
-      '@prettier/sync': 0.3.0_prettier@3.0.3
-      '@trivago/prettier-plugin-sort-imports': 4.1.1_prettier@3.0.3
+      '@prettier/sync': 0.3.0_prettier@2.8.4
+      '@trivago/prettier-plugin-sort-imports': 4.1.1_prettier@2.8.4
       '@types/node': 20.2.5
       '@typescript-eslint/eslint-plugin': 5.54.0_6mj2wypvdnknez7kws2nfdgupi
       '@typescript-eslint/parser': 5.54.0_ycpbpc6yetojsgtrx3mwntkhsu
@@ -36,7 +35,6 @@ importers:
       eslint-import-resolver-typescript: 3.5.3_yckic57kx266ph64dhq6ozvb54
       eslint-plugin-import: 2.27.5_tqrcrxlenpngfto46ddarus52y
       prettier: 2.8.4
-      prettier3: /prettier/3.0.3
       turbo: 1.10.14
       typescript: 4.9.5
 
@@ -497,14 +495,23 @@ packages:
       tslib: 2.5.3
     dev: true
 
+  /@prettier/sync/0.3.0_prettier@2.8.4:
+    resolution: {integrity: sha512-3dcmCyAxIcxy036h1I7MQU/uEEBq8oLwf1CE3xeze+MPlgkdlb/+w6rGR/1dhp6Hqi17fRS6nvwnOzkESxEkOw==}
+    peerDependencies:
+      prettier: ^3.0.0
+    dependencies:
+      prettier: 2.8.4
+    dev: true
+
   /@prettier/sync/0.3.0_prettier@3.0.3:
     resolution: {integrity: sha512-3dcmCyAxIcxy036h1I7MQU/uEEBq8oLwf1CE3xeze+MPlgkdlb/+w6rGR/1dhp6Hqi17fRS6nvwnOzkESxEkOw==}
     peerDependencies:
       prettier: ^3.0.0
     dependencies:
       prettier: 3.0.3
+    dev: false
 
-  /@trivago/prettier-plugin-sort-imports/4.1.1_prettier@3.0.3:
+  /@trivago/prettier-plugin-sort-imports/4.1.1_prettier@2.8.4:
     resolution: {integrity: sha512-dQ2r2uzNr1x6pJsuh/8x0IRA3CBUB+pWEW3J/7N98axqt7SQSm+2fy0FLNXvXGg77xEDC7KHxJlHfLYyi7PDcw==}
     peerDependencies:
       '@vue/compiler-sfc': 3.x
@@ -519,7 +526,7 @@ packages:
       '@babel/types': 7.17.0
       javascript-natural-sort: 0.7.1
       lodash: 4.17.21
-      prettier: 3.0.3
+      prettier: 2.8.4
     transitivePeerDependencies:
       - supports-color
     dev: true
@@ -2085,6 +2092,7 @@ packages:
     resolution: {integrity: sha512-L/4pUDMxcNa8R/EthV08Zt42WBO4h1rarVtK0K+QJG0X187OLo7l699jWw0GKuwzkPQ//jMFA/8Xm6Fh3J/DAg==}
     engines: {node: '>=14'}
     hasBin: true
+    dev: false
 
   /punycode/2.3.0:
     resolution: {integrity: sha512-rRV+zQD8tVFys26lAGR9WUuS4iUAngJScM+ZRSKtvl5tKeZ2t5bvdNFdNHBW9FWR4guGHlgmsZ1G7BSm2wTbuA==}
