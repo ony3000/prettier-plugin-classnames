@@ -1,0 +1,14 @@
+{
+  "private": true,
+  "name": "v2-plugin",
+  "version": "0.0.0",
+  "author": "Hyeonjong <nianelo4@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "core-parts": "workspace:*",
+    "prettier": "2.8.4"
+  },
+  "devDependencies": {
+    "@types/prettier": "2.7.3"
+  }
+}

@@ -1,6 +1,6 @@
-import type { Parser } from 'prettier3';
-import { parsers as babelParsers } from 'prettier3/plugins/babel';
-import { parsers as typescriptParsers } from 'prettier3/plugins/typescript';
+import type { Parser } from 'prettier';
+import { parsers as babelParsers } from 'prettier/plugins/babel';
+import { parsers as typescriptParsers } from 'prettier/plugins/typescript';
 
 export const parsers: { [parserName: string]: Parser } = {
   babel: {
