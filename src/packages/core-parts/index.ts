@@ -1,3 +1,6 @@
+import type { ZodTypeAny, infer as ZodInfer } from 'zod';
+import { z } from 'zod';
+
 enum ClassNameType {
   AT = 'Attribute',
   OLAT = 'OwnLineAttribute',
@@ -29,12 +32,8 @@ type NarrowedParserOptions = {
   customFunctions: string[];
 };
 
-function isObject(arg: unknown): arg is object {
-  return typeof arg === 'object' && arg !== null;
-}
-
-function isNodeRange(arg: unknown): arg is NodeRange {
-  return Array.isArray(arg) && arg.length === 2 && arg.every((item) => typeof item === 'number');
+function isTypeof<T extends ZodTypeAny>(arg: unknown, expectedSchema: T): arg is ZodInfer<T> {
+  return expectedSchema.safeParse(arg).success;
 }
 
 function findTargetClassNameNodes(
@@ -49,8 +48,8 @@ function findTargetClassNameNodes(
   const keywordEnclosingRanges: NodeRange[] = [];
   const classNameNodes: ClassNameNode[] = [];
 
-  function recursion(node: unknown, parentNode?: object & Record<'type', unknown>): void {
-    if (!isObject(node) || !('type' in node)) {
+  function recursion(node: unknown, parentNode?: { type?: unknown }): void {
+    if (!isTypeof(node, z.object({ type: z.unknown() }))) {
       return;
     }
 
@@ -69,7 +68,14 @@ function findTargetClassNameNodes(
       recursion(value, node);
     });
 
-    if (!('range' in node) || !isNodeRange(node.range)) {
+    if (
+      !isTypeof(
+        node,
+        z.object({
+          range: z.custom<NodeRange>((value) => isTypeof(value, z.tuple([z.number(), z.number()]))),
+        }),
+      )
+    ) {
       return;
     }
 
@@ -80,27 +86,33 @@ function findTargetClassNameNodes(
         nonCommentRanges.push([rangeStart, rangeEnd]);
 
         if (
-          parentNode?.type === 'JSXOpeningElement' &&
-          'loc' in parentNode &&
-          isObject(parentNode.loc) &&
-          'start' in parentNode.loc &&
-          isObject(parentNode.loc.start) &&
-          'line' in parentNode.loc.start &&
-          'name' in node &&
-          isObject(node.name) &&
-          'type' in node.name &&
+          isTypeof(
+            parentNode,
+            z.object({
+              loc: z.object({
+                start: z.object({
+                  line: z.unknown(),
+                }),
+              }),
+            }),
+          ) &&
+          parentNode.type === 'JSXOpeningElement' &&
+          isTypeof(
+            node,
+            z.object({
+              loc: z.object({
+                start: z.object({
+                  line: z.unknown(),
+                }),
+              }),
+              name: z.object({
+                type: z.unknown(),
+                name: z.string(),
+              }),
+            }),
+          ) &&
           node.name.type === 'JSXIdentifier' &&
-          'name' in node.name &&
-          typeof node.name.name === 'string' &&
-          supportedAttributes.includes(node.name.name) &&
-          'value' in node &&
-          'range' in node &&
-          isNodeRange(node.range) &&
-          'loc' in node &&
-          isObject(node.loc) &&
-          'start' in node.loc &&
-          isObject(node.loc.start) &&
-          'line' in node.loc.start
+          supportedAttributes.includes(node.name.name)
         ) {
           keywordEnclosingRanges.push([rangeStart, rangeEnd]);
 
@@ -127,12 +139,16 @@ function findTargetClassNameNodes(
         nonCommentRanges.push([rangeStart, rangeEnd]);
 
         if (
-          'callee' in node &&
-          isObject(node.callee) &&
-          'type' in node.callee &&
+          isTypeof(
+            node,
+            z.object({
+              callee: z.object({
+                type: z.unknown(),
+                name: z.string(),
+              }),
+            }),
+          ) &&
           node.callee.type === 'Identifier' &&
-          'name' in node.callee &&
-          typeof node.callee.name === 'string' &&
           supportedFunctions.includes(node.callee.name)
         ) {
           keywordEnclosingRanges.push([rangeStart, rangeEnd]);
@@ -191,14 +207,16 @@ function findTargetClassNameNodes(
         nonCommentRanges.push([rangeStart, rangeEnd]);
 
         if (
-          'value' in node &&
-          typeof node.value === 'string' &&
-          'loc' in node &&
-          isObject(node.loc) &&
-          'start' in node.loc &&
-          isObject(node.loc.start) &&
-          'line' in node.loc.start &&
-          typeof node.loc.start.line === 'number'
+          isTypeof(
+            node,
+            z.object({
+              loc: z.object({
+                start: z.object({
+                  line: z.number(),
+                }),
+              }),
+            }),
+          )
         ) {
           classNameNodes.push({
             type: ClassNameType.USL,
@@ -212,12 +230,16 @@ function findTargetClassNameNodes(
         nonCommentRanges.push([rangeStart, rangeEnd]);
 
         if (
-          'loc' in node &&
-          isObject(node.loc) &&
-          'start' in node.loc &&
-          isObject(node.loc.start) &&
-          'line' in node.loc.start &&
-          typeof node.loc.start.line === 'number'
+          isTypeof(
+            node,
+            z.object({
+              loc: z.object({
+                start: z.object({
+                  line: z.number(),
+                }),
+              }),
+            }),
+          )
         ) {
           classNameNodes.push({
             type: ClassNameType.UTL,
@@ -230,8 +252,12 @@ function findTargetClassNameNodes(
       case 'Block':
       case 'Line': {
         if (
-          'value' in node &&
-          typeof node.value === 'string' &&
+          isTypeof(
+            node,
+            z.object({
+              value: z.string(),
+            }),
+          ) &&
           node.value.trim() === 'prettier-ignore'
         ) {
           ignoreCommentRanges.push([rangeStart, rangeEnd]);
@@ -239,18 +265,22 @@ function findTargetClassNameNodes(
         break;
       }
       case 'File': {
-        if ('comments' in node && Array.isArray(node.comments)) {
-          node.comments.forEach((comment: unknown) => {
-            if (
-              isObject(comment) &&
-              'start' in comment &&
-              typeof comment.start === 'number' &&
-              'end' in comment &&
-              typeof comment.end === 'number' &&
-              'value' in comment &&
-              typeof comment.value === 'string' &&
-              comment.value.trim() === 'prettier-ignore'
-            ) {
+        if (
+          isTypeof(
+            node,
+            z.object({
+              comments: z.array(
+                z.object({
+                  start: z.number(),
+                  end: z.number(),
+                  value: z.string(),
+                }),
+              ),
+            }),
+          )
+        ) {
+          node.comments.forEach((comment) => {
+            if (comment.value.trim() === 'prettier-ignore') {
               ignoreCommentRanges.push([comment.start, comment.end]);
             }
           });
