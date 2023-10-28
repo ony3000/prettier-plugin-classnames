@@ -3,5 +3,8 @@
   "name": "core-parts",
   "version": "0.0.0",
   "author": "Hyeonjong <nianelo4@gmail.com>",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "zod": "3.22.4"
+  }
 }
