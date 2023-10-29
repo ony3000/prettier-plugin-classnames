@@ -2,6 +2,7 @@ import { format as formatSync } from '@prettier/sync';
 import { parseLineByLineAndReplace } from 'core-parts';
 import type { Parser, ParserOptions, Options } from 'prettier';
 import { parsers as babelParsers } from 'prettier/plugins/babel';
+import { parsers as htmlParsers } from 'prettier/plugins/html';
 import { parsers as typescriptParsers } from 'prettier/plugins/typescript';
 
 function transformParser(parser: Parser): Parser {
@@ -66,4 +67,5 @@ function transformParser(parser: Parser): Parser {
 export const parsers: { [parserName: string]: Parser } = {
   babel: transformParser(babelParsers.babel),
   typescript: transformParser(typescriptParsers.typescript),
+  vue: transformParser(htmlParsers.vue),
 };
