@@ -1,6 +1,8 @@
 import type { ZodTypeAny, infer as ZodInfer } from 'zod';
 import { z } from 'zod';
 
+const EOL = '\n';
+
 enum ClassNameType {
   AT = 'Attribute',
   OLAT = 'OwnLineAttribute',
@@ -335,26 +337,10 @@ function findTargetClassNameNodes(
     .sort((former, latter) => latter.startLineIndex - former.startLineIndex);
 }
 
-export function parseLineByLineAndReplace(
-  formattedText: string,
-  ast: any,
-  options: NarrowedParserOptions,
-  format: (source: string, options?: any) => string,
-): string {
-  if (formattedText === '') {
-    return formattedText;
-  }
-
-  const EOL = '\n';
-  const indentUnit = options.useTabs ? '\t' : ' '.repeat(options.tabWidth);
-
-  const targetClassNameNodes = findTargetClassNameNodes(
-    ast,
-    options.customAttributes,
-    options.customFunctions,
-  );
+function parseLineByLine(formattedText: string, indentUnit: string): LineNode[] {
   const formattedLines = formattedText.split(EOL);
-  const lineNodes: LineNode[] = formattedLines.map((line) => {
+
+  return formattedLines.map((line) => {
     const indentMatchResult = line.match(new RegExp(`^(${indentUnit})*`));
     const indentLevel = indentMatchResult![0].length / indentUnit.length;
 
@@ -362,7 +348,16 @@ export function parseLineByLineAndReplace(
       indentLevel,
     };
   });
+}
 
+function replaceClassName(
+  formattedText: string,
+  indentUnit: string,
+  targetClassNameNodes: ClassNameNode[],
+  lineNodes: LineNode[],
+  options: NarrowedParserOptions,
+  format: (source: string, options?: any) => string,
+): string {
   let mutableFormattedText = formattedText;
 
   targetClassNameNodes.forEach(({ type, range: [rangeStart, rangeEnd], startLineIndex }) => {
@@ -405,4 +400,34 @@ export function parseLineByLineAndReplace(
   });
 
   return mutableFormattedText;
+}
+
+export function parseLineByLineAndReplace(
+  formattedText: string,
+  ast: any,
+  options: NarrowedParserOptions,
+  format: (source: string, options?: any) => string,
+): string {
+  if (formattedText === '') {
+    return formattedText;
+  }
+
+  const indentUnit = options.useTabs ? '\t' : ' '.repeat(options.tabWidth);
+
+  const targetClassNameNodes = findTargetClassNameNodes(
+    ast,
+    options.customAttributes,
+    options.customFunctions,
+  );
+
+  const lineNodes = parseLineByLine(formattedText, indentUnit);
+
+  return replaceClassName(
+    formattedText,
+    indentUnit,
+    targetClassNameNodes,
+    lineNodes,
+    options,
+    format,
+  );
 }
