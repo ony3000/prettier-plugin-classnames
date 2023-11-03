@@ -5,6 +5,10 @@ import { parsers as babelParsers } from 'prettier/plugins/babel';
 import { parsers as htmlParsers } from 'prettier/plugins/html';
 import { parsers as typescriptParsers } from 'prettier/plugins/typescript';
 
+const addon = {
+  parseBabel: (text: string, options: ParserOptions) => babelParsers.babel.parse(text, options),
+};
+
 function transformParser(parser: Parser): Parser {
   return {
     ...parser,
@@ -57,6 +61,7 @@ function transformParser(parser: Parser): Parser {
         // @ts-ignore
         cloneableOptions,
         formatSync,
+        addon,
       );
 
       return classNameWrappedText;
