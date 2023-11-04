@@ -7,6 +7,7 @@ importers:
       '@prettier/sync': 0.3.0
       '@trivago/prettier-plugin-sort-imports': 4.1.1
       '@types/node': 20.2.5
+      '@types/prettier': 2.7.3
       '@typescript-eslint/eslint-plugin': 5.54.0
       '@typescript-eslint/parser': 5.54.0
       esbuild: 0.17.19
@@ -24,6 +25,7 @@ importers:
       '@prettier/sync': 0.3.0_prettier@2.8.4
       '@trivago/prettier-plugin-sort-imports': 4.1.1_prettier@2.8.4
       '@types/node': 20.2.5
+      '@types/prettier': 2.7.3
       '@typescript-eslint/eslint-plugin': 5.54.0_6mj2wypvdnknez7kws2nfdgupi
       '@typescript-eslint/parser': 5.54.0_ycpbpc6yetojsgtrx3mwntkhsu
       esbuild: 0.17.19
