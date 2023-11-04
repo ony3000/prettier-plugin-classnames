@@ -4,8 +4,10 @@ enum ClassNameType {
   FA = 'FunctionArgument',
   SLE = 'StringLiteralExpression',
   SLBP = 'StringLiteralBasedProperty',
+  SLTO = 'StringLiteralInTernaryOperator',
   TLE = 'TemplateLiteralExpression',
   TLBP = 'TemplateLiteralBasedProperty',
+  TLTO = 'TemplateLiteralInTernaryOperator',
   USL = 'UnknownStringLiteral',
   UTL = 'UnknownTemplateLiteral',
 }
@@ -186,6 +188,22 @@ function findTargetClassNameNodes(
         });
         break;
       }
+      case 'ConditionalExpression': {
+        classNameNodes.forEach((classNameNode) => {
+          const [classNameRangeStart, classNameRangeEnd] = classNameNode.range;
+
+          if (rangeStart <= classNameRangeStart && classNameRangeEnd <= rangeEnd) {
+            if (classNameNode.type === ClassNameType.USL) {
+              // eslint-disable-next-line no-param-reassign
+              classNameNode.type = ClassNameType.SLTO;
+            } else if (classNameNode.type === ClassNameType.UTL) {
+              // eslint-disable-next-line no-param-reassign
+              classNameNode.type = ClassNameType.TLTO;
+            }
+          }
+        });
+        break;
+      }
       case 'Literal':
       case 'StringLiteral': {
         nonCommentRanges.push([rangeStart, rangeEnd]);
@@ -354,7 +372,9 @@ export function parseLineByLineAndReplace(
 
     if (type === ClassNameType.AT) {
       extraIndentLevel = 2;
-    } else if (type === ClassNameType.OLAT || type === ClassNameType.TLE) {
+    } else if (
+      [ClassNameType.OLAT, ClassNameType.SLTO, ClassNameType.TLE, ClassNameType.TLTO].includes(type)
+    ) {
       extraIndentLevel = 1;
     }
 
