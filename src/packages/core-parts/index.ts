@@ -402,7 +402,16 @@ function findTargetClassNameNodesForVue(
         const boundAttributeRegExp = /^(?:v-bind)?:/;
 
         if (
-          parentNode !== undefined &&
+          isTypeof(
+            parentNode,
+            z.object({
+              sourceSpan: z.object({
+                start: z.object({
+                  line: z.number(),
+                }),
+              }),
+            }),
+          ) &&
           parentNode.type === 'element' &&
           isTypeof(
             node,
@@ -470,7 +479,22 @@ function findTargetClassNameNodesForVue(
               classNameNodes.push(...targetClassNameNodesInAttribute);
             }
           } else {
-            // ...
+            const classNameRangeStart = node.valueSpan.start.offset;
+            const classNameRangeEnd = node.valueSpan.end.offset;
+
+            nonCommentRanges.push([classNameRangeStart, classNameRangeEnd]);
+
+            const parentNodeStartLineIndex = parentNode.sourceSpan.start.line;
+            const nodeStartLineIndex = node.sourceSpan.start.line;
+
+            classNameNodes.push({
+              type:
+                parentNodeStartLineIndex === nodeStartLineIndex
+                  ? ClassNameType.AT
+                  : ClassNameType.OLAT,
+              range: [classNameRangeStart, classNameRangeEnd],
+              startLineIndex: nodeStartLineIndex,
+            });
           }
         }
         break;
