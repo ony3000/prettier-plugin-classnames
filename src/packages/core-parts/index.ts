@@ -11,8 +11,10 @@ enum ClassNameType {
   // TODO: rename this
   SLE_TEMP = 'StringLiteralExpression_starting_on_the_same_line_as_the_attribute',
   SLBP = 'StringLiteralBasedProperty',
+  SLTO = 'StringLiteralInTernaryOperator',
   TLE = 'TemplateLiteralExpression',
   TLBP = 'TemplateLiteralBasedProperty',
+  TLTO = 'TemplateLiteralInTernaryOperator',
   USL = 'UnknownStringLiteral',
   UTL = 'UnknownTemplateLiteral',
 }
@@ -204,6 +206,22 @@ function findTargetClassNameNodes(
             } else if (classNameNode.type === ClassNameType.UTL) {
               // eslint-disable-next-line no-param-reassign
               classNameNode.type = ClassNameType.TLBP;
+            }
+          }
+        });
+        break;
+      }
+      case 'ConditionalExpression': {
+        classNameNodes.forEach((classNameNode) => {
+          const [classNameRangeStart, classNameRangeEnd] = classNameNode.range;
+
+          if (rangeStart <= classNameRangeStart && classNameRangeEnd <= rangeEnd) {
+            if (classNameNode.type === ClassNameType.USL) {
+              // eslint-disable-next-line no-param-reassign
+              classNameNode.type = ClassNameType.SLTO;
+            } else if (classNameNode.type === ClassNameType.UTL) {
+              // eslint-disable-next-line no-param-reassign
+              classNameNode.type = ClassNameType.TLTO;
             }
           }
         });
@@ -602,9 +620,13 @@ function replaceClassName(
     if (type === ClassNameType.AT) {
       extraIndentLevel = 2;
     } else if (
-      type === ClassNameType.OLAT ||
-      type === ClassNameType.TLE ||
-      type === ClassNameType.SLE_TEMP
+      [
+        ClassNameType.OLAT,
+        ClassNameType.SLE_TEMP,
+        ClassNameType.SLTO,
+        ClassNameType.TLE,
+        ClassNameType.TLTO,
+      ].includes(type)
     ) {
       extraIndentLevel = 1;
     }
