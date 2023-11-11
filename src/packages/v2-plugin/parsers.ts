@@ -12,4 +12,8 @@ export const parsers: { [parserName: string]: Parser } = {
     ...typescriptParsers.typescript,
     astFormat: 'typescript-ast',
   },
+  vue: {
+    ...htmlParsers.vue,
+    astFormat: 'vue-ast',
+  },
 };

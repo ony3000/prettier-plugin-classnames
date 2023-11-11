@@ -1,8 +1,14 @@
 import { parseLineByLineAndReplace } from 'core-parts';
 import type { AstPath, ParserOptions, Doc, Printer, Plugin } from 'prettier';
 import { format } from 'prettier';
+import { parsers as babelParsers } from 'prettier/parser-babel';
 
-function createPrinter(parserName: 'babel' | 'typescript'): Printer {
+const addon = {
+  parseBabel: (text: string, options: ParserOptions) =>
+    babelParsers.babel.parse(text, { babel: babelParsers.babel }, options),
+};
+
+function createPrinter(parserName: 'babel' | 'typescript' | 'vue'): Printer {
   function main(
     path: AstPath,
     options: ParserOptions,
@@ -26,29 +32,28 @@ function createPrinter(parserName: 'babel' | 'typescript'): Printer {
     }
 
     const { originalText } = options;
-    const formattedText = format(originalText, {
+    const firstFormattedText = format(originalText, {
       ...options,
-      plugins: [pluginCandidate],
+      plugins: [],
       endOfLine: 'lf',
     });
     const parser = pluginCandidate.parsers![parserName];
-    const ast = parser.parse(formattedText, pluginCandidate.parsers!, options);
+    const ast = parser.parse(firstFormattedText, pluginCandidate.parsers!, options);
 
-    const secondFormattedText = format(
-      parseLineByLineAndReplace(
-        formattedText,
-        ast,
-        // @ts-ignore
-        options,
-        format,
-      ),
-      {
-        ...options,
-        plugins: [pluginCandidate],
-        endOfLine: 'lf',
-        rangeEnd: Infinity,
-      },
+    const classNameWrappedText = parseLineByLineAndReplace(
+      firstFormattedText,
+      ast,
+      // @ts-ignore
+      options,
+      format,
+      addon,
     );
+    const secondFormattedText = format(classNameWrappedText, {
+      ...options,
+      plugins: [pluginCandidate],
+      endOfLine: 'lf',
+      rangeEnd: Infinity,
+    });
 
     return secondFormattedText;
   }
@@ -61,4 +66,5 @@ function createPrinter(parserName: 'babel' | 'typescript'): Printer {
 export const printers: { [astFormat: string]: Printer } = {
   'babel-ast': createPrinter('babel'),
   'typescript-ast': createPrinter('typescript'),
+  'vue-ast': createPrinter('vue'),
 };
