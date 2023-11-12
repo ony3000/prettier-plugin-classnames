@@ -1,5 +1,6 @@
 import type { Parser } from 'prettier';
 import { parsers as babelParsers } from 'prettier/plugins/babel';
+import { parsers as htmlParsers } from 'prettier/plugins/html';
 import { parsers as typescriptParsers } from 'prettier/plugins/typescript';
 
 export const parsers: { [parserName: string]: Parser } = {
@@ -10,5 +11,9 @@ export const parsers: { [parserName: string]: Parser } = {
   typescript: {
     ...typescriptParsers.typescript,
     astFormat: 'typescript-ast',
+  },
+  vue: {
+    ...htmlParsers.vue,
+    astFormat: 'vue-ast',
   },
 };

@@ -1,54 +1,60 @@
 import { parseLineByLineAndReplace } from 'core-parts';
-import type { AstPath, ParserOptions, Doc, Printer, Plugin } from 'prettier';
+import type { AstPath, ParserOptions, Doc, Printer, Parser } from 'prettier';
 import { format } from 'prettier';
+import { parsers as babelParsers } from 'prettier/parser-babel';
+import { parsers as htmlParsers } from 'prettier/parser-html';
+import { parsers as typescriptParsers } from 'prettier/parser-typescript';
 
-function createPrinter(parserName: 'babel' | 'typescript'): Printer {
+const addon = {
+  parseBabel: (text: string, options: ParserOptions) =>
+    babelParsers.babel.parse(text, { babel: babelParsers.babel }, options),
+  parseTypescript: (text: string, options: ParserOptions) =>
+    typescriptParsers.typescript.parse(text, { typescript: typescriptParsers.typescript }, options),
+};
+
+function createPrinter(parserName: 'babel' | 'typescript' | 'vue', defaultParser: Parser): Printer {
   function main(
     path: AstPath,
     options: ParserOptions,
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     print: (path: AstPath) => Doc,
   ): Doc {
-    const plugins = options.plugins.filter((plugin) => typeof plugin !== 'string') as Plugin[];
-    const pluginCandidate = plugins.find((plugin) => plugin.parsers?.[parserName]);
+    const comments = path.getValue()?.comments;
 
-    if (!pluginCandidate) {
-      throw new Error('A plugin with the given parser does not exist.');
-    }
-
-    const node = path.getValue();
-
-    if (node?.comments) {
-      node.comments.forEach((comment: any) => {
+    if (comments && Array.isArray(comments)) {
+      comments.forEach((comment: any) => {
         // eslint-disable-next-line no-param-reassign
         comment.printed = true;
       });
     }
 
     const { originalText } = options;
-    const formattedText = format(originalText, {
+    const firstFormattedText = format(originalText, {
       ...options,
-      plugins: [pluginCandidate],
+      plugins: [],
       endOfLine: 'lf',
     });
-    const parser = pluginCandidate.parsers![parserName];
-    const ast = parser.parse(formattedText, pluginCandidate.parsers!, options);
 
-    const secondFormattedText = format(
-      parseLineByLineAndReplace(
-        formattedText,
-        ast,
-        // @ts-ignore
-        options,
-        format,
-      ),
-      {
-        ...options,
-        plugins: [pluginCandidate],
-        endOfLine: 'lf',
-        rangeEnd: Infinity,
-      },
+    const ast = defaultParser.parse(firstFormattedText, { [parserName]: defaultParser }, options);
+    const classNameWrappedText = parseLineByLineAndReplace(
+      firstFormattedText,
+      ast,
+      // @ts-ignore
+      options,
+      format,
+      addon,
     );
+
+    if (parserName === 'vue') {
+      return classNameWrappedText;
+    }
+
+    const secondFormattedText = format(classNameWrappedText, {
+      ...options,
+      plugins: [],
+      endOfLine: 'lf',
+      rangeEnd: Infinity,
+    });
 
     return secondFormattedText;
   }
@@ -59,6 +65,7 @@ function createPrinter(parserName: 'babel' | 'typescript'): Printer {
 }
 
 export const printers: { [astFormat: string]: Printer } = {
-  'babel-ast': createPrinter('babel'),
-  'typescript-ast': createPrinter('typescript'),
+  'babel-ast': createPrinter('babel', babelParsers.babel),
+  'typescript-ast': createPrinter('typescript', typescriptParsers.typescript),
+  'vue-ast': createPrinter('vue', htmlParsers.vue),
 };

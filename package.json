@@ -55,5 +55,8 @@
       "optional": true
     }
   },
+  "engines": {
+    "node": ">=14"
+  },
   "packageManager": "pnpm@7.33.0"
 }
