@@ -45,13 +45,52 @@ function isTypeof<T extends ZodTypeAny>(arg: unknown, expectedSchema: T): arg is
   return expectedSchema.safeParse(arg).success;
 }
 
-function findTargetClassNameNodes(
-  ast: any,
-  customAttributes: string[],
-  customFunctions: string[],
+function filterAndSortClassNameNodes(
+  nonCommentRanges: NodeRange[],
+  ignoreCommentRanges: NodeRange[],
+  keywordEnclosingRanges: NodeRange[],
+  classNameNodes: ClassNameNode[],
 ): ClassNameNode[] {
-  const supportedAttributes: string[] = ['className', ...customAttributes];
-  const supportedFunctions: string[] = ['classNames', ...customFunctions];
+  const ignoringRanges = ignoreCommentRanges.map<NodeRange>((commentRange) => {
+    const [, commentRangeEnd] = commentRange;
+
+    const ignoringRange = nonCommentRanges
+      .filter(([nonCommentRangeStart]) => commentRangeEnd < nonCommentRangeStart)
+      .sort(
+        ([formerRangeStart, formerRangeEnd], [latterRangeStart, latterRangeEnd]) =>
+          formerRangeStart - latterRangeStart || latterRangeEnd - formerRangeEnd,
+      )
+      .at(0);
+
+    return ignoringRange ?? commentRange;
+  });
+
+  return classNameNodes
+    .filter(({ range }) =>
+      ignoringRanges.every(([ignoringRangeStart, ignoringRangeEnd]) => {
+        const [classNameRangeStart, classNameRangeEnd] = range;
+
+        return !(
+          ignoringRangeStart <= classNameRangeStart && classNameRangeEnd <= ignoringRangeEnd
+        );
+      }),
+    )
+    .filter(({ range }) =>
+      keywordEnclosingRanges.some(([keywordEnclosingRangeStart, keywordEnclosingRangeEnd]) => {
+        const [classNameRangeStart, classNameRangeEnd] = range;
+
+        return (
+          keywordEnclosingRangeStart < classNameRangeStart &&
+          classNameRangeEnd <= keywordEnclosingRangeEnd
+        );
+      }),
+    )
+    .sort((former, latter) => latter.startLineIndex - former.startLineIndex);
+}
+
+function findTargetClassNameNodes(ast: any, options: NarrowedParserOptions): ClassNameNode[] {
+  const supportedAttributes: string[] = ['className', ...options.customAttributes];
+  const supportedFunctions: string[] = ['classNames', ...options.customFunctions];
   const nonCommentRanges: NodeRange[] = [];
   const ignoreCommentRanges: NodeRange[] = [];
   const keywordEnclosingRanges: NodeRange[] = [];
@@ -323,41 +362,12 @@ function findTargetClassNameNodes(
 
   recursion(ast);
 
-  const ignoringRanges = ignoreCommentRanges.map<NodeRange>((commentRange) => {
-    const [, commentRangeEnd] = commentRange;
-
-    const ignoringRange = nonCommentRanges
-      .filter(([nonCommentRangeStart]) => commentRangeEnd < nonCommentRangeStart)
-      .sort(
-        ([formerRangeStart, formerRangeEnd], [latterRangeStart, latterRangeEnd]) =>
-          formerRangeStart - latterRangeStart || latterRangeEnd - formerRangeEnd,
-      )
-      .at(0);
-
-    return ignoringRange ?? commentRange;
-  });
-
-  return classNameNodes
-    .filter(({ range }) =>
-      ignoringRanges.every(([ignoringRangeStart, ignoringRangeEnd]) => {
-        const [classNameRangeStart, classNameRangeEnd] = range;
-
-        return !(
-          ignoringRangeStart <= classNameRangeStart && classNameRangeEnd <= ignoringRangeEnd
-        );
-      }),
-    )
-    .filter(({ range }) =>
-      keywordEnclosingRanges.some(([keywordEnclosingRangeStart, keywordEnclosingRangeEnd]) => {
-        const [classNameRangeStart, classNameRangeEnd] = range;
-
-        return (
-          keywordEnclosingRangeStart < classNameRangeStart &&
-          classNameRangeEnd <= keywordEnclosingRangeEnd
-        );
-      }),
-    )
-    .sort((former, latter) => latter.startLineIndex - former.startLineIndex);
+  return filterAndSortClassNameNodes(
+    nonCommentRanges,
+    ignoreCommentRanges,
+    keywordEnclosingRanges,
+    classNameNodes,
+  );
 }
 
 function findTargetClassNameNodesForVue(
@@ -468,8 +478,7 @@ function findTargetClassNameNodesForVue(
               });
               const targetClassNameNodesInAttribute = findTargetClassNameNodes(
                 babelAst,
-                options.customAttributes,
-                options.customFunctions,
+                options,
               ).map<ClassNameNode>(
                 ({
                   type,
@@ -553,8 +562,7 @@ function findTargetClassNameNodesForVue(
             });
             const targetClassNameNodesInScript = findTargetClassNameNodes(
               typescriptAst,
-              options.customAttributes,
-              options.customFunctions,
+              options,
             ).map<ClassNameNode>(
               ({
                 type,
@@ -602,41 +610,12 @@ function findTargetClassNameNodesForVue(
 
   recursion(ast);
 
-  const ignoringRanges = ignoreCommentRanges.map<NodeRange>((commentRange) => {
-    const [, commentRangeEnd] = commentRange;
-
-    const ignoringRange = nonCommentRanges
-      .filter(([nonCommentRangeStart]) => commentRangeEnd < nonCommentRangeStart)
-      .sort(
-        ([formerRangeStart, formerRangeEnd], [latterRangeStart, latterRangeEnd]) =>
-          formerRangeStart - latterRangeStart || latterRangeEnd - formerRangeEnd,
-      )
-      .at(0);
-
-    return ignoringRange ?? commentRange;
-  });
-
-  return classNameNodes
-    .filter(({ range }) =>
-      ignoringRanges.every(([ignoringRangeStart, ignoringRangeEnd]) => {
-        const [classNameRangeStart, classNameRangeEnd] = range;
-
-        return !(
-          ignoringRangeStart <= classNameRangeStart && classNameRangeEnd <= ignoringRangeEnd
-        );
-      }),
-    )
-    .filter(({ range }) =>
-      keywordEnclosingRanges.some(([keywordEnclosingRangeStart, keywordEnclosingRangeEnd]) => {
-        const [classNameRangeStart, classNameRangeEnd] = range;
-
-        return (
-          keywordEnclosingRangeStart < classNameRangeStart &&
-          classNameRangeEnd <= keywordEnclosingRangeEnd
-        );
-      }),
-    )
-    .sort((former, latter) => latter.startLineIndex - former.startLineIndex);
+  return filterAndSortClassNameNodes(
+    nonCommentRanges,
+    ignoreCommentRanges,
+    keywordEnclosingRanges,
+    classNameNodes,
+  );
 }
 
 function parseLineByLine(formattedText: string, indentUnit: string): LineNode[] {
@@ -668,6 +647,7 @@ function replaceClassName(
     const formattedClassName = format(enclosedClassName, {
       ...options,
       parser: 'html',
+      plugins: [],
       rangeStart: 0,
       rangeEnd: Infinity,
       endOfLine: 'lf',
@@ -729,11 +709,7 @@ export function parseLineByLineAndReplace(
   if (options.parser === 'vue') {
     targetClassNameNodes = findTargetClassNameNodesForVue(ast, options, addon);
   } else {
-    targetClassNameNodes = findTargetClassNameNodes(
-      ast,
-      options.customAttributes,
-      options.customFunctions,
-    );
+    targetClassNameNodes = findTargetClassNameNodes(ast, options);
   }
 
   const lineNodes = parseLineByLine(formattedText, indentUnit);
