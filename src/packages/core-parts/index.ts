@@ -7,52 +7,51 @@ enum ClassNameType {
   /**
    * Attributes on the same line as the opening tag and enclosed in quotes
    */
-  AT = 'Attribute',
+  ASL,
   /**
    * Attributes on their own line and enclosed in quotes
    */
-  OLAT = 'OwnLineAttribute',
+  AOL,
   /**
    * String literal or template literal passed as function argument
    */
-  FA = 'FunctionArgument',
+  FA,
   /**
    * Common string literal
    */
-  SLE = 'StringLiteralExpression',
+  CSL,
   /**
    * String literal starting on the same line as the attribute
    */
-  // TODO: rename this
-  SLE_TEMP = 'StringLiteralExpression_starting_on_the_same_line_as_the_attribute',
+  SLSL,
   /**
    * String literal as object property
    */
-  SLBP = 'StringLiteralBasedProperty',
+  SLOP,
   /**
    * String literal in ternary operator
    */
-  SLTO = 'StringLiteralInTernaryOperator',
+  SLTO,
   /**
    * Common template literal
    */
-  TLE = 'TemplateLiteralExpression',
+  CTL,
   /**
    * Template literal as object property
    */
-  TLBP = 'TemplateLiteralBasedProperty',
+  TLOP,
   /**
    * Template literal in ternary operator
    */
-  TLTO = 'TemplateLiteralInTernaryOperator',
+  TLTO,
   /**
    * Unknown string literal
    */
-  USL = 'UnknownStringLiteral',
+  USL,
   /**
    * Unknown template literal
    */
-  UTL = 'UnknownTemplateLiteral',
+  UTL,
 }
 
 type Dict<T = unknown> = Record<string, T | undefined>;
@@ -211,8 +210,8 @@ function findTargetClassNameNodes(ast: any, options: NarrowedParserOptions): Cla
                 // eslint-disable-next-line no-param-reassign
                 classNameNode.type =
                   parentNodeStartLineNumber === nodeStartLineNumber
-                    ? ClassNameType.AT
-                    : ClassNameType.OLAT;
+                    ? ClassNameType.ASL
+                    : ClassNameType.AOL;
               }
             }
           });
@@ -260,10 +259,10 @@ function findTargetClassNameNodes(ast: any, options: NarrowedParserOptions): Cla
           if (rangeStart <= classNameRangeStart && classNameRangeEnd <= rangeEnd) {
             if (classNameNode.type === ClassNameType.USL) {
               // eslint-disable-next-line no-param-reassign
-              classNameNode.type = ClassNameType.SLE;
+              classNameNode.type = ClassNameType.CSL;
             } else if (classNameNode.type === ClassNameType.UTL) {
               // eslint-disable-next-line no-param-reassign
-              classNameNode.type = ClassNameType.TLE;
+              classNameNode.type = ClassNameType.CTL;
             }
           }
         });
@@ -277,10 +276,10 @@ function findTargetClassNameNodes(ast: any, options: NarrowedParserOptions): Cla
           if (rangeStart <= classNameRangeStart && classNameRangeEnd <= rangeEnd) {
             if (classNameNode.type === ClassNameType.USL) {
               // eslint-disable-next-line no-param-reassign
-              classNameNode.type = ClassNameType.SLBP;
+              classNameNode.type = ClassNameType.SLOP;
             } else if (classNameNode.type === ClassNameType.UTL) {
               // eslint-disable-next-line no-param-reassign
-              classNameNode.type = ClassNameType.TLBP;
+              classNameNode.type = ClassNameType.TLOP;
             }
           }
         });
@@ -521,9 +520,9 @@ function findTargetClassNameNodesForVue(
                   range: [classNameNodeRangeStart, classNameNodeRangeEnd],
                   startLineIndex,
                 }) => {
-                  if (type === ClassNameType.SLE && startLineIndex === 0) {
+                  if (type === ClassNameType.CSL && startLineIndex === 0) {
                     // eslint-disable-next-line no-param-reassign
-                    type = ClassNameType.SLE_TEMP;
+                    type = ClassNameType.SLSL;
                   }
 
                   const attributeOffset = -jsxStart.length + node.valueSpan.start.offset + 1;
@@ -553,8 +552,8 @@ function findTargetClassNameNodesForVue(
             classNameNodes.push({
               type:
                 parentNodeStartLineIndex === nodeStartLineIndex
-                  ? ClassNameType.AT
-                  : ClassNameType.OLAT,
+                  ? ClassNameType.ASL
+                  : ClassNameType.AOL,
               range: [classNameRangeStart, classNameRangeEnd],
               startLineIndex: nodeStartLineIndex,
             });
@@ -695,25 +694,25 @@ function replaceClassName(
 
     let extraIndentLevel = 0;
 
-    if (type === ClassNameType.AT) {
+    if (type === ClassNameType.ASL) {
       extraIndentLevel = 2;
     } else if (
       [
-        ClassNameType.OLAT,
-        ClassNameType.SLE_TEMP,
+        ClassNameType.AOL,
+        ClassNameType.SLSL,
         ClassNameType.SLTO,
-        ClassNameType.TLE,
+        ClassNameType.CTL,
         ClassNameType.TLTO,
       ].includes(type)
     ) {
       extraIndentLevel = 1;
     }
 
-    const quoteStart = `${type === ClassNameType.SLBP ? '[' : ''}${
-      type === ClassNameType.AT || type === ClassNameType.OLAT ? '"' : '`'
+    const quoteStart = `${type === ClassNameType.SLOP ? '[' : ''}${
+      type === ClassNameType.ASL || type === ClassNameType.AOL ? '"' : '`'
     }`;
-    const quoteEnd = `${type === ClassNameType.AT || type === ClassNameType.OLAT ? '"' : '`'}${
-      type === ClassNameType.SLBP ? ']' : ''
+    const quoteEnd = `${type === ClassNameType.ASL || type === ClassNameType.AOL ? '"' : '`'}${
+      type === ClassNameType.SLOP ? ']' : ''
     }`;
     const substitute = `${quoteStart}${formattedClassName}${quoteEnd}`
       .split(EOL)
