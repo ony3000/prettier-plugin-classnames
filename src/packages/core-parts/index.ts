@@ -410,9 +410,9 @@ function findTargetClassNameNodesForVue(
   options: NarrowedParserOptions,
   addon: Dict<(text: string, options: any) => any>,
 ): ClassNameNode[] {
-  const supportedAttributes: string[] = ['class', ...options.customAttributes];
+  const supportedAttributes: string[] = ['className', 'class', ...options.customAttributes];
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const supportedFunctions: string[] = [...options.customFunctions];
+  const supportedFunctions: string[] = ['classNames', ...options.customFunctions];
   const nonCommentRanges: NodeRange[] = [];
   const ignoreCommentRanges: NodeRange[] = [];
   const keywordEnclosingRanges: NodeRange[] = [];
