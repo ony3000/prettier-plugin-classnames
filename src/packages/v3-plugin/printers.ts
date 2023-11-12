@@ -2,11 +2,14 @@ import { format as formatSync } from '@prettier/sync';
 import { parseLineByLineAndReplace } from 'core-parts';
 import type { AstPath, ParserOptions, Doc, Printer, Options } from 'prettier';
 import { parsers as babelParsers } from 'prettier/plugins/babel';
+import { parsers as typescriptParsers } from 'prettier/plugins/typescript';
 
 import { parsers } from './parsers';
 
 const addon = {
   parseBabel: (text: string, options: ParserOptions) => babelParsers.babel.parse(text, options),
+  parseTypescript: (text: string, options: ParserOptions) =>
+    typescriptParsers.typescript.parse(text, options),
 };
 
 function createPrinter(parserName: 'babel' | 'typescript' | 'vue'): Printer {

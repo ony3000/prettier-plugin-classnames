@@ -517,6 +517,68 @@ function findTargetClassNameNodesForVue(
         }
         break;
       }
+      case 'element': {
+        nonCommentRanges.push([rangeStart, rangeEnd]);
+
+        if (
+          isTypeof(
+            node,
+            z.object({
+              sourceSpan: z.object({
+                start: z.object({
+                  line: z.number(),
+                }),
+              }),
+              startSourceSpan: z.object({
+                end: z.object({
+                  offset: z.number(),
+                }),
+              }),
+              name: z.string(),
+              children: z.array(
+                z.object({
+                  value: z.string(),
+                }),
+              ),
+            }),
+          ) &&
+          node.name === 'script'
+        ) {
+          keywordEnclosingRanges.push([rangeStart, rangeEnd]);
+
+          if (addon.parseTypescript) {
+            const typescriptAst = addon.parseTypescript(node.children.at(0)?.value ?? '', {
+              ...options,
+              parser: 'typescript',
+            });
+            const targetClassNameNodesInScript = findTargetClassNameNodes(
+              typescriptAst,
+              options.customAttributes,
+              options.customFunctions,
+            ).map<ClassNameNode>(
+              ({
+                type,
+                range: [classNameNodeRangeStart, classNameNodeRangeEnd],
+                startLineIndex,
+              }) => {
+                const scriptOffset = node.startSourceSpan.end.offset;
+
+                return {
+                  type,
+                  range: [
+                    classNameNodeRangeStart + scriptOffset,
+                    classNameNodeRangeEnd + scriptOffset,
+                  ],
+                  startLineIndex: startLineIndex + node.sourceSpan.start.line,
+                };
+              },
+            );
+
+            classNameNodes.push(...targetClassNameNodesInScript);
+          }
+        }
+        break;
+      }
       case 'comment': {
         if (
           isTypeof(
