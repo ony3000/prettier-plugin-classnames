@@ -1,19 +1,60 @@
 import type { ZodTypeAny, infer as ZodInfer } from 'zod';
 import { z } from 'zod';
 
+const EOL = '\n';
+
 enum ClassNameType {
-  AT = 'Attribute',
-  OLAT = 'OwnLineAttribute',
-  FA = 'FunctionArgument',
-  SLE = 'StringLiteralExpression',
-  SLBP = 'StringLiteralBasedProperty',
-  SLTO = 'StringLiteralInTernaryOperator',
-  TLE = 'TemplateLiteralExpression',
-  TLBP = 'TemplateLiteralBasedProperty',
-  TLTO = 'TemplateLiteralInTernaryOperator',
-  USL = 'UnknownStringLiteral',
-  UTL = 'UnknownTemplateLiteral',
+  /**
+   * Attributes on the same line as the opening tag and enclosed in quotes
+   */
+  ASL,
+  /**
+   * Attributes on their own line and enclosed in quotes
+   */
+  AOL,
+  /**
+   * String literal or template literal passed as function argument
+   */
+  FA,
+  /**
+   * Common string literal
+   */
+  CSL,
+  /**
+   * String literal starting on the same line as the attribute
+   */
+  SLSL,
+  /**
+   * String literal as object property
+   */
+  SLOP,
+  /**
+   * String literal in ternary operator
+   */
+  SLTO,
+  /**
+   * Common template literal
+   */
+  CTL,
+  /**
+   * Template literal as object property
+   */
+  TLOP,
+  /**
+   * Template literal in ternary operator
+   */
+  TLTO,
+  /**
+   * Unknown string literal
+   */
+  USL,
+  /**
+   * Unknown template literal
+   */
+  UTL,
 }
+
+type Dict<T = unknown> = Record<string, T | undefined>;
 
 type NodeRange = [number, number];
 
@@ -30,6 +71,7 @@ type ClassNameNode = {
 type NarrowedParserOptions = {
   tabWidth: number;
   useTabs: boolean;
+  parser: string;
   customAttributes: string[];
   customFunctions: string[];
 };
@@ -38,13 +80,52 @@ function isTypeof<T extends ZodTypeAny>(arg: unknown, expectedSchema: T): arg is
   return expectedSchema.safeParse(arg).success;
 }
 
-function findTargetClassNameNodes(
-  ast: any,
-  customAttributes: string[],
-  customFunctions: string[],
+function filterAndSortClassNameNodes(
+  nonCommentRanges: NodeRange[],
+  ignoreCommentRanges: NodeRange[],
+  keywordEnclosingRanges: NodeRange[],
+  classNameNodes: ClassNameNode[],
 ): ClassNameNode[] {
-  const supportedAttributes: string[] = ['className', ...customAttributes];
-  const supportedFunctions: string[] = ['classNames', ...customFunctions];
+  const ignoringRanges = ignoreCommentRanges.map<NodeRange>((commentRange) => {
+    const [, commentRangeEnd] = commentRange;
+
+    const ignoringRange = nonCommentRanges
+      .filter(([nonCommentRangeStart]) => commentRangeEnd < nonCommentRangeStart)
+      .sort(
+        ([formerRangeStart, formerRangeEnd], [latterRangeStart, latterRangeEnd]) =>
+          formerRangeStart - latterRangeStart || latterRangeEnd - formerRangeEnd,
+      )
+      .at(0);
+
+    return ignoringRange ?? commentRange;
+  });
+
+  return classNameNodes
+    .filter(({ range }) =>
+      ignoringRanges.every(([ignoringRangeStart, ignoringRangeEnd]) => {
+        const [classNameRangeStart, classNameRangeEnd] = range;
+
+        return !(
+          ignoringRangeStart <= classNameRangeStart && classNameRangeEnd <= ignoringRangeEnd
+        );
+      }),
+    )
+    .filter(({ range }) =>
+      keywordEnclosingRanges.some(([keywordEnclosingRangeStart, keywordEnclosingRangeEnd]) => {
+        const [classNameRangeStart, classNameRangeEnd] = range;
+
+        return (
+          keywordEnclosingRangeStart < classNameRangeStart &&
+          classNameRangeEnd <= keywordEnclosingRangeEnd
+        );
+      }),
+    )
+    .sort((former, latter) => latter.startLineIndex - former.startLineIndex);
+}
+
+function findTargetClassNameNodes(ast: any, options: NarrowedParserOptions): ClassNameNode[] {
+  const supportedAttributes: string[] = ['className', ...options.customAttributes];
+  const supportedFunctions: string[] = ['classNames', ...options.customFunctions];
   const nonCommentRanges: NodeRange[] = [];
   const ignoreCommentRanges: NodeRange[] = [];
   const keywordEnclosingRanges: NodeRange[] = [];
@@ -129,8 +210,8 @@ function findTargetClassNameNodes(
                 // eslint-disable-next-line no-param-reassign
                 classNameNode.type =
                   parentNodeStartLineNumber === nodeStartLineNumber
-                    ? ClassNameType.AT
-                    : ClassNameType.OLAT;
+                    ? ClassNameType.ASL
+                    : ClassNameType.AOL;
               }
             }
           });
@@ -178,10 +259,10 @@ function findTargetClassNameNodes(
           if (rangeStart <= classNameRangeStart && classNameRangeEnd <= rangeEnd) {
             if (classNameNode.type === ClassNameType.USL) {
               // eslint-disable-next-line no-param-reassign
-              classNameNode.type = ClassNameType.SLE;
+              classNameNode.type = ClassNameType.CSL;
             } else if (classNameNode.type === ClassNameType.UTL) {
               // eslint-disable-next-line no-param-reassign
-              classNameNode.type = ClassNameType.TLE;
+              classNameNode.type = ClassNameType.CTL;
             }
           }
         });
@@ -195,10 +276,10 @@ function findTargetClassNameNodes(
           if (rangeStart <= classNameRangeStart && classNameRangeEnd <= rangeEnd) {
             if (classNameNode.type === ClassNameType.USL) {
               // eslint-disable-next-line no-param-reassign
-              classNameNode.type = ClassNameType.SLBP;
+              classNameNode.type = ClassNameType.SLOP;
             } else if (classNameNode.type === ClassNameType.UTL) {
               // eslint-disable-next-line no-param-reassign
-              classNameNode.type = ClassNameType.TLBP;
+              classNameNode.type = ClassNameType.TLOP;
             }
           }
         });
@@ -316,63 +397,266 @@ function findTargetClassNameNodes(
 
   recursion(ast);
 
-  const ignoringRanges = ignoreCommentRanges.map<NodeRange>((commentRange) => {
-    const [, commentRangeEnd] = commentRange;
-
-    const ignoringRange = nonCommentRanges
-      .filter(([nonCommentRangeStart]) => commentRangeEnd < nonCommentRangeStart)
-      .sort(
-        ([formerRangeStart, formerRangeEnd], [latterRangeStart, latterRangeEnd]) =>
-          formerRangeStart - latterRangeStart || latterRangeEnd - formerRangeEnd,
-      )
-      .at(0);
-
-    return ignoringRange ?? commentRange;
-  });
-
-  return classNameNodes
-    .filter(({ range }) =>
-      ignoringRanges.every(([ignoringRangeStart, ignoringRangeEnd]) => {
-        const [classNameRangeStart, classNameRangeEnd] = range;
-
-        return !(
-          ignoringRangeStart <= classNameRangeStart && classNameRangeEnd <= ignoringRangeEnd
-        );
-      }),
-    )
-    .filter(({ range }) =>
-      keywordEnclosingRanges.some(([keywordEnclosingRangeStart, keywordEnclosingRangeEnd]) => {
-        const [classNameRangeStart, classNameRangeEnd] = range;
-
-        return (
-          keywordEnclosingRangeStart < classNameRangeStart &&
-          classNameRangeEnd <= keywordEnclosingRangeEnd
-        );
-      }),
-    )
-    .sort((former, latter) => latter.startLineIndex - former.startLineIndex);
+  return filterAndSortClassNameNodes(
+    nonCommentRanges,
+    ignoreCommentRanges,
+    keywordEnclosingRanges,
+    classNameNodes,
+  );
 }
 
-export function parseLineByLineAndReplace(
-  formattedText: string,
+function findTargetClassNameNodesForVue(
   ast: any,
   options: NarrowedParserOptions,
-  format: (source: string, options?: any) => string,
-): string {
-  if (formattedText === '') {
-    return formattedText;
+  addon: Dict<(text: string, options: any) => any>,
+): ClassNameNode[] {
+  const supportedAttributes: string[] = ['class', ...options.customAttributes];
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const supportedFunctions: string[] = [...options.customFunctions];
+  const nonCommentRanges: NodeRange[] = [];
+  const ignoreCommentRanges: NodeRange[] = [];
+  const keywordEnclosingRanges: NodeRange[] = [];
+  const classNameNodes: ClassNameNode[] = [];
+
+  function recursion(node: unknown, parentNode?: { type?: unknown }): void {
+    if (!isTypeof(node, z.object({ type: z.unknown() }))) {
+      return;
+    }
+
+    Object.entries(node).forEach(([key, value]) => {
+      if (key === 'type') {
+        return;
+      }
+
+      if (Array.isArray(value)) {
+        value.forEach((childNode: unknown) => {
+          recursion(childNode, node);
+        });
+        return;
+      }
+
+      recursion(value, node);
+    });
+
+    if (
+      !isTypeof(
+        node,
+        z.object({
+          sourceSpan: z.object({
+            start: z.object({
+              offset: z.number(),
+            }),
+            end: z.object({
+              offset: z.number(),
+            }),
+          }),
+        }),
+      )
+    ) {
+      return;
+    }
+
+    const [rangeStart, rangeEnd] = [node.sourceSpan.start.offset, node.sourceSpan.end.offset];
+
+    switch (node.type) {
+      case 'attribute': {
+        nonCommentRanges.push([rangeStart, rangeEnd]);
+
+        const boundAttributeRegExp = /^(?:v-bind)?:/;
+
+        if (
+          isTypeof(
+            parentNode,
+            z.object({
+              sourceSpan: z.object({
+                start: z.object({
+                  line: z.number(),
+                }),
+              }),
+            }),
+          ) &&
+          parentNode.type === 'element' &&
+          isTypeof(
+            node,
+            z.object({
+              sourceSpan: z.object({
+                start: z.object({
+                  line: z.number(),
+                }),
+              }),
+              name: z.string(),
+              value: z.string(),
+              valueSpan: z.object({
+                start: z.object({
+                  offset: z.number(),
+                }),
+                end: z.object({
+                  offset: z.number(),
+                }),
+              }),
+            }),
+          ) &&
+          supportedAttributes.includes(node.name.replace(boundAttributeRegExp, ''))
+        ) {
+          keywordEnclosingRanges.push([rangeStart, rangeEnd]);
+
+          const isBoundAttribute = node.name.match(boundAttributeRegExp) !== null;
+
+          if (isBoundAttribute) {
+            if (addon.parseBabel) {
+              const jsxStart = '<div className={';
+              const jsxEnd = '}></div>';
+
+              const babelAst = addon.parseBabel(`${jsxStart}${node.value}${jsxEnd}`, {
+                ...options,
+                parser: 'babel',
+              });
+              const targetClassNameNodesInAttribute = findTargetClassNameNodes(
+                babelAst,
+                options,
+              ).map<ClassNameNode>(
+                ({
+                  type,
+                  range: [classNameNodeRangeStart, classNameNodeRangeEnd],
+                  startLineIndex,
+                }) => {
+                  if (type === ClassNameType.CSL && startLineIndex === 0) {
+                    // eslint-disable-next-line no-param-reassign
+                    type = ClassNameType.SLSL;
+                  }
+
+                  const attributeOffset = -jsxStart.length + node.valueSpan.start.offset + 1;
+
+                  return {
+                    type,
+                    range: [
+                      classNameNodeRangeStart + attributeOffset,
+                      classNameNodeRangeEnd + attributeOffset,
+                    ],
+                    startLineIndex: startLineIndex + node.sourceSpan.start.line,
+                  };
+                },
+              );
+
+              classNameNodes.push(...targetClassNameNodesInAttribute);
+            }
+          } else {
+            const classNameRangeStart = node.valueSpan.start.offset;
+            const classNameRangeEnd = node.valueSpan.end.offset;
+
+            nonCommentRanges.push([classNameRangeStart, classNameRangeEnd]);
+
+            const parentNodeStartLineIndex = parentNode.sourceSpan.start.line;
+            const nodeStartLineIndex = node.sourceSpan.start.line;
+
+            classNameNodes.push({
+              type:
+                parentNodeStartLineIndex === nodeStartLineIndex
+                  ? ClassNameType.ASL
+                  : ClassNameType.AOL,
+              range: [classNameRangeStart, classNameRangeEnd],
+              startLineIndex: nodeStartLineIndex,
+            });
+          }
+        }
+        break;
+      }
+      case 'element': {
+        nonCommentRanges.push([rangeStart, rangeEnd]);
+
+        if (
+          isTypeof(
+            node,
+            z.object({
+              sourceSpan: z.object({
+                start: z.object({
+                  line: z.number(),
+                }),
+              }),
+              startSourceSpan: z.object({
+                end: z.object({
+                  offset: z.number(),
+                }),
+              }),
+              name: z.string(),
+              children: z.array(
+                z.object({
+                  value: z.string(),
+                }),
+              ),
+            }),
+          ) &&
+          node.name === 'script'
+        ) {
+          keywordEnclosingRanges.push([rangeStart, rangeEnd]);
+
+          if (addon.parseTypescript) {
+            const typescriptAst = addon.parseTypescript(node.children.at(0)?.value ?? '', {
+              ...options,
+              parser: 'typescript',
+            });
+            const targetClassNameNodesInScript = findTargetClassNameNodes(
+              typescriptAst,
+              options,
+            ).map<ClassNameNode>(
+              ({
+                type,
+                range: [classNameNodeRangeStart, classNameNodeRangeEnd],
+                startLineIndex,
+              }) => {
+                const scriptOffset = node.startSourceSpan.end.offset;
+
+                return {
+                  type,
+                  range: [
+                    classNameNodeRangeStart + scriptOffset,
+                    classNameNodeRangeEnd + scriptOffset,
+                  ],
+                  startLineIndex: startLineIndex + node.sourceSpan.start.line,
+                };
+              },
+            );
+
+            classNameNodes.push(...targetClassNameNodesInScript);
+          }
+        }
+        break;
+      }
+      case 'comment': {
+        if (
+          isTypeof(
+            node,
+            z.object({
+              value: z.string(),
+            }),
+          ) &&
+          node.value.trim() === 'prettier-ignore'
+        ) {
+          ignoreCommentRanges.push([rangeStart, rangeEnd]);
+        }
+        break;
+      }
+      default: {
+        nonCommentRanges.push([rangeStart, rangeEnd]);
+        break;
+      }
+    }
   }
 
-  const EOL = '\n';
-  const indentUnit = options.useTabs ? '\t' : ' '.repeat(options.tabWidth);
+  recursion(ast);
 
-  const targetClassNameNodes = findTargetClassNameNodes(
-    ast,
-    options.customAttributes,
-    options.customFunctions,
+  return filterAndSortClassNameNodes(
+    nonCommentRanges,
+    ignoreCommentRanges,
+    keywordEnclosingRanges,
+    classNameNodes,
   );
+}
+
+function parseLineByLine(formattedText: string, indentUnit: string): LineNode[] {
   const formattedLines = formattedText.split(EOL);
-  const lineNodes: LineNode[] = formattedLines.map((line) => {
+
+  return formattedLines.map((line) => {
     const indentMatchResult = line.match(new RegExp(`^(${indentUnit})*`));
     const indentLevel = indentMatchResult![0].length / indentUnit.length;
 
@@ -380,7 +664,16 @@ export function parseLineByLineAndReplace(
       indentLevel,
     };
   });
+}
 
+function replaceClassName(
+  formattedText: string,
+  indentUnit: string,
+  targetClassNameNodes: ClassNameNode[],
+  lineNodes: LineNode[],
+  options: NarrowedParserOptions,
+  format: (source: string, options?: any) => string,
+): string {
   let mutableFormattedText = formattedText;
 
   targetClassNameNodes.forEach(({ type, range: [rangeStart, rangeEnd], startLineIndex }) => {
@@ -389,6 +682,7 @@ export function parseLineByLineAndReplace(
     const formattedClassName = format(enclosedClassName, {
       ...options,
       parser: 'html',
+      plugins: [],
       rangeStart: 0,
       rangeEnd: Infinity,
       endOfLine: 'lf',
@@ -400,19 +694,25 @@ export function parseLineByLineAndReplace(
 
     let extraIndentLevel = 0;
 
-    if (type === ClassNameType.AT) {
+    if (type === ClassNameType.ASL) {
       extraIndentLevel = 2;
     } else if (
-      [ClassNameType.OLAT, ClassNameType.SLTO, ClassNameType.TLE, ClassNameType.TLTO].includes(type)
+      [
+        ClassNameType.AOL,
+        ClassNameType.SLSL,
+        ClassNameType.SLTO,
+        ClassNameType.CTL,
+        ClassNameType.TLTO,
+      ].includes(type)
     ) {
       extraIndentLevel = 1;
     }
 
-    const quoteStart = `${type === ClassNameType.SLBP ? '[' : ''}${
-      type === ClassNameType.AT || type === ClassNameType.OLAT ? '"' : '`'
+    const quoteStart = `${type === ClassNameType.SLOP ? '[' : ''}${
+      type === ClassNameType.ASL || type === ClassNameType.AOL ? '"' : '`'
     }`;
-    const quoteEnd = `${type === ClassNameType.AT || type === ClassNameType.OLAT ? '"' : '`'}${
-      type === ClassNameType.SLBP ? ']' : ''
+    const quoteEnd = `${type === ClassNameType.ASL || type === ClassNameType.AOL ? '"' : '`'}${
+      type === ClassNameType.SLOP ? ']' : ''
     }`;
     const substitute = `${quoteStart}${formattedClassName}${quoteEnd}`
       .split(EOL)
@@ -425,4 +725,36 @@ export function parseLineByLineAndReplace(
   });
 
   return mutableFormattedText;
+}
+
+export function parseLineByLineAndReplace(
+  formattedText: string,
+  ast: any,
+  options: NarrowedParserOptions,
+  format: (source: string, options?: any) => string,
+  addon: Dict<(text: string, options: any) => any>,
+): string {
+  if (formattedText === '') {
+    return formattedText;
+  }
+
+  const indentUnit = options.useTabs ? '\t' : ' '.repeat(options.tabWidth);
+
+  let targetClassNameNodes: ClassNameNode[] = [];
+  if (options.parser === 'vue') {
+    targetClassNameNodes = findTargetClassNameNodesForVue(ast, options, addon);
+  } else {
+    targetClassNameNodes = findTargetClassNameNodes(ast, options);
+  }
+
+  const lineNodes = parseLineByLine(formattedText, indentUnit);
+
+  return replaceClassName(
+    formattedText,
+    indentUnit,
+    targetClassNameNodes,
+    lineNodes,
+    options,
+    format,
+  );
 }

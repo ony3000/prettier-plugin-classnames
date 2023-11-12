@@ -1,10 +1,17 @@
 import { format as formatSync } from '@prettier/sync';
 import { parseLineByLineAndReplace } from 'core-parts';
-import type { AstPath, ParserOptions, Doc, Printer, Options } from 'prettier';
+import type { AstPath, ParserOptions, Doc, Printer, Options, Parser } from 'prettier';
+import { parsers as babelParsers } from 'prettier/plugins/babel';
+import { parsers as htmlParsers } from 'prettier/plugins/html';
+import { parsers as typescriptParsers } from 'prettier/plugins/typescript';
 
-import { parsers } from './parsers';
+const addon = {
+  parseBabel: (text: string, options: ParserOptions) => babelParsers.babel.parse(text, options),
+  parseTypescript: (text: string, options: ParserOptions) =>
+    typescriptParsers.typescript.parse(text, options),
+};
 
-function createPrinter(parserName: 'babel' | 'typescript'): Printer {
+function createPrinter(parserName: 'babel' | 'typescript' | 'vue', defaultParser: Parser): Printer {
   function main(
     path: AstPath,
     options: ParserOptions,
@@ -14,19 +21,14 @@ function createPrinter(parserName: 'babel' | 'typescript'): Printer {
     // @ts-ignore
     const comments = options[Symbol.for('comments')];
 
-    if (comments) {
+    if (comments && Array.isArray(comments)) {
       comments.forEach((comment: any) => {
         // eslint-disable-next-line no-param-reassign
         comment.printed = true;
       });
     }
 
-    const necessaryOptions: Options = {
-      parser: parserName,
-      // @ts-ignore
-      customAttributes: options.customAttributes,
-      // @ts-ignore
-      customFunctions: options.customFunctions,
+    const cloneableOptions: Options = {
       ...Object.fromEntries(
         (
           [
@@ -42,6 +44,7 @@ function createPrinter(parserName: 'babel' | 'typescript'): Printer {
             'jsxBracketSameLine',
             'rangeStart',
             'rangeEnd',
+            'parser',
             'requirePragma',
             'insertPragma',
             'proseWrap',
@@ -55,30 +58,39 @@ function createPrinter(parserName: 'babel' | 'typescript'): Printer {
           ] as const
         ).map((key) => [key, options[key]]),
       ),
+      // @ts-ignore
+      customAttributes: options.customAttributes,
+      // @ts-ignore
+      customFunctions: options.customFunctions,
     };
 
     const { originalText } = options;
-    const formattedText = formatSync(originalText, {
-      ...necessaryOptions,
+    const firstFormattedText = formatSync(originalText, {
+      ...cloneableOptions,
+      plugins: [],
       endOfLine: 'lf',
     });
-    const parser = parsers[parserName];
-    const ast = parser.parse(formattedText, options);
 
-    const secondFormattedText = formatSync(
-      parseLineByLineAndReplace(
-        formattedText,
-        ast,
-        // @ts-ignore
-        necessaryOptions,
-        formatSync,
-      ),
-      {
-        ...necessaryOptions,
-        endOfLine: 'lf',
-        rangeEnd: Infinity,
-      },
+    const ast = defaultParser.parse(firstFormattedText, options);
+    const classNameWrappedText = parseLineByLineAndReplace(
+      firstFormattedText,
+      ast,
+      // @ts-ignore
+      cloneableOptions,
+      formatSync,
+      addon,
     );
+
+    if (parserName === 'vue') {
+      return classNameWrappedText;
+    }
+
+    const secondFormattedText = formatSync(classNameWrappedText, {
+      ...cloneableOptions,
+      plugins: [],
+      endOfLine: 'lf',
+      rangeEnd: Infinity,
+    });
 
     return secondFormattedText;
   }
@@ -89,6 +101,7 @@ function createPrinter(parserName: 'babel' | 'typescript'): Printer {
 }
 
 export const printers: { [astFormat: string]: Printer } = {
-  'babel-ast': createPrinter('babel'),
-  'typescript-ast': createPrinter('typescript'),
+  'babel-ast': createPrinter('babel', babelParsers.babel),
+  'typescript-ast': createPrinter('typescript', typescriptParsers.typescript),
+  'vue-ast': createPrinter('vue', htmlParsers.vue),
 };
