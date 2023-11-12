@@ -11,7 +11,7 @@
     "test": "cross-env NODE_OPTIONS=--experimental-vm-modules jest --ci --passWithNoTests"
   },
   "dependencies": {
-    "prettier-plugin-classnames": "0.2.2"
+    "prettier-plugin-classnames": "0.3.0"
   },
   "devDependencies": {
     "@prettier/sync": "0.3.0",
