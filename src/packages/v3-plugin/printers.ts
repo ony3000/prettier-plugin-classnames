@@ -1,10 +1,9 @@
 import { format as formatSync } from '@prettier/sync';
 import { parseLineByLineAndReplace } from 'core-parts';
-import type { AstPath, ParserOptions, Doc, Printer, Options } from 'prettier';
+import type { AstPath, ParserOptions, Doc, Printer, Options, Parser } from 'prettier';
 import { parsers as babelParsers } from 'prettier/plugins/babel';
+import { parsers as htmlParsers } from 'prettier/plugins/html';
 import { parsers as typescriptParsers } from 'prettier/plugins/typescript';
-
-import { parsers } from './parsers';
 
 const addon = {
   parseBabel: (text: string, options: ParserOptions) => babelParsers.babel.parse(text, options),
@@ -12,7 +11,7 @@ const addon = {
     typescriptParsers.typescript.parse(text, options),
 };
 
-function createPrinter(parserName: 'babel' | 'typescript' | 'vue'): Printer {
+function createPrinter(parserName: 'babel' | 'typescript' | 'vue', defaultParser: Parser): Printer {
   function main(
     path: AstPath,
     options: ParserOptions,
@@ -22,7 +21,7 @@ function createPrinter(parserName: 'babel' | 'typescript' | 'vue'): Printer {
     // @ts-ignore
     const comments = options[Symbol.for('comments')];
 
-    if (comments) {
+    if (comments && Array.isArray(comments)) {
       comments.forEach((comment: any) => {
         // eslint-disable-next-line no-param-reassign
         comment.printed = true;
@@ -71,9 +70,8 @@ function createPrinter(parserName: 'babel' | 'typescript' | 'vue'): Printer {
       plugins: [],
       endOfLine: 'lf',
     });
-    const parser = parsers[parserName];
-    const ast = parser.parse(firstFormattedText, options);
 
+    const ast = defaultParser.parse(firstFormattedText, options);
     const classNameWrappedText = parseLineByLineAndReplace(
       firstFormattedText,
       ast,
@@ -89,6 +87,7 @@ function createPrinter(parserName: 'babel' | 'typescript' | 'vue'): Printer {
 
     const secondFormattedText = formatSync(classNameWrappedText, {
       ...cloneableOptions,
+      plugins: [],
       endOfLine: 'lf',
       rangeEnd: Infinity,
     });
@@ -102,7 +101,7 @@ function createPrinter(parserName: 'babel' | 'typescript' | 'vue'): Printer {
 }
 
 export const printers: { [astFormat: string]: Printer } = {
-  'babel-ast': createPrinter('babel'),
-  'typescript-ast': createPrinter('typescript'),
-  'vue-ast': createPrinter('vue'),
+  'babel-ast': createPrinter('babel', babelParsers.babel),
+  'typescript-ast': createPrinter('typescript', typescriptParsers.typescript),
+  'vue-ast': createPrinter('vue', htmlParsers.vue),
 };
