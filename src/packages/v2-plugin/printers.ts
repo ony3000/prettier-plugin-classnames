@@ -48,6 +48,11 @@ function createPrinter(parserName: 'babel' | 'typescript' | 'vue'): Printer {
       format,
       addon,
     );
+
+    if (parserName === 'vue') {
+      return classNameWrappedText;
+    }
+
     const secondFormattedText = format(classNameWrappedText, {
       ...options,
       plugins: [pluginCandidate],

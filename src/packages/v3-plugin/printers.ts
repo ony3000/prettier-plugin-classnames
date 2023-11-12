@@ -79,6 +79,11 @@ function createPrinter(parserName: 'babel' | 'typescript' | 'vue'): Printer {
       formatSync,
       addon,
     );
+
+    if (parserName === 'vue') {
+      return classNameWrappedText;
+    }
+
     const secondFormattedText = formatSync(classNameWrappedText, {
       ...cloneableOptions,
       endOfLine: 'lf',
