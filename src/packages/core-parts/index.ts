@@ -4,18 +4,54 @@ import { z } from 'zod';
 const EOL = '\n';
 
 enum ClassNameType {
+  /**
+   * Attributes on the same line as the opening tag and enclosed in quotes
+   */
   AT = 'Attribute',
+  /**
+   * Attributes on their own line and enclosed in quotes
+   */
   OLAT = 'OwnLineAttribute',
+  /**
+   * String literal or template literal passed as function argument
+   */
   FA = 'FunctionArgument',
+  /**
+   * Common string literal
+   */
   SLE = 'StringLiteralExpression',
+  /**
+   * String literal starting on the same line as the attribute
+   */
   // TODO: rename this
   SLE_TEMP = 'StringLiteralExpression_starting_on_the_same_line_as_the_attribute',
+  /**
+   * String literal as object property
+   */
   SLBP = 'StringLiteralBasedProperty',
+  /**
+   * String literal in ternary operator
+   */
   SLTO = 'StringLiteralInTernaryOperator',
+  /**
+   * Common template literal
+   */
   TLE = 'TemplateLiteralExpression',
+  /**
+   * Template literal as object property
+   */
   TLBP = 'TemplateLiteralBasedProperty',
+  /**
+   * Template literal in ternary operator
+   */
   TLTO = 'TemplateLiteralInTernaryOperator',
+  /**
+   * Unknown string literal
+   */
   USL = 'UnknownStringLiteral',
+  /**
+   * Unknown template literal
+   */
   UTL = 'UnknownTemplateLiteral',
 }
 
