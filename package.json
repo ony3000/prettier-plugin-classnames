@@ -2,7 +2,6 @@
   "name": "prettier-plugin-classnames",
   "version": "0.3.0",
   "description": "A Prettier plugin that wraps verbose class name based on the `printWidth` option.",
-  "repository": "https://github.com/ony3000/prettier-plugin-classnames",
   "keywords": [
     "prettier",
     "plugin",
@@ -12,18 +11,19 @@
     "class",
     "tailwindcss"
   ],
-  "author": "Hyeonjong <nianelo4@gmail.com>",
+  "repository": "https://github.com/ony3000/prettier-plugin-classnames",
   "license": "MIT",
+  "author": "Hyeonjong <nianelo4@gmail.com>",
+  "main": "./dist/index.js",
   "files": [
     "dist"
   ],
-  "main": "./dist/index.js",
   "scripts": {
-    "clean:bundle": "rimraf dist/",
-    "clean": "pnpm run clean:bundle && pnpm -r exec rimraf node_modules/ && rimraf package.merged.json",
-    "dev": "pnpm run clean:bundle && esbuild src/index.ts --bundle --outdir=dist --platform=node \"--external:@prettier\" \"--external:prettier\" --watch",
     "build": "pnpm run clean:bundle && esbuild src/index.ts --bundle --outdir=dist --platform=node \"--external:@prettier\" \"--external:prettier\" --minify",
     "build:plain": "pnpm run clean:bundle && esbuild src/index.ts --bundle --outdir=dist --platform=node \"--external:@prettier\" \"--external:prettier\"",
+    "clean": "pnpm run clean:bundle && pnpm -r exec rimraf node_modules/ && rimraf package.merged.json",
+    "clean:bundle": "rimraf dist/",
+    "dev": "pnpm run clean:bundle && esbuild src/index.ts --bundle --outdir=dist --platform=node \"--external:@prettier\" \"--external:prettier\" --watch",
     "lint": "eslint src",
     "merge-deps": "rimraf package.merged.json && merge-packages ./ src/packages/core-parts/ src/packages/v2-plugin/ src/packages/v3-plugin/",
     "prepare-release": "pnpm run build:plain && npm version prerelease --preid=alpha --git-tag-version=false && pnpm run merge-deps && npm pack"
@@ -58,8 +58,8 @@
       "optional": true
     }
   },
+  "packageManager": "pnpm@7.33.0",
   "engines": {
     "node": ">=14"
-  },
-  "packageManager": "pnpm@7.33.0"
+  }
 }
