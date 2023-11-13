@@ -20,12 +20,13 @@
   "main": "./dist/index.js",
   "scripts": {
     "clean:bundle": "rimraf dist/",
-    "clean": "pnpm run clean:bundle && pnpm -r exec rimraf node_modules/",
+    "clean": "pnpm run clean:bundle && pnpm -r exec rimraf node_modules/ && rimraf package.merged.json",
     "dev": "pnpm run clean:bundle && esbuild src/index.ts --bundle --outdir=dist --platform=node \"--external:@prettier\" \"--external:prettier\" --watch",
     "build": "pnpm run clean:bundle && esbuild src/index.ts --bundle --outdir=dist --platform=node \"--external:@prettier\" \"--external:prettier\" --minify",
     "build:plain": "pnpm run clean:bundle && esbuild src/index.ts --bundle --outdir=dist --platform=node \"--external:@prettier\" \"--external:prettier\"",
     "lint": "eslint src",
-    "prepare-release": "pnpm run build:plain && npm version prerelease --preid=alpha --git-tag-version=false && npm pack"
+    "merge-deps": "rimraf package.merged.json && merge-packages ./ src/packages/core-parts/ src/packages/v2-plugin/ src/packages/v3-plugin/",
+    "prepare-release": "pnpm run build:plain && npm version prerelease --preid=alpha --git-tag-version=false && pnpm run merge-deps && npm pack"
   },
   "devDependencies": {
     "@prettier/sync": "0.3.0",
