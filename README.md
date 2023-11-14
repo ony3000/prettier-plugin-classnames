@@ -60,21 +60,20 @@ Option | Default&nbsp;value | Description
 `customAttributes` | `[]` | List of attributes that enclosing class names.<br>The `className` attribute is always supported, even if no options are specified.
 `customFunctions` | `[]` | List of functions that enclosing class names.<br>The `classNames` function is always supported, even if no options are specified.
 
-## Limitation
+## Compatibility with other Prettier plugins
 
-Because this plugin supports babel parser and typescript parser, only one plugin can be applied for overlapping parsers when used with other plugins that support either or both parsers.
+If more than one Prettier plugin can handle the text you want to format, Prettier will only use the last of those plugins.
 
-In this case, you can add [prettier-plugin-merge](https://github.com/ony3000/prettier-plugin-merge) to configure it as follows.
+In this case, you can configure it as follows by adding [prettier-plugin-merge](https://github.com/ony3000/prettier-plugin-merge) to apply those plugins sequentially.
 
 JSON example:
 
 ```json
 {
   "plugins": [
-    "another-prettier-plugin-that-implements-babel-or-typescript-parser",
+    "another-prettier-plugin",
     "prettier-plugin-classnames",
     "prettier-plugin-merge"
-  ],
-  "customFunctions": ["clsx"]
+  ]
 }
 ```
