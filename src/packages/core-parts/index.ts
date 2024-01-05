@@ -504,41 +504,45 @@ function findTargetClassNameNodesForVue(
 
           if (isBoundAttribute) {
             if (addon.parseBabel) {
-              const jsxStart = '<div className={';
-              const jsxEnd = '}></div>';
+              try {
+                const jsxStart = '<div className={';
+                const jsxEnd = '}></div>';
 
-              const babelAst = addon.parseBabel(`${jsxStart}${node.value}${jsxEnd}`, {
-                ...options,
-                parser: 'babel',
-              });
-              const targetClassNameNodesInAttribute = findTargetClassNameNodes(
-                babelAst,
-                options,
-              ).map<ClassNameNode>(
-                ({
-                  type,
-                  range: [classNameNodeRangeStart, classNameNodeRangeEnd],
-                  startLineIndex,
-                }) => {
-                  if (type === ClassNameType.CSL && startLineIndex === 0) {
-                    // eslint-disable-next-line no-param-reassign
-                    type = ClassNameType.SLSL;
-                  }
-
-                  const attributeOffset = -jsxStart.length + node.valueSpan.start.offset + 1;
-
-                  return {
+                const babelAst = addon.parseBabel(`${jsxStart}${node.value}${jsxEnd}`, {
+                  ...options,
+                  parser: 'babel',
+                });
+                const targetClassNameNodesInAttribute = findTargetClassNameNodes(
+                  babelAst,
+                  options,
+                ).map<ClassNameNode>(
+                  ({
                     type,
-                    range: [
-                      classNameNodeRangeStart + attributeOffset,
-                      classNameNodeRangeEnd + attributeOffset,
-                    ],
-                    startLineIndex: startLineIndex + node.sourceSpan.start.line,
-                  };
-                },
-              );
+                    range: [classNameNodeRangeStart, classNameNodeRangeEnd],
+                    startLineIndex,
+                  }) => {
+                    if (type === ClassNameType.CSL && startLineIndex === 0) {
+                      // eslint-disable-next-line no-param-reassign
+                      type = ClassNameType.SLSL;
+                    }
 
-              classNameNodes.push(...targetClassNameNodesInAttribute);
+                    const attributeOffset = -jsxStart.length + node.valueSpan.start.offset + 1;
+
+                    return {
+                      type,
+                      range: [
+                        classNameNodeRangeStart + attributeOffset,
+                        classNameNodeRangeEnd + attributeOffset,
+                      ],
+                      startLineIndex: startLineIndex + node.sourceSpan.start.line,
+                    };
+                  },
+                );
+
+                classNameNodes.push(...targetClassNameNodesInAttribute);
+              } catch (error) {
+                // no action
+              }
             }
           } else {
             const classNameRangeStart = node.valueSpan.start.offset;
