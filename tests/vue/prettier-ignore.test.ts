@@ -169,6 +169,33 @@ const fixtures: Fixture[] = [
 </template>
 `,
   },
+  {
+    name: 'typescript in template (ignore comment #2)',
+    input: `
+<template>
+  <div :class="[
+    // prettier-ignore
+    'bg-gray-100/50 border border-zinc-400/30 dark:bg-neutral-900/50 dark:border-neutral-500/30 px-4 py-4 rounded-xl' as string,
+    'rounded-xl py-4 px-4 dark:border-neutral-500/30 dark:bg-neutral-900/50 border-zinc-400/30 border bg-gray-100/50' as string,
+  ]">
+    <slot></slot>
+  </div>
+</template>
+`,
+    output: `<template>
+  <div
+    :class="[
+      // prettier-ignore
+      'bg-gray-100/50 border border-zinc-400/30 dark:bg-neutral-900/50 dark:border-neutral-500/30 px-4 py-4 rounded-xl' as string,
+      \`rounded-xl py-4 px-4 dark:border-neutral-500/30 dark:bg-neutral-900/50
+      border-zinc-400/30 border bg-gray-100/50\` as string,
+    ]"
+  >
+    <slot></slot>
+  </div>
+</template>
+`,
+  },
 ];
 
 describe('vue/prettier-ignore', () => {
