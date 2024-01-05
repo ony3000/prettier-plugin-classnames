@@ -2,8 +2,8 @@ lockfileVersion: '6.0'
 
 dependencies:
   prettier-plugin-classnames:
-    specifier: 0.3.1
-    version: 0.3.1(@prettier/sync@0.3.0)(prettier@3.0.3)
+    specifier: 0.3.2
+    version: 0.3.2(@prettier/sync@0.3.0)(prettier@3.0.3)
 
 devDependencies:
   '@prettier/sync':
@@ -3337,8 +3337,8 @@ packages:
     engines: {node: '>= 0.8.0'}
     dev: true
 
-  /prettier-plugin-classnames@0.3.1(@prettier/sync@0.3.0)(prettier@3.0.3):
-    resolution: {integrity: sha512-iWhDF8WI3LNEdCpdS2ekP0GAP8YNZYf1wtMHPsS56sKbSxbXh+zvtZpKRLAJmKn/kucTOjKYEJEPvZbFYAmPHQ==}
+  /prettier-plugin-classnames@0.3.2(@prettier/sync@0.3.0)(prettier@3.0.3):
+    resolution: {integrity: sha512-IZos7NZbdozAjbWlGkcLQW/XReg/9z4ol1I0F2RFzXS8Gr88agJRUULTjttDpFC9ySDttfjnBk0HX8h5FTMPSA==}
     engines: {node: '>=14'}
     peerDependencies:
       '@prettier/sync': ^0.3.0
