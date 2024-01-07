@@ -60,6 +60,28 @@ Option | Default&nbsp;value | Description
 `customAttributes` | `[]` | List of attributes that enclosing class names.<br>The `className` attribute is always supported, even if no options are specified.
 `customFunctions` | `[]` | List of functions that enclosing class names.<br>The `classNames` function is always supported, even if no options are specified.
 
+## Criterion for `printWidth`
+
+Because this plugin replaces the original class name with a multi-line class name, the `printWidth` is based on the start of the class name, not the start of the line.
+
+`{ printWidth: 50 }` example:
+
+```
+export function Callout({ children }) {
+  return (
+    <div
+                |--------------------------------------------------|
+      className="bg-gray-100/50 border border-zinc-400/30
+       |--------------------------------------------------|
+        dark:bg-neutral-900/50 dark:border-neutral-500/30
+        px-4 py-4 rounded-xl"
+    >
+      {children}
+    </div>
+  );
+}
+```
+
 ## Compatibility with other Prettier plugins
 
 If more than one Prettier plugin can handle the text you want to format, Prettier will only use the last of those plugins.
