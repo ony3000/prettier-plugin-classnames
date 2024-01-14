@@ -1,4 +1,5 @@
 import { describe, expect, test } from 'vitest';
+
 import type { Fixture } from '../settings';
 import { format, baseOptions } from '../settings';
 

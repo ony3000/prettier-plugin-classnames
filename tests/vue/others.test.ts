@@ -1,4 +1,5 @@
 import { describe, expect, test } from 'vitest';
+
 import { format, baseOptions } from '../settings';
 
 const options = {
