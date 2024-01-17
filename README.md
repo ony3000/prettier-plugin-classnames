@@ -12,11 +12,13 @@ For Prettier v2:
 npm install -D prettier@^2 prettier-plugin-classnames
 ```
 
-For Prettier v3:
+For Prettier v3:[^1]
 
 ```sh
-npm install -D prettier prettier-plugin-classnames @prettier/sync
+npm install -D prettier prettier-plugin-classnames
 ```
+
+[^1]: If your version of `prettier-plugin-classnames` is less than `0.4.0`, you will also need to install `@prettier/sync`.
 
 ## Configuration
 
