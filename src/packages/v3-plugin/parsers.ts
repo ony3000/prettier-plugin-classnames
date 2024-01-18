@@ -1,4 +1,4 @@
-import { parseLineByLineAndReplace } from 'core-parts';
+import { parseLineByLineAndReplaceAsync } from 'core-parts';
 import type { Parser, ParserOptions } from 'prettier';
 import { format } from 'prettier';
 import { parsers as babelParsers } from 'prettier/plugins/babel';
@@ -25,7 +25,7 @@ function transformParser(
       });
       const ast = defaultParser.parse(firstFormattedText, options);
 
-      const classNameWrappedText = parseLineByLineAndReplace(
+      const classNameWrappedText = await parseLineByLineAndReplaceAsync(
         firstFormattedText,
         ast,
         // @ts-ignore
