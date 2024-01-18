@@ -5,7 +5,6 @@
   "author": "Hyeonjong <nianelo4@gmail.com>",
   "license": "MIT",
   "dependencies": {
-    "@prettier/sync": "0.3.0",
     "core-parts": "workspace:*",
     "prettier": "3.0.3"
   }

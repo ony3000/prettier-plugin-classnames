@@ -4,9 +4,6 @@ importers:
 
   .:
     devDependencies:
-      '@prettier/sync':
-        specifier: 0.3.0
-        version: 0.3.0(prettier@2.8.4)
       '@trivago/prettier-plugin-sort-imports':
         specifier: 4.2.1
         version: 4.2.1(prettier@2.8.4)
@@ -83,9 +80,6 @@ importers:
 
   src/packages/v3-plugin:
     dependencies:
-      '@prettier/sync':
-        specifier: 0.3.0
-        version: 0.3.0(prettier@3.0.3)
       core-parts:
         specifier: workspace:*
         version: link:../core-parts
@@ -581,22 +575,6 @@ packages:
       picocolors: 1.0.0
       tslib: 2.5.3
     dev: true
-
-  /@prettier/sync@0.3.0(prettier@2.8.4):
-    resolution: {integrity: sha512-3dcmCyAxIcxy036h1I7MQU/uEEBq8oLwf1CE3xeze+MPlgkdlb/+w6rGR/1dhp6Hqi17fRS6nvwnOzkESxEkOw==}
-    peerDependencies:
-      prettier: ^3.0.0
-    dependencies:
-      prettier: 2.8.4
-    dev: true
-
-  /@prettier/sync@0.3.0(prettier@3.0.3):
-    resolution: {integrity: sha512-3dcmCyAxIcxy036h1I7MQU/uEEBq8oLwf1CE3xeze+MPlgkdlb/+w6rGR/1dhp6Hqi17fRS6nvwnOzkESxEkOw==}
-    peerDependencies:
-      prettier: ^3.0.0
-    dependencies:
-      prettier: 3.0.3
-    dev: false
 
   /@trivago/prettier-plugin-sort-imports@4.2.1(prettier@2.8.4):
     resolution: {integrity: sha512-iuy2MPVURGdxILTchHr15VAioItuYBejKfcTmQFlxIuqA7jeaT6ngr5aUIG6S6U096d6a6lJCgaOwlRrPLlOPg==}

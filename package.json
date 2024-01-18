@@ -29,7 +29,6 @@
     "prepare-release": "pnpm run build:plain && npm version prerelease --preid=alpha --git-tag-version=false && pnpm run merge-deps && npm pack"
   },
   "devDependencies": {
-    "@prettier/sync": "0.3.0",
     "@trivago/prettier-plugin-sort-imports": "4.2.1",
     "@types/node": "20.2.5",
     "@types/prettier": "2.7.3",
@@ -50,13 +49,7 @@
     "zod": "3.22.4"
   },
   "peerDependencies": {
-    "@prettier/sync": "^0.3.0",
     "prettier": "^2 || ^3"
-  },
-  "peerDependenciesMeta": {
-    "@prettier/sync": {
-      "optional": true
-    }
   },
   "packageManager": "pnpm@8.5.1",
   "engines": {
