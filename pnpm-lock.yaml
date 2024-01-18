@@ -2,8 +2,8 @@ lockfileVersion: '6.0'
 
 dependencies:
   prettier-plugin-classnames:
-    specifier: 0.3.2
-    version: 0.3.2(prettier@2.8.4)
+    specifier: 0.4.0
+    version: 0.4.0(prettier@2.8.4)
 
 devDependencies:
   '@trivago/prettier-plugin-sort-imports':
@@ -2417,15 +2417,11 @@ packages:
     engines: {node: '>= 0.8.0'}
     dev: true
 
-  /prettier-plugin-classnames@0.3.2(prettier@2.8.4):
-    resolution: {integrity: sha512-IZos7NZbdozAjbWlGkcLQW/XReg/9z4ol1I0F2RFzXS8Gr88agJRUULTjttDpFC9ySDttfjnBk0HX8h5FTMPSA==}
+  /prettier-plugin-classnames@0.4.0(prettier@2.8.4):
+    resolution: {integrity: sha512-S8dvBpjjJrM5W9zP946KqixWZc1+wo18TGQYzN/bAsj7y+0LmJXwblLOzriz6dwkr1ZGJ+ZNChnEXionu8rr7Q==}
     engines: {node: '>=14'}
     peerDependencies:
-      '@prettier/sync': ^0.3.0
       prettier: ^2 || ^3
-    peerDependenciesMeta:
-      '@prettier/sync':
-        optional: true
     dependencies:
       prettier: 2.8.4
     dev: false
