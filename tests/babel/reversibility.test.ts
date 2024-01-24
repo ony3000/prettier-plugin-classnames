@@ -14,6 +14,26 @@ const fixtures: Fixture[] = [
     input: `
 export function Callout({ children }) {
   return (
+    <div className="rounded-xl border border-zinc-400/30 bg-gray-100/50 px-4 py-4">
+      {children}
+    </div>
+  );
+}
+`,
+    output: `export function Callout({ children }) {
+  return (
+    <div className="rounded-xl border border-zinc-400/30 bg-gray-100/50 px-4 py-4">
+      {children}
+    </div>
+  );
+}
+`,
+  },
+  {
+    name: 'enclosed-in-quotes #2 (multi-line)',
+    input: `
+export function Callout({ children }) {
+  return (
     <div
       className="rounded-xl border border-zinc-400/30
         bg-gray-100/50 px-4 py-4"
@@ -34,6 +54,34 @@ export function Callout({ children }) {
   },
   {
     name: 'embedded-expression #1',
+    input: `
+export function Callout({ children }) {
+  return (
+    <div
+      className={
+        \`rounded-xl border border-zinc-400/30 bg-gray-100/50 px-4 py-4\`
+      }
+    >
+      {children}
+    </div>
+  );
+}
+`,
+    output: `export function Callout({ children }) {
+  return (
+    <div
+      className={
+        "rounded-xl border border-zinc-400/30 bg-gray-100/50 px-4 py-4"
+      }
+    >
+      {children}
+    </div>
+  );
+}
+`,
+  },
+  {
+    name: 'embedded-expression #2 (multi-line)',
     input: `
 export function Callout({ children }) {
   return (
@@ -60,7 +108,7 @@ export function Callout({ children }) {
 `,
   },
   {
-    name: 'embedded-expression #2',
+    name: 'embedded-expression #3 (multi-line)',
     input: `
 export function Callout({ children }) {
   return (
@@ -95,6 +143,34 @@ export function Callout({ children }) {
   return (
     <div
       className={classNames({
+        [\`rounded-xl border border-zinc-400/30 bg-gray-100/50 px-4 py-4\`]: true,
+      })}
+    >
+      {children}
+    </div>
+  );
+}
+`,
+    output: `export function Callout({ children }) {
+  return (
+    <div
+      className={classNames({
+        "rounded-xl border border-zinc-400/30 bg-gray-100/50 px-4 py-4": true,
+      })}
+    >
+      {children}
+    </div>
+  );
+}
+`,
+  },
+  {
+    name: 'conditional #2 (multi-line)',
+    input: `
+export function Callout({ children }) {
+  return (
+    <div
+      className={classNames({
         [\`rounded-xl border border-zinc-400/30
         bg-gray-100/50 px-4 py-4\`]: true,
       })}
@@ -119,6 +195,38 @@ export function Callout({ children }) {
   },
   {
     name: 'prettier-ignore #1',
+    input: `
+export function Callout({ children }) {
+  return (
+    <div
+      className={classNames(
+        // prettier-ignore
+        \`rounded-xl border border-zinc-400/30 bg-gray-100/50 px-4 py-4\`,
+        \`rounded-xl border border-zinc-400/30 bg-gray-100/50 px-4 py-4\`,
+      )}
+    >
+      {children}
+    </div>
+  );
+}
+`,
+    output: `export function Callout({ children }) {
+  return (
+    <div
+      className={classNames(
+        // prettier-ignore
+        \`rounded-xl border border-zinc-400/30 bg-gray-100/50 px-4 py-4\`,
+        "rounded-xl border border-zinc-400/30 bg-gray-100/50 px-4 py-4",
+      )}
+    >
+      {children}
+    </div>
+  );
+}
+`,
+  },
+  {
+    name: 'prettier-ignore #2 (multi-line)',
     input: `
 export function Callout({ children }) {
   return (
