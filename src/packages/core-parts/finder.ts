@@ -1,78 +1,12 @@
 import type { ZodTypeAny, infer as ZodInfer } from 'zod';
 import { z } from 'zod';
 
-enum ClassNameType {
-  /**
-   * Attributes on the same line as the opening tag and enclosed in quotes
-   */
-  ASL,
-  /**
-   * Attributes on their own line and enclosed in quotes
-   */
-  AOL,
-  /**
-   * String literal or template literal passed as function argument
-   */
-  FA,
-  /**
-   * Common string literal
-   */
-  CSL,
-  /**
-   * String literal starting on the same line as the attribute
-   */
-  SLSL,
-  /**
-   * String literal as object property
-   */
-  SLOP,
-  /**
-   * String literal in ternary operator
-   */
-  SLTO,
-  /**
-   * Common template literal
-   */
-  CTL,
-  /**
-   * Template literal as object property
-   */
-  TLOP,
-  /**
-   * Template literal in ternary operator
-   */
-  TLTO,
-  /**
-   * Unknown string literal
-   */
-  USL,
-  /**
-   * Unknown template literal
-   */
-  UTL,
-}
-
-type Dict<T = unknown> = Record<string, T | undefined>;
-
-type NodeRange = [number, number];
-
-type ClassNameNode = {
-  type: ClassNameType;
-  range: NodeRange;
-  startLineIndex: number;
-};
+import type { Dict, NodeRange, ClassNameNode, NarrowedParserOptions } from './shared';
+import { ClassNameType } from './shared';
 
 type ASTNode = {
   type: string;
   range: NodeRange;
-};
-
-type NarrowedParserOptions = {
-  tabWidth: number;
-  useTabs: boolean;
-  parser: string;
-  customAttributes: string[];
-  customFunctions: string[];
 };
 
 function isTypeof<T extends ZodTypeAny>(arg: unknown, expectedSchema: T): arg is ZodInfer<T> {
