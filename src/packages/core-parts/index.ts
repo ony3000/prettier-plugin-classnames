@@ -29,55 +29,55 @@ function replaceClassName(
   options: NarrowedParserOptions,
   format: (source: string, options?: any) => string,
 ): string {
-  let mutableFormattedText = formattedText;
+  const mutableFormattedText = targetClassNameNodes.reduce(
+    (formattedPrevText, { type, range: [rangeStart, rangeEnd], startLineIndex }) => {
+      const { indentLevel } = lineNodes[startLineIndex];
+      const enclosedClassName = formattedPrevText.slice(rangeStart + 1, rangeEnd - 1);
+      const formattedClassName = format(enclosedClassName, {
+        ...options,
+        parser: 'html',
+        plugins: [],
+        rangeStart: 0,
+        rangeEnd: Infinity,
+        endOfLine: 'lf',
+      }).trimEnd();
 
-  targetClassNameNodes.forEach(({ type, range: [rangeStart, rangeEnd], startLineIndex }) => {
-    const { indentLevel } = lineNodes[startLineIndex];
-    const enclosedClassName = mutableFormattedText.slice(rangeStart + 1, rangeEnd - 1);
-    const formattedClassName = format(enclosedClassName, {
-      ...options,
-      parser: 'html',
-      plugins: [],
-      rangeStart: 0,
-      rangeEnd: Infinity,
-      endOfLine: 'lf',
-    }).trimEnd();
+      if (formattedClassName === enclosedClassName) {
+        return formattedPrevText;
+      }
 
-    if (formattedClassName === enclosedClassName) {
-      return;
-    }
+      let extraIndentLevel = 0;
 
-    let extraIndentLevel = 0;
+      if (type === ClassNameType.ASL) {
+        extraIndentLevel = 2;
+      } else if (
+        [
+          ClassNameType.AOL,
+          ClassNameType.SLSL,
+          ClassNameType.SLTO,
+          ClassNameType.CTL,
+          ClassNameType.TLTO,
+        ].includes(type)
+      ) {
+        extraIndentLevel = 1;
+      }
 
-    if (type === ClassNameType.ASL) {
-      extraIndentLevel = 2;
-    } else if (
-      [
-        ClassNameType.AOL,
-        ClassNameType.SLSL,
-        ClassNameType.SLTO,
-        ClassNameType.CTL,
-        ClassNameType.TLTO,
-      ].includes(type)
-    ) {
-      extraIndentLevel = 1;
-    }
+      const quoteStart = `${type === ClassNameType.SLOP ? '[' : ''}${
+        type === ClassNameType.ASL || type === ClassNameType.AOL ? '"' : '`'
+      }`;
+      const quoteEnd = `${type === ClassNameType.ASL || type === ClassNameType.AOL ? '"' : '`'}${
+        type === ClassNameType.SLOP ? ']' : ''
+      }`;
+      const substitute = `${quoteStart}${formattedClassName}${quoteEnd}`
+        .split(EOL)
+        .join(`${EOL}${indentUnit.repeat(indentLevel + extraIndentLevel)}`);
 
-    const quoteStart = `${type === ClassNameType.SLOP ? '[' : ''}${
-      type === ClassNameType.ASL || type === ClassNameType.AOL ? '"' : '`'
-    }`;
-    const quoteEnd = `${type === ClassNameType.ASL || type === ClassNameType.AOL ? '"' : '`'}${
-      type === ClassNameType.SLOP ? ']' : ''
-    }`;
-    const substitute = `${quoteStart}${formattedClassName}${quoteEnd}`
-      .split(EOL)
-      .join(`${EOL}${indentUnit.repeat(indentLevel + extraIndentLevel)}`);
-
-    mutableFormattedText = `${mutableFormattedText.slice(
-      0,
-      rangeStart,
-    )}${substitute}${mutableFormattedText.slice(rangeEnd)}`;
-  });
+      return `${formattedPrevText.slice(0, rangeStart)}${substitute}${formattedPrevText.slice(
+        rangeEnd,
+      )}`;
+    },
+    formattedText,
+  );
 
   return mutableFormattedText;
 }
