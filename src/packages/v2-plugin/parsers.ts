@@ -1,4 +1,5 @@
 import { parseLineByLineAndReplace } from 'core-parts';
+import { ClassNameType } from 'core-parts/shared';
 import type { Parser, ParserOptions } from 'prettier';
 import { format } from 'prettier';
 import { parsers as babelParsers } from 'prettier/parser-babel';
@@ -24,23 +25,16 @@ function transformParser(
         plugins: [],
         endOfLine: 'lf',
       });
-      const ast = defaultParser.parse(firstFormattedText, { [parserName]: defaultParser }, options);
 
-      const classNameWrappedText = parseLineByLineAndReplace(
-        firstFormattedText,
+      const ast = defaultParser.parse(firstFormattedText, { [parserName]: defaultParser }, options);
+      const classNameWrappedText = parseLineByLineAndReplace({
+        formattedText: firstFormattedText,
         ast,
         // @ts-ignore
         options,
         format,
         addon,
-      );
-
-      if (parserName === 'vue') {
-        return {
-          type: 'FormattedText',
-          body: classNameWrappedText,
-        };
-      }
+      });
 
       const secondFormattedText = format(classNameWrappedText, {
         ...options,
@@ -48,6 +42,28 @@ function transformParser(
         endOfLine: 'lf',
         rangeEnd: Infinity,
       });
+
+      if (parserName === 'vue') {
+        const secondAst = defaultParser.parse(
+          secondFormattedText,
+          { [parserName]: defaultParser },
+          options,
+        );
+        const classNameSecondWrappedText = parseLineByLineAndReplace({
+          formattedText: secondFormattedText,
+          ast: secondAst,
+          // @ts-ignore
+          options,
+          format,
+          addon,
+          targetClassNameTypes: [ClassNameType.ASL, ClassNameType.AOL],
+        });
+
+        return {
+          type: 'FormattedText',
+          body: classNameSecondWrappedText,
+        };
+      }
 
       return {
         type: 'FormattedText',

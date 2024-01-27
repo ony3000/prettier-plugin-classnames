@@ -267,7 +267,30 @@ export function findTargetClassNameNodes(
         });
         break;
       }
-      case 'Literal':
+      case 'Literal': {
+        nonCommentNodes.push(currentASTNode);
+
+        if (
+          isTypeof(
+            node,
+            z.object({
+              value: z.string(),
+              loc: z.object({
+                start: z.object({
+                  line: z.number(),
+                }),
+              }),
+            }),
+          )
+        ) {
+          classNameNodes.push({
+            type: ClassNameType.USL,
+            range: [currentNodeRangeStart, currentNodeRangeEnd],
+            startLineIndex: node.loc.start.line - 1,
+          });
+        }
+        break;
+      }
       case 'StringLiteral': {
         nonCommentNodes.push(currentASTNode);
 
