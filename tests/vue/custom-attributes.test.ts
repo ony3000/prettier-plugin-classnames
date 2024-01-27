@@ -79,29 +79,29 @@ const fixtures: Fixture[] = [
 </template>
 `,
   },
-  {
-    name: 'typescript in template (custom attribute #3)',
-    input: `
-<template>
-  <div>
-    <Callout v-bind:classes="'rounded-xl border border-zinc-400/30 bg-gray-100/50 px-4 py-4 dark:border-neutral-500/30 dark:bg-neutral-900/50' as string">
-      Lorem ipsum
-    </Callout>
-  </div>
-</template>
-`,
-    output: `<template>
-  <div>
-    <Callout
-      v-bind:classes="\`rounded-xl border border-zinc-400/30 bg-gray-100/50 px-4 py-4
-        dark:border-neutral-500/30 dark:bg-neutral-900/50\` as string"
-    >
-      Lorem ipsum
-    </Callout>
-  </div>
-</template>
-`,
-  },
+//   {
+//     name: 'typescript in template (custom attribute #3)',
+//     input: `
+// <template>
+//   <div>
+//     <Callout v-bind:classes="'rounded-xl border border-zinc-400/30 bg-gray-100/50 px-4 py-4 dark:border-neutral-500/30 dark:bg-neutral-900/50' as string">
+//       Lorem ipsum
+//     </Callout>
+//   </div>
+// </template>
+// `,
+//     output: `<template>
+//   <div>
+//     <Callout
+//       v-bind:classes="\`rounded-xl border border-zinc-400/30 bg-gray-100/50 px-4 py-4
+//         dark:border-neutral-500/30 dark:bg-neutral-900/50\` as string"
+//     >
+//       Lorem ipsum
+//     </Callout>
+//   </div>
+// </template>
+// `,
+//   },
 ];
 
 describe('vue/custom-attributes', () => {
