@@ -27,7 +27,8 @@ export const options: SupportOptions = {
     type: 'choice',
     category: 'Format',
     default: 'relative',
-    description: 'This is the criterion for ending the class name on each line when replacing the original class name with a multi-line class name.',
+    description:
+      'This is the criterion for ending the class name on each line when replacing the original class name with a multi-line class name.',
     choices: [
       {
         value: 'relative',
@@ -37,6 +38,6 @@ export const options: SupportOptions = {
         value: 'absolute',
         description: 'Each line ends at a `printWidth` distance from the start of the line.',
       },
-    ]
+    ],
   },
 };
