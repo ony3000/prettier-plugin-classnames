@@ -22,67 +22,101 @@ npm install -D prettier prettier-plugin-classnames
 
 ## Configuration
 
-JSON:
+JSON example:
 
 ```json
 {
-  "plugins": ["prettier-plugin-classnames"],
-  "customAttributes": ["className"],
-  "customFunctions": ["classNames"]
+  "plugins": ["prettier-plugin-classnames"]
 }
 ```
 
-JS (CommonJS module):
+JS example (CommonJS module):
 
 ```javascript
 module.exports = {
   plugins: ['prettier-plugin-classnames'],
-  customAttributes: ['className'],
-  customFunctions: ['classNames'],
+  customAttributes: ['myClassProp'],
+  customFunctions: ['clsx'],
 };
 ```
 
-JS (ES module):
+JS example (ES module):
 
 ```javascript
 export default {
   plugins: ['prettier-plugin-classnames'],
-  customAttributes: ['className'],
-  customFunctions: ['classNames'],
+  endingPosition: 'absolute',
 };
 ```
 
 ## Options
 
-Although the purpose of this plugin is to wrap verbose class name into readable lengths, you can also wrap non class name strings into readable lengths by setting any of the following two options:
+### Custom Attributes
+
+List of attributes that enclosing class names.<br>
+Language-specific attribute names for writing class names, and `className` attribute are always supported, even if no options are specified.
 
 <!-- prettier-ignore -->
-Option | Default&nbsp;value | Description
+Default | CLI&nbsp;Override | API&nbsp;Override
 --- | --- | ---
-`customAttributes` | `[]` | List of attributes that enclosing class names.<br>The `className` attribute is always supported, even if no options are specified.
-`customFunctions` | `[]` | List of functions that enclosing class names.<br>The `classNames` function is always supported, even if no options are specified.
+`[]` | `--custom-attributes <string>` | `customAttributes: ["<string>"]`
 
-## Criterion for `printWidth`
+### Custom Functions
 
-Because this plugin replaces the original class name with a multi-line class name, the `printWidth` is based on the start of the class name, not the start of the line.
+List of functions that enclosing class names.<br>
+The `classNames` function is always supported, even if no options are specified.
 
-`{ printWidth: 50 }` example:
+<!-- prettier-ignore -->
+Default | CLI&nbsp;Override | API&nbsp;Override
+--- | --- | ---
+`[]` | `--custom-functions <string>` | `customFunctions: ["<string>"]`
 
-```
-export function Callout({ children }) {
-  return (
-    <div
-                |--------------------------------------------------|
-      className="bg-gray-100/50 border border-zinc-400/30
-       |--------------------------------------------------|
-        dark:bg-neutral-900/50 dark:border-neutral-500/30
-        px-4 py-4 rounded-xl"
-    >
-      {children}
-    </div>
-  );
-}
-```
+### Ending Position
+
+First available in v0.5.0.
+
+This is the criterion for ending the class name on each line when replacing the original class name with a multi-line class name.
+
+- `relative` example:
+
+  ```
+  --------------------------------------------------| printWidth=50
+  export function Callout({ children }) {
+    return (
+      <div
+                  |--------------------------------------------------|
+        className="bg-gray-100/50 border border-zinc-400/30
+         |--------------------------------------------------|
+          dark:bg-neutral-900/50 dark:border-neutral-500/30
+          px-4 py-4 rounded-xl"
+      >
+        {children}
+      </div>
+    );
+  }
+  ```
+
+- `absolute` example:
+
+  ```
+  --------------------------------------------------| printWidth=50
+  export function Callout({ children }) {
+    return (
+      <div
+        className="bg-gray-100/50 border
+  border-zinc-400/30 dark:bg-neutral-900/50
+  dark:border-neutral-500/30 px-4 py-4 rounded-xl"
+      >
+        {children}
+      </div>
+    );
+  }
+  ```
+
+<!-- prettier-ignore -->
+Default | CLI&nbsp;Override | API&nbsp;Override
+--- | --- | ---
+`"relative"` | `--ending-position <relative\|absolute>` | `endingPosition: "<relative\|absolute>"`
 
 ## Compatibility with other Prettier plugins
 
@@ -92,10 +126,11 @@ In this case, you can configure it as follows by adding [prettier-plugin-merge](
 
 JSON example:
 
+<!-- prettier-ignore -->
 ```json
 {
   "plugins": [
-    "another-prettier-plugin",
+    "prettier-plugin-tailwindcss",
     "prettier-plugin-classnames",
     "prettier-plugin-merge"
   ]
