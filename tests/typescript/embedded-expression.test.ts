@@ -212,6 +212,105 @@ export function Callout({ children }) {
 }
 `,
   },
+  {
+    name: 'issue #27 (1) - template literal ending with a space',
+    input: `
+export default function Test() {
+  return (
+    <div>
+      {[0, 1, 2, 3].map((key) => {
+        return (
+          <div
+            key={key}
+            className={\`\${key ? \`relative \` : \`\`}
+            tablet:static\`}>{key}</div>
+        );
+      })}
+    </div>
+  );
+}
+`,
+    output: `export default function Test() {
+  return (
+    <div>
+      {[0, 1, 2, 3].map((key) => {
+        return (
+          <div key={key} className={\`\${key ? "relative " : ""} tablet:static\`}>
+            {key}
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+`,
+  },
+  {
+    name: 'issue #27 (2) - template literal starting with a space',
+    input: `
+export default function Test() {
+  return (
+    <div>
+      {[0, 1, 2, 3].map((key) => {
+        return (
+          <div
+            key={key}
+            className={\`\${key ? \` relative\` : \`\`}
+            tablet:static\`}>{key}</div>
+        );
+      })}
+    </div>
+  );
+}
+`,
+    output: `export default function Test() {
+  return (
+    <div>
+      {[0, 1, 2, 3].map((key) => {
+        return (
+          <div key={key} className={\`\${key ? " relative" : ""} tablet:static\`}>
+            {key}
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+`,
+  },
+  {
+    name: 'issue #27 (3) - trimmed template literal (no error in v0.4.0, error in v0.5.0)',
+    input: `
+export default function Test() {
+  return (
+    <div>
+      {[0, 1, 2, 3].map((key) => {
+        return (
+          <div
+            key={key}
+            className={\`\${key ? \`relative\` : \`\`}
+            tablet:static\`}>{key}</div>
+        );
+      })}
+    </div>
+  );
+}
+`,
+    output: `export default function Test() {
+  return (
+    <div>
+      {[0, 1, 2, 3].map((key) => {
+        return (
+          <div key={key} className={\`\${key ? "relative" : ""} tablet:static\`}>
+            {key}
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+`,
+  },
 ];
 
 describe('typescript/embedded-expression', () => {
