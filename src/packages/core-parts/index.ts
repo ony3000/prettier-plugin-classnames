@@ -95,28 +95,40 @@ function replaceClassName({
         return formattedPrevText;
       }
 
-      const { indentLevel } = lineNodes[startLineIndex];
-      const enclosedClassName = formattedPrevText.slice(rangeStart + 1, rangeEnd - 1);
-      const formattedClassName = format(enclosedClassName, {
+      const totalTextLengthUptoPrevLine = formattedPrevText
+        .split(EOL)
+        .slice(0, startLineIndex)
+        .reduce((textLength, line) => textLength + line.length + EOL.length, 0);
+      const padLength = rangeStart + 1 - totalTextLengthUptoPrevLine;
+
+      const enclosedClassNameWithPad = `${'_'.repeat(
+        options.endingPosition === 'absolute' ? padLength : 0,
+      )}${formattedPrevText.slice(rangeStart + 1, rangeEnd - 1)}`;
+      const formattedClassName = format(enclosedClassNameWithPad, {
         ...options,
         parser: 'html',
         plugins: [],
         rangeStart: 0,
         rangeEnd: Infinity,
         endOfLine: 'lf',
-      }).trimEnd();
+      })
+        .trimEnd()
+        .slice(options.endingPosition === 'absolute' ? padLength : 0);
       const isMultiLineClassName = formattedClassName.split(EOL).length > 1;
 
+      const { indentLevel: baseIndentLevel } = lineNodes[startLineIndex];
       const extraIndentLevel = getExtraIndentLevel(type);
+      const multiLineIndentLevel =
+        options.endingPosition === 'absolute' ? 0 : baseIndentLevel + extraIndentLevel;
+
       const [quoteStart, quoteEnd] = getSomeKindOfQuotes(
         type,
         isMultiLineClassName,
         options.parser,
       );
-
       const substitute = `${quoteStart}${formattedClassName}${quoteEnd}`
         .split(EOL)
-        .join(`${EOL}${indentUnit.repeat(indentLevel + extraIndentLevel)}`);
+        .join(`${EOL}${indentUnit.repeat(multiLineIndentLevel)}`);
       const sliceOffset = !isMultiLineClassName && type === ClassNameType.TLOP ? 1 : 0;
 
       return `${formattedPrevText.slice(
@@ -196,10 +208,17 @@ async function replaceClassNameAsync({
 
       const formattedPrevText = await formattedPrevTextPromise;
 
-      const { indentLevel } = lineNodes[startLineIndex];
-      const enclosedClassName = formattedPrevText.slice(rangeStart + 1, rangeEnd - 1);
+      const totalTextLengthUptoPrevLine = formattedPrevText
+        .split(EOL)
+        .slice(0, startLineIndex)
+        .reduce((textLength, line) => textLength + line.length + EOL.length, 0);
+      const padLength = rangeStart + 1 - totalTextLengthUptoPrevLine;
+
+      const enclosedClassNameWithPad = `${'_'.repeat(
+        options.endingPosition === 'absolute' ? padLength : 0,
+      )}${formattedPrevText.slice(rangeStart + 1, rangeEnd - 1)}`;
       const formattedClassName = (
-        await format(enclosedClassName, {
+        await format(enclosedClassNameWithPad, {
           ...options,
           parser: 'html',
           plugins: [],
@@ -207,19 +226,24 @@ async function replaceClassNameAsync({
           rangeEnd: Infinity,
           endOfLine: 'lf',
         })
-      ).trimEnd();
+      )
+        .trimEnd()
+        .slice(options.endingPosition === 'absolute' ? padLength : 0);
       const isMultiLineClassName = formattedClassName.split(EOL).length > 1;
 
+      const { indentLevel: baseIndentLevel } = lineNodes[startLineIndex];
       const extraIndentLevel = getExtraIndentLevel(type);
+      const multiLineIndentLevel =
+        options.endingPosition === 'absolute' ? 0 : baseIndentLevel + extraIndentLevel;
+
       const [quoteStart, quoteEnd] = getSomeKindOfQuotes(
         type,
         isMultiLineClassName,
         options.parser,
       );
-
       const substitute = `${quoteStart}${formattedClassName}${quoteEnd}`
         .split(EOL)
-        .join(`${EOL}${indentUnit.repeat(indentLevel + extraIndentLevel)}`);
+        .join(`${EOL}${indentUnit.repeat(multiLineIndentLevel)}`);
       const sliceOffset = !isMultiLineClassName && type === ClassNameType.TLOP ? 1 : 0;
 
       return `${formattedPrevText.slice(
