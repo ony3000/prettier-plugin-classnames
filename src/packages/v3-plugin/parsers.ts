@@ -35,12 +35,19 @@ function transformParser(
         addon,
       });
 
-      const secondFormattedText = await format(classNameWrappedText, {
-        ...options,
-        plugins: [],
-        endOfLine: 'lf',
-        rangeEnd: Infinity,
-      });
+      let secondFormattedText: string;
+      try {
+        secondFormattedText = await format(classNameWrappedText, {
+          ...options,
+          plugins: [],
+          endOfLine: 'lf',
+          rangeEnd: Infinity,
+        });
+      } catch (error) {
+        throw new Error(
+          'The second format failed. This is likely a bug in this plugin. Please file an issue.',
+        );
+      }
 
       if (parserName === 'vue') {
         const secondAst = defaultParser.parse(secondFormattedText, options);
