@@ -16,9 +16,10 @@ function isTypeof<T extends ZodTypeAny>(arg: unknown, expectedSchema: T): arg is
 function filterAndSortClassNameNodes(
   nonCommentNodes: ASTNode[],
   prettierIgnoreNodes: ASTNode[],
+  keywordStartingNodes: ASTNode[],
   classNameNodes: ClassNameNode[],
 ): ClassNameNode[] {
-  const ignoreRanges = prettierIgnoreNodes.map<NodeRange>(({ range }) => {
+  const ignoreRanges = prettierIgnoreNodes.map(({ range }) => {
     const [, prettierIgnoreRangeEnd] = range;
 
     const ignoringNodeOrNot = nonCommentNodes
@@ -33,25 +34,19 @@ function filterAndSortClassNameNodes(
 
     return ignoringNodeOrNot?.range ?? range;
   });
+  const keywordStartingRanges = keywordStartingNodes.map(({ range }) => range);
 
   return classNameNodes
     .filter(
-      ({ type: classNameType, range: [classNameRangeStart, classNameRangeEnd] }) =>
-        [
-          ClassNameType.ASL,
-          ClassNameType.AOL,
-          ClassNameType.FA,
-          ClassNameType.CSL,
-          ClassNameType.SLSL,
-          ClassNameType.SLOP,
-          ClassNameType.SLTO,
-          ClassNameType.CTL,
-          ClassNameType.TLOP,
-          ClassNameType.TLTO,
-        ].includes(classNameType) &&
+      ({ range: [classNameRangeStart, classNameRangeEnd] }) =>
         ignoreRanges.every(
           ([ignoreRangeStart, ignoreRangeEnd]) =>
             !(ignoreRangeStart <= classNameRangeStart && classNameRangeEnd <= ignoreRangeEnd),
+        ) &&
+        keywordStartingRanges.some(
+          ([keywordStartingRangeStart, keywordStartingRangeEnd]) =>
+            keywordStartingRangeStart < classNameRangeStart &&
+            classNameRangeEnd <= keywordStartingRangeEnd,
         ),
     )
     .sort((former, latter) => latter.startLineIndex - former.startLineIndex);
@@ -71,6 +66,10 @@ export function findTargetClassNameNodes(
    * Nodes with a valid 'prettier-ignore' syntax
    */
   const prettierIgnoreNodes: ASTNode[] = [];
+  /**
+   * Nodes starting with supported attribute names or supported function names
+   */
+  const keywordStartingNodes: ASTNode[] = [];
   /**
    * Class names enclosed in some kind of quotes
    */
@@ -130,6 +129,8 @@ export function findTargetClassNameNodes(
           node.callee.type === 'Identifier' &&
           supportedFunctions.includes(node.callee.name)
         ) {
+          keywordStartingNodes.push(currentASTNode);
+
           classNameNodes.forEach((classNameNode) => {
             const [classNameRangeStart, classNameRangeEnd] = classNameNode.range;
 
@@ -181,6 +182,8 @@ export function findTargetClassNameNodes(
           node.name.type === 'JSXIdentifier' &&
           supportedAttributes.includes(node.name.name)
         ) {
+          keywordStartingNodes.push(currentASTNode);
+
           const parentNodeStartLineNumber = parentNode.loc.start.line;
           const currentNodeStartLineNumber = node.loc.start.line;
 
@@ -392,7 +395,12 @@ export function findTargetClassNameNodes(
 
   recursion(ast);
 
-  return filterAndSortClassNameNodes(nonCommentNodes, prettierIgnoreNodes, classNameNodes);
+  return filterAndSortClassNameNodes(
+    nonCommentNodes,
+    prettierIgnoreNodes,
+    keywordStartingNodes,
+    classNameNodes,
+  );
 }
 
 export function findTargetClassNameNodesForVue(
@@ -411,6 +419,10 @@ export function findTargetClassNameNodesForVue(
    * Nodes with a valid 'prettier-ignore' syntax
    */
   const prettierIgnoreNodes: ASTNode[] = [];
+  /**
+   * Nodes starting with supported attribute names or supported function names
+   */
+  const keywordStartingNodes: ASTNode[] = [];
   /**
    * Class names enclosed in some kind of quotes
    */
@@ -503,6 +515,8 @@ export function findTargetClassNameNodesForVue(
           ) &&
           supportedAttributes.includes(node.name.replace(boundAttributeRegExp, ''))
         ) {
+          keywordStartingNodes.push(currentASTNode);
+
           const isBoundAttribute = node.name.match(boundAttributeRegExp) !== null;
 
           if (isBoundAttribute) {
@@ -598,6 +612,9 @@ export function findTargetClassNameNodesForVue(
           ) &&
           node.name === 'script'
         ) {
+          // Note: In fact, the script element is not a `keywordStartingNode`, but it is considered a kind of safe list to maintain the `classNameNode`s obtained from the code inside the element.
+          keywordStartingNodes.push(currentASTNode);
+
           if (addon.parseTypescript) {
             const typescriptAst = addon.parseTypescript(node.children.at(0)?.value ?? '', {
               ...options,
@@ -653,5 +670,10 @@ export function findTargetClassNameNodesForVue(
 
   recursion(ast);
 
-  return filterAndSortClassNameNodes(nonCommentNodes, prettierIgnoreNodes, classNameNodes);
+  return filterAndSortClassNameNodes(
+    nonCommentNodes,
+    prettierIgnoreNodes,
+    keywordStartingNodes,
+    classNameNodes,
+  );
 }
