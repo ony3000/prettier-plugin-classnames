@@ -70,7 +70,12 @@ const combination = classNames(
 describe('vue/variable-declaration', () => {
   for (const fixture of fixtures) {
     test(fixture.name, () => {
-      expect(format(fixture.input, options)).toBe(fixture.output);
+      expect(
+        format(fixture.input, {
+          ...options,
+          ...(fixture.options ?? {}),
+        }),
+      ).toBe(fixture.output);
     });
   }
 });
