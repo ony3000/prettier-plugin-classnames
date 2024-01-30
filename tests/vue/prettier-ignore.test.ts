@@ -203,7 +203,12 @@ const fixtures: Fixture[] = [
 describe('vue/prettier-ignore', () => {
   for (const fixture of fixtures) {
     test(fixture.name, async () => {
-      expect(await format(fixture.input, options)).toBe(fixture.output);
+      expect(
+        await format(fixture.input, {
+          ...options,
+          ...(fixture.options ?? {}),
+        }),
+      ).toBe(fixture.output);
     });
   }
 });

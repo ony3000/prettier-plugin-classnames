@@ -124,7 +124,12 @@ border-zinc-400/30 border bg-gray-100/50\`,
 describe('vue/ending-position', () => {
   for (const fixture of fixtures) {
     test(fixture.name, async () => {
-      expect(await format(fixture.input, options)).toBe(fixture.output);
+      expect(
+        await format(fixture.input, {
+          ...options,
+          ...(fixture.options ?? {}),
+        }),
+      ).toBe(fixture.output);
     });
   }
 });
