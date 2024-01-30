@@ -53,6 +53,28 @@ export function Callout({ children }) {
 }
 `,
   },
+  {
+    name: 'issue #28 (1) - template literal in ternary operator',
+    input: `
+const { data } = useSWR(
+  cartId ? \`\${process.env.NEXT_PUBLIC_API_URL}/cart/\${cartId}\` : null,
+);
+`,
+    output: `const { data } = useSWR(
+  cartId ? \`\${process.env.NEXT_PUBLIC_API_URL}/cart/\${cartId}\` : null,
+);
+`,
+  },
+  {
+    name: 'issue #28 (2) - just template literal',
+    input: `
+const { data } = useSWR(
+  \`\${process.env.NEXT_PUBLIC_API_URL}/cart/\${cartId}\`,
+);
+`,
+    output: `const { data } = useSWR(\`\${process.env.NEXT_PUBLIC_API_URL}/cart/\${cartId}\`);
+`,
+  },
 ];
 
 describe('babel/variable-declaration', () => {
