@@ -6,6 +6,7 @@ export type Fixture = {
   name: string;
   input: string;
   output: string;
+  options?: Options;
 };
 
 export { format } from 'prettier';

@@ -12,6 +12,9 @@ devDependencies:
   '@types/node':
     specifier: 20.2.5
     version: 20.2.5
+  '@types/prettier':
+    specifier: 2.7.3
+    version: 2.7.3
   '@typescript-eslint/eslint-plugin':
     specifier: 5.54.0
     version: 5.54.0(@typescript-eslint/parser@5.54.0)(eslint@8.35.0)(typescript@4.9.5)
@@ -668,6 +671,10 @@ packages:
 
   /@types/node@20.2.5:
     resolution: {integrity: sha512-JJulVEQXmiY9Px5axXHeYGLSjhkZEnD+MDPDGbCbIAbMslkKwmygtZFy1X6s/075Yo94sf8GuSlFfPzysQrWZQ==}
+    dev: true
+
+  /@types/prettier@2.7.3:
+    resolution: {integrity: sha512-+68kP9yzs4LMp7VNh8gdzMSPZFL44MLGqiHWvttYJe+6qnuVr4Ek9wSBQoveqY/r+LwjCcU29kNVkidwim+kYA==}
     dev: true
 
   /@types/semver@7.5.0:
