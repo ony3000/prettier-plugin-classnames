@@ -260,6 +260,70 @@ export function Callout({ children }) {
 }
 `,
   },
+  {
+    name: 'template literal preservation (1)',
+    input: `
+export function Callout({ children }) {
+  return <div className={\`\${''}\` + \`rounded-xl border border-zinc-400/30 bg-gray-100/50 px-4 py-4\`}>{children}</div>;
+}
+`,
+    output: `export function Callout({ children }) {
+  return (
+    <div
+      className={
+        \`${""}\` +
+        "rounded-xl border border-zinc-400/30 bg-gray-100/50 px-4 py-4"
+      }
+    >
+      {children}
+    </div>
+  );
+}
+`,
+  },
+  {
+    name: 'template literal preservation (2)',
+    input: `
+export function Callout({ children }) {
+  return <div className={\`""\` + \`rounded-xl border border-zinc-400/30 bg-gray-100/50 px-4 py-4\`}>{children}</div>;
+}
+`,
+    output: `export function Callout({ children }) {
+  return (
+    <div
+      className={
+        \`""\` + "rounded-xl border border-zinc-400/30 bg-gray-100/50 px-4 py-4"
+      }
+    >
+      {children}
+    </div>
+  );
+}
+`,
+  },
+  {
+    name: 'template literal preservation (3)',
+    input: `
+export function Callout({ children }) {
+  return <div className={\`''\` + \`rounded-xl border border-zinc-400/30 bg-gray-100/50 px-4 py-4\`}>{children}</div>;
+}
+`,
+    output: `export function Callout({ children }) {
+  return (
+    <div
+      className={
+        \`''\` + 'rounded-xl border border-zinc-400/30 bg-gray-100/50 px-4 py-4'
+      }
+    >
+      {children}
+    </div>
+  );
+}
+`,
+    options: {
+      singleQuote: true,
+    },
+  },
 ];
 
 describe('typescript/reversibility', () => {
