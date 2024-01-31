@@ -4,6 +4,11 @@ import { ClassNameType } from './shared';
 
 const EOL = '\n';
 
+/**
+ * placeholder
+ */
+const PH = '_';
+
 type LineNode = {
   indentLevel: number;
 };
@@ -78,6 +83,19 @@ function getSomeKindOfQuotes(
   return [opener, closer];
 }
 
+function replaceSpacesAtBothEnds(className: string): [string, string, string] {
+  const matchArray = className.match(/^(\s*)[^\s](?:.*[^\s])?(\s*)$/);
+  const leadingSpace = matchArray?.[1] ?? '';
+  const trailingSpace = matchArray?.[2] ?? '';
+
+  const replacedClassName = `${PH.repeat(leadingSpace.length)}${className.slice(
+    leadingSpace.length,
+    -trailingSpace.length || undefined,
+  )}${PH.repeat(trailingSpace.length)}`;
+
+  return [leadingSpace, replacedClassName, trailingSpace];
+}
+
 function replaceClassName({
   formattedText,
   indentUnit,
@@ -101,38 +119,55 @@ function replaceClassName({
         return formattedPrevText;
       }
 
+      const classNameBase = formattedPrevText.slice(rangeStart + 1, rangeEnd - 1);
+
+      // preprocess (1)
+      const [leadingSpace, classNameWithoutSpacesAtBothEnds, trailingSpace] =
+        replaceSpacesAtBothEnds(classNameBase);
+
       const totalTextLengthUptoPrevLine = formattedPrevText
         .split(EOL)
         .slice(0, startLineIndex)
         .reduce((textLength, line) => textLength + line.length + EOL.length, 0);
       const padLength = rangeStart + 1 - totalTextLengthUptoPrevLine;
 
-      const enclosedClassNameWithPad = `${'_'.repeat(
+      // preprocess (2)
+      const classNameWithPadding = `${PH.repeat(
         options.endingPosition === 'absolute' ? padLength : 0,
-      )}${formattedPrevText.slice(rangeStart + 1, rangeEnd - 1)}`;
-      const formattedClassName = format(enclosedClassNameWithPad, {
+      )}${classNameWithoutSpacesAtBothEnds}`;
+
+      const formattedClassName = format(classNameWithPadding, {
         ...options,
         parser: 'html',
         plugins: [],
         rangeStart: 0,
         rangeEnd: Infinity,
         endOfLine: 'lf',
-      })
-        .trimEnd()
-        .slice(options.endingPosition === 'absolute' ? padLength : 0);
-      const isMultiLineClassName = formattedClassName.split(EOL).length > 1;
+      }).trimEnd();
+
+      // postprocess (1)
+      const classNameWithoutPadding = formattedClassName.slice(
+        options.endingPosition === 'absolute' ? padLength : 0,
+      );
+
+      // postprocess (2)
+      const classNameWithOriginalSpaces = `${leadingSpace}${classNameWithoutPadding.slice(
+        leadingSpace.length,
+        -trailingSpace.length || undefined,
+      )}${trailingSpace}`;
 
       const { indentLevel: baseIndentLevel } = lineNodes[startLineIndex];
       const extraIndentLevel = getExtraIndentLevel(type);
       const multiLineIndentLevel =
         options.endingPosition === 'absolute' ? 0 : baseIndentLevel + extraIndentLevel;
 
+      const isMultiLineClassName = classNameWithOriginalSpaces.split(EOL).length > 1;
       const [quoteStart, quoteEnd] = getSomeKindOfQuotes(
         type,
         isMultiLineClassName,
         options.parser,
       );
-      const substitute = `${quoteStart}${formattedClassName}${quoteEnd}`
+      const substitute = `${quoteStart}${classNameWithOriginalSpaces}${quoteEnd}`
         .split(EOL)
         .join(`${EOL}${indentUnit.repeat(multiLineIndentLevel)}`);
       const sliceOffset = !isMultiLineClassName && type === ClassNameType.TLOP ? 1 : 0;
@@ -213,6 +248,11 @@ async function replaceClassNameAsync({
       }
 
       const formattedPrevText = await formattedPrevTextPromise;
+      const classNameBase = formattedPrevText.slice(rangeStart + 1, rangeEnd - 1);
+
+      // preprocess (1)
+      const [leadingSpace, classNameWithoutSpacesAtBothEnds, trailingSpace] =
+        replaceSpacesAtBothEnds(classNameBase);
 
       const totalTextLengthUptoPrevLine = formattedPrevText
         .split(EOL)
@@ -220,11 +260,13 @@ async function replaceClassNameAsync({
         .reduce((textLength, line) => textLength + line.length + EOL.length, 0);
       const padLength = rangeStart + 1 - totalTextLengthUptoPrevLine;
 
-      const enclosedClassNameWithPad = `${'_'.repeat(
+      // preprocess (2)
+      const classNameWithPadding = `${PH.repeat(
         options.endingPosition === 'absolute' ? padLength : 0,
-      )}${formattedPrevText.slice(rangeStart + 1, rangeEnd - 1)}`;
+      )}${classNameWithoutSpacesAtBothEnds}`;
+
       const formattedClassName = (
-        await format(enclosedClassNameWithPad, {
+        await format(classNameWithPadding, {
           ...options,
           parser: 'html',
           plugins: [],
@@ -232,22 +274,31 @@ async function replaceClassNameAsync({
           rangeEnd: Infinity,
           endOfLine: 'lf',
         })
-      )
-        .trimEnd()
-        .slice(options.endingPosition === 'absolute' ? padLength : 0);
-      const isMultiLineClassName = formattedClassName.split(EOL).length > 1;
+      ).trimEnd();
+
+      // postprocess (1)
+      const classNameWithoutPadding = formattedClassName.slice(
+        options.endingPosition === 'absolute' ? padLength : 0,
+      );
+
+      // postprocess (2)
+      const classNameWithOriginalSpaces = `${leadingSpace}${classNameWithoutPadding.slice(
+        leadingSpace.length,
+        -trailingSpace.length || undefined,
+      )}${trailingSpace}`;
 
       const { indentLevel: baseIndentLevel } = lineNodes[startLineIndex];
       const extraIndentLevel = getExtraIndentLevel(type);
       const multiLineIndentLevel =
         options.endingPosition === 'absolute' ? 0 : baseIndentLevel + extraIndentLevel;
 
+      const isMultiLineClassName = classNameWithOriginalSpaces.split(EOL).length > 1;
       const [quoteStart, quoteEnd] = getSomeKindOfQuotes(
         type,
         isMultiLineClassName,
         options.parser,
       );
-      const substitute = `${quoteStart}${formattedClassName}${quoteEnd}`
+      const substitute = `${quoteStart}${classNameWithOriginalSpaces}${quoteEnd}`
         .split(EOL)
         .join(`${EOL}${indentUnit.repeat(multiLineIndentLevel)}`);
       const sliceOffset = !isMultiLineClassName && type === ClassNameType.TLOP ? 1 : 0;
