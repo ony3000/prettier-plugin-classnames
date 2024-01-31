@@ -46,17 +46,23 @@ function getSomeKindOfQuotes(
   isMultiLineClassName: boolean,
   parser: string,
 ): [string, string] {
+  // prettier-ignore
   const baseQuote =
-    parser === 'vue' &&
-    [
-      ClassNameType.FA,
-      ClassNameType.SLSL,
-      ClassNameType.CTL,
-      ClassNameType.TLOP,
-      ClassNameType.TLTO,
-    ].includes(type)
-      ? "'"
-      : '"';
+    // eslint-disable-next-line no-nested-ternary
+    type === ClassNameType.TLPQ
+      ? '`'
+      : (
+        parser === 'vue' &&
+        [
+          ClassNameType.FA,
+          ClassNameType.SLSL,
+          ClassNameType.CTL,
+          ClassNameType.TLOP,
+          ClassNameType.TLTO,
+        ].includes(type)
+          ? "'"
+          : '"'
+      );
 
   const opener = `${isMultiLineClassName && type === ClassNameType.SLOP ? '[' : ''}${
     !isMultiLineClassName || type === ClassNameType.ASL || type === ClassNameType.AOL

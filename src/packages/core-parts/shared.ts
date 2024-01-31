@@ -40,6 +40,10 @@ export enum ClassNameType {
    */
   TLTO,
   /**
+   * Template literal that preserve quotes
+   */
+  TLPQ,
+  /**
    * Unknown string literal
    */
   USL,
@@ -62,6 +66,7 @@ export type ClassNameNode = {
 export type NarrowedParserOptions = {
   tabWidth: number;
   useTabs: boolean;
+  singleQuote: boolean;
   parser: string;
   customAttributes: string[];
   customFunctions: string[];

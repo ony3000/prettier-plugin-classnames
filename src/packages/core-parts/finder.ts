@@ -329,11 +329,26 @@ export function findTargetClassNameNodes(
                   line: z.number(),
                 }),
               }),
+              quasis: z.array(
+                z.object({
+                  type: z.literal('TemplateElement'),
+                  value: z.object({
+                    cooked: z.string(),
+                  }),
+                  tail: z.boolean(),
+                }),
+              ),
             }),
           )
         ) {
+          const { cooked } = node.quasis[0].value;
+          const conditionForPreservation =
+            !node.quasis[0].tail ||
+            (options.singleQuote && cooked.indexOf("'") !== -1) ||
+            (!options.singleQuote && cooked.indexOf('"') !== -1);
+
           classNameNodes.push({
-            type: ClassNameType.UTL,
+            type: conditionForPreservation ? ClassNameType.TLPQ : ClassNameType.UTL,
             range: [currentNodeRangeStart, currentNodeRangeEnd],
             startLineIndex: node.loc.start.line - 1,
           });
