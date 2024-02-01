@@ -1,0 +1,38 @@
+name: Automated Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      releaseLevel:
+        description: 'Release Level'
+        required: true
+        default: 'patch'
+        type: choice
+        options:
+          - patch
+          - minor
+
+jobs:
+  publish-npm:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          registry-url: https://registry.npmjs.org/
+      - uses: pnpm/action-setup@v2
+        with:
+          run_install: true
+      - name: Build a bundle
+        run: pnpm run build
+      - name: Bump a package version as github-actions bot
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          npm version ${{ inputs.releaseLevel }} -m "chore: release %s"
+          git push && git push --tags
+      - name: Publish package
+        run: npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
