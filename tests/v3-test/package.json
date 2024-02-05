@@ -1,0 +1,16 @@
+{
+  "private": true,
+  "name": "v3-test",
+  "version": "0.0.0",
+  "author": "Hyeonjong <nianelo4@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "test": "vitest run --passWithNoTests"
+  },
+  "devDependencies": {
+    "prettier": "3.0.3",
+    "test-settings": "workspace:*",
+    "vite-tsconfig-paths": "4.2.3",
+    "vitest": "1.1.3"
+  }
+}
