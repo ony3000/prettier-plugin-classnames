@@ -2,7 +2,6 @@ import {
   findTargetClassNameNodes,
   findTargetClassNameNodesForVue,
   findTargetClassNameNodesForAstro,
-  findTargetClassNameNodesForMdx,
 } from './finder';
 import type { Dict, ClassNameNode, NarrowedParserOptions } from './shared';
 import { EOL, ClassNameType } from './shared';

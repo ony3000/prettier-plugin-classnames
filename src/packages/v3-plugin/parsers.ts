@@ -4,7 +4,6 @@ import type { Parser, ParserOptions, Plugin } from 'prettier';
 import { format } from 'prettier';
 import { parsers as babelParsers } from 'prettier/plugins/babel';
 import { parsers as htmlParsers } from 'prettier/plugins/html';
-import { parsers as markdownParsers } from 'prettier/plugins/markdown';
 import { parsers as typescriptParsers } from 'prettier/plugins/typescript';
 
 const addon = {
