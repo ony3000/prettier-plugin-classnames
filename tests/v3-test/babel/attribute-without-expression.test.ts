@@ -172,7 +172,7 @@ export function Callout({ children }) {
 `,
   },
   {
-    name: 'ending position',
+    name: 'ending position (1)',
     input: `
 export function Callout({ children }) {
   return (
@@ -195,6 +195,34 @@ py-4 dark:border-neutral-500/30 dark:bg-neutral-900/50"
 `,
     options: {
       endingPosition: 'absolute',
+    },
+  },
+  {
+    name: 'ending position (2)',
+    input: `
+export function Callout({ children }) {
+  return (
+    <div className="rounded-xl border border-zinc-400/30 bg-gray-100/50 px-4 py-4 dark:border-neutral-500/30 dark:bg-neutral-900/50">
+      {children}
+    </div>
+  );
+}
+`,
+    output: `export function Callout({ children }) {
+  return (
+    <div
+      className="rounded-xl border border-zinc-400/30
+        bg-gray-100/50 px-4 py-4 dark:border-neutral-500/30
+        dark:bg-neutral-900/50"
+    >
+      {children}
+    </div>
+  );
+}
+`,
+    options: {
+      printWidth: 60,
+      endingPosition: 'absolute-with-indent',
     },
   },
 ];

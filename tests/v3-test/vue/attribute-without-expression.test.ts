@@ -152,7 +152,7 @@ const fixtures: Fixture[] = [
 `,
   },
   {
-    name: 'ending position',
+    name: 'ending position (1)',
     input: `
 <template>
   <div class="rounded-xl border border-zinc-400/30 bg-gray-100/50 px-4 py-4 dark:border-neutral-500/30 dark:bg-neutral-900/50">
@@ -171,6 +171,30 @@ dark:border-neutral-500/30 dark:bg-neutral-900/50"
 `,
     options: {
       endingPosition: 'absolute',
+    },
+  },
+  {
+    name: 'ending position (2)',
+    input: `
+<template>
+  <div class="rounded-xl border border-zinc-400/30 bg-gray-100/50 px-4 py-4 dark:border-neutral-500/30 dark:bg-neutral-900/50">
+    <slot></slot>
+  </div>
+</template>
+`,
+    output: `<template>
+  <div
+    class="rounded-xl border border-zinc-400/30
+      bg-gray-100/50 px-4 py-4 dark:border-neutral-500/30
+      dark:bg-neutral-900/50"
+  >
+    <slot></slot>
+  </div>
+</template>
+`,
+    options: {
+      printWidth: 60,
+      endingPosition: 'absolute-with-indent',
     },
   },
 ];

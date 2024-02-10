@@ -633,6 +633,34 @@ dark:border-neutral-500/30 dark:bg-neutral-900/50\`]: true,
     },
   },
   {
+    name: 'ending position (4)',
+    input: `
+export function Callout({ children }) {
+  return (
+    <div className={'rounded-xl border border-zinc-400/30 bg-gray-100/50 px-4 py-4 dark:border-neutral-500/30 dark:bg-neutral-900/50'}>
+      {children}
+    </div>
+  );
+}
+`,
+    output: `export function Callout({ children }) {
+  return (
+    <div
+      className={\`rounded-xl border border-zinc-400/30
+        bg-gray-100/50 px-4 py-4 dark:border-neutral-500/30
+        dark:bg-neutral-900/50\`}
+    >
+      {children}
+    </div>
+  );
+}
+`,
+    options: {
+      printWidth: 60,
+      endingPosition: 'absolute-with-indent',
+    },
+  },
+  {
     name: 'issue #27 (1) - template literal ending with a space',
     input: `
 export default function Test() {
