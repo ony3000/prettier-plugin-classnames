@@ -25,16 +25,21 @@ function transformParser(
       const plugins = options.plugins.filter((plugin) => typeof plugin !== 'string') as Plugin[];
 
       let languageImplementedPlugin: Plugin | undefined;
+      let languageImplementedParser: Parser | undefined;
       if (languageName) {
         languageImplementedPlugin = plugins
           .filter((plugin) => plugin.languages?.some((language) => language.name === languageName))
           .at(0);
+        languageImplementedParser = languageImplementedPlugin?.parsers?.[parserName];
 
-        if (!languageImplementedPlugin) {
+        if (!languageImplementedPlugin || !languageImplementedParser) {
           throw new Error(
             `There doesn't seem to be any plugin that supports ${languageName} formatting.`,
           );
         }
+
+        // eslint-disable-next-line no-param-reassign
+        defaultParser = languageImplementedParser;
       }
 
       const customLanguageSupportedPlugins = languageImplementedPlugin
@@ -106,5 +111,5 @@ export const parsers: { [parserName: string]: Parser } = {
   babel: transformParser('babel', babelParsers.babel),
   typescript: transformParser('typescript', typescriptParsers.typescript),
   vue: transformParser('vue', htmlParsers.vue),
-  astro: transformParser('astro', markdownParsers.mdx, 'astro'),
+  astro: transformParser('astro', {} as Parser, 'astro'),
 };

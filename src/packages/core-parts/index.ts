@@ -1,6 +1,7 @@
 import {
   findTargetClassNameNodes,
   findTargetClassNameNodesForVue,
+  findTargetClassNameNodesForAstro,
   findTargetClassNameNodesForMdx,
 } from './finder';
 import type { Dict, ClassNameNode, NarrowedParserOptions } from './shared';
@@ -209,7 +210,7 @@ export function parseLineByLineAndReplace({
   let targetClassNameNodes: ClassNameNode[] = [];
   switch (options.parser) {
     case 'astro': {
-      targetClassNameNodes = findTargetClassNameNodesForMdx(ast, options, addon);
+      targetClassNameNodes = findTargetClassNameNodesForAstro(ast, options, addon);
       break;
     }
     case 'vue': {
@@ -349,7 +350,7 @@ export async function parseLineByLineAndReplaceAsync({
   let targetClassNameNodes: ClassNameNode[] = [];
   switch (options.parser) {
     case 'astro': {
-      targetClassNameNodes = findTargetClassNameNodesForMdx(ast, options, addon);
+      targetClassNameNodes = findTargetClassNameNodesForAstro(ast, options, addon);
       break;
     }
     case 'vue': {

@@ -709,6 +709,269 @@ export function findTargetClassNameNodesForVue(
   );
 }
 
+export function findTargetClassNameNodesForAstro(
+  ast: any,
+  options: NarrowedParserOptions,
+  addon: Dict<(text: string, options: any) => any>,
+): ClassNameNode[] {
+  const supportedAttributes: string[] = [
+    'className',
+    'class',
+    'class:list',
+    ...options.customAttributes,
+  ];
+  const supportedFunctions: string[] = ['classNames', ...options.customFunctions];
+  /**
+   * Most nodes
+   */
+  const nonCommentNodes: ASTNode[] = [];
+  /**
+   * Nodes with a valid 'prettier-ignore' syntax
+   */
+  const prettierIgnoreNodes: ASTNode[] = [];
+  /**
+   * Nodes starting with supported attribute names or supported function names
+   */
+  const keywordStartingNodes: ASTNode[] = [];
+  /**
+   * Class names enclosed in some kind of quotes
+   */
+  const classNameNodes: ClassNameNode[] = [];
+
+  function recursion(node: unknown, parentNode?: { type?: unknown }): void {
+    if (!isTypeof(node, z.object({ type: z.string() }))) {
+      return;
+    }
+
+    Object.entries(node).forEach(([key, value]) => {
+      if (key === 'type') {
+        return;
+      }
+
+      if (Array.isArray(value)) {
+        value.forEach((childNode: unknown) => {
+          recursion(childNode, node);
+        });
+        return;
+      }
+
+      recursion(value, node);
+    });
+
+    if (
+      !isTypeof(
+        node,
+        z.object({
+          position: z.object({
+            start: z.object({
+              offset: z.number(),
+            }),
+            end: z
+              .object({
+                offset: z.number(),
+              })
+              .optional(),
+          }),
+          name: z.unknown(),
+          value: z.unknown(),
+        }),
+      )
+    ) {
+      return;
+    }
+
+    const currentNodeRangeStart = node.position.start.offset;
+    const currentNodeRangeEnd = node.position.end
+      ? node.position.end.offset
+      : node.position.start.offset +
+        (node.type === 'attribute'
+          ? `${node.name}=?${node.value}?`.length
+          : `${node.value}`.length);
+    const currentASTNode: ASTNode = {
+      type: node.type,
+      range: [currentNodeRangeStart, currentNodeRangeEnd],
+    };
+
+    switch (node.type) {
+      case 'frontmatter': {
+        nonCommentNodes.push(currentASTNode);
+
+        if (
+          isTypeof(
+            node,
+            z.object({
+              value: z.string(),
+            }),
+          )
+        ) {
+          // Note: In fact, the frontmatter is not a `keywordStartingNode`, but it is considered a kind of safe list to maintain the `classNameNode`s obtained from the code inside the frontmatter.
+          keywordStartingNodes.push(currentASTNode);
+
+          if (addon.parseTypescript) {
+            const typescriptAst = addon.parseTypescript(node.value, {
+              ...options,
+              parser: 'typescript',
+            });
+            const targetClassNameNodesInFrontMatter = findTargetClassNameNodes(typescriptAst, {
+              ...options,
+              customAttributes: supportedAttributes,
+              customFunctions: supportedFunctions,
+            }).map<ClassNameNode>(
+              ({
+                type,
+                range: [classNameNodeRangeStart, classNameNodeRangeEnd],
+                startLineIndex,
+              }) => {
+                const frontMatterOffset = '---'.length;
+
+                return {
+                  type,
+                  range: [
+                    classNameNodeRangeStart + frontMatterOffset,
+                    classNameNodeRangeEnd + frontMatterOffset,
+                  ],
+                  startLineIndex,
+                };
+              },
+            );
+
+            classNameNodes.push(...targetClassNameNodesInFrontMatter);
+          }
+        }
+        break;
+      }
+      case 'attribute': {
+        nonCommentNodes.push(currentASTNode);
+
+        if (
+          isTypeof(
+            parentNode,
+            z.object({
+              position: z.object({
+                start: z.object({
+                  line: z.number(),
+                }),
+              }),
+            }),
+          ) &&
+          (parentNode.type === 'element' || parentNode.type === 'component') &&
+          isTypeof(
+            node,
+            z.object({
+              kind: z.string(),
+              name: z.string(),
+              value: z.string(),
+              position: z.object({
+                start: z.object({
+                  line: z.number(),
+                }),
+              }),
+            }),
+          ) &&
+          supportedAttributes.includes(node.name)
+        ) {
+          keywordStartingNodes.push(currentASTNode);
+
+          const attributeStart = `${node.name}=?`;
+
+          if (node.kind === 'expression') {
+            if (addon.parseTypescript) {
+              const jsxStart = '<div className={';
+              const jsxEnd = '}></div>';
+
+              const typescriptAst = addon.parseTypescript(`${jsxStart}${node.value}${jsxEnd}`, {
+                ...options,
+                parser: 'typescript',
+              });
+              const targetClassNameNodesInAttribute = findTargetClassNameNodes(typescriptAst, {
+                ...options,
+                customAttributes: supportedAttributes,
+                customFunctions: supportedFunctions,
+              }).map<ClassNameNode>(
+                ({
+                  type,
+                  range: [classNameNodeRangeStart, classNameNodeRangeEnd],
+                  startLineIndex,
+                }) => {
+                  if (type === ClassNameType.CSL && startLineIndex === 0) {
+                    // eslint-disable-next-line no-param-reassign
+                    type = ClassNameType.SLSL;
+                  }
+
+                  const attributeOffset =
+                    -jsxStart.length + node.position.start.offset + attributeStart.length;
+
+                  return {
+                    type,
+                    range: [
+                      classNameNodeRangeStart + attributeOffset,
+                      classNameNodeRangeEnd + attributeOffset,
+                    ],
+                    startLineIndex: startLineIndex + node.position.start.line - 1,
+                  };
+                },
+              );
+
+              classNameNodes.push(...targetClassNameNodesInAttribute);
+            }
+          } else if (node.kind === 'quoted') {
+            const classNameRangeStart = currentNodeRangeStart + attributeStart.length - 1;
+            const classNameRangeEnd = currentNodeRangeEnd;
+
+            const parentNodeStartLineIndex = parentNode.position.start.line - 1;
+            const nodeStartLineIndex = node.position.start.line - 1;
+
+            classNameNodes.push({
+              type:
+                parentNodeStartLineIndex === nodeStartLineIndex
+                  ? ClassNameType.ASL
+                  : ClassNameType.AOL,
+              range: [classNameRangeStart, classNameRangeEnd],
+              startLineIndex: node.position.start.line - 1,
+            });
+          }
+        }
+        break;
+      }
+      case 'comment': {
+        if (
+          isTypeof(
+            node,
+            z.object({
+              value: z.string(),
+            }),
+          ) &&
+          node.value.trim() === 'prettier-ignore'
+        ) {
+          const [rangeStart, rangeEnd] = currentASTNode.range;
+          const commentOffset = '<!--'.length;
+
+          prettierIgnoreNodes.push({
+            ...currentASTNode,
+            range: [rangeStart - commentOffset, rangeEnd],
+          });
+        }
+        break;
+      }
+      default: {
+        if (node.type !== 'text') {
+          nonCommentNodes.push(currentASTNode);
+        }
+        break;
+      }
+    }
+  }
+
+  recursion(ast);
+
+  return filterAndSortClassNameNodes(
+    nonCommentNodes,
+    prettierIgnoreNodes,
+    keywordStartingNodes,
+    classNameNodes,
+  );
+}
+
 export function findTargetClassNameNodesForMdx(
   ast: any,
   options: NarrowedParserOptions,
