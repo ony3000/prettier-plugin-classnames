@@ -1,5 +1,3 @@
-export const EOL = '\n';
-
 export enum ClassNameType {
   /**
    * Attributes on the same line as the opening tag and enclosed in quotes

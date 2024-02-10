@@ -173,30 +173,14 @@ export function findTargetClassNameNodes(
                   line: z.unknown(),
                 }),
               }),
-              name: z.union([
-                z.object({
-                  type: z.literal('JSXIdentifier'),
-                  name: z.string(),
-                }),
-                z.object({
-                  type: z.literal('JSXNamespacedName'),
-                  namespace: z.object({
-                    type: z.literal('JSXIdentifier'),
-                    name: z.string(),
-                  }),
-                  name: z.object({
-                    type: z.literal('JSXIdentifier'),
-                    name: z.string(),
-                  }),
-                }),
-              ]),
+              name: z.object({
+                type: z.unknown(),
+                name: z.string(),
+              }),
             }),
           ) &&
-          supportedAttributes.includes(
-            node.name.type === 'JSXIdentifier'
-              ? node.name.name
-              : `${node.name.namespace.name}:${node.name.name.name}`,
-          )
+          node.name.type === 'JSXIdentifier' &&
+          supportedAttributes.includes(node.name.name)
         ) {
           keywordStartingNodes.push(currentASTNode);
 

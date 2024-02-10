@@ -4,7 +4,9 @@ import {
   findTargetClassNameNodesForAstro,
 } from './finder';
 import type { Dict, ClassNameNode, NarrowedParserOptions } from './shared';
-import { EOL, ClassNameType } from './shared';
+import { ClassNameType } from './shared';
+
+const EOL = '\n';
 
 /**
  * placeholder
