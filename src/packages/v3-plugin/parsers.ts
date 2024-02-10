@@ -1,9 +1,10 @@
 import { parseLineByLineAndReplaceAsync } from 'core-parts';
 import { ClassNameType } from 'core-parts/shared';
-import type { Parser, ParserOptions } from 'prettier';
+import type { Parser, ParserOptions, Plugin } from 'prettier';
 import { format } from 'prettier';
 import { parsers as babelParsers } from 'prettier/plugins/babel';
 import { parsers as htmlParsers } from 'prettier/plugins/html';
+import { parsers as markdownParsers } from 'prettier/plugins/markdown';
 import { parsers as typescriptParsers } from 'prettier/plugins/typescript';
 
 const addon = {
@@ -13,19 +14,39 @@ const addon = {
 };
 
 function transformParser(
-  parserName: 'babel' | 'typescript' | 'vue',
+  parserName: 'babel' | 'typescript' | 'vue' | 'astro',
   defaultParser: Parser,
+  languageName?: string,
 ): Parser {
   return {
     ...defaultParser,
     parse: async (text: string, options: ParserOptions) => {
+      const plugins = options.plugins.filter((plugin) => typeof plugin !== 'string') as Plugin[];
+
+      let languageImplementedPlugin: Plugin | undefined;
+      if (languageName) {
+        languageImplementedPlugin = plugins
+          .filter((plugin) => plugin.languages?.some((language) => language.name === languageName))
+          .at(0);
+
+        if (!languageImplementedPlugin) {
+          throw new Error(
+            `There doesn't seem to be any plugin that supports ${languageName} formatting.`,
+          );
+        }
+      }
+
+      const customLanguageSupportedPlugins = languageImplementedPlugin
+        ? [languageImplementedPlugin]
+        : [];
+
       const firstFormattedText = await format(text, {
         ...options,
-        plugins: [],
+        plugins: customLanguageSupportedPlugins,
         endOfLine: 'lf',
       });
 
-      const ast = defaultParser.parse(firstFormattedText, options);
+      const ast = await defaultParser.parse(firstFormattedText, options);
       const classNameWrappedText = await parseLineByLineAndReplaceAsync({
         formattedText: firstFormattedText,
         ast,
@@ -39,7 +60,7 @@ function transformParser(
       try {
         secondFormattedText = await format(classNameWrappedText, {
           ...options,
-          plugins: [],
+          plugins: customLanguageSupportedPlugins,
           endOfLine: 'lf',
           rangeEnd: Infinity,
         });
@@ -49,8 +70,8 @@ function transformParser(
         );
       }
 
-      if (parserName === 'vue') {
-        const secondAst = defaultParser.parse(secondFormattedText, options);
+      if (parserName === 'vue' || parserName === 'astro') {
+        const secondAst = await defaultParser.parse(secondFormattedText, options);
         const classNameSecondWrappedText = await parseLineByLineAndReplaceAsync({
           formattedText: secondFormattedText,
           ast: secondAst,
@@ -80,4 +101,5 @@ export const parsers: { [parserName: string]: Parser } = {
   babel: transformParser('babel', babelParsers.babel),
   typescript: transformParser('typescript', typescriptParsers.typescript),
   vue: transformParser('vue', htmlParsers.vue),
+  astro: transformParser('astro', markdownParsers.mdx, 'astro'),
 };

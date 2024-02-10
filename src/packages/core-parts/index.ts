@@ -1,8 +1,10 @@
-import { findTargetClassNameNodes, findTargetClassNameNodesForVue } from './finder';
+import {
+  findTargetClassNameNodes,
+  findTargetClassNameNodesForVue,
+  findTargetClassNameNodesForMdx,
+} from './finder';
 import type { Dict, ClassNameNode, NarrowedParserOptions } from './shared';
-import { ClassNameType } from './shared';
-
-const EOL = '\n';
+import { EOL, ClassNameType } from './shared';
 
 /**
  * placeholder
@@ -205,10 +207,19 @@ export function parseLineByLineAndReplace({
   const indentUnit = options.useTabs ? '\t' : ' '.repeat(options.tabWidth);
 
   let targetClassNameNodes: ClassNameNode[] = [];
-  if (options.parser === 'vue') {
-    targetClassNameNodes = findTargetClassNameNodesForVue(ast, options, addon);
-  } else {
-    targetClassNameNodes = findTargetClassNameNodes(ast, options);
+  switch (options.parser) {
+    case 'astro': {
+      targetClassNameNodes = findTargetClassNameNodesForMdx(ast, options, addon);
+      break;
+    }
+    case 'vue': {
+      targetClassNameNodes = findTargetClassNameNodesForVue(ast, options, addon);
+      break;
+    }
+    default: {
+      targetClassNameNodes = findTargetClassNameNodes(ast, options);
+      break;
+    }
   }
 
   const lineNodes = parseLineByLine(formattedText, indentUnit);
@@ -336,10 +347,19 @@ export async function parseLineByLineAndReplaceAsync({
   const indentUnit = options.useTabs ? '\t' : ' '.repeat(options.tabWidth);
 
   let targetClassNameNodes: ClassNameNode[] = [];
-  if (options.parser === 'vue') {
-    targetClassNameNodes = findTargetClassNameNodesForVue(ast, options, addon);
-  } else {
-    targetClassNameNodes = findTargetClassNameNodes(ast, options);
+  switch (options.parser) {
+    case 'astro': {
+      targetClassNameNodes = findTargetClassNameNodesForMdx(ast, options, addon);
+      break;
+    }
+    case 'vue': {
+      targetClassNameNodes = findTargetClassNameNodesForVue(ast, options, addon);
+      break;
+    }
+    default: {
+      targetClassNameNodes = findTargetClassNameNodes(ast, options);
+      break;
+    }
   }
 
   const lineNodes = parseLineByLine(formattedText, indentUnit);
