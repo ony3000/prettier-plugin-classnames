@@ -70,5 +70,5 @@ export type NarrowedParserOptions = {
   parser: string;
   customAttributes: string[];
   customFunctions: string[];
-  endingPosition: 'relative' | 'absolute';
+  endingPosition: 'relative' | 'absolute' | 'absolute-with-indent';
 };
