@@ -32,6 +32,10 @@ export enum ClassNameType {
    */
   CTL,
   /**
+   * Template literal starting on the same line as the attribute
+   */
+  TLSL,
+  /**
    * Template literal as object property
    */
   TLOP,

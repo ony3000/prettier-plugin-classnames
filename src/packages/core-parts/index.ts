@@ -40,7 +40,7 @@ function getExtraIndentLevel(type: ClassNameType) {
       ClassNameType.AOL,
       ClassNameType.SLSL,
       ClassNameType.SLTO,
-      ClassNameType.CTL,
+      ClassNameType.TLSL,
       ClassNameType.TLTO,
     ].includes(type)
   ) {
@@ -66,6 +66,7 @@ function getSomeKindOfQuotes(
           ClassNameType.FA,
           ClassNameType.SLSL,
           ClassNameType.CTL,
+          ClassNameType.TLSL,
           ClassNameType.TLOP,
           ClassNameType.TLTO,
         ].includes(type)
@@ -123,9 +124,19 @@ function replaceClassName({
         return formattedPrevText;
       }
 
+      const isStartingPositionRelative = options.endingPosition !== 'absolute';
+      const isEndingPositionAbsolute = options.endingPosition !== 'relative';
+      const isOutputIdeal = isStartingPositionRelative && isEndingPositionAbsolute;
+
+      const { indentLevel: baseIndentLevel } = lineNodes[startLineIndex];
+      const extraIndentLevel = getExtraIndentLevel(type);
+      const multiLineIndentLevel = isStartingPositionRelative
+        ? baseIndentLevel + extraIndentLevel
+        : 0;
+
       const classNameBase = formattedPrevText.slice(rangeStart + 1, rangeEnd - 1);
 
-      // preprocess (1)
+      // preprocess (first)
       const [leadingSpace, classNameWithoutSpacesAtBothEnds, trailingSpace] =
         replaceSpacesAtBothEnds(classNameBase);
 
@@ -133,37 +144,60 @@ function replaceClassName({
         .split(EOL)
         .slice(0, startLineIndex)
         .reduce((textLength, line) => textLength + line.length + EOL.length, 0);
-      const padLength = rangeStart + 1 - totalTextLengthUptoPrevLine;
+      const firstLinePadLength = rangeStart + 1 - totalTextLengthUptoPrevLine;
 
-      // preprocess (2)
-      const classNameWithPadding = `${PH.repeat(
-        options.endingPosition === 'absolute' ? padLength : 0,
+      // preprocess (first+1)
+      const classNameWithFirstLinePadding = `${PH.repeat(
+        isEndingPositionAbsolute ? firstLinePadLength : 0,
       )}${classNameWithoutSpacesAtBothEnds}`;
 
-      const formattedClassName = format(classNameWithPadding, {
-        ...options,
-        parser: 'html',
-        plugins: [],
-        rangeStart: 0,
-        rangeEnd: Infinity,
-        endOfLine: 'lf',
-      }).trimEnd();
+      const formattedClassName = ((cn: string) => {
+        function recursion(input: string): string {
+          const formatted = format(input, {
+            ...options,
+            parser: 'html',
+            plugins: [],
+            rangeStart: 0,
+            rangeEnd: Infinity,
+            endOfLine: 'lf',
+          }).trimEnd();
 
-      // postprocess (1)
+          if (!isOutputIdeal) {
+            return formatted;
+          }
+
+          const [firstLine, ...rest] = formatted.split(EOL);
+
+          if (rest.length === 0) {
+            return firstLine;
+          }
+
+          const multiLinePadLength = indentUnit.repeat(multiLineIndentLevel).length;
+
+          // preprocess (n)
+          const classNameWithMultiLinePadding = `${PH.repeat(multiLinePadLength)}${rest.join(EOL)}`;
+
+          const recursivelyFormatted = recursion(classNameWithMultiLinePadding);
+
+          // postprocess (n)
+          const classNameWithoutMultiLinePadding = recursivelyFormatted.slice(multiLinePadLength);
+
+          return `${firstLine}${EOL}${classNameWithoutMultiLinePadding}`;
+        }
+
+        return recursion(cn);
+      })(classNameWithFirstLinePadding);
+
+      // postprocess (last-1)
       const classNameWithoutPadding = formattedClassName.slice(
-        options.endingPosition === 'absolute' ? padLength : 0,
+        isEndingPositionAbsolute ? firstLinePadLength : 0,
       );
 
-      // postprocess (2)
+      // postprocess (last)
       const classNameWithOriginalSpaces = `${leadingSpace}${classNameWithoutPadding.slice(
         leadingSpace.length,
         -trailingSpace.length || undefined,
       )}${trailingSpace}`;
-
-      const { indentLevel: baseIndentLevel } = lineNodes[startLineIndex];
-      const extraIndentLevel = getExtraIndentLevel(type);
-      const multiLineIndentLevel =
-        options.endingPosition === 'absolute' ? 0 : baseIndentLevel + extraIndentLevel;
 
       const isMultiLineClassName = classNameWithOriginalSpaces.split(EOL).length > 1;
       const [quoteStart, quoteEnd] = getSomeKindOfQuotes(
@@ -261,9 +295,20 @@ async function replaceClassNameAsync({
       }
 
       const formattedPrevText = await formattedPrevTextPromise;
+
+      const isStartingPositionRelative = options.endingPosition !== 'absolute';
+      const isEndingPositionAbsolute = options.endingPosition !== 'relative';
+      const isOutputIdeal = isStartingPositionRelative && isEndingPositionAbsolute;
+
+      const { indentLevel: baseIndentLevel } = lineNodes[startLineIndex];
+      const extraIndentLevel = getExtraIndentLevel(type);
+      const multiLineIndentLevel = isStartingPositionRelative
+        ? baseIndentLevel + extraIndentLevel
+        : 0;
+
       const classNameBase = formattedPrevText.slice(rangeStart + 1, rangeEnd - 1);
 
-      // preprocess (1)
+      // preprocess (first)
       const [leadingSpace, classNameWithoutSpacesAtBothEnds, trailingSpace] =
         replaceSpacesAtBothEnds(classNameBase);
 
@@ -271,39 +316,62 @@ async function replaceClassNameAsync({
         .split(EOL)
         .slice(0, startLineIndex)
         .reduce((textLength, line) => textLength + line.length + EOL.length, 0);
-      const padLength = rangeStart + 1 - totalTextLengthUptoPrevLine;
+      const firstLinePadLength = rangeStart + 1 - totalTextLengthUptoPrevLine;
 
-      // preprocess (2)
-      const classNameWithPadding = `${PH.repeat(
-        options.endingPosition === 'absolute' ? padLength : 0,
+      // preprocess (first+1)
+      const classNameWithFirstLinePadding = `${PH.repeat(
+        isEndingPositionAbsolute ? firstLinePadLength : 0,
       )}${classNameWithoutSpacesAtBothEnds}`;
 
-      const formattedClassName = (
-        await format(classNameWithPadding, {
-          ...options,
-          parser: 'html',
-          plugins: [],
-          rangeStart: 0,
-          rangeEnd: Infinity,
-          endOfLine: 'lf',
-        })
-      ).trimEnd();
+      const formattedClassName = await (async (cn: string) => {
+        async function recursion(input: string): Promise<string> {
+          const formatted = (
+            await format(input, {
+              ...options,
+              parser: 'html',
+              plugins: [],
+              rangeStart: 0,
+              rangeEnd: Infinity,
+              endOfLine: 'lf',
+            })
+          ).trimEnd();
 
-      // postprocess (1)
+          if (!isOutputIdeal) {
+            return formatted;
+          }
+
+          const [firstLine, ...rest] = formatted.split(EOL);
+
+          if (rest.length === 0) {
+            return firstLine;
+          }
+
+          const multiLinePadLength = indentUnit.repeat(multiLineIndentLevel).length;
+
+          // preprocess (n)
+          const classNameWithMultiLinePadding = `${PH.repeat(multiLinePadLength)}${rest.join(EOL)}`;
+
+          const recursivelyFormatted = await recursion(classNameWithMultiLinePadding);
+
+          // postprocess (n)
+          const classNameWithoutMultiLinePadding = recursivelyFormatted.slice(multiLinePadLength);
+
+          return `${firstLine}${EOL}${classNameWithoutMultiLinePadding}`;
+        }
+
+        return recursion(cn);
+      })(classNameWithFirstLinePadding);
+
+      // postprocess (last-1)
       const classNameWithoutPadding = formattedClassName.slice(
-        options.endingPosition === 'absolute' ? padLength : 0,
+        isEndingPositionAbsolute ? firstLinePadLength : 0,
       );
 
-      // postprocess (2)
+      // postprocess (last)
       const classNameWithOriginalSpaces = `${leadingSpace}${classNameWithoutPadding.slice(
         leadingSpace.length,
         -trailingSpace.length || undefined,
       )}${trailingSpace}`;
-
-      const { indentLevel: baseIndentLevel } = lineNodes[startLineIndex];
-      const extraIndentLevel = getExtraIndentLevel(type);
-      const multiLineIndentLevel =
-        options.endingPosition === 'absolute' ? 0 : baseIndentLevel + extraIndentLevel;
 
       const isMultiLineClassName = classNameWithOriginalSpaces.split(EOL).length > 1;
       const [quoteStart, quoteEnd] = getSomeKindOfQuotes(

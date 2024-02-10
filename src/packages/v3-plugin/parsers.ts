@@ -74,27 +74,23 @@ function transformParser(
         );
       }
 
-      if (parserName === 'vue' || parserName === 'astro') {
-        const secondAst = await defaultParser.parse(secondFormattedText, options);
-        const classNameSecondWrappedText = await parseLineByLineAndReplaceAsync({
-          formattedText: secondFormattedText,
-          ast: secondAst,
-          // @ts-ignore
-          options,
-          format,
-          addon,
-          targetClassNameTypes: [ClassNameType.ASL, ClassNameType.AOL],
-        });
-
-        return {
-          type: 'FormattedText',
-          body: classNameSecondWrappedText,
-        };
-      }
+      const secondAst = await defaultParser.parse(secondFormattedText, options);
+      const classNameSecondWrappedText = await parseLineByLineAndReplaceAsync({
+        formattedText: secondFormattedText,
+        ast: secondAst,
+        // @ts-ignore
+        options,
+        format,
+        addon,
+        targetClassNameTypes:
+          parserName === 'vue' || parserName === 'astro'
+            ? [ClassNameType.ASL, ClassNameType.AOL]
+            : [ClassNameType.CTL, ClassNameType.TLSL],
+      });
 
       return {
         type: 'FormattedText',
-        body: secondFormattedText,
+        body: classNameSecondWrappedText,
       };
     },
     astFormat: 'classnames-ast',
