@@ -267,6 +267,40 @@ const fixtures: Fixture[] = [
     },
   },
   {
+    name: 'custom functions',
+    input: `
+<script setup lang="ts">
+import clsx from 'clsx'
+</script>
+
+<template>
+  <div :class="clsx('rounded-xl border border-zinc-400/30 bg-gray-100/50 px-4 py-4 dark:border-neutral-500/30 dark:bg-neutral-900/50')">
+    <slot></slot>
+  </div>
+</template>
+`,
+    output: `<script setup lang="ts">
+import clsx from "clsx";
+</script>
+
+<template>
+  <div
+    :class="
+      clsx(
+        \`rounded-xl border border-zinc-400/30 bg-gray-100/50 px-4 py-4
+        dark:border-neutral-500/30 dark:bg-neutral-900/50\`,
+      )
+    "
+  >
+    <slot></slot>
+  </div>
+</template>
+`,
+    options: {
+      customFunctions: ['clsx'],
+    },
+  },
+  {
     name: 'reversibility (1) - short enough template literal class name',
     input: `
 <template>
