@@ -113,10 +113,28 @@ This is the criterion for ending the class name on each line when replacing the 
   }
   ```
 
+- `absolute-with-indent` (first available in v0.6.0) example:
+
+  ```
+  --------------------------------------------------| printWidth=50
+  export function Callout({ children }) {
+    return (
+      <div
+        className="bg-gray-100/50 border
+          border-zinc-400/30 dark:bg-neutral-900/50
+          dark:border-neutral-500/30 px-4 py-4
+          rounded-xl"
+      >
+        {children}
+      </div>
+    );
+  }
+  ```
+
 <!-- prettier-ignore -->
 Default | CLI&nbsp;Override | API&nbsp;Override
 --- | --- | ---
-`"relative"` | `--ending-position <relative\|absolute>` | `endingPosition: "<relative\|absolute>"`
+`"relative"` | `--ending-position <relative\|absolute\|absolute-with-indent>` | `endingPosition: "<relative\|absolute\|absolute-with-indent>"`
 
 ## Compatibility with other Prettier plugins
 
