@@ -144,7 +144,11 @@ function replaceClassName({
         .split(EOL)
         .slice(0, startLineIndex)
         .reduce((textLength, line) => textLength + line.length + EOL.length, 0);
-      const firstLinePadLength = rangeStart + 1 - totalTextLengthUptoPrevLine;
+      const firstLinePadLength =
+        rangeStart +
+        1 -
+        totalTextLengthUptoPrevLine +
+        (indentUnit === '\t' ? 3 : 0) * baseIndentLevel;
 
       // preprocess (first+1)
       const classNameWithFirstLinePadding = `${PH.repeat(
@@ -315,7 +319,11 @@ async function replaceClassNameAsync({
         .split(EOL)
         .slice(0, startLineIndex)
         .reduce((textLength, line) => textLength + line.length + EOL.length, 0);
-      const firstLinePadLength = rangeStart + 1 - totalTextLengthUptoPrevLine;
+      const firstLinePadLength =
+        rangeStart +
+        1 -
+        totalTextLengthUptoPrevLine +
+        (indentUnit === '\t' ? 3 : 0) * baseIndentLevel;
 
       // preprocess (first+1)
       const classNameWithFirstLinePadding = `${PH.repeat(
