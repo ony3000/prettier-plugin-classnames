@@ -152,40 +152,39 @@ function replaceClassName({
       )}${classNameWithoutSpacesAtBothEnds}`;
 
       const formattedClassName = ((cn: string) => {
-        function recursion(input: string): string {
-          const formatted = format(input, {
-            ...options,
-            parser: 'html',
-            plugins: [],
-            rangeStart: 0,
-            rangeEnd: Infinity,
-            endOfLine: 'lf',
-          }).trimEnd();
+        const formatted = format(cn, {
+          ...options,
+          parser: 'html',
+          plugins: [],
+          rangeStart: 0,
+          rangeEnd: Infinity,
+          endOfLine: 'lf',
+        }).trimEnd();
 
-          if (!isOutputIdeal) {
-            return formatted;
-          }
-
-          const [firstLine, ...rest] = formatted.split(EOL);
-
-          if (rest.length === 0) {
-            return firstLine;
-          }
-
-          const multiLinePadLength = indentUnit.repeat(multiLineIndentLevel).length;
-
-          // preprocess (n)
-          const classNameWithMultiLinePadding = `${PH.repeat(multiLinePadLength)}${rest.join(EOL)}`;
-
-          const recursivelyFormatted = recursion(classNameWithMultiLinePadding);
-
-          // postprocess (n)
-          const classNameWithoutMultiLinePadding = recursivelyFormatted.slice(multiLinePadLength);
-
-          return `${firstLine}${EOL}${classNameWithoutMultiLinePadding}`;
+        if (!isOutputIdeal) {
+          return formatted;
         }
 
-        return recursion(cn);
+        const [firstLine, ...rest] = formatted.split(EOL);
+
+        if (rest.length === 0) {
+          return firstLine;
+        }
+
+        const multiLinePadLength =
+          (indentUnit === '\t' ? 4 : indentUnit.length) * multiLineIndentLevel;
+
+        const formattedRest = format(rest.join(EOL), {
+          ...options,
+          parser: 'html',
+          plugins: [],
+          rangeStart: 0,
+          rangeEnd: Infinity,
+          endOfLine: 'lf',
+          printWidth: options.printWidth - multiLinePadLength,
+        }).trimEnd();
+
+        return `${firstLine}${EOL}${formattedRest}`;
       })(classNameWithFirstLinePadding);
 
       // postprocess (last-1)
@@ -324,42 +323,43 @@ async function replaceClassNameAsync({
       )}${classNameWithoutSpacesAtBothEnds}`;
 
       const formattedClassName = await (async (cn: string) => {
-        async function recursion(input: string): Promise<string> {
-          const formatted = (
-            await format(input, {
-              ...options,
-              parser: 'html',
-              plugins: [],
-              rangeStart: 0,
-              rangeEnd: Infinity,
-              endOfLine: 'lf',
-            })
-          ).trimEnd();
+        const formatted = (
+          await format(cn, {
+            ...options,
+            parser: 'html',
+            plugins: [],
+            rangeStart: 0,
+            rangeEnd: Infinity,
+            endOfLine: 'lf',
+          })
+        ).trimEnd();
 
-          if (!isOutputIdeal) {
-            return formatted;
-          }
-
-          const [firstLine, ...rest] = formatted.split(EOL);
-
-          if (rest.length === 0) {
-            return firstLine;
-          }
-
-          const multiLinePadLength = indentUnit.repeat(multiLineIndentLevel).length;
-
-          // preprocess (n)
-          const classNameWithMultiLinePadding = `${PH.repeat(multiLinePadLength)}${rest.join(EOL)}`;
-
-          const recursivelyFormatted = await recursion(classNameWithMultiLinePadding);
-
-          // postprocess (n)
-          const classNameWithoutMultiLinePadding = recursivelyFormatted.slice(multiLinePadLength);
-
-          return `${firstLine}${EOL}${classNameWithoutMultiLinePadding}`;
+        if (!isOutputIdeal) {
+          return formatted;
         }
 
-        return recursion(cn);
+        const [firstLine, ...rest] = formatted.split(EOL);
+
+        if (rest.length === 0) {
+          return firstLine;
+        }
+
+        const multiLinePadLength =
+          (indentUnit === '\t' ? 4 : indentUnit.length) * multiLineIndentLevel;
+
+        const formattedRest = (
+          await format(rest.join(EOL), {
+            ...options,
+            parser: 'html',
+            plugins: [],
+            rangeStart: 0,
+            rangeEnd: Infinity,
+            endOfLine: 'lf',
+            printWidth: options.printWidth - multiLinePadLength,
+          })
+        ).trimEnd();
+
+        return `${firstLine}${EOL}${formattedRest}`;
       })(classNameWithFirstLinePadding);
 
       // postprocess (last-1)

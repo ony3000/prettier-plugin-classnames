@@ -68,6 +68,7 @@ export type ClassNameNode = {
 };
 
 export type NarrowedParserOptions = {
+  printWidth: number;
   tabWidth: number;
   useTabs: boolean;
   singleQuote: boolean;
