@@ -32,6 +32,10 @@ export enum ClassNameType {
    */
   CTL,
   /**
+   * Template literal starting on the same line as the attribute
+   */
+  TLSL,
+  /**
    * Template literal as object property
    */
   TLOP,
@@ -64,11 +68,12 @@ export type ClassNameNode = {
 };
 
 export type NarrowedParserOptions = {
+  printWidth: number;
   tabWidth: number;
   useTabs: boolean;
   singleQuote: boolean;
   parser: string;
   customAttributes: string[];
   customFunctions: string[];
-  endingPosition: 'relative' | 'absolute';
+  endingPosition: 'relative' | 'absolute' | 'absolute-with-indent';
 };

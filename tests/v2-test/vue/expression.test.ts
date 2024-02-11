@@ -456,6 +456,55 @@ dark:border-neutral-500/30 dark:bg-neutral-900/50\`]: true,
       endingPosition: 'absolute',
     },
   },
+  {
+    name: 'ending position (4)',
+    input: `
+<template>
+  <div :class="'rounded-xl border border-zinc-400/30 bg-gray-100/50 px-4 py-4 dark:border-neutral-500/30 dark:bg-neutral-900/50'">
+    <slot></slot>
+  </div>
+</template>
+`,
+    output: `<template>
+  <div
+    :class="\`rounded-xl border border-zinc-400/30
+      bg-gray-100/50 px-4 py-4 dark:border-neutral-500/30
+      dark:bg-neutral-900/50\`"
+  >
+    <slot></slot>
+  </div>
+</template>
+`,
+    options: {
+      printWidth: 60,
+      endingPosition: 'absolute-with-indent',
+    },
+  },
+  {
+    name: 'ending position (5) - useTabs: true',
+    input: `
+<template>
+  <div :class="'rounded-xl border border-zinc-400/30 bg-gray-100/50 px-4 py-4 dark:border-neutral-500/30 dark:bg-neutral-900/50'">
+    <slot></slot>
+  </div>
+</template>
+`,
+    output: `<template>
+\t<div
+\t\t:class="\`rounded-xl border border-zinc-400/30 bg-gray-100/50
+\t\t\tpx-4 py-4 dark:border-neutral-500/30
+\t\t\tdark:bg-neutral-900/50\`"
+\t>
+\t\t<slot></slot>
+\t</div>
+</template>
+`,
+    options: {
+      printWidth: 70,
+      useTabs: true,
+      endingPosition: 'absolute-with-indent',
+    },
+  },
 ];
 
 describe('vue/expression', () => {

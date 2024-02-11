@@ -209,22 +209,40 @@ export function findTargetClassNameNodes(
       case 'JSXExpressionContainer': {
         nonCommentNodes.push(currentASTNode);
 
-        classNameNodes.forEach((classNameNode) => {
-          const [classNameRangeStart, classNameRangeEnd] = classNameNode.range;
+        if (
+          isTypeof(
+            node,
+            z.object({
+              loc: z.object({
+                start: z.object({
+                  line: z.number(),
+                }),
+              }),
+            }),
+          )
+        ) {
+          const currentNodeStartLineIndex = node.loc.start.line - 1;
 
-          if (
-            currentNodeRangeStart <= classNameRangeStart &&
-            classNameRangeEnd <= currentNodeRangeEnd
-          ) {
-            if (classNameNode.type === ClassNameType.USL) {
-              // eslint-disable-next-line no-param-reassign
-              classNameNode.type = ClassNameType.CSL;
-            } else if (classNameNode.type === ClassNameType.UTL) {
-              // eslint-disable-next-line no-param-reassign
-              classNameNode.type = ClassNameType.CTL;
+          classNameNodes.forEach((classNameNode) => {
+            const [classNameRangeStart, classNameRangeEnd] = classNameNode.range;
+
+            if (
+              currentNodeRangeStart <= classNameRangeStart &&
+              classNameRangeEnd <= currentNodeRangeEnd
+            ) {
+              if (classNameNode.type === ClassNameType.USL) {
+                // eslint-disable-next-line no-param-reassign
+                classNameNode.type = ClassNameType.CSL;
+              } else if (classNameNode.type === ClassNameType.UTL) {
+                // eslint-disable-next-line no-param-reassign
+                classNameNode.type =
+                  classNameNode.startLineIndex === currentNodeStartLineIndex
+                    ? ClassNameType.TLSL
+                    : ClassNameType.CTL;
+              }
             }
-          }
-        });
+          });
+        }
         break;
       }
       case 'ObjectProperty':

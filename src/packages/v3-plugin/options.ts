@@ -38,6 +38,12 @@ export const options: SupportOptions = {
         value: 'absolute',
         description: 'Each line ends at a `printWidth` distance from the start of the line.',
       },
+      {
+        since: '0.6.0',
+        value: 'absolute-with-indent',
+        description:
+          'Basically the same as the `absolute` option, but indentation respects the `relative` option.',
+      },
     ],
   },
 };
