@@ -11,7 +11,10 @@
     "class",
     "tailwindcss"
   ],
-  "repository": "https://github.com/ony3000/prettier-plugin-classnames",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ony3000/prettier-plugin-classnames.git"
+  },
   "license": "MIT",
   "author": "Hyeonjong <nianelo4@gmail.com>",
   "main": "./dist/index.js",
