@@ -137,11 +137,13 @@ function replaceClassName({
         .split(EOL)
         .slice(0, startLineIndex)
         .reduce((textLength, line) => textLength + line.length + EOL.length, 0);
+      const firstLineIndentLength = indentUnit.length * baseIndentLevel;
       const firstLinePadLength =
         rangeStart +
         1 -
-        totalTextLengthUptoPrevLine +
-        (indentUnit === '\t' ? 3 : 0) * baseIndentLevel;
+        totalTextLengthUptoPrevLine -
+        firstLineIndentLength +
+        (indentUnit === TAB ? TAB_SIZE : indentUnit.length) * baseIndentLevel;
 
       // preprocess (first+1)
       const classNameWithFirstLinePadding = `${PH.repeat(
@@ -169,7 +171,7 @@ function replaceClassName({
         }
 
         const multiLinePadLength =
-          (indentUnit === '\t' ? 4 : indentUnit.length) * multiLineIndentLevel;
+          (indentUnit === TAB ? TAB_SIZE : indentUnit.length) * multiLineIndentLevel;
 
         const formattedRest = format(rest.join(EOL), {
           ...options,
@@ -236,7 +238,7 @@ export function parseLineByLineAndReplace({
     return formattedText;
   }
 
-  const indentUnit = options.useTabs ? '\t' : ' '.repeat(options.tabWidth);
+  const indentUnit = options.useTabs ? TAB : SPACE.repeat(options.tabWidth);
 
   let targetClassNameNodes: ClassNameNode[] = [];
   switch (options.parser) {
@@ -312,11 +314,13 @@ async function replaceClassNameAsync({
         .split(EOL)
         .slice(0, startLineIndex)
         .reduce((textLength, line) => textLength + line.length + EOL.length, 0);
+      const firstLineIndentLength = indentUnit.length * baseIndentLevel;
       const firstLinePadLength =
         rangeStart +
         1 -
-        totalTextLengthUptoPrevLine +
-        (indentUnit === '\t' ? 3 : 0) * baseIndentLevel;
+        totalTextLengthUptoPrevLine -
+        firstLineIndentLength +
+        (indentUnit === TAB ? TAB_SIZE : indentUnit.length) * baseIndentLevel;
 
       // preprocess (first+1)
       const classNameWithFirstLinePadding = `${PH.repeat(
@@ -346,7 +350,7 @@ async function replaceClassNameAsync({
         }
 
         const multiLinePadLength =
-          (indentUnit === '\t' ? 4 : indentUnit.length) * multiLineIndentLevel;
+          (indentUnit === TAB ? TAB_SIZE : indentUnit.length) * multiLineIndentLevel;
 
         const formattedRest = (
           await format(rest.join(EOL), {
@@ -415,7 +419,7 @@ export async function parseLineByLineAndReplaceAsync({
     return formattedText;
   }
 
-  const indentUnit = options.useTabs ? '\t' : ' '.repeat(options.tabWidth);
+  const indentUnit = options.useTabs ? TAB : SPACE.repeat(options.tabWidth);
 
   let targetClassNameNodes: ClassNameNode[] = [];
   switch (options.parser) {
