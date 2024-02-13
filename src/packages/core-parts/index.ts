@@ -4,14 +4,7 @@ import {
   findTargetClassNameNodesForAstro,
 } from './finder';
 import type { Dict, ClassNameNode, NarrowedParserOptions } from './shared';
-import { ClassNameType } from './shared';
-
-const EOL = '\n';
-
-/**
- * placeholder
- */
-const PH = '_';
+import { EOL, PH, SPACE, TAB, TAB_SIZE, ClassNameType } from './shared';
 
 type LineNode = {
   indentLevel: number;

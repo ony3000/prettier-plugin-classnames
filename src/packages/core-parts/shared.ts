@@ -1,3 +1,28 @@
+/**
+ * end of line
+ */
+export const EOL = '\n';
+
+/**
+ * placeholder
+ */
+export const PH = '_';
+
+/**
+ * single space character
+ */
+export const SPACE = ' ';
+
+/**
+ * single tab character
+ */
+export const TAB = '\t';
+
+/**
+ * size of tab character as space
+ */
+export const TAB_SIZE = 4;
+
 export enum ClassNameType {
   /**
    * Attributes on the same line as the opening tag and enclosed in quotes
