@@ -57,7 +57,10 @@ function getSomeKindOfQuotes(
         parser === 'vue' &&
         [
           ClassNameType.FA,
+          ClassNameType.CSL,
           ClassNameType.SLSL,
+          ClassNameType.SLOP,
+          ClassNameType.SLTO,
           ClassNameType.CTL,
           ClassNameType.TLSL,
           ClassNameType.TLOP,
