@@ -406,6 +406,282 @@ import clsx from "clsx";
 `,
   },
   {
+    name: 'class name type checking (1) - short enough FA',
+    input: `
+<script setup lang="ts">
+const foo = classNames('rounded-xl border border-zinc-400/30 bg-gray-100/50 px-4 py-4');
+</script>
+
+<template>
+  <div :class="classNames('rounded-xl border border-zinc-400/30 bg-gray-100/50 px-4 py-4')">
+    <slot></slot>
+  </div>
+</template>
+`,
+    output: `<script setup lang="ts">
+const foo = classNames(
+  "rounded-xl border border-zinc-400/30 bg-gray-100/50 px-4 py-4",
+);
+</script>
+
+<template>
+  <div
+    :class="
+      classNames(
+        'rounded-xl border border-zinc-400/30 bg-gray-100/50 px-4 py-4',
+      )
+    "
+  >
+    <slot></slot>
+  </div>
+</template>
+`,
+  },
+  {
+    name: 'class name type checking (2) - short enough CSL',
+    input: `
+<script setup lang="ts">
+const foo = ['rounded-xl border border-zinc-400/30 bg-gray-100/50 px-4 py-4', 'rounded-xl border border-zinc-400/30 bg-gray-100/50 px-4 py-4'];
+</script>
+
+<template>
+  <div :class="['rounded-xl border border-zinc-400/30 bg-gray-100/50 px-4 py-4', 'rounded-xl border border-zinc-400/30 bg-gray-100/50 px-4 py-4']">
+    <slot></slot>
+  </div>
+</template>
+`,
+    output: `<script setup lang="ts">
+const foo = [
+  "rounded-xl border border-zinc-400/30 bg-gray-100/50 px-4 py-4",
+  "rounded-xl border border-zinc-400/30 bg-gray-100/50 px-4 py-4",
+];
+</script>
+
+<template>
+  <div
+    :class="[
+      'rounded-xl border border-zinc-400/30 bg-gray-100/50 px-4 py-4',
+      'rounded-xl border border-zinc-400/30 bg-gray-100/50 px-4 py-4',
+    ]"
+  >
+    <slot></slot>
+  </div>
+</template>
+`,
+  },
+  {
+    name: 'class name type checking (3) - short enough SLSL',
+    input: `
+<script setup lang="ts">
+const foo = ['rounded-xl border border-zinc-400/30 bg-gray-100/50 px-4 py-4'];
+</script>
+
+<template>
+  <div :class="['rounded-xl border border-zinc-400/30 bg-gray-100/50 px-4 py-4']">
+    <slot></slot>
+  </div>
+</template>
+`,
+    output: `<script setup lang="ts">
+const foo = ["rounded-xl border border-zinc-400/30 bg-gray-100/50 px-4 py-4"];
+</script>
+
+<template>
+  <div
+    :class="['rounded-xl border border-zinc-400/30 bg-gray-100/50 px-4 py-4']"
+  >
+    <slot></slot>
+  </div>
+</template>
+`,
+  },
+  {
+    name: 'class name type checking (4) - short enough SLOP',
+    input: `
+<script setup lang="ts">
+const foo = classNames({'rounded-xl border border-zinc-400/30 bg-gray-100/50 px-4 py-4': true});
+</script>
+
+<template>
+  <div :class="{'rounded-xl border border-zinc-400/30 bg-gray-100/50 px-4 py-4': true}">
+    <slot></slot>
+  </div>
+</template>
+`,
+    output: `<script setup lang="ts">
+const foo = classNames({
+  "rounded-xl border border-zinc-400/30 bg-gray-100/50 px-4 py-4": true,
+});
+</script>
+
+<template>
+  <div
+    :class="{
+      'rounded-xl border border-zinc-400/30 bg-gray-100/50 px-4 py-4': true,
+    }"
+  >
+    <slot></slot>
+  </div>
+</template>
+`,
+  },
+  {
+    name: 'class name type checking (5) - short enough SLTO',
+    input: `
+<script setup lang="ts">
+const foo = classNames([true ? 'rounded-xl border border-zinc-400/30 bg-gray-100/50 px-4 py-4' : 'rounded-xl border border-zinc-400/30 bg-gray-100/50 px-4 py-4']);
+</script>
+
+<template>
+  <div :class="[true ? 'rounded-xl border border-zinc-400/30 bg-gray-100/50 px-4 py-4' : 'rounded-xl border border-zinc-400/30 bg-gray-100/50 px-4 py-4']">
+    <slot></slot>
+  </div>
+</template>
+`,
+    output: `<script setup lang="ts">
+const foo = classNames([
+  true
+    ? "rounded-xl border border-zinc-400/30 bg-gray-100/50 px-4 py-4"
+    : "rounded-xl border border-zinc-400/30 bg-gray-100/50 px-4 py-4",
+]);
+</script>
+
+<template>
+  <div
+    :class="[
+      true
+        ? 'rounded-xl border border-zinc-400/30 bg-gray-100/50 px-4 py-4'
+        : 'rounded-xl border border-zinc-400/30 bg-gray-100/50 px-4 py-4',
+    ]"
+  >
+    <slot></slot>
+  </div>
+</template>
+`,
+  },
+  {
+    name: 'class name type checking (6) - short enough CTL',
+    input: `
+<script setup lang="ts">
+const foo = [\`rounded-xl border border-zinc-400/30 bg-gray-100/50 px-4 py-4\`, \`rounded-xl border border-zinc-400/30 bg-gray-100/50 px-4 py-4\`];
+</script>
+
+<template>
+  <div :class="[\`rounded-xl border border-zinc-400/30 bg-gray-100/50 px-4 py-4\`, \`rounded-xl border border-zinc-400/30 bg-gray-100/50 px-4 py-4\`]">
+    <slot></slot>
+  </div>
+</template>
+`,
+    output: `<script setup lang="ts">
+const foo = [
+  \`rounded-xl border border-zinc-400/30 bg-gray-100/50 px-4 py-4\`,
+  \`rounded-xl border border-zinc-400/30 bg-gray-100/50 px-4 py-4\`,
+];
+</script>
+
+<template>
+  <div
+    :class="[
+      'rounded-xl border border-zinc-400/30 bg-gray-100/50 px-4 py-4',
+      'rounded-xl border border-zinc-400/30 bg-gray-100/50 px-4 py-4',
+    ]"
+  >
+    <slot></slot>
+  </div>
+</template>
+`,
+  },
+  {
+    name: 'class name type checking (7) - short enough TLSL',
+    input: `
+<script setup lang="ts">
+const foo = [\`rounded-xl border border-zinc-400/30 bg-gray-100/50 px-4 py-4\`];
+</script>
+
+<template>
+  <div :class="[\`rounded-xl border border-zinc-400/30 bg-gray-100/50 px-4 py-4\`]">
+    <slot></slot>
+  </div>
+</template>
+`,
+    output: `<script setup lang="ts">
+const foo = [\`rounded-xl border border-zinc-400/30 bg-gray-100/50 px-4 py-4\`];
+</script>
+
+<template>
+  <div
+    :class="['rounded-xl border border-zinc-400/30 bg-gray-100/50 px-4 py-4']"
+  >
+    <slot></slot>
+  </div>
+</template>
+`,
+  },
+  {
+    name: 'class name type checking (8) - short enough TLOP',
+    input: `
+<script setup lang="ts">
+const foo = classNames({[\`rounded-xl border border-zinc-400/30 bg-gray-100/50 px-4 py-4\`]: true});
+</script>
+
+<template>
+  <div :class="{[\`rounded-xl border border-zinc-400/30 bg-gray-100/50 px-4 py-4\`]: true}">
+    <slot></slot>
+  </div>
+</template>
+`,
+    output: `<script setup lang="ts">
+const foo = classNames({
+  "rounded-xl border border-zinc-400/30 bg-gray-100/50 px-4 py-4": true,
+});
+</script>
+
+<template>
+  <div
+    :class="{
+      'rounded-xl border border-zinc-400/30 bg-gray-100/50 px-4 py-4': true,
+    }"
+  >
+    <slot></slot>
+  </div>
+</template>
+`,
+  },
+  {
+    name: 'class name type checking (9) - short enough TLTO',
+    input: `
+<script setup lang="ts">
+const foo = classNames([true ? \`rounded-xl border border-zinc-400/30 bg-gray-100/50 px-4 py-4\` : \`rounded-xl border border-zinc-400/30 bg-gray-100/50 px-4 py-4\`]);
+</script>
+
+<template>
+  <div :class="[true ? \`rounded-xl border border-zinc-400/30 bg-gray-100/50 px-4 py-4\` : \`rounded-xl border border-zinc-400/30 bg-gray-100/50 px-4 py-4\`]">
+    <slot></slot>
+  </div>
+</template>
+`,
+    output: `<script setup lang="ts">
+const foo = classNames([
+  true
+    ? "rounded-xl border border-zinc-400/30 bg-gray-100/50 px-4 py-4"
+    : "rounded-xl border border-zinc-400/30 bg-gray-100/50 px-4 py-4",
+]);
+</script>
+
+<template>
+  <div
+    :class="[
+      true
+        ? 'rounded-xl border border-zinc-400/30 bg-gray-100/50 px-4 py-4'
+        : 'rounded-xl border border-zinc-400/30 bg-gray-100/50 px-4 py-4',
+    ]"
+  >
+    <slot></slot>
+  </div>
+</template>
+`,
+  },
+  {
     name: 'ending position (1)',
     input: `
 <template>
