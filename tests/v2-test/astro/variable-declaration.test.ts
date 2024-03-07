@@ -46,7 +46,7 @@ const combination = classNames(
 `,
   },
   {
-    name: 'issue #39 - nested expression in template literal',
+    name: 'issue #39 (1) - nested expression in template literal',
     input: `
 ---
 import classNames from 'classnames'
@@ -70,6 +70,58 @@ const combination = classNames(
 );
 ---
 `,
+  },
+  {
+    name: 'issue #39 (2) - double nested expression in template literal',
+    input: `
+---
+const combination = classNames(
+    \`relative cursor-default select-none py-2 pl-10 pr-4 \${
+        active
+            ? \`bg-teal-600 \${active ? "bg-teal-600 text-white" : "text-gray-900"} text-white\`
+            : "text-gray-900"
+    }\`
+)
+---
+`,
+    output: `---
+const combination = classNames(
+  \`relative cursor-default select-none py-2 pl-10 pr-4 \${
+    active
+      ? \`bg-teal-600 \${active ? "bg-teal-600 text-white" : "text-gray-900"} text-white\`
+      : "text-gray-900"
+  }\`,
+);
+---
+`,
+  },
+  {
+    name: 'issue #39 (3) - double nested expression in template literal',
+    input: `
+---
+const combination = classNames(
+    \`relative cursor-default select-none py-2 pl-10 pr-4 \${
+        active
+            ? \`bg-teal-600 \${active ? "bg-teal-600 text-white" : "text-gray-900"} text-white\`
+            : "text-gray-900"
+    }\`
+)
+---
+`,
+    output: `---
+const combination = classNames(
+  \`relative cursor-default select-none py-2 pl-10 pr-4 \${
+    active
+      ? \`bg-teal-600 \${active ? "bg-teal-600 text-white" : "text-gray-900"}
+        text-white\`
+      : "text-gray-900"
+  }\`,
+);
+---
+`,
+    options: {
+      endingPosition: 'absolute-with-indent',
+    },
   },
 ];
 
