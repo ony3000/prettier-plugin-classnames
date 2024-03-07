@@ -1,3 +1,5 @@
+import { createHash } from 'node:crypto';
+
 import {
   findTargetClassNameNodes,
   findTargetClassNameNodesForVue,
@@ -97,6 +99,27 @@ function replaceSpacesAtBothEnds(className: string): [string, string, string] {
   return [leadingSpace, replacedClassName, trailingSpace];
 }
 
+function sha1(input: string): string {
+  return createHash('sha1').update(input).digest('hex');
+}
+
+function freezeString(input: string): string {
+  const charCodeForAlpha = 945;
+  const greekPlaceholder = [...Array(16)].map((_, index) =>
+    String.fromCharCode(charCodeForAlpha + index),
+  );
+
+  const hash = sha1(input);
+  const prefix = hash
+    .slice(0, Math.min(input.length, hash.length))
+    .split('')
+    .map((hex) => greekPlaceholder[Number.parseInt(hex, 16)])
+    .join('');
+  const rest = PH.repeat(Math.max(0, input.length - hash.length));
+
+  return `${prefix}${rest}`;
+}
+
 function replaceClassName({
   formattedText,
   indentUnit,
@@ -114,7 +137,9 @@ function replaceClassName({
   format: (source: string, options?: any) => string;
   targetClassNameTypes?: ClassNameType[];
 }): string {
-  const mutableFormattedText = targetClassNameNodes.reduce(
+  const freezer: { from: string; to: string }[] = [];
+
+  const icedFormattedText = targetClassNameNodes.reduce(
     (formattedPrevText, { type, range: [rangeStart, rangeEnd], startLineIndex }) => {
       if (targetClassNameTypes && !targetClassNameTypes.includes(type)) {
         return formattedPrevText;
@@ -208,6 +233,20 @@ function replaceClassName({
       );
       const substitute = `${quoteStart}${classNameWithOriginalSpaces}${quoteEnd}`
         .split(EOL)
+        .map((raw) => {
+          if (quoteStart === '"' || quoteStart === "'") {
+            const frozen = freezeString(raw);
+
+            freezer.push({
+              from: frozen,
+              to: raw,
+            });
+
+            return frozen;
+          }
+
+          return raw;
+        })
         .join(`${EOL}${indentUnit.repeat(multiLineIndentLevel)}`);
       const sliceOffset = !isMultiLineClassName && type === ClassNameType.TLOP ? 1 : 0;
 
@@ -219,7 +258,7 @@ function replaceClassName({
     formattedText,
   );
 
-  return mutableFormattedText;
+  return freezer.reduce((prevText, { from, to }) => prevText.replace(from, to), icedFormattedText);
 }
 
 export function parseLineByLineAndReplace({
@@ -289,7 +328,9 @@ async function replaceClassNameAsync({
   format: (source: string, options?: any) => Promise<string>;
   targetClassNameTypes?: ClassNameType[];
 }): Promise<string> {
-  const mutableFormattedText = await targetClassNameNodes.reduce(
+  const freezer: { from: string; to: string }[] = [];
+
+  const icedFormattedText = await targetClassNameNodes.reduce(
     async (formattedPrevTextPromise, { type, range: [rangeStart, rangeEnd], startLineIndex }) => {
       if (targetClassNameTypes && !targetClassNameTypes.includes(type)) {
         return formattedPrevTextPromise;
@@ -389,6 +430,20 @@ async function replaceClassNameAsync({
       );
       const substitute = `${quoteStart}${classNameWithOriginalSpaces}${quoteEnd}`
         .split(EOL)
+        .map((raw) => {
+          if (quoteStart === '"' || quoteStart === "'") {
+            const frozen = freezeString(raw);
+
+            freezer.push({
+              from: frozen,
+              to: raw,
+            });
+
+            return frozen;
+          }
+
+          return raw;
+        })
         .join(`${EOL}${indentUnit.repeat(multiLineIndentLevel)}`);
       const sliceOffset = !isMultiLineClassName && type === ClassNameType.TLOP ? 1 : 0;
 
@@ -400,7 +455,7 @@ async function replaceClassNameAsync({
     Promise.resolve(formattedText),
   );
 
-  return mutableFormattedText;
+  return freezer.reduce((prevText, { from, to }) => prevText.replace(from, to), icedFormattedText);
 }
 
 export async function parseLineByLineAndReplaceAsync({
