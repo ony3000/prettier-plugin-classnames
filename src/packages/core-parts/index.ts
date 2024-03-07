@@ -138,12 +138,19 @@ function replaceClassName({
   targetClassNameTypes?: ClassNameType[];
 }): string {
   const freezer: { from: string; to: string }[] = [];
+  const rangeCorrectionValues = [...Array(targetClassNameNodes.length)].map(() => 0);
 
   const icedFormattedText = targetClassNameNodes.reduce(
-    (formattedPrevText, { type, range: [rangeStart, rangeEnd], startLineIndex }) => {
+    (
+      formattedPrevText,
+      { type, range: [rangeStart, rangeEnd], startLineIndex },
+      classNameNodeIndex,
+    ) => {
       if (targetClassNameTypes && !targetClassNameTypes.includes(type)) {
         return formattedPrevText;
       }
+
+      const correctedRangeEnd = rangeEnd - rangeCorrectionValues[classNameNodeIndex];
 
       const isStartingPositionRelative = options.endingPosition !== 'absolute';
       const isEndingPositionAbsolute = options.endingPosition !== 'relative';
@@ -155,7 +162,7 @@ function replaceClassName({
         ? baseIndentLevel + extraIndentLevel
         : 0;
 
-      const classNameBase = formattedPrevText.slice(rangeStart + 1, rangeEnd - 1);
+      const classNameBase = formattedPrevText.slice(rangeStart + 1, correctedRangeEnd - 1);
 
       // preprocess (first)
       const [leadingSpace, classNameWithoutSpacesAtBothEnds, trailingSpace] =
@@ -234,31 +241,45 @@ function replaceClassName({
       const substitute = `${quoteStart}${classNameWithOriginalSpaces}${quoteEnd}`
         .split(EOL)
         .map((raw) => {
-          if (quoteStart === '"' || quoteStart === "'") {
-            const frozen = freezeString(raw);
+          const frozen = freezeString(raw);
 
-            freezer.push({
-              from: frozen,
-              to: raw,
-            });
+          freezer.push({
+            from: frozen,
+            to: raw,
+          });
 
-            return frozen;
-          }
-
-          return raw;
+          return frozen;
         })
         .join(`${EOL}${indentUnit.repeat(multiLineIndentLevel)}`);
-      const sliceOffset = !isMultiLineClassName && type === ClassNameType.TLOP ? 1 : 0;
 
-      return `${formattedPrevText.slice(
+      const sliceOffset = !isMultiLineClassName && type === ClassNameType.TLOP ? 1 : 0;
+      const classNamePartialWrappedText = `${formattedPrevText.slice(
         0,
         rangeStart - sliceOffset,
-      )}${substitute}${formattedPrevText.slice(rangeEnd + sliceOffset)}`;
+      )}${substitute}${formattedPrevText.slice(correctedRangeEnd + sliceOffset)}`;
+
+      rangeCorrectionValues.forEach((_, rangeCorrectionIndex, array) => {
+        if (rangeCorrectionIndex <= classNameNodeIndex) {
+          return;
+        }
+
+        const [nthNodeRangeStart, nthNodeRangeEnd] =
+          targetClassNameNodes[rangeCorrectionIndex].range;
+
+        if (nthNodeRangeStart < rangeStart && rangeEnd < nthNodeRangeEnd) {
+          array[rangeCorrectionIndex] += correctedRangeEnd - rangeStart - substitute.length;
+        }
+      });
+
+      return classNamePartialWrappedText;
     },
     formattedText,
   );
 
-  return freezer.reduce((prevText, { from, to }) => prevText.replace(from, to), icedFormattedText);
+  return freezer.reduceRight(
+    (prevText, { from, to }) => prevText.replace(from, to),
+    icedFormattedText,
+  );
 }
 
 export function parseLineByLineAndReplace({
@@ -329,14 +350,21 @@ async function replaceClassNameAsync({
   targetClassNameTypes?: ClassNameType[];
 }): Promise<string> {
   const freezer: { from: string; to: string }[] = [];
+  const rangeCorrectionValues = [...Array(targetClassNameNodes.length)].map(() => 0);
 
   const icedFormattedText = await targetClassNameNodes.reduce(
-    async (formattedPrevTextPromise, { type, range: [rangeStart, rangeEnd], startLineIndex }) => {
+    async (
+      formattedPrevTextPromise,
+      { type, range: [rangeStart, rangeEnd], startLineIndex },
+      classNameNodeIndex,
+    ) => {
       if (targetClassNameTypes && !targetClassNameTypes.includes(type)) {
         return formattedPrevTextPromise;
       }
 
       const formattedPrevText = await formattedPrevTextPromise;
+
+      const correctedRangeEnd = rangeEnd - rangeCorrectionValues[classNameNodeIndex];
 
       const isStartingPositionRelative = options.endingPosition !== 'absolute';
       const isEndingPositionAbsolute = options.endingPosition !== 'relative';
@@ -348,7 +376,7 @@ async function replaceClassNameAsync({
         ? baseIndentLevel + extraIndentLevel
         : 0;
 
-      const classNameBase = formattedPrevText.slice(rangeStart + 1, rangeEnd - 1);
+      const classNameBase = formattedPrevText.slice(rangeStart + 1, correctedRangeEnd - 1);
 
       // preprocess (first)
       const [leadingSpace, classNameWithoutSpacesAtBothEnds, trailingSpace] =
@@ -431,31 +459,45 @@ async function replaceClassNameAsync({
       const substitute = `${quoteStart}${classNameWithOriginalSpaces}${quoteEnd}`
         .split(EOL)
         .map((raw) => {
-          if (quoteStart === '"' || quoteStart === "'") {
-            const frozen = freezeString(raw);
+          const frozen = freezeString(raw);
 
-            freezer.push({
-              from: frozen,
-              to: raw,
-            });
+          freezer.push({
+            from: frozen,
+            to: raw,
+          });
 
-            return frozen;
-          }
-
-          return raw;
+          return frozen;
         })
         .join(`${EOL}${indentUnit.repeat(multiLineIndentLevel)}`);
-      const sliceOffset = !isMultiLineClassName && type === ClassNameType.TLOP ? 1 : 0;
 
-      return `${formattedPrevText.slice(
+      const sliceOffset = !isMultiLineClassName && type === ClassNameType.TLOP ? 1 : 0;
+      const classNamePartialWrappedText = `${formattedPrevText.slice(
         0,
         rangeStart - sliceOffset,
-      )}${substitute}${formattedPrevText.slice(rangeEnd + sliceOffset)}`;
+      )}${substitute}${formattedPrevText.slice(correctedRangeEnd + sliceOffset)}`;
+
+      rangeCorrectionValues.forEach((_, rangeCorrectionIndex, array) => {
+        if (rangeCorrectionIndex <= classNameNodeIndex) {
+          return;
+        }
+
+        const [nthNodeRangeStart, nthNodeRangeEnd] =
+          targetClassNameNodes[rangeCorrectionIndex].range;
+
+        if (nthNodeRangeStart < rangeStart && rangeEnd < nthNodeRangeEnd) {
+          array[rangeCorrectionIndex] += correctedRangeEnd - rangeStart - substitute.length;
+        }
+      });
+
+      return classNamePartialWrappedText;
     },
     Promise.resolve(formattedText),
   );
 
-  return freezer.reduce((prevText, { from, to }) => prevText.replace(from, to), icedFormattedText);
+  return freezer.reduceRight(
+    (prevText, { from, to }) => prevText.replace(from, to),
+    icedFormattedText,
+  );
 }
 
 export async function parseLineByLineAndReplaceAsync({

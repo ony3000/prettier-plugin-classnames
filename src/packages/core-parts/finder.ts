@@ -49,7 +49,13 @@ function filterAndSortClassNameNodes(
             classNameRangeEnd <= keywordStartingRangeEnd,
         ),
     )
-    .sort((former, latter) => latter.startLineIndex - former.startLineIndex);
+    .sort(
+      (
+        { startLineIndex: formerStartLineIndex, range: [formerNodeRangeStart] },
+        { startLineIndex: latterStartLineIndex, range: [latterNodeRangeStart] },
+      ) =>
+        latterStartLineIndex - formerStartLineIndex || latterNodeRangeStart - formerNodeRangeStart,
+    );
 }
 
 export function findTargetClassNameNodes(
