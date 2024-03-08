@@ -1,3 +1,5 @@
+import { createHash } from 'node:crypto';
+
 import {
   findTargetClassNameNodes,
   findTargetClassNameNodesForVue,
@@ -35,6 +37,7 @@ function getExtraIndentLevel(type: ClassNameType) {
       ClassNameType.SLTO,
       ClassNameType.TLSL,
       ClassNameType.TLTO,
+      ClassNameType.TLPQTO,
     ].includes(type)
   ) {
     return 1;
@@ -51,7 +54,7 @@ function getSomeKindOfQuotes(
   // prettier-ignore
   const baseQuote =
     // eslint-disable-next-line no-nested-ternary
-    type === ClassNameType.TLPQ
+    type === ClassNameType.TLPQ || type === ClassNameType.TLPQTO
       ? '`'
       : (
         parser === 'vue' &&
@@ -65,6 +68,7 @@ function getSomeKindOfQuotes(
           ClassNameType.TLSL,
           ClassNameType.TLOP,
           ClassNameType.TLTO,
+          ClassNameType.TLPQTO,
         ].includes(type)
           ? "'"
           : '"'
@@ -97,6 +101,44 @@ function replaceSpacesAtBothEnds(className: string): [string, string, string] {
   return [leadingSpace, replacedClassName, trailingSpace];
 }
 
+function sha1(input: string): string {
+  return createHash('sha1').update(input).digest('hex');
+}
+
+function freezeIndent(input: string): string {
+  const charCodeForUpperCaseAlpha = 913;
+  const greekPlaceholder = [...Array(16)].map((_, index) =>
+    String.fromCharCode(charCodeForUpperCaseAlpha + index),
+  );
+
+  const hash = sha1(input);
+  const prefix = hash
+    .slice(0, Math.min(input.length, hash.length))
+    .split('')
+    .map((hex) => greekPlaceholder[Number.parseInt(hex, 16)])
+    .join('');
+  const rest = PH.repeat(Math.max(0, input.length - hash.length));
+
+  return `${prefix}${rest}`;
+}
+
+function freezeString(input: string): string {
+  const charCodeForLowerCaseAlpha = 945;
+  const greekPlaceholder = [...Array(16)].map((_, index) =>
+    String.fromCharCode(charCodeForLowerCaseAlpha + index),
+  );
+
+  const hash = sha1(input);
+  const prefix = hash
+    .slice(0, Math.min(input.length, hash.length))
+    .split('')
+    .map((hex) => greekPlaceholder[Number.parseInt(hex, 16)])
+    .join('');
+  const rest = PH.repeat(Math.max(0, input.length - hash.length));
+
+  return `${prefix}${rest}`;
+}
+
 function replaceClassName({
   formattedText,
   indentUnit,
@@ -114,11 +156,20 @@ function replaceClassName({
   format: (source: string, options?: any) => string;
   targetClassNameTypes?: ClassNameType[];
 }): string {
-  const mutableFormattedText = targetClassNameNodes.reduce(
-    (formattedPrevText, { type, range: [rangeStart, rangeEnd], startLineIndex }) => {
+  const freezer: { type: 'string' | 'indent'; from: string; to: string }[] = [];
+  const rangeCorrectionValues = [...Array(targetClassNameNodes.length)].map(() => 0);
+
+  const icedFormattedText = targetClassNameNodes.reduce(
+    (
+      formattedPrevText,
+      { type, range: [rangeStart, rangeEnd], startLineIndex },
+      classNameNodeIndex,
+    ) => {
       if (targetClassNameTypes && !targetClassNameTypes.includes(type)) {
         return formattedPrevText;
       }
+
+      const correctedRangeEnd = rangeEnd - rangeCorrectionValues[classNameNodeIndex];
 
       const isStartingPositionRelative = options.endingPosition !== 'absolute';
       const isEndingPositionAbsolute = options.endingPosition !== 'relative';
@@ -130,7 +181,7 @@ function replaceClassName({
         ? baseIndentLevel + extraIndentLevel
         : 0;
 
-      const classNameBase = formattedPrevText.slice(rangeStart + 1, rangeEnd - 1);
+      const classNameBase = formattedPrevText.slice(rangeStart + 1, correctedRangeEnd - 1);
 
       // preprocess (first)
       const [leadingSpace, classNameWithoutSpacesAtBothEnds, trailingSpace] =
@@ -206,20 +257,64 @@ function replaceClassName({
         isMultiLineClassName,
         options.parser,
       );
+
+      const rawIndent = indentUnit.repeat(multiLineIndentLevel);
+      const frozenIndent = freezeIndent(rawIndent);
       const substitute = `${quoteStart}${classNameWithOriginalSpaces}${quoteEnd}`
         .split(EOL)
-        .join(`${EOL}${indentUnit.repeat(multiLineIndentLevel)}`);
-      const sliceOffset = !isMultiLineClassName && type === ClassNameType.TLOP ? 1 : 0;
+        .map((raw) => {
+          const frozen = freezeString(raw);
 
-      return `${formattedPrevText.slice(
+          freezer.push({
+            type: 'string',
+            from: frozen,
+            to: raw,
+          });
+
+          return frozen;
+        })
+        .join(`${EOL}${frozenIndent}`);
+
+      if (isStartingPositionRelative && isMultiLineClassName) {
+        freezer.push({
+          type: 'indent',
+          from: frozenIndent,
+          to: rawIndent,
+        });
+      }
+
+      const sliceOffset = !isMultiLineClassName && type === ClassNameType.TLOP ? 1 : 0;
+      const classNamePartialWrappedText = `${formattedPrevText.slice(
         0,
         rangeStart - sliceOffset,
-      )}${substitute}${formattedPrevText.slice(rangeEnd + sliceOffset)}`;
+      )}${substitute}${formattedPrevText.slice(correctedRangeEnd + sliceOffset)}`;
+
+      rangeCorrectionValues.forEach((_, rangeCorrectionIndex, array) => {
+        if (rangeCorrectionIndex <= classNameNodeIndex) {
+          return;
+        }
+
+        const [nthNodeRangeStart, nthNodeRangeEnd] =
+          targetClassNameNodes[rangeCorrectionIndex].range;
+
+        if (nthNodeRangeStart < rangeStart && rangeEnd < nthNodeRangeEnd) {
+          // eslint-disable-next-line no-param-reassign
+          array[rangeCorrectionIndex] += correctedRangeEnd - rangeStart - substitute.length;
+        }
+      });
+
+      return classNamePartialWrappedText;
     },
     formattedText,
   );
 
-  return mutableFormattedText;
+  return freezer.reduceRight(
+    (prevText, { type, from, to }) =>
+      type === 'indent'
+        ? prevText.replace(new RegExp(`^\\s*${from}`, 'gm'), to)
+        : prevText.replace(from, to),
+    icedFormattedText,
+  );
 }
 
 export function parseLineByLineAndReplace({
@@ -289,13 +384,22 @@ async function replaceClassNameAsync({
   format: (source: string, options?: any) => Promise<string>;
   targetClassNameTypes?: ClassNameType[];
 }): Promise<string> {
-  const mutableFormattedText = await targetClassNameNodes.reduce(
-    async (formattedPrevTextPromise, { type, range: [rangeStart, rangeEnd], startLineIndex }) => {
+  const freezer: { type: 'string' | 'indent'; from: string; to: string }[] = [];
+  const rangeCorrectionValues = [...Array(targetClassNameNodes.length)].map(() => 0);
+
+  const icedFormattedText = await targetClassNameNodes.reduce(
+    async (
+      formattedPrevTextPromise,
+      { type, range: [rangeStart, rangeEnd], startLineIndex },
+      classNameNodeIndex,
+    ) => {
       if (targetClassNameTypes && !targetClassNameTypes.includes(type)) {
         return formattedPrevTextPromise;
       }
 
       const formattedPrevText = await formattedPrevTextPromise;
+
+      const correctedRangeEnd = rangeEnd - rangeCorrectionValues[classNameNodeIndex];
 
       const isStartingPositionRelative = options.endingPosition !== 'absolute';
       const isEndingPositionAbsolute = options.endingPosition !== 'relative';
@@ -307,7 +411,7 @@ async function replaceClassNameAsync({
         ? baseIndentLevel + extraIndentLevel
         : 0;
 
-      const classNameBase = formattedPrevText.slice(rangeStart + 1, rangeEnd - 1);
+      const classNameBase = formattedPrevText.slice(rangeStart + 1, correctedRangeEnd - 1);
 
       // preprocess (first)
       const [leadingSpace, classNameWithoutSpacesAtBothEnds, trailingSpace] =
@@ -387,20 +491,64 @@ async function replaceClassNameAsync({
         isMultiLineClassName,
         options.parser,
       );
+
+      const rawIndent = indentUnit.repeat(multiLineIndentLevel);
+      const frozenIndent = freezeIndent(rawIndent);
       const substitute = `${quoteStart}${classNameWithOriginalSpaces}${quoteEnd}`
         .split(EOL)
-        .join(`${EOL}${indentUnit.repeat(multiLineIndentLevel)}`);
-      const sliceOffset = !isMultiLineClassName && type === ClassNameType.TLOP ? 1 : 0;
+        .map((raw) => {
+          const frozen = freezeString(raw);
 
-      return `${formattedPrevText.slice(
+          freezer.push({
+            type: 'string',
+            from: frozen,
+            to: raw,
+          });
+
+          return frozen;
+        })
+        .join(`${EOL}${frozenIndent}`);
+
+      if (isStartingPositionRelative && isMultiLineClassName) {
+        freezer.push({
+          type: 'indent',
+          from: frozenIndent,
+          to: rawIndent,
+        });
+      }
+
+      const sliceOffset = !isMultiLineClassName && type === ClassNameType.TLOP ? 1 : 0;
+      const classNamePartialWrappedText = `${formattedPrevText.slice(
         0,
         rangeStart - sliceOffset,
-      )}${substitute}${formattedPrevText.slice(rangeEnd + sliceOffset)}`;
+      )}${substitute}${formattedPrevText.slice(correctedRangeEnd + sliceOffset)}`;
+
+      rangeCorrectionValues.forEach((_, rangeCorrectionIndex, array) => {
+        if (rangeCorrectionIndex <= classNameNodeIndex) {
+          return;
+        }
+
+        const [nthNodeRangeStart, nthNodeRangeEnd] =
+          targetClassNameNodes[rangeCorrectionIndex].range;
+
+        if (nthNodeRangeStart < rangeStart && rangeEnd < nthNodeRangeEnd) {
+          // eslint-disable-next-line no-param-reassign
+          array[rangeCorrectionIndex] += correctedRangeEnd - rangeStart - substitute.length;
+        }
+      });
+
+      return classNamePartialWrappedText;
     },
     Promise.resolve(formattedText),
   );
 
-  return mutableFormattedText;
+  return freezer.reduceRight(
+    (prevText, { type, from, to }) =>
+      type === 'indent'
+        ? prevText.replace(new RegExp(`^\\s*${from}`, 'gm'), to)
+        : prevText.replace(from, to),
+    icedFormattedText,
+  );
 }
 
 export async function parseLineByLineAndReplaceAsync({

@@ -73,6 +73,10 @@ export enum ClassNameType {
    */
   TLPQ,
   /**
+   * Template literal that preserve quotes (in ternary operator)
+   */
+  TLPQTO,
+  /**
    * Unknown string literal
    */
   USL,
