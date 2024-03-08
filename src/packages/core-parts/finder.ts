@@ -289,6 +289,9 @@ export function findTargetClassNameNodes(
             } else if (classNameNode.type === ClassNameType.UTL) {
               // eslint-disable-next-line no-param-reassign
               classNameNode.type = ClassNameType.TLTO;
+            } else if (classNameNode.type === ClassNameType.TLPQ) {
+              // eslint-disable-next-line no-param-reassign
+              classNameNode.type = ClassNameType.TLPQTO;
             }
           }
         });

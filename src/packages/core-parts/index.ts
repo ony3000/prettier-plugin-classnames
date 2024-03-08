@@ -37,6 +37,7 @@ function getExtraIndentLevel(type: ClassNameType) {
       ClassNameType.SLTO,
       ClassNameType.TLSL,
       ClassNameType.TLTO,
+      ClassNameType.TLPQTO,
     ].includes(type)
   ) {
     return 1;
@@ -53,7 +54,7 @@ function getSomeKindOfQuotes(
   // prettier-ignore
   const baseQuote =
     // eslint-disable-next-line no-nested-ternary
-    type === ClassNameType.TLPQ
+    type === ClassNameType.TLPQ || type === ClassNameType.TLPQTO
       ? '`'
       : (
         parser === 'vue' &&
@@ -67,6 +68,7 @@ function getSomeKindOfQuotes(
           ClassNameType.TLSL,
           ClassNameType.TLOP,
           ClassNameType.TLTO,
+          ClassNameType.TLPQTO,
         ].includes(type)
           ? "'"
           : '"'
