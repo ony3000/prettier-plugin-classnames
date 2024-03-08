@@ -105,10 +105,27 @@ function sha1(input: string): string {
   return createHash('sha1').update(input).digest('hex');
 }
 
-function freezeString(input: string): string {
-  const charCodeForAlpha = 945;
+function freezeIndent(input: string): string {
+  const charCodeForUpperCaseAlpha = 913;
   const greekPlaceholder = [...Array(16)].map((_, index) =>
-    String.fromCharCode(charCodeForAlpha + index),
+    String.fromCharCode(charCodeForUpperCaseAlpha + index),
+  );
+
+  const hash = sha1(input);
+  const prefix = hash
+    .slice(0, Math.min(input.length, hash.length))
+    .split('')
+    .map((hex) => greekPlaceholder[Number.parseInt(hex, 16)])
+    .join('');
+  const rest = PH.repeat(Math.max(0, input.length - hash.length));
+
+  return `${prefix}${rest}`;
+}
+
+function freezeString(input: string): string {
+  const charCodeForLowerCaseAlpha = 945;
+  const greekPlaceholder = [...Array(16)].map((_, index) =>
+    String.fromCharCode(charCodeForLowerCaseAlpha + index),
   );
 
   const hash = sha1(input);
@@ -139,7 +156,7 @@ function replaceClassName({
   format: (source: string, options?: any) => string;
   targetClassNameTypes?: ClassNameType[];
 }): string {
-  const freezer: { from: string; to: string }[] = [];
+  const freezer: { type: 'string' | 'indent'; from: string; to: string }[] = [];
   const rangeCorrectionValues = [...Array(targetClassNameNodes.length)].map(() => 0);
 
   const icedFormattedText = targetClassNameNodes.reduce(
@@ -240,19 +257,31 @@ function replaceClassName({
         isMultiLineClassName,
         options.parser,
       );
+
+      const rawIndent = indentUnit.repeat(multiLineIndentLevel);
+      const frozenIndent = freezeIndent(rawIndent);
       const substitute = `${quoteStart}${classNameWithOriginalSpaces}${quoteEnd}`
         .split(EOL)
         .map((raw) => {
           const frozen = freezeString(raw);
 
           freezer.push({
+            type: 'string',
             from: frozen,
             to: raw,
           });
 
           return frozen;
         })
-        .join(`${EOL}${indentUnit.repeat(multiLineIndentLevel)}`);
+        .join(`${EOL}${frozenIndent}`);
+
+      if (isStartingPositionRelative && isMultiLineClassName) {
+        freezer.push({
+          type: 'indent',
+          from: frozenIndent,
+          to: rawIndent,
+        });
+      }
 
       const sliceOffset = !isMultiLineClassName && type === ClassNameType.TLOP ? 1 : 0;
       const classNamePartialWrappedText = `${formattedPrevText.slice(
@@ -279,7 +308,10 @@ function replaceClassName({
   );
 
   return freezer.reduceRight(
-    (prevText, { from, to }) => prevText.replace(from, to),
+    (prevText, { type, from, to }) =>
+      type === 'indent'
+        ? prevText.replace(new RegExp(`^\\s*${from}`, 'gm'), to)
+        : prevText.replace(from, to),
     icedFormattedText,
   );
 }
@@ -351,7 +383,7 @@ async function replaceClassNameAsync({
   format: (source: string, options?: any) => Promise<string>;
   targetClassNameTypes?: ClassNameType[];
 }): Promise<string> {
-  const freezer: { from: string; to: string }[] = [];
+  const freezer: { type: 'string' | 'indent'; from: string; to: string }[] = [];
   const rangeCorrectionValues = [...Array(targetClassNameNodes.length)].map(() => 0);
 
   const icedFormattedText = await targetClassNameNodes.reduce(
@@ -458,19 +490,31 @@ async function replaceClassNameAsync({
         isMultiLineClassName,
         options.parser,
       );
+
+      const rawIndent = indentUnit.repeat(multiLineIndentLevel);
+      const frozenIndent = freezeIndent(rawIndent);
       const substitute = `${quoteStart}${classNameWithOriginalSpaces}${quoteEnd}`
         .split(EOL)
         .map((raw) => {
           const frozen = freezeString(raw);
 
           freezer.push({
+            type: 'string',
             from: frozen,
             to: raw,
           });
 
           return frozen;
         })
-        .join(`${EOL}${indentUnit.repeat(multiLineIndentLevel)}`);
+        .join(`${EOL}${frozenIndent}`);
+
+      if (isStartingPositionRelative && isMultiLineClassName) {
+        freezer.push({
+          type: 'indent',
+          from: frozenIndent,
+          to: rawIndent,
+        });
+      }
 
       const sliceOffset = !isMultiLineClassName && type === ClassNameType.TLOP ? 1 : 0;
       const classNamePartialWrappedText = `${formattedPrevText.slice(
@@ -497,7 +541,10 @@ async function replaceClassNameAsync({
   );
 
   return freezer.reduceRight(
-    (prevText, { from, to }) => prevText.replace(from, to),
+    (prevText, { type, from, to }) =>
+      type === 'indent'
+        ? prevText.replace(new RegExp(`^\\s*${from}`, 'gm'), to)
+        : prevText.replace(from, to),
     icedFormattedText,
   );
 }
