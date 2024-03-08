@@ -298,6 +298,7 @@ function replaceClassName({
           targetClassNameNodes[rangeCorrectionIndex].range;
 
         if (nthNodeRangeStart < rangeStart && rangeEnd < nthNodeRangeEnd) {
+          // eslint-disable-next-line no-param-reassign
           array[rangeCorrectionIndex] += correctedRangeEnd - rangeStart - substitute.length;
         }
       });
@@ -531,6 +532,7 @@ async function replaceClassNameAsync({
           targetClassNameNodes[rangeCorrectionIndex].range;
 
         if (nthNodeRangeStart < rangeStart && rangeEnd < nthNodeRangeEnd) {
+          // eslint-disable-next-line no-param-reassign
           array[rangeCorrectionIndex] += correctedRangeEnd - rangeStart - substitute.length;
         }
       });
