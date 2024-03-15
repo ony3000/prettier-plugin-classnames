@@ -1,5 +1,3 @@
-import { describe, expect, test } from 'vitest';
-
 import type { Fixture } from '../settings';
 import { format, baseOptions } from '../settings';
 
@@ -38,12 +36,8 @@ export function Callout({ children }) {
 describe('typescript/custom-functions', () => {
   for (const fixture of fixtures) {
     test(fixture.name, async () => {
-      expect(
-        await format(fixture.input, {
-          ...options,
-          ...(fixture.options ?? {}),
-        }),
-      ).toBe(fixture.output);
+      // @ts-ignore
+      expect(await format(fixture.input, options)).toBe(fixture.output);
     });
   }
 });
