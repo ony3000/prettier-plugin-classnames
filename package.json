@@ -1,6 +1,6 @@
 {
   "name": "prettier-plugin-classnames",
-  "version": "0.6.2",
+  "version": "0.6.3",
   "description": "A Prettier plugin that wraps verbose class name based on the `printWidth` option.",
   "keywords": [
     "prettier",
