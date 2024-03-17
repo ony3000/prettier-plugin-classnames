@@ -105,7 +105,7 @@ function sha1(input: string): string {
   return createHash('sha1').update(input).digest('hex');
 }
 
-function freezeIndent(input: string): string {
+function freezeNonClassName(input: string): string {
   const charCodeForUpperCaseAlpha = 913;
   const greekPlaceholder = [...Array(16)].map((_, index) =>
     String.fromCharCode(charCodeForUpperCaseAlpha + index),
@@ -122,7 +122,7 @@ function freezeIndent(input: string): string {
   return `${prefix}${rest}`;
 }
 
-function freezeString(input: string): string {
+function freezeClassName(input: string): string {
   const charCodeForLowerCaseAlpha = 945;
   const greekPlaceholder = [...Array(16)].map((_, index) =>
     String.fromCharCode(charCodeForLowerCaseAlpha + index),
@@ -138,6 +138,9 @@ function freezeString(input: string): string {
 
   return `${prefix}${rest}`;
 }
+
+const frozenAttributeName = freezeNonClassName('attribute');
+const doubleFrozenAttributeName = freezeNonClassName(frozenAttributeName);
 
 function replaceClassName({
   formattedText,
@@ -162,7 +165,7 @@ function replaceClassName({
   const icedFormattedText = targetClassNameNodes.reduce(
     (
       formattedPrevText,
-      { type, range: [rangeStart, rangeEnd], startLineIndex },
+      { type, range: [rangeStart, rangeEnd], startLineIndex, elementName },
       classNameNodeIndex,
     ) => {
       if (targetClassNameTypes && !targetClassNameTypes.includes(type)) {
@@ -258,22 +261,46 @@ function replaceClassName({
         options.parser,
       );
 
+      const elementOpener = '<';
+      const spaceAfterElementName = ' ';
+      const conditionForSameLineAttribute =
+        isEndingPositionAbsolute &&
+        type === ClassNameType.ASL &&
+        isMultiLineClassName &&
+        formattedClassName.length +
+          options.tabWidth -
+          (elementName ? `${elementOpener}${elementName}${spaceAfterElementName}`.length : 0) <=
+          options.printWidth;
+      const conditionForOwnLineAttribute =
+        isEndingPositionAbsolute &&
+        type === ClassNameType.AOL &&
+        !isMultiLineClassName &&
+        classNameWithOriginalSpaces !== classNameBase &&
+        formattedClassName.length -
+          options.tabWidth +
+          (elementName ? `${elementOpener}${elementName}${spaceAfterElementName}`.length : 0) >
+          options.printWidth;
+
       const rawIndent = indentUnit.repeat(multiLineIndentLevel);
-      const frozenIndent = freezeIndent(rawIndent);
-      const substitute = `${quoteStart}${classNameWithOriginalSpaces}${quoteEnd}`
-        .split(EOL)
-        .map((raw) => {
-          const frozen = freezeString(raw);
+      const frozenIndent = freezeNonClassName(rawIndent);
+      const substitute =
+        `${quoteStart}${classNameWithOriginalSpaces}${quoteEnd}`
+          .split(EOL)
+          .map((raw) => {
+            const frozen = freezeClassName(raw);
 
-          freezer.push({
-            type: 'string',
-            from: frozen,
-            to: raw,
-          });
+            freezer.push({
+              type: 'string',
+              from: frozen,
+              to: raw,
+            });
 
-          return frozen;
-        })
-        .join(`${EOL}${frozenIndent}`);
+            return frozen;
+          })
+          .join(`${EOL}${frozenIndent}`) +
+        (conditionForSameLineAttribute || conditionForOwnLineAttribute
+          ? `${EOL}${frozenAttributeName}${EOL}`
+          : '');
 
       if (isStartingPositionRelative && isMultiLineClassName) {
         freezer.push({
@@ -308,13 +335,16 @@ function replaceClassName({
     formattedText,
   );
 
-  return freezer.reduceRight(
-    (prevText, { type, from, to }) =>
-      type === 'indent'
-        ? prevText.replace(new RegExp(`^\\s*${from}`, 'gm'), to)
-        : prevText.replace(from, to),
-    icedFormattedText,
-  );
+  return freezer
+    .reduceRight(
+      (prevText, { type, from, to }) =>
+        type === 'indent'
+          ? prevText.replace(new RegExp(`^\\s*${from}`, 'gm'), to)
+          : prevText.replace(from, to),
+      icedFormattedText,
+    )
+    .replace(new RegExp(`^\\s*${doubleFrozenAttributeName}${EOL}`, 'gm'), '')
+    .replace(new RegExp(`${frozenAttributeName}`, 'gm'), doubleFrozenAttributeName);
 }
 
 export function parseLineByLineAndReplace({
@@ -356,7 +386,7 @@ export function parseLineByLineAndReplace({
 
   const lineNodes = parseLineByLine(formattedText, indentUnit);
 
-  return replaceClassName({
+  const classNameWrappedText = replaceClassName({
     formattedText,
     indentUnit,
     targetClassNameNodes,
@@ -365,6 +395,12 @@ export function parseLineByLineAndReplace({
     format,
     targetClassNameTypes,
   });
+  // Note: This is a temporary use condition. I plan to improve it in the next minor update.
+  const conditionForSecondFormat = targetClassNameTypes !== undefined;
+
+  return conditionForSecondFormat
+    ? classNameWrappedText.replace(new RegExp(`^\\s*${doubleFrozenAttributeName}${EOL}`, 'gm'), '')
+    : classNameWrappedText;
 }
 
 async function replaceClassNameAsync({
@@ -390,7 +426,7 @@ async function replaceClassNameAsync({
   const icedFormattedText = await targetClassNameNodes.reduce(
     async (
       formattedPrevTextPromise,
-      { type, range: [rangeStart, rangeEnd], startLineIndex },
+      { type, range: [rangeStart, rangeEnd], startLineIndex, elementName },
       classNameNodeIndex,
     ) => {
       if (targetClassNameTypes && !targetClassNameTypes.includes(type)) {
@@ -492,22 +528,46 @@ async function replaceClassNameAsync({
         options.parser,
       );
 
+      const elementOpener = '<';
+      const spaceAfterElementName = ' ';
+      const conditionForSameLineAttribute =
+        isEndingPositionAbsolute &&
+        type === ClassNameType.ASL &&
+        isMultiLineClassName &&
+        formattedClassName.length +
+          options.tabWidth -
+          (elementName ? `${elementOpener}${elementName}${spaceAfterElementName}`.length : 0) <=
+          options.printWidth;
+      const conditionForOwnLineAttribute =
+        isEndingPositionAbsolute &&
+        type === ClassNameType.AOL &&
+        !isMultiLineClassName &&
+        classNameWithOriginalSpaces !== classNameBase &&
+        formattedClassName.length -
+          options.tabWidth +
+          (elementName ? `${elementOpener}${elementName}${spaceAfterElementName}`.length : 0) >
+          options.printWidth;
+
       const rawIndent = indentUnit.repeat(multiLineIndentLevel);
-      const frozenIndent = freezeIndent(rawIndent);
-      const substitute = `${quoteStart}${classNameWithOriginalSpaces}${quoteEnd}`
-        .split(EOL)
-        .map((raw) => {
-          const frozen = freezeString(raw);
+      const frozenIndent = freezeNonClassName(rawIndent);
+      const substitute =
+        `${quoteStart}${classNameWithOriginalSpaces}${quoteEnd}`
+          .split(EOL)
+          .map((raw) => {
+            const frozen = freezeClassName(raw);
 
-          freezer.push({
-            type: 'string',
-            from: frozen,
-            to: raw,
-          });
+            freezer.push({
+              type: 'string',
+              from: frozen,
+              to: raw,
+            });
 
-          return frozen;
-        })
-        .join(`${EOL}${frozenIndent}`);
+            return frozen;
+          })
+          .join(`${EOL}${frozenIndent}`) +
+        (conditionForSameLineAttribute || conditionForOwnLineAttribute
+          ? `${EOL}${frozenAttributeName}${EOL}`
+          : '');
 
       if (isStartingPositionRelative && isMultiLineClassName) {
         freezer.push({
@@ -542,13 +602,16 @@ async function replaceClassNameAsync({
     Promise.resolve(formattedText),
   );
 
-  return freezer.reduceRight(
-    (prevText, { type, from, to }) =>
-      type === 'indent'
-        ? prevText.replace(new RegExp(`^\\s*${from}`, 'gm'), to)
-        : prevText.replace(from, to),
-    icedFormattedText,
-  );
+  return freezer
+    .reduceRight(
+      (prevText, { type, from, to }) =>
+        type === 'indent'
+          ? prevText.replace(new RegExp(`^\\s*${from}`, 'gm'), to)
+          : prevText.replace(from, to),
+      icedFormattedText,
+    )
+    .replace(new RegExp(`^\\s*${doubleFrozenAttributeName}${EOL}`, 'gm'), '')
+    .replace(new RegExp(`${frozenAttributeName}`, 'gm'), doubleFrozenAttributeName);
 }
 
 export async function parseLineByLineAndReplaceAsync({
@@ -590,7 +653,7 @@ export async function parseLineByLineAndReplaceAsync({
 
   const lineNodes = parseLineByLine(formattedText, indentUnit);
 
-  return replaceClassNameAsync({
+  const classNameWrappedText = await replaceClassNameAsync({
     formattedText,
     indentUnit,
     targetClassNameNodes,
@@ -599,4 +662,10 @@ export async function parseLineByLineAndReplaceAsync({
     format,
     targetClassNameTypes,
   });
+  // Note: This is a temporary use condition. I plan to improve it in the next minor update.
+  const conditionForSecondFormat = targetClassNameTypes !== undefined;
+
+  return conditionForSecondFormat
+    ? classNameWrappedText.replace(new RegExp(`^\\s*${doubleFrozenAttributeName}${EOL}`, 'gm'), '')
+    : classNameWrappedText;
 }

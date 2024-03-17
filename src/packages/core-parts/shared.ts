@@ -94,6 +94,7 @@ export type ClassNameNode = {
   type: ClassNameType;
   range: NodeRange;
   startLineIndex: number;
+  elementName?: string;
 };
 
 export type NarrowedParserOptions = {
