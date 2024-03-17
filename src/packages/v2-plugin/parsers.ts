@@ -90,7 +90,7 @@ function transformParser(
         targetClassNameTypes:
           parserName === 'vue' || parserName === 'astro'
             ? [ClassNameType.ASL, ClassNameType.AOL]
-            : [ClassNameType.CTL, ClassNameType.TLSL],
+            : [ClassNameType.ASL, ClassNameType.AOL, ClassNameType.CTL, ClassNameType.TLSL],
       });
 
       return {

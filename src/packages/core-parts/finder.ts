@@ -168,6 +168,9 @@ export function findTargetClassNameNodes(
                   line: z.unknown(),
                 }),
               }),
+              name: z.object({
+                name: z.string(),
+              }),
             }),
           ) &&
           parentNode.type === 'JSXOpeningElement' &&
@@ -206,6 +209,8 @@ export function findTargetClassNameNodes(
                   parentNodeStartLineNumber === currentNodeStartLineNumber
                     ? ClassNameType.ASL
                     : ClassNameType.AOL;
+                // eslint-disable-next-line no-param-reassign
+                classNameNode.elementName = parentNode.name.name;
               }
             }
           });
