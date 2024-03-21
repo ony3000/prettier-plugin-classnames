@@ -1,11 +1,11 @@
-export const baseOptions = {
+export const baseOptions: PrettierBaseOptions = {
   printWidth: 80,
   tabWidth: 2,
   useTabs: false,
   semi: true,
   singleQuote: false,
   jsxSingleQuote: false,
-  trailingComma: 'all' as 'none' | 'es5' | 'all',
+  trailingComma: 'all',
   bracketSpacing: true,
   bracketSameLine: false,
   jsxBracketSameLine: false,
@@ -13,13 +13,13 @@ export const baseOptions = {
   rangeEnd: Infinity,
   requirePragma: false,
   insertPragma: false,
-  proseWrap: 'preserve' as 'always' | 'never' | 'preserve',
-  arrowParens: 'always' as 'avoid' | 'always',
-  htmlWhitespaceSensitivity: 'css' as 'css' | 'strict' | 'ignore',
-  endOfLine: 'lf' as 'auto' | 'lf' | 'crlf' | 'cr',
-  quoteProps: 'as-needed' as 'as-needed' | 'consistent' | 'preserve',
+  proseWrap: 'preserve',
+  arrowParens: 'always',
+  htmlWhitespaceSensitivity: 'css',
+  endOfLine: 'lf',
+  quoteProps: 'as-needed',
   vueIndentScriptAndStyle: false,
-  embeddedLanguageFormatting: 'auto' as 'auto' | 'off',
+  embeddedLanguageFormatting: 'auto',
   singleAttributePerLine: false,
 };
 
@@ -27,5 +27,5 @@ export type Fixture = {
   name: string;
   input: string;
   output: string;
-  options?: NodeJS.Dict<unknown> & Partial<typeof baseOptions>;
+  options?: Partial<PrettierBaseOptions & ThisPluginOptions>;
 };
