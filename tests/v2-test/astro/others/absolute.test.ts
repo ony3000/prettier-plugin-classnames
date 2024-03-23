@@ -42,6 +42,36 @@ volutpat id neque pellentesque"
       customAttributes: ['fixme'],
     },
   },
+  {
+    name: 'custom functions',
+    input: `
+<div>
+  <div>
+    <div class={clsx('lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere eu volutpat id neque pellentesque')}>
+      <slot />
+    </div>
+  </div>
+</div>
+`,
+    output: `<div>
+  <div>
+    <div
+      class={clsx(
+        \`lorem ipsum dolor sit amet consectetur adipiscing
+elit proin ex massa hendrerit eu posuere eu volutpat id
+neque pellentesque\`,
+      )}
+    >
+      <slot />
+    </div>
+  </div>
+</div>
+`,
+    options: {
+      printWidth: 60,
+      customFunctions: ['clsx'],
+    },
+  },
 ];
 
 describe.each(fixtures)('$name', ({ input, output, options: fixtureOptions }) => {

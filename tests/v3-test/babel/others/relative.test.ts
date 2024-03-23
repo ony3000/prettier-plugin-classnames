@@ -42,6 +42,36 @@ export function Foo({ children }) {
       customAttributes: ['fixme'],
     },
   },
+  {
+    name: 'custom functions',
+    input: `
+export function Foo({ children }) {
+  return (
+    <div className={clsx('lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere eu volutpat id neque pellentesque')}>
+      {children}
+    </div>
+  );
+}
+`,
+    output: `export function Foo({ children }) {
+  return (
+    <div
+      className={clsx(
+        \`lorem ipsum dolor sit amet consectetur adipiscing elit proin
+        ex massa hendrerit eu posuere eu volutpat id neque
+        pellentesque\`,
+      )}
+    >
+      {children}
+    </div>
+  );
+}
+`,
+    options: {
+      printWidth: 60,
+      customFunctions: ['clsx'],
+    },
+  },
 ];
 
 describe.each(fixtures)('$name', async ({ input, output, options: fixtureOptions }) => {

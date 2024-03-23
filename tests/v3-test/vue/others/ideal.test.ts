@@ -42,6 +42,38 @@ const fixtures: Fixture[] = [
       customAttributes: ['fixme'],
     },
   },
+  {
+    name: 'custom functions',
+    input: `
+<template>
+  <div>
+    <div :class="clsx('lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere eu volutpat id neque pellentesque')">
+      <slot></slot>
+    </div>
+  </div>
+</template>
+`,
+    output: `<template>
+  <div>
+    <div
+      :class="
+        clsx(
+          \`lorem ipsum dolor sit amet consectetur adipiscing
+          elit proin ex massa hendrerit eu posuere eu
+          volutpat id neque pellentesque\`,
+        )
+      "
+    >
+      <slot></slot>
+    </div>
+  </div>
+</template>
+`,
+    options: {
+      printWidth: 60,
+      customFunctions: ['clsx'],
+    },
+  },
 ];
 
 describe.each(fixtures)('$name', async ({ input, output, options: fixtureOptions }) => {
