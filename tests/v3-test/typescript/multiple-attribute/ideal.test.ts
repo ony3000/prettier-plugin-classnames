@@ -57,7 +57,7 @@ export function Foo({ children }) {
       dir="ltr"
       id="lorem-ipsum"
       title="lorem ipsum"
-      className="  lorem ipsum dolor sit amet  "
+      className="lorem ipsum dolor sit amet"
     >
       {children}
     </div>
@@ -85,7 +85,7 @@ export function Foo({ children }) {
       dir="ltr"
       id="lorem-ipsum"
       title="lorem ipsum"
-      className=" lorem ipsum dolor sit amet"
+      className="lorem ipsum dolor sit amet"
     >
       {children}
     </div>
@@ -136,7 +136,7 @@ export function Foo({ children }) {
       dir="ltr"
       id="lorem-ipsum"
       title="lorem ipsum"
-      className=" lorem ipsum dolor sit amet consectetur
+      className="lorem ipsum dolor sit amet consectetur
         adipiscing elit proin"
     >
       {children}
@@ -167,7 +167,7 @@ export function Foo({ children }) {
       dir="ltr"
       id="lorem-ipsum"
       title="lorem ipsum"
-      className=" lorem ipsum dolor sit amet consectetur
+      className="lorem ipsum dolor sit amet consectetur
         adipiscing elit proin"
     >
       {children}
@@ -220,7 +220,7 @@ export function Foo({ children }) {
       dir="ltr"
       id="lorem-ipsum"
       title="lorem ipsum"
-      className=" lorem ipsum dolor sit amet consectetur
+      className="lorem ipsum dolor sit amet consectetur
         adipiscing elit proin ex massa hendrerit eu posuere
         eu volutpat id neque pellentesque"
     >
@@ -252,7 +252,7 @@ export function Foo({ children }) {
       dir="ltr"
       id="lorem-ipsum"
       title="lorem ipsum"
-      className=" lorem ipsum dolor sit amet consectetur
+      className="lorem ipsum dolor sit amet consectetur
         adipiscing elit proin ex massa hendrerit eu posuere
         eu volutpat id neque pellentesque"
     >

@@ -48,7 +48,7 @@ export function Foo({ children }) {
 `,
     output: `export function Foo({ children }) {
   return (
-    <div className="  lorem ipsum dolor sit amet  ">
+    <div className="lorem ipsum dolor sit amet">
       {children}
     </div>
   );
@@ -71,7 +71,7 @@ export function Foo({ children }) {
 `,
     output: `export function Foo({ children }) {
   return (
-    <div className=" lorem ipsum dolor sit amet">
+    <div className="lorem ipsum dolor sit amet">
       {children}
     </div>
   );
@@ -115,7 +115,7 @@ export function Foo({ children }) {
     output: `export function Foo({ children }) {
   return (
     <div
-      className=" lorem ipsum dolor sit amet consectetur
+      className="lorem ipsum dolor sit amet consectetur
 adipiscing elit proin"
     >
       {children}
@@ -143,7 +143,7 @@ export function Foo({ children }) {
     output: `export function Foo({ children }) {
   return (
     <div
-      className=" lorem ipsum dolor sit amet consectetur
+      className="lorem ipsum dolor sit amet consectetur
 adipiscing elit proin"
     >
       {children}
@@ -190,7 +190,7 @@ export function Foo({ children }) {
     output: `export function Foo({ children }) {
   return (
     <div
-      className=" lorem ipsum dolor sit amet consectetur
+      className="lorem ipsum dolor sit amet consectetur
 adipiscing elit proin ex massa hendrerit eu posuere eu
 volutpat id neque pellentesque"
     >
@@ -219,7 +219,7 @@ export function Foo({ children }) {
     output: `export function Foo({ children }) {
   return (
     <div
-      className=" lorem ipsum dolor sit amet consectetur
+      className="lorem ipsum dolor sit amet consectetur
 adipiscing elit proin ex massa hendrerit eu posuere eu
 volutpat id neque pellentesque"
     >

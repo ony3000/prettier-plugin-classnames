@@ -57,7 +57,7 @@ export function Foo({ children }) {
       dir="ltr"
       id="lorem-ipsum"
       title="lorem ipsum"
-      className="  lorem ipsum dolor sit amet  "
+      className="lorem ipsum dolor sit amet"
     >
       {children}
     </div>
