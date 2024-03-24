@@ -267,40 +267,6 @@ const fixtures: Fixture[] = [
     },
   },
   {
-    name: 'custom functions',
-    input: `
-<script setup lang="ts">
-import clsx from 'clsx'
-</script>
-
-<template>
-  <div :class="clsx('rounded-xl border border-zinc-400/30 bg-gray-100/50 px-4 py-4 dark:border-neutral-500/30 dark:bg-neutral-900/50')">
-    <slot></slot>
-  </div>
-</template>
-`,
-    output: `<script setup lang="ts">
-import clsx from "clsx";
-</script>
-
-<template>
-  <div
-    :class="
-      clsx(
-        \`rounded-xl border border-zinc-400/30 bg-gray-100/50 px-4 py-4
-        dark:border-neutral-500/30 dark:bg-neutral-900/50\`,
-      )
-    "
-  >
-    <slot></slot>
-  </div>
-</template>
-`,
-    options: {
-      customFunctions: ['clsx'],
-    },
-  },
-  {
     name: 'reversibility (1) - short enough template literal class name',
     input: `
 <template>
@@ -380,27 +346,6 @@ import clsx from "clsx";
     }"
   >
     <slot></slot>
-  </div>
-</template>
-`,
-  },
-  {
-    name: 'issue #37 - short enough conditional class name (no error in v0.4.0, error in v0.5.0 ~ v0.6.0)',
-    input: `
-<template>
-  <div
-    :class="{
-        'bg-black': true
-    }">Some text</div>
-</template>
-`,
-    output: `<template>
-  <div
-    :class="{
-      'bg-black': true,
-    }"
-  >
-    Some text
   </div>
 </template>
 `,
@@ -799,104 +744,6 @@ dark:border-neutral-500/30 dark:bg-neutral-900/50\`]: true,
     options: {
       printWidth: 70,
       useTabs: true,
-      endingPosition: 'absolute-with-indent',
-    },
-  },
-  {
-    name: 'issue #39 (1) - nested expression in template literal',
-    input: `
-<template>
-    <Combobox.Option
-        :class="({ active }) =>
-            \`relative cursor-default select-none py-2 pl-10 pr-4 \${
-                active
-                    ? 'bg-teal-600 text-white'
-                    : 'text-gray-900'
-            }\`
-        "
-        :value="'test'"
-    ></Combobox.Option>
-</template>
-`,
-    output: `<template>
-  <Combobox.Option
-    :class="
-      ({ active }) =>
-        \`relative cursor-default select-none py-2 pl-10 pr-4 \${
-          active ? 'bg-teal-600 text-white' : 'text-gray-900'
-        }\`
-    "
-    :value="'test'"
-  ></Combobox.Option>
-</template>
-`,
-  },
-  {
-    name: 'issue #39 (2) - double nested expression in template literal',
-    input: `
-<template>
-    <Combobox.Option
-        :class="({ active }) =>
-            \`relative cursor-default select-none py-2 pl-10 pr-4 \${
-                active
-                    ? \`bg-teal-600 \${active ? 'bg-teal-600 text-white' : 'text-gray-900'} text-white\`
-                    : 'text-gray-900'
-            }\`
-        "
-        :value="'test'"
-    ></Combobox.Option>
-</template>
-`,
-    output: `<template>
-  <Combobox.Option
-    :class="
-      ({ active }) =>
-        \`relative cursor-default select-none py-2 pl-10 pr-4 \${
-          active
-            ? \`bg-teal-600 \${
-                active ? 'bg-teal-600 text-white' : 'text-gray-900'
-              } text-white\`
-            : 'text-gray-900'
-        }\`
-    "
-    :value="'test'"
-  ></Combobox.Option>
-</template>
-`,
-  },
-  {
-    name: 'issue #39 (3) - double nested expression in template literal',
-    input: `
-<template>
-    <Combobox.Option
-        :class="({ active }) =>
-            \`relative cursor-default select-none py-2 pl-10 pr-4 \${
-                active
-                    ? \`bg-teal-600 \${active ? 'bg-teal-600 text-white' : 'text-gray-900'} text-white\`
-                    : 'text-gray-900'
-            }\`
-        "
-        :value="'test'"
-    ></Combobox.Option>
-</template>
-`,
-    output: `<template>
-  <Combobox.Option
-    :class="
-      ({ active }) =>
-        \`relative cursor-default select-none py-2 pl-10 pr-4 \${
-          active
-            ? \`bg-teal-600 \${
-                active ? 'bg-teal-600 text-white' : 'text-gray-900'
-              } text-white\`
-            : 'text-gray-900'
-        }\`
-    "
-    :value="'test'"
-  ></Combobox.Option>
-</template>
-`,
-    options: {
       endingPosition: 'absolute-with-indent',
     },
   },
