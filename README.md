@@ -136,6 +136,12 @@ Default | CLI&nbsp;Override | API&nbsp;Override
 --- | --- | ---
 `"relative"` | `--ending-position <relative\|absolute\|absolute-with-indent>` | `endingPosition: "<relative\|absolute\|absolute-with-indent>"`
 
+## Version correlation with sibling plugins
+
+Starting with `0.6.0`, when there is a minor release on one side, I plan to reflect that change on the other side as well if possible.
+
+![Version correlation.](.github/correlation.png)
+
 ## Compatibility with other Prettier plugins
 
 If more than one Prettier plugin can handle the text you want to format, Prettier will only use the last of those plugins.
