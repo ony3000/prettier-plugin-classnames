@@ -9,8 +9,29 @@ type ASTNode = {
   range: NodeRange;
 };
 
+type JSXOpeningElementNameAsString = {
+  type: 'JSXIdentifier';
+  name: string;
+};
+
+type JSXOpeningElementNameAsObject = {
+  type: 'JSXMemberExpression';
+  object: JSXOpeningElementNameAsString | JSXOpeningElementNameAsObject;
+  property: JSXOpeningElementNameAsString;
+};
+
 function isTypeof<T extends ZodTypeAny>(arg: unknown, expectedSchema: T): arg is ZodInfer<T> {
   return expectedSchema.safeParse(arg).success;
+}
+
+function getElementName(
+  param: JSXOpeningElementNameAsString | JSXOpeningElementNameAsObject,
+): string {
+  if (param.type === 'JSXIdentifier') {
+    return param.name;
+  }
+
+  return `${getElementName(param.object)}.${param.property.name}`;
 }
 
 function filterAndSortClassNameNodes(
@@ -168,9 +189,28 @@ export function findTargetClassNameNodes(
                   line: z.unknown(),
                 }),
               }),
-              name: z.object({
-                name: z.string(),
-              }),
+              name: z.union([
+                z.object({
+                  type: z.literal('JSXIdentifier'),
+                  name: z.string(),
+                }),
+                z.object({
+                  type: z.literal('JSXMemberExpression'),
+                  // recursive structure
+                  object: z.union([
+                    z.object({
+                      type: z.literal('JSXIdentifier'),
+                    }),
+                    z.object({
+                      type: z.literal('JSXMemberExpression'),
+                    }),
+                  ]),
+                  property: z.object({
+                    type: z.literal('JSXIdentifier'),
+                    name: z.string(),
+                  }),
+                }),
+              ]),
             }),
           ) &&
           parentNode.type === 'JSXOpeningElement' &&
@@ -210,7 +250,10 @@ export function findTargetClassNameNodes(
                     ? ClassNameType.ASL
                     : ClassNameType.AOL;
                 // eslint-disable-next-line no-param-reassign
-                classNameNode.elementName = parentNode.name.name;
+                classNameNode.elementName = getElementName(
+                  // @ts-ignore
+                  parentNode.name,
+                );
               }
             }
           });
