@@ -2,7 +2,7 @@ import type { ZodTypeAny, infer as ZodInfer } from 'zod';
 import { z } from 'zod';
 
 import type { Dict, NodeRange, ClassNameNode, NarrowedParserOptions } from './shared';
-import { ClassNameType } from './shared';
+import { EOL, ClassNameType } from './shared';
 
 type ASTNode = {
   type: string;
@@ -769,6 +769,7 @@ export function findTargetClassNameNodesForVue(
 }
 
 export function findTargetClassNameNodesForAstro(
+  formattedText: string,
   ast: any,
   options: NarrowedParserOptions,
   addon: Dict<(text: string, options: any) => any>,
@@ -797,6 +798,17 @@ export function findTargetClassNameNodesForAstro(
    */
   const classNameNodes: ClassNameNode[] = [];
 
+  const totalTextLengthUptoSpecificIndexLine = formattedText
+    .split(EOL)
+    .slice(0, -1)
+    .map((line) => `${line}${EOL}`.length)
+    .map((_, index, array) =>
+      array
+        .slice(0, index + 1)
+        .reduce((prevResult, currentLength) => prevResult + currentLength, 0),
+    );
+  totalTextLengthUptoSpecificIndexLine.unshift(0);
+
   function recursion(node: unknown, parentNode?: { type?: unknown }): void {
     if (!isTypeof(node, z.object({ type: z.string() }))) {
       return;
@@ -823,11 +835,13 @@ export function findTargetClassNameNodesForAstro(
         z.object({
           position: z.object({
             start: z.object({
-              offset: z.number(),
+              line: z.number(),
+              column: z.number(),
             }),
             end: z
               .object({
-                offset: z.number(),
+                line: z.number(),
+                column: z.number(),
               })
               .optional(),
           }),
@@ -839,10 +853,13 @@ export function findTargetClassNameNodesForAstro(
       return;
     }
 
-    const currentNodeRangeStart = node.position.start.offset;
+    const currentNodeRangeStart =
+      totalTextLengthUptoSpecificIndexLine[node.position.start.line - 1] +
+      (node.position.start.column - 1);
     const currentNodeRangeEnd = node.position.end
-      ? node.position.end.offset
-      : node.position.start.offset +
+      ? totalTextLengthUptoSpecificIndexLine[node.position.end.line - 1] +
+        (node.position.end.column - 1)
+      : currentNodeRangeStart +
         (node.type === 'attribute'
           ? `${node.name}=?${node.value}?`.length
           : `${node.value}`.length);
@@ -920,11 +937,6 @@ export function findTargetClassNameNodesForAstro(
               kind: z.string(),
               name: z.string(),
               value: z.string(),
-              position: z.object({
-                start: z.object({
-                  line: z.number(),
-                }),
-              }),
             }),
           ) &&
           supportedAttributes.includes(node.name)
@@ -958,7 +970,7 @@ export function findTargetClassNameNodesForAstro(
                   }
 
                   const attributeOffset =
-                    -jsxStart.length + node.position.start.offset + attributeStart.length;
+                    -jsxStart.length + currentNodeRangeStart + attributeStart.length;
 
                   return {
                     type,
