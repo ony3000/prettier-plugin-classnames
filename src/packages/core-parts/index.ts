@@ -371,7 +371,7 @@ export function parseLineByLineAndReplace({
   let targetClassNameNodes: ClassNameNode[] = [];
   switch (options.parser) {
     case 'astro': {
-      targetClassNameNodes = findTargetClassNameNodesForAstro(ast, options, addon);
+      targetClassNameNodes = findTargetClassNameNodesForAstro(formattedText, ast, options, addon);
       break;
     }
     case 'vue': {
@@ -638,7 +638,7 @@ export async function parseLineByLineAndReplaceAsync({
   let targetClassNameNodes: ClassNameNode[] = [];
   switch (options.parser) {
     case 'astro': {
-      targetClassNameNodes = findTargetClassNameNodesForAstro(ast, options, addon);
+      targetClassNameNodes = findTargetClassNameNodesForAstro(formattedText, ast, options, addon);
       break;
     }
     case 'vue': {
