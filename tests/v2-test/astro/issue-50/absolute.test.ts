@@ -51,7 +51,7 @@ import SecurityForm from "./_security";
 ---
 
 <SettingsLayout
-  title="Settings ⚙ Details"
+  title="Settings 😂 Details"
   class="flex max-w-[1100px] flex-col gap-4 overflow-x-hidden text-left"
 >
   <SecurityForm client:only />
@@ -63,7 +63,7 @@ import SecurityForm from "./_security";
 ---
 
 <SettingsLayout
-  title="Settings ⚙ Details"
+  title="Settings 😂 Details"
   class="flex max-w-[1100px] flex-col gap-4 overflow-x-hidden text-left"
 >
   <SecurityForm client:only />
