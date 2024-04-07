@@ -116,7 +116,7 @@ export function Foo({ children }) {
   return (
     <div
       className={\` lorem ipsum dolor sit amet consectetur
-adipiscing elit proin \`}
+        adipiscing elit proin \`}
     >
       {children}
     </div>
