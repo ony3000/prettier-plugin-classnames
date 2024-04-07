@@ -203,9 +203,9 @@ export function Foo({ children }) {
   return (
     <div
       className={classNames(
-        \` lorem ipsum dolor sit amet consectetur adipiscing
-        elit proin ex massa hendrerit eu posuere eu volutpat id
-        neque pellentesque \`,
+        \` lorem ipsum dolor sit amet consectetur adipiscing elit
+        proin ex massa hendrerit eu posuere eu volutpat id neque
+        pellentesque \`,
       )}
     >
       {children}
@@ -234,9 +234,9 @@ export function Foo({ children }) {
   return (
     <div
       className={classNames(
-        \`lorem ipsum dolor sit amet consectetur adipiscing
-        elit proin ex massa hendrerit eu posuere eu volutpat id
-        neque pellentesque\`,
+        \`lorem ipsum dolor sit amet consectetur adipiscing elit proin
+        ex massa hendrerit eu posuere eu volutpat id neque
+        pellentesque\`,
       )}
     >
       {children}
