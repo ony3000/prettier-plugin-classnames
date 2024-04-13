@@ -192,12 +192,12 @@ const fixtures: Fixture[] = [
   <div>
     <div
       class={condition
-        ? \`lorem ipsum dolor sit amet consectetur adipiscing elit proin
-          ex massa hendrerit eu posuere eu volutpat id neque
-          pellentesque\`
-        : \`lorem ipsum dolor sit amet consectetur adipiscing elit proin
-          ex massa hendrerit eu posuere eu volutpat id neque
-          pellentesque\`}
+        ? \`lorem ipsum dolor sit amet consectetur adipiscing
+          elit proin ex massa hendrerit eu posuere eu
+          volutpat id neque pellentesque\`
+        : \`lorem ipsum dolor sit amet consectetur adipiscing
+          elit proin ex massa hendrerit eu posuere eu
+          volutpat id neque pellentesque\`}
     >
       <slot />
     </div>
@@ -256,12 +256,12 @@ const fixtures: Fixture[] = [
   <div>
     <div
       class={condition
-        ? \`lorem ipsum dolor sit amet consectetur adipiscing elit proin
-          ex massa hendrerit eu posuere eu volutpat id neque
-          pellentesque\`
-        : \`lorem ipsum dolor sit amet consectetur adipiscing elit proin
-          ex massa hendrerit eu posuere eu volutpat id neque
-          pellentesque\`}
+        ? \`lorem ipsum dolor sit amet consectetur adipiscing
+          elit proin ex massa hendrerit eu posuere eu
+          volutpat id neque pellentesque\`
+        : \`lorem ipsum dolor sit amet consectetur adipiscing
+          elit proin ex massa hendrerit eu posuere eu
+          volutpat id neque pellentesque\`}
     >
       <slot />
     </div>

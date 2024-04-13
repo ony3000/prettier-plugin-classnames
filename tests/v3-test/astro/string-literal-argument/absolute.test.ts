@@ -48,9 +48,7 @@ const fixtures: Fixture[] = [
 `,
     output: `<div>
   <div>
-    <div
-      class={classNames(" lorem ipsum dolor sit amet ")}
-    >
+    <div class={classNames(" lorem ipsum dolor sit amet ")}>
       <slot />
     </div>
   </div>
@@ -244,7 +242,7 @@ neque pellentesque\`,
 `,
   },
   {
-    name: 'syntax variants - shorthand',
+    name: 'syntax variants - `class:list` directive',
     input: `
 <div>
   <div>
