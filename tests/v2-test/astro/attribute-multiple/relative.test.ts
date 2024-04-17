@@ -21,7 +21,7 @@ const fixtures: Fixture[] = [
 <div>
   <div>
     <div dir="ltr" id="lorem-ipsum" title="lorem ipsum" class="lorem ipsum dolor sit amet">
-      {children}
+      <slot />
     </div>
   </div>
 </div>
@@ -34,7 +34,7 @@ const fixtures: Fixture[] = [
       title="lorem ipsum"
       class="lorem ipsum dolor sit amet"
     >
-      {children}
+      <slot />
     </div>
   </div>
 </div>
@@ -46,7 +46,7 @@ const fixtures: Fixture[] = [
 <div>
   <div>
     <div dir="ltr" id="lorem-ipsum" title="lorem ipsum" class="  lorem ipsum dolor sit amet  ">
-      {children}
+      <slot />
     </div>
   </div>
 </div>
@@ -59,7 +59,7 @@ const fixtures: Fixture[] = [
       title="lorem ipsum"
       class="lorem ipsum dolor sit amet"
     >
-      {children}
+      <slot />
     </div>
   </div>
 </div>
@@ -74,7 +74,7 @@ const fixtures: Fixture[] = [
       lorem ipsum
       dolor sit amet
     ">
-      {children}
+      <slot />
     </div>
   </div>
 </div>
@@ -87,7 +87,7 @@ const fixtures: Fixture[] = [
       title="lorem ipsum"
       class="lorem ipsum dolor sit amet"
     >
-      {children}
+      <slot />
     </div>
   </div>
 </div>
@@ -99,7 +99,7 @@ const fixtures: Fixture[] = [
 <div>
   <div>
     <div dir="ltr" id="lorem-ipsum" title="lorem ipsum" class="lorem ipsum dolor sit amet consectetur adipiscing elit proin">
-      {children}
+      <slot />
     </div>
   </div>
 </div>
@@ -112,7 +112,7 @@ const fixtures: Fixture[] = [
       title="lorem ipsum"
       class="lorem ipsum dolor sit amet consectetur adipiscing elit proin"
     >
-      {children}
+      <slot />
     </div>
   </div>
 </div>
@@ -124,7 +124,7 @@ const fixtures: Fixture[] = [
 <div>
   <div>
     <div dir="ltr" id="lorem-ipsum" title="lorem ipsum" class="   lorem ipsum dolor sit amet consectetur adipiscing elit proin   ">
-      {children}
+      <slot />
     </div>
   </div>
 </div>
@@ -137,7 +137,7 @@ const fixtures: Fixture[] = [
       title="lorem ipsum"
       class="lorem ipsum dolor sit amet consectetur adipiscing elit proin"
     >
-      {children}
+      <slot />
     </div>
   </div>
 </div>
@@ -154,7 +154,7 @@ const fixtures: Fixture[] = [
       consectetur adipiscing elit
       proin
     ">
-      {children}
+      <slot />
     </div>
   </div>
 </div>
@@ -167,7 +167,7 @@ const fixtures: Fixture[] = [
       title="lorem ipsum"
       class="lorem ipsum dolor sit amet consectetur adipiscing elit proin"
     >
-      {children}
+      <slot />
     </div>
   </div>
 </div>
@@ -179,7 +179,7 @@ const fixtures: Fixture[] = [
 <div>
   <div>
     <div dir="ltr" id="lorem-ipsum" title="lorem ipsum" class="lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere eu volutpat id neque pellentesque">
-      {children}
+      <slot />
     </div>
   </div>
 </div>
@@ -194,7 +194,7 @@ const fixtures: Fixture[] = [
         ex massa hendrerit eu posuere eu volutpat id neque
         pellentesque"
     >
-      {children}
+      <slot />
     </div>
   </div>
 </div>
@@ -206,7 +206,7 @@ const fixtures: Fixture[] = [
 <div>
   <div>
     <div dir="ltr" id="lorem-ipsum" title="lorem ipsum" class="    lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere eu volutpat id neque pellentesque    ">
-      {children}
+      <slot />
     </div>
   </div>
 </div>
@@ -221,7 +221,7 @@ const fixtures: Fixture[] = [
         ex massa hendrerit eu posuere eu volutpat id neque
         pellentesque"
     >
-      {children}
+      <slot />
     </div>
   </div>
 </div>
@@ -238,7 +238,7 @@ const fixtures: Fixture[] = [
       consectetur adipiscing elit
       proin ex massa hendrerit eu posuere eu volutpat id neque pellentesque
     ">
-      {children}
+      <slot />
     </div>
   </div>
 </div>
@@ -253,7 +253,7 @@ const fixtures: Fixture[] = [
         ex massa hendrerit eu posuere eu volutpat id neque
         pellentesque"
     >
-      {children}
+      <slot />
     </div>
   </div>
 </div>

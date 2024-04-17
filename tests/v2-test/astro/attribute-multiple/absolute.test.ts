@@ -21,7 +21,7 @@ const fixtures: Fixture[] = [
 <div>
   <div>
     <div dir="ltr" id="lorem-ipsum" title="lorem ipsum" class="lorem ipsum dolor sit amet">
-      {children}
+      <slot />
     </div>
   </div>
 </div>
@@ -34,7 +34,7 @@ const fixtures: Fixture[] = [
       title="lorem ipsum"
       class="lorem ipsum dolor sit amet"
     >
-      {children}
+      <slot />
     </div>
   </div>
 </div>
@@ -46,7 +46,7 @@ const fixtures: Fixture[] = [
 <div>
   <div>
     <div dir="ltr" id="lorem-ipsum" title="lorem ipsum" class="  lorem ipsum dolor sit amet  ">
-      {children}
+      <slot />
     </div>
   </div>
 </div>
@@ -59,7 +59,7 @@ const fixtures: Fixture[] = [
       title="lorem ipsum"
       class="lorem ipsum dolor sit amet"
     >
-      {children}
+      <slot />
     </div>
   </div>
 </div>
@@ -74,7 +74,7 @@ const fixtures: Fixture[] = [
       lorem ipsum
       dolor sit amet
     ">
-      {children}
+      <slot />
     </div>
   </div>
 </div>
@@ -87,7 +87,7 @@ const fixtures: Fixture[] = [
       title="lorem ipsum"
       class="lorem ipsum dolor sit amet"
     >
-      {children}
+      <slot />
     </div>
   </div>
 </div>
@@ -99,7 +99,7 @@ const fixtures: Fixture[] = [
 <div>
   <div>
     <div dir="ltr" id="lorem-ipsum" title="lorem ipsum" class="lorem ipsum dolor sit amet consectetur adipiscing elit proin">
-      {children}
+      <slot />
     </div>
   </div>
 </div>
@@ -113,7 +113,7 @@ const fixtures: Fixture[] = [
       class="lorem ipsum dolor sit amet consectetur
 adipiscing elit proin"
     >
-      {children}
+      <slot />
     </div>
   </div>
 </div>
@@ -125,7 +125,7 @@ adipiscing elit proin"
 <div>
   <div>
     <div dir="ltr" id="lorem-ipsum" title="lorem ipsum" class="   lorem ipsum dolor sit amet consectetur adipiscing elit proin   ">
-      {children}
+      <slot />
     </div>
   </div>
 </div>
@@ -139,7 +139,7 @@ adipiscing elit proin"
       class="lorem ipsum dolor sit amet consectetur
 adipiscing elit proin"
     >
-      {children}
+      <slot />
     </div>
   </div>
 </div>
@@ -156,7 +156,7 @@ adipiscing elit proin"
       consectetur adipiscing elit
       proin
     ">
-      {children}
+      <slot />
     </div>
   </div>
 </div>
@@ -170,7 +170,7 @@ adipiscing elit proin"
       class="lorem ipsum dolor sit amet consectetur
 adipiscing elit proin"
     >
-      {children}
+      <slot />
     </div>
   </div>
 </div>
@@ -182,7 +182,7 @@ adipiscing elit proin"
 <div>
   <div>
     <div dir="ltr" id="lorem-ipsum" title="lorem ipsum" class="lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere eu volutpat id neque pellentesque">
-      {children}
+      <slot />
     </div>
   </div>
 </div>
@@ -197,7 +197,7 @@ adipiscing elit proin"
 adipiscing elit proin ex massa hendrerit eu posuere eu
 volutpat id neque pellentesque"
     >
-      {children}
+      <slot />
     </div>
   </div>
 </div>
@@ -209,7 +209,7 @@ volutpat id neque pellentesque"
 <div>
   <div>
     <div dir="ltr" id="lorem-ipsum" title="lorem ipsum" class="    lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere eu volutpat id neque pellentesque    ">
-      {children}
+      <slot />
     </div>
   </div>
 </div>
@@ -224,7 +224,7 @@ volutpat id neque pellentesque"
 adipiscing elit proin ex massa hendrerit eu posuere eu
 volutpat id neque pellentesque"
     >
-      {children}
+      <slot />
     </div>
   </div>
 </div>
@@ -241,7 +241,7 @@ volutpat id neque pellentesque"
       consectetur adipiscing elit
       proin ex massa hendrerit eu posuere eu volutpat id neque pellentesque
     ">
-      {children}
+      <slot />
     </div>
   </div>
 </div>
@@ -256,7 +256,7 @@ volutpat id neque pellentesque"
 adipiscing elit proin ex massa hendrerit eu posuere eu
 volutpat id neque pellentesque"
     >
-      {children}
+      <slot />
     </div>
   </div>
 </div>
