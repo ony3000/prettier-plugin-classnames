@@ -229,6 +229,29 @@ export function Foo({ children }) {
 }
 `,
   },
+  {
+    name: 'syntax variants - component',
+    input: `
+export function Foo({ children }) {
+  return (
+    <Box className="lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere">
+      {children}
+    </Box>
+  );
+}
+`,
+    output: `export function Foo({ children }) {
+  return (
+    <Box
+      className="lorem ipsum dolor sit amet consectetur
+        adipiscing elit proin ex massa hendrerit eu posuere"
+    >
+      {children}
+    </Box>
+  );
+}
+`,
+  },
 ];
 
 describe.each(fixtures)('$name', ({ input, output, options: fixtureOptions }) => {

@@ -229,6 +229,29 @@ const fixtures: Fixture[] = [
 </div>
 `,
   },
+  {
+    name: 'syntax variants - component',
+    input: `
+<div>
+  <div>
+    <Box class="lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere">
+      <slot />
+    </Box>
+  </div>
+</div>
+`,
+    output: `<div>
+  <div>
+    <Box
+      class="lorem ipsum dolor sit amet consectetur
+        adipiscing elit proin ex massa hendrerit eu posuere"
+    >
+      <slot />
+    </Box>
+  </div>
+</div>
+`,
+  },
 ];
 
 describe.each(fixtures)('$name', ({ input, output, options: fixtureOptions }) => {

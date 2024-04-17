@@ -228,7 +228,30 @@ const fixtures: Fixture[] = [
 `,
   },
   {
-    name: 'syntax variants - shorthand',
+    name: 'syntax variants (1) - component',
+    input: `
+<template>
+  <div>
+    <Box v-bind:class="'lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere'">
+      <slot></slot>
+    </Box>
+  </div>
+</template>
+`,
+    output: `<template>
+  <div>
+    <Box
+      v-bind:class="\`lorem ipsum dolor sit amet consectetur adipiscing elit proin
+        ex massa hendrerit eu posuere\`"
+    >
+      <slot></slot>
+    </Box>
+  </div>
+</template>
+`,
+  },
+  {
+    name: 'syntax variants (2) - shorthand',
     input: `
 <template>
   <div>

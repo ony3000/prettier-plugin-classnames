@@ -229,6 +229,29 @@ volutpat id neque pellentesque"
 </template>
 `,
   },
+  {
+    name: 'syntax variants - component',
+    input: `
+<template>
+  <div>
+    <Box class="lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere">
+      <slot></slot>
+    </Box>
+  </div>
+</template>
+`,
+    output: `<template>
+  <div>
+    <Box
+      class="lorem ipsum dolor sit amet consectetur
+adipiscing elit proin ex massa hendrerit eu posuere"
+    >
+      <slot></slot>
+    </Box>
+  </div>
+</template>
+`,
+  },
 ];
 
 describe.each(fixtures)('$name', async ({ input, output, options: fixtureOptions }) => {
