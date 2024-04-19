@@ -10,16 +10,165 @@ const options = {
   ...baseOptions,
   plugins: ['prettier-plugin-astro', thisPlugin],
   parser: 'astro',
+  printWidth: 60,
   endingPosition: 'absolute',
 };
 
 const fixtures: Fixture[] = [
   {
-    name: 'custom attributes',
+    name: 'endOfLine: crlf',
     input: `
 <div>
   <div>
-    <div fixme="lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere eu volutpat id neque pellentesque">
+    <div class="lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere">
+      <slot />
+    </div>
+  </div>
+</div>
+`,
+    output: `<div>\r\n  <div>\r\n    <div\r\n      class="lorem ipsum dolor sit amet consectetur\r\nadipiscing elit proin ex massa hendrerit eu posuere"\r\n    >\r\n      <slot />\r\n    </div>\r\n  </div>\r\n</div>\r\n`,
+    options: {
+      endOfLine: 'crlf',
+    },
+  },
+  {
+    name: 'tabWidth: 4',
+    input: `
+<div>
+  <div>
+    <div class="lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere">
+      <slot />
+    </div>
+  </div>
+</div>
+`,
+    output: `<div>
+    <div>
+        <div
+            class="lorem ipsum dolor sit amet consectetur
+adipiscing elit proin ex massa hendrerit eu posuere"
+        >
+            <slot />
+        </div>
+    </div>
+</div>
+`,
+    options: {
+      tabWidth: 4,
+    },
+  },
+  {
+    name: 'useTabs: true (1) - tabWidth: 2',
+    input: `
+<div>
+  <div>
+    <div class="lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere">
+      <slot />
+    </div>
+  </div>
+</div>
+`,
+    output: `<div>
+\t<div>
+\t\t<div
+\t\t\tclass="lorem ipsum dolor sit amet consectetur
+adipiscing elit proin ex massa hendrerit eu posuere"
+\t\t>
+\t\t\t<slot />
+\t\t</div>
+\t</div>
+</div>
+`,
+    options: {
+      useTabs: true,
+      tabWidth: 2,
+    },
+  },
+  {
+    name: 'useTabs: true (2) - tabWidth: 4',
+    input: `
+<div>
+  <div>
+    <div class="lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere">
+      <slot />
+    </div>
+  </div>
+</div>
+`,
+    output: `<div>
+\t<div>
+\t\t<div
+\t\t\tclass="lorem ipsum dolor sit amet consectetur
+adipiscing elit proin ex massa hendrerit eu posuere"
+\t\t>
+\t\t\t<slot />
+\t\t</div>
+\t</div>
+</div>
+`,
+    options: {
+      useTabs: true,
+      tabWidth: 4,
+    },
+  },
+  {
+    name: 'useTabs: true (3) - tabWidth: 8',
+    input: `
+<div>
+  <div>
+    <div class="lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere">
+      <slot />
+    </div>
+  </div>
+</div>
+`,
+    output: `<div>
+\t<div>
+\t\t<div
+\t\t\tclass="lorem ipsum dolor sit amet
+consectetur adipiscing elit proin ex massa hendrerit eu
+posuere"
+\t\t>
+\t\t\t<slot />
+\t\t</div>
+\t</div>
+</div>
+`,
+    options: {
+      useTabs: true,
+      tabWidth: 8,
+    },
+  },
+  {
+    name: 'comment - multi line comment',
+    input: `
+<!--
+<div>
+  <div>
+    <div class="lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere">
+      <slot />
+    </div>
+  </div>
+</div>
+-->
+`,
+    output: `<!--
+<div>
+  <div>
+    <div class="lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere">
+      <slot />
+    </div>
+  </div>
+</div>
+-->
+`,
+  },
+  {
+    name: 'plugin options (1) - custom attributes',
+    input: `
+<div>
+  <div>
+    <div fixme="lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere">
       <slot />
     </div>
   </div>
@@ -29,8 +178,7 @@ const fixtures: Fixture[] = [
   <div>
     <div
       fixme="lorem ipsum dolor sit amet consectetur
-adipiscing elit proin ex massa hendrerit eu posuere eu
-volutpat id neque pellentesque"
+adipiscing elit proin ex massa hendrerit eu posuere"
     >
       <slot />
     </div>
@@ -38,16 +186,15 @@ volutpat id neque pellentesque"
 </div>
 `,
     options: {
-      printWidth: 60,
       customAttributes: ['fixme'],
     },
   },
   {
-    name: 'custom functions',
+    name: 'plugin options (2) - custom functions',
     input: `
 <div>
   <div>
-    <div class={clsx('lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere eu volutpat id neque pellentesque')}>
+    <div class={clsx('lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere')}>
       <slot />
     </div>
   </div>
@@ -58,8 +205,7 @@ volutpat id neque pellentesque"
     <div
       class={clsx(
         \`lorem ipsum dolor sit amet consectetur adipiscing
-elit proin ex massa hendrerit eu posuere eu volutpat id
-neque pellentesque\`,
+elit proin ex massa hendrerit eu posuere\`,
       )}
     >
       <slot />
@@ -68,7 +214,6 @@ neque pellentesque\`,
 </div>
 `,
     options: {
-      printWidth: 60,
       customFunctions: ['clsx'],
     },
   },
