@@ -80,7 +80,7 @@ const fixtures: Fixture[] = [
 `,
   },
   {
-    name: 'valid ignore comment (3) - class name combination (the astro plugin does not work properly)',
+    name: '🟠 valid ignore comment (3) - class name combination (the astro plugin does not work properly)',
     input: `
 <div>
   <div>
