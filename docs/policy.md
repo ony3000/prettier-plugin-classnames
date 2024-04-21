@@ -223,3 +223,37 @@ For class names written as expressions, the delimiters at both ends can be conve
      );
    }
    ```
+
+## (Title to be determined)
+
+For class names written as expressions, the input text is not used as is during the line wrapping process. The value evaluated as a string is used.
+
+For example, in the following case, the length of the class name in the input text exceeds `printWidth`, but the value evaluated as a string does not. Therefore, no line wrapping occur in the formatting result.
+
+<!-- prettier-ignore -->
+```typescript
+// options
+{ printWidth: 60, endingPosition: 'relative' }
+
+// input
+export function Foo({ children }) {
+  return (
+    <div className={`lorem ipsum do\`or sit amet consectetur adipiscing elit proin`}>
+      {children}
+    </div>
+  );
+}
+
+// output
+export function Foo({ children }) {
+  return (
+    <div
+      className={
+        "lorem ipsum do`or sit amet consectetur adipiscing elit proin"
+      }
+    >
+      {children}
+    </div>
+  );
+}
+```
