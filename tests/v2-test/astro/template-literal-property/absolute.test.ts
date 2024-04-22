@@ -294,12 +294,12 @@ elit proin ex massa hendrerit eu posuere\`]: true,
     <div
       class:list={[
         {
-          [\`lorem ipsum dolor sit amet consectetur adipiscing
-elit proin ex massa hendrerit eu posuere\`]: true,
+          [\`lorem ipsum dolor sit amet consectetur
+adipiscing elit proin ex massa hendrerit eu posuere\`]: true,
         },
         {
-          [\`lorem ipsum dolor sit amet consectetur adipiscing
-elit proin ex massa hendrerit eu posuere\`]: true,
+          [\`lorem ipsum dolor sit amet consectetur
+adipiscing elit proin ex massa hendrerit eu posuere\`]: true,
         },
       ]}
     >
