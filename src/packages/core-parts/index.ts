@@ -283,24 +283,24 @@ function replaceClassName({
 
       const rawIndent = indentUnit.repeat(multiLineIndentLevel);
       const frozenIndent = freezeNonClassName(rawIndent);
-      const substitute =
-        `${quoteStart}${classNameWithOriginalSpaces}${quoteEnd}`
-          .split(EOL)
-          .map((raw) => {
-            const frozen = freezeClassName(raw);
 
-            freezer.push({
-              type: 'string',
-              from: frozen,
-              to: raw,
-            });
+      const isAttributeType = type === ClassNameType.ASL || type === ClassNameType.AOL;
+      const substitute = `${isAttributeType ? '' : quoteStart}${classNameWithOriginalSpaces}${
+        isAttributeType ? '' : quoteEnd
+      }`
+        .split(EOL)
+        .map((raw) => {
+          const frozen = freezeClassName(raw);
 
-            return frozen;
-          })
-          .join(`${EOL}${frozenIndent}`) +
-        (conditionForSameLineAttribute || conditionForOwnLineAttribute
-          ? `${EOL}${frozenAttributeName}${EOL}`
-          : '');
+          freezer.push({
+            type: 'string',
+            from: frozen,
+            to: raw,
+          });
+
+          return frozen;
+        })
+        .join(`${EOL}${frozenIndent}`);
 
       if (isStartingPositionRelative && isMultiLineClassName) {
         freezer.push({
@@ -313,8 +313,19 @@ function replaceClassName({
       const sliceOffset = !isMultiLineClassName && type === ClassNameType.TLOP ? 1 : 0;
       const classNamePartialWrappedText = `${formattedPrevText.slice(
         0,
-        rangeStart - sliceOffset,
-      )}${substitute}${formattedPrevText.slice(correctedRangeEnd + sliceOffset)}`;
+        rangeStart - sliceOffset + (isAttributeType ? 1 : 0),
+      )}${substitute}${
+        isAttributeType
+          ? formattedPrevText.slice(
+              correctedRangeEnd + sliceOffset - 1,
+              correctedRangeEnd + sliceOffset,
+            )
+          : ''
+      }${
+        conditionForSameLineAttribute || conditionForOwnLineAttribute
+          ? `${EOL}${frozenAttributeName}${EOL}`
+          : ''
+      }${formattedPrevText.slice(correctedRangeEnd + sliceOffset)}`;
 
       rangeCorrectionValues.forEach((_, rangeCorrectionIndex, array) => {
         if (rangeCorrectionIndex <= classNameNodeIndex) {
@@ -550,24 +561,24 @@ async function replaceClassNameAsync({
 
       const rawIndent = indentUnit.repeat(multiLineIndentLevel);
       const frozenIndent = freezeNonClassName(rawIndent);
-      const substitute =
-        `${quoteStart}${classNameWithOriginalSpaces}${quoteEnd}`
-          .split(EOL)
-          .map((raw) => {
-            const frozen = freezeClassName(raw);
 
-            freezer.push({
-              type: 'string',
-              from: frozen,
-              to: raw,
-            });
+      const isAttributeType = type === ClassNameType.ASL || type === ClassNameType.AOL;
+      const substitute = `${isAttributeType ? '' : quoteStart}${classNameWithOriginalSpaces}${
+        isAttributeType ? '' : quoteEnd
+      }`
+        .split(EOL)
+        .map((raw) => {
+          const frozen = freezeClassName(raw);
 
-            return frozen;
-          })
-          .join(`${EOL}${frozenIndent}`) +
-        (conditionForSameLineAttribute || conditionForOwnLineAttribute
-          ? `${EOL}${frozenAttributeName}${EOL}`
-          : '');
+          freezer.push({
+            type: 'string',
+            from: frozen,
+            to: raw,
+          });
+
+          return frozen;
+        })
+        .join(`${EOL}${frozenIndent}`);
 
       if (isStartingPositionRelative && isMultiLineClassName) {
         freezer.push({
@@ -580,8 +591,19 @@ async function replaceClassNameAsync({
       const sliceOffset = !isMultiLineClassName && type === ClassNameType.TLOP ? 1 : 0;
       const classNamePartialWrappedText = `${formattedPrevText.slice(
         0,
-        rangeStart - sliceOffset,
-      )}${substitute}${formattedPrevText.slice(correctedRangeEnd + sliceOffset)}`;
+        rangeStart - sliceOffset + (isAttributeType ? 1 : 0),
+      )}${substitute}${
+        isAttributeType
+          ? formattedPrevText.slice(
+              correctedRangeEnd + sliceOffset - 1,
+              correctedRangeEnd + sliceOffset,
+            )
+          : ''
+      }${
+        conditionForSameLineAttribute || conditionForOwnLineAttribute
+          ? `${EOL}${frozenAttributeName}${EOL}`
+          : ''
+      }${formattedPrevText.slice(correctedRangeEnd + sliceOffset)}`;
 
       rangeCorrectionValues.forEach((_, rangeCorrectionIndex, array) => {
         if (rangeCorrectionIndex <= classNameNodeIndex) {
