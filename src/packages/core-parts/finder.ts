@@ -430,6 +430,65 @@ export function findTargetClassNameNodes(
         }
         break;
       }
+      case 'TaggedTemplateExpression': {
+        nonCommentNodes.push(currentASTNode);
+
+        if (
+          (isTypeof(
+            node,
+            z.object({
+              tag: z.object({
+                type: z.literal('Identifier'),
+                name: z.string(),
+              }),
+            }),
+          ) &&
+            supportedFunctions.includes(node.tag.name)) ||
+          (isTypeof(
+            node,
+            z.object({
+              tag: z.object({
+                type: z.literal('MemberExpression'),
+                object: z.object({
+                  type: z.literal('Identifier'),
+                  name: z.string(),
+                }),
+              }),
+            }),
+          ) &&
+            supportedFunctions.includes(node.tag.object.name)) ||
+          (isTypeof(
+            node,
+            z.object({
+              tag: z.object({
+                type: z.literal('CallExpression'),
+                callee: z.object({
+                  type: z.literal('Identifier'),
+                  name: z.string(),
+                }),
+              }),
+            }),
+          ) &&
+            supportedFunctions.includes(node.tag.callee.name))
+        ) {
+          keywordStartingNodes.push(currentASTNode);
+
+          classNameNodes.forEach((classNameNode) => {
+            const [classNameRangeStart, classNameRangeEnd] = classNameNode.range;
+
+            if (
+              currentNodeRangeStart <= classNameRangeStart &&
+              classNameRangeEnd <= currentNodeRangeEnd
+            ) {
+              if (classNameNode.type === ClassNameType.UTL) {
+                // eslint-disable-next-line no-param-reassign
+                classNameNode.type = ClassNameType.TLPQ;
+              }
+            }
+          });
+        }
+        break;
+      }
       case 'Block':
       case 'Line': {
         if (

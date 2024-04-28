@@ -57,6 +57,58 @@ export function Callout({ children }) {
 }
 `,
   },
+  {
+    name: 'tagged template (1)',
+    input: `
+const classes = tw\`lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere\`;
+`,
+    output: `const classes = tw\`lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit
+eu posuere\`;
+`,
+    options: {
+      customFunctions: ['tw'],
+      endingPosition: 'relative',
+    },
+  },
+  {
+    name: 'tagged template (2)',
+    input: `
+const Bar = tw.foo\`lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere\`;
+`,
+    output: `const Bar = tw.foo\`lorem ipsum dolor sit amet consectetur adipiscing elit proin
+ex massa hendrerit eu posuere\`;
+`,
+    options: {
+      customFunctions: ['tw'],
+      endingPosition: 'absolute',
+    },
+  },
+  {
+    name: 'tagged template (3)',
+    input: `
+const Bar = tw(Foo)\`lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere\`;
+`,
+    output: `const Bar = tw(
+  Foo,
+)\`lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa
+hendrerit eu posuere\`;
+`,
+    options: {
+      customFunctions: ['tw'],
+      endingPosition: 'absolute-with-indent',
+    },
+  },
+  {
+    name: 'tagged template (4) - short enough class name',
+    input: `
+const classes = tw\`lorem ipsum dolor sit amet\`;
+`,
+    output: `const classes = tw\`lorem ipsum dolor sit amet\`;
+`,
+    options: {
+      customFunctions: ['tw'],
+    },
+  },
 ];
 
 describe('babel/variable-declaration', () => {
