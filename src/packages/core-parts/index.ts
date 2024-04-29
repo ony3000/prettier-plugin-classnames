@@ -149,7 +149,7 @@ function replaceClassName({
   lineNodes,
   options,
   format,
-  targetClassNameTypes,
+  isSecondPhase,
 }: {
   formattedText: string;
   indentUnit: string;
@@ -157,7 +157,7 @@ function replaceClassName({
   lineNodes: LineNode[];
   options: NarrowedParserOptions;
   format: (source: string, options?: any) => string;
-  targetClassNameTypes?: ClassNameType[];
+  isSecondPhase: boolean;
 }): string {
   const freezer: { type: 'string' | 'indent'; from: string; to: string }[] = [];
   const rangeCorrectionValues = [...Array(targetClassNameNodes.length)].map(() => 0);
@@ -168,7 +168,14 @@ function replaceClassName({
       { type, range: [rangeStart, rangeEnd], startLineIndex, elementName },
       classNameNodeIndex,
     ) => {
-      if (targetClassNameTypes && !targetClassNameTypes.includes(type)) {
+      if (
+        isSecondPhase &&
+        !(
+          options.parser === 'vue' || options.parser === 'astro'
+            ? [ClassNameType.ASL, ClassNameType.AOL]
+            : [ClassNameType.ASL, ClassNameType.AOL, ClassNameType.CTL, ClassNameType.TLSL]
+        ).includes(type)
+      ) {
         return formattedPrevText;
       }
 
@@ -364,14 +371,14 @@ export function parseLineByLineAndReplace({
   options,
   format,
   addon,
-  targetClassNameTypes,
+  isSecondPhase,
 }: {
   formattedText: string;
   ast: any;
   options: NarrowedParserOptions;
   format: (source: string, options?: any) => string;
   addon: Dict<(text: string, options: any) => any>;
-  targetClassNameTypes?: ClassNameType[];
+  isSecondPhase: boolean;
 }): string {
   if (formattedText === '') {
     return formattedText;
@@ -404,12 +411,10 @@ export function parseLineByLineAndReplace({
     lineNodes,
     options,
     format,
-    targetClassNameTypes,
+    isSecondPhase,
   });
-  // Note: This is a temporary use condition. I plan to improve it in the next minor update.
-  const conditionForSecondFormat = targetClassNameTypes !== undefined;
 
-  return conditionForSecondFormat
+  return isSecondPhase
     ? classNameWrappedText.replace(new RegExp(`^\\s*${doubleFrozenAttributeName}${EOL}`, 'gm'), '')
     : classNameWrappedText;
 }
@@ -421,7 +426,7 @@ async function replaceClassNameAsync({
   lineNodes,
   options,
   format,
-  targetClassNameTypes,
+  isSecondPhase,
 }: {
   formattedText: string;
   indentUnit: string;
@@ -429,7 +434,7 @@ async function replaceClassNameAsync({
   lineNodes: LineNode[];
   options: NarrowedParserOptions;
   format: (source: string, options?: any) => Promise<string>;
-  targetClassNameTypes?: ClassNameType[];
+  isSecondPhase: boolean;
 }): Promise<string> {
   const freezer: { type: 'string' | 'indent'; from: string; to: string }[] = [];
   const rangeCorrectionValues = [...Array(targetClassNameNodes.length)].map(() => 0);
@@ -440,7 +445,14 @@ async function replaceClassNameAsync({
       { type, range: [rangeStart, rangeEnd], startLineIndex, elementName },
       classNameNodeIndex,
     ) => {
-      if (targetClassNameTypes && !targetClassNameTypes.includes(type)) {
+      if (
+        isSecondPhase &&
+        !(
+          options.parser === 'vue' || options.parser === 'astro'
+            ? [ClassNameType.ASL, ClassNameType.AOL]
+            : [ClassNameType.ASL, ClassNameType.AOL, ClassNameType.CTL, ClassNameType.TLSL]
+        ).includes(type)
+      ) {
         return formattedPrevTextPromise;
       }
 
@@ -642,14 +654,14 @@ export async function parseLineByLineAndReplaceAsync({
   options,
   format,
   addon,
-  targetClassNameTypes,
+  isSecondPhase,
 }: {
   formattedText: string;
   ast: any;
   options: NarrowedParserOptions;
   format: (source: string, options?: any) => Promise<string>;
   addon: Dict<(text: string, options: any) => any>;
-  targetClassNameTypes?: ClassNameType[];
+  isSecondPhase: boolean;
 }): Promise<string> {
   if (formattedText === '') {
     return formattedText;
@@ -682,12 +694,10 @@ export async function parseLineByLineAndReplaceAsync({
     lineNodes,
     options,
     format,
-    targetClassNameTypes,
+    isSecondPhase,
   });
-  // Note: This is a temporary use condition. I plan to improve it in the next minor update.
-  const conditionForSecondFormat = targetClassNameTypes !== undefined;
 
-  return conditionForSecondFormat
+  return isSecondPhase
     ? classNameWrappedText.replace(new RegExp(`^\\s*${doubleFrozenAttributeName}${EOL}`, 'gm'), '')
     : classNameWrappedText;
 }
