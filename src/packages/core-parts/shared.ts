@@ -23,6 +23,9 @@ export const TAB = '\t';
  */
 export const TAB_SIZE = 4;
 
+/**
+ * @deprecated
+ */
 export enum ClassNameType {
   /**
    * Attributes on the same line as the opening tag and enclosed in quotes
@@ -90,12 +93,32 @@ export type Dict<T = unknown> = Record<string, T | undefined>;
 
 export type NodeRange = [number, number];
 
-export type ClassNameNode = {
-  type: ClassNameType;
+type ClassNameNodeBase = {
   range: NodeRange;
   startLineIndex: number;
+};
+
+/**
+ * @deprecated
+ */
+type LegacyNode = ClassNameNodeBase & {
+  type: ClassNameType;
   elementName?: string;
 };
+
+type UnknownNode = ClassNameNodeBase & {
+  type: 'unknown';
+};
+
+type AttributeNode = ClassNameNodeBase & {
+  type: 'attribute';
+};
+
+type ExpressionNode = ClassNameNodeBase & {
+  type: 'expression';
+};
+
+export type ClassNameNode = LegacyNode | UnknownNode | AttributeNode | ExpressionNode;
 
 export type NarrowedParserOptions = {
   printWidth: number;
