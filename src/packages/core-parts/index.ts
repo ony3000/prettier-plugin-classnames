@@ -31,14 +31,12 @@ function getExtraIndentLevel(type: ClassNameType) {
   }
 
   if (
-    [
-      ClassNameType.AOL,
-      ClassNameType.SLSL,
-      ClassNameType.SLTO,
-      ClassNameType.TLSL,
-      ClassNameType.TLTO,
-      ClassNameType.TLPQTO,
-    ].includes(type)
+    type === ClassNameType.AOL ||
+    type === ClassNameType.SLSL ||
+    type === ClassNameType.SLTO ||
+    type === ClassNameType.TLSL ||
+    type === ClassNameType.TLTO ||
+    type === ClassNameType.TLPQTO
   ) {
     return 1;
   }
@@ -51,28 +49,22 @@ function getSomeKindOfQuotes(
   isMultiLineClassName: boolean,
   parser: string,
 ): [string, string] {
-  // prettier-ignore
   const baseQuote =
     // eslint-disable-next-line no-nested-ternary
     type === ClassNameType.TLPQ || type === ClassNameType.TLPQTO
       ? '`'
-      : (
-        parser === 'vue' &&
-        [
-          ClassNameType.FA,
-          ClassNameType.CSL,
-          ClassNameType.SLSL,
-          ClassNameType.SLOP,
-          ClassNameType.SLTO,
-          ClassNameType.CTL,
-          ClassNameType.TLSL,
-          ClassNameType.TLOP,
-          ClassNameType.TLTO,
-          ClassNameType.TLPQTO,
-        ].includes(type)
-          ? "'"
-          : '"'
-      );
+      : parser === 'vue' &&
+        (type === ClassNameType.FA ||
+          type === ClassNameType.CSL ||
+          type === ClassNameType.SLSL ||
+          type === ClassNameType.SLOP ||
+          type === ClassNameType.SLTO ||
+          type === ClassNameType.CTL ||
+          type === ClassNameType.TLSL ||
+          type === ClassNameType.TLOP ||
+          type === ClassNameType.TLTO)
+      ? "'"
+      : '"';
 
   const opener = `${isMultiLineClassName && type === ClassNameType.SLOP ? '[' : ''}${
     !isMultiLineClassName || type === ClassNameType.ASL || type === ClassNameType.AOL
@@ -170,11 +162,15 @@ function replaceClassName({
     ) => {
       if (
         isSecondPhase &&
-        !(
-          options.parser === 'vue' || options.parser === 'astro'
-            ? [ClassNameType.ASL, ClassNameType.AOL]
-            : [ClassNameType.ASL, ClassNameType.AOL, ClassNameType.CTL, ClassNameType.TLSL]
-        ).includes(type)
+        (((options.parser === 'vue' || options.parser === 'astro') &&
+          !(type === ClassNameType.ASL || type === ClassNameType.AOL)) ||
+          (!(options.parser === 'vue' || options.parser === 'astro') &&
+            !(
+              type === ClassNameType.ASL ||
+              type === ClassNameType.AOL ||
+              type === ClassNameType.CTL ||
+              type === ClassNameType.TLSL
+            )))
       ) {
         return formattedPrevText;
       }
@@ -447,11 +443,15 @@ async function replaceClassNameAsync({
     ) => {
       if (
         isSecondPhase &&
-        !(
-          options.parser === 'vue' || options.parser === 'astro'
-            ? [ClassNameType.ASL, ClassNameType.AOL]
-            : [ClassNameType.ASL, ClassNameType.AOL, ClassNameType.CTL, ClassNameType.TLSL]
-        ).includes(type)
+        (((options.parser === 'vue' || options.parser === 'astro') &&
+          !(type === ClassNameType.ASL || type === ClassNameType.AOL)) ||
+          (!(options.parser === 'vue' || options.parser === 'astro') &&
+            !(
+              type === ClassNameType.ASL ||
+              type === ClassNameType.AOL ||
+              type === ClassNameType.CTL ||
+              type === ClassNameType.TLSL
+            )))
       ) {
         return formattedPrevTextPromise;
       }
