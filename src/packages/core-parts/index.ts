@@ -25,18 +25,18 @@ function parseLineByLine(formattedText: string, indentUnit: string): LineNode[] 
   });
 }
 
-function getExtraIndentLevel(type: ClassNameType) {
-  if (type === ClassNameType.ASL) {
+function getExtraIndentLevel(node: ClassNameNode) {
+  if (node.type === ClassNameType.ASL) {
     return 2;
   }
 
   if (
-    type === ClassNameType.AOL ||
-    type === ClassNameType.SLSL ||
-    type === ClassNameType.SLTO ||
-    type === ClassNameType.TLSL ||
-    type === ClassNameType.TLTO ||
-    type === ClassNameType.TLPQTO
+    node.type === ClassNameType.AOL ||
+    node.type === ClassNameType.SLSL ||
+    node.type === ClassNameType.SLTO ||
+    node.type === ClassNameType.TLSL ||
+    node.type === ClassNameType.TLTO ||
+    node.type === ClassNameType.TLPQTO
   ) {
     return 1;
   }
@@ -45,37 +45,37 @@ function getExtraIndentLevel(type: ClassNameType) {
 }
 
 function getSomeKindOfQuotes(
-  type: ClassNameType,
+  node: ClassNameNode,
   isMultiLineClassName: boolean,
   parser: string,
 ): [string, string] {
   const baseQuote =
     // eslint-disable-next-line no-nested-ternary
-    type === ClassNameType.TLPQ || type === ClassNameType.TLPQTO
+    node.type === ClassNameType.TLPQ || node.type === ClassNameType.TLPQTO
       ? '`'
       : parser === 'vue' &&
-        (type === ClassNameType.FA ||
-          type === ClassNameType.CSL ||
-          type === ClassNameType.SLSL ||
-          type === ClassNameType.SLOP ||
-          type === ClassNameType.SLTO ||
-          type === ClassNameType.CTL ||
-          type === ClassNameType.TLSL ||
-          type === ClassNameType.TLOP ||
-          type === ClassNameType.TLTO)
+        (node.type === ClassNameType.FA ||
+          node.type === ClassNameType.CSL ||
+          node.type === ClassNameType.SLSL ||
+          node.type === ClassNameType.SLOP ||
+          node.type === ClassNameType.SLTO ||
+          node.type === ClassNameType.CTL ||
+          node.type === ClassNameType.TLSL ||
+          node.type === ClassNameType.TLOP ||
+          node.type === ClassNameType.TLTO)
       ? "'"
       : '"';
 
-  const opener = `${isMultiLineClassName && type === ClassNameType.SLOP ? '[' : ''}${
-    !isMultiLineClassName || type === ClassNameType.ASL || type === ClassNameType.AOL
+  const opener = `${isMultiLineClassName && node.type === ClassNameType.SLOP ? '[' : ''}${
+    !isMultiLineClassName || node.type === ClassNameType.ASL || node.type === ClassNameType.AOL
       ? baseQuote
       : '`'
   }`;
   const closer = `${
-    !isMultiLineClassName || type === ClassNameType.ASL || type === ClassNameType.AOL
+    !isMultiLineClassName || node.type === ClassNameType.ASL || node.type === ClassNameType.AOL
       ? baseQuote
       : '`'
-  }${isMultiLineClassName && type === ClassNameType.SLOP ? ']' : ''}`;
+  }${isMultiLineClassName && node.type === ClassNameType.SLOP ? ']' : ''}`;
 
   return [opener, closer];
 }
@@ -155,11 +155,14 @@ function replaceClassName({
   const rangeCorrectionValues = [...Array(targetClassNameNodes.length)].map(() => 0);
 
   const icedFormattedText = targetClassNameNodes.reduce(
-    (
-      formattedPrevText,
-      { type, range: [rangeStart, rangeEnd], startLineIndex, elementName },
-      classNameNodeIndex,
-    ) => {
+    (formattedPrevText, classNameNode, classNameNodeIndex) => {
+      const {
+        type,
+        range: [rangeStart, rangeEnd],
+        startLineIndex,
+        elementName,
+      } = classNameNode;
+
       if (
         isSecondPhase &&
         (((options.parser === 'vue' || options.parser === 'astro') &&
@@ -182,7 +185,7 @@ function replaceClassName({
       const isOutputIdeal = isStartingPositionRelative && isEndingPositionAbsolute;
 
       const { indentLevel: baseIndentLevel } = lineNodes[startLineIndex];
-      const extraIndentLevel = getExtraIndentLevel(type);
+      const extraIndentLevel = getExtraIndentLevel(classNameNode);
       const multiLineIndentLevel = isStartingPositionRelative
         ? baseIndentLevel + extraIndentLevel
         : 0;
@@ -259,7 +262,7 @@ function replaceClassName({
 
       const isMultiLineClassName = classNameWithOriginalSpaces.split(EOL).length > 1;
       const [quoteStart, quoteEnd] = getSomeKindOfQuotes(
-        type,
+        classNameNode,
         isMultiLineClassName,
         options.parser,
       );
@@ -436,11 +439,14 @@ async function replaceClassNameAsync({
   const rangeCorrectionValues = [...Array(targetClassNameNodes.length)].map(() => 0);
 
   const icedFormattedText = await targetClassNameNodes.reduce(
-    async (
-      formattedPrevTextPromise,
-      { type, range: [rangeStart, rangeEnd], startLineIndex, elementName },
-      classNameNodeIndex,
-    ) => {
+    async (formattedPrevTextPromise, classNameNode, classNameNodeIndex) => {
+      const {
+        type,
+        range: [rangeStart, rangeEnd],
+        startLineIndex,
+        elementName,
+      } = classNameNode;
+
       if (
         isSecondPhase &&
         (((options.parser === 'vue' || options.parser === 'astro') &&
@@ -465,7 +471,7 @@ async function replaceClassNameAsync({
       const isOutputIdeal = isStartingPositionRelative && isEndingPositionAbsolute;
 
       const { indentLevel: baseIndentLevel } = lineNodes[startLineIndex];
-      const extraIndentLevel = getExtraIndentLevel(type);
+      const extraIndentLevel = getExtraIndentLevel(classNameNode);
       const multiLineIndentLevel = isStartingPositionRelative
         ? baseIndentLevel + extraIndentLevel
         : 0;
@@ -546,7 +552,7 @@ async function replaceClassNameAsync({
 
       const isMultiLineClassName = classNameWithOriginalSpaces.split(EOL).length > 1;
       const [quoteStart, quoteEnd] = getSomeKindOfQuotes(
-        type,
+        classNameNode,
         isMultiLineClassName,
         options.parser,
       );
