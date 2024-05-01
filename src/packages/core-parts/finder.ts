@@ -2,7 +2,7 @@ import type { ZodTypeAny, infer as ZodInfer } from 'zod';
 import { z } from 'zod';
 
 import type { Dict, NodeRange, ClassNameNode, NarrowedParserOptions } from './shared';
-import { EOL } from './shared';
+import { EOL, SINGLE_QUOTE, DOUBLE_QUOTE } from './shared';
 
 type ASTNode = {
   type: string;
@@ -236,27 +236,29 @@ export function findTargetClassNameNodes(
           const parentNodeStartLineNumber = parentNode.loc.start.line;
           const currentNodeStartLineNumber = node.loc.start.line;
 
-          // classNameNodes.forEach((classNameNode) => {
-          //   const [classNameRangeStart, classNameRangeEnd] = classNameNode.range;
+          classNameNodes.forEach((classNameNode, index, array) => {
+            const [classNameRangeStart, classNameRangeEnd] = classNameNode.range;
 
-          //   if (
-          //     currentNodeRangeStart <= classNameRangeStart &&
-          //     classNameRangeEnd <= currentNodeRangeEnd
-          //   ) {
-          //     if (classNameNode.type === ClassNameType.USL) {
-          //       // eslint-disable-next-line no-param-reassign
-          //       classNameNode.type =
-          //         parentNodeStartLineNumber === currentNodeStartLineNumber
-          //           ? ClassNameType.ASL
-          //           : ClassNameType.AOL;
-          //       // eslint-disable-next-line no-param-reassign
-          //       classNameNode.elementName = getElementName(
-          //         // @ts-ignore
-          //         parentNode.name,
-          //       );
-          //     }
-          //   }
-          // });
+            if (
+              currentNodeRangeStart <= classNameRangeStart &&
+              classNameRangeEnd <= currentNodeRangeEnd
+            ) {
+              if (classNameNode.type === 'unknown' && classNameNode.delimiterType !== 'backtick') {
+                // eslint-disable-next-line no-param-reassign
+                array[index] = {
+                  type: 'attribute',
+                  isTheFirstLineOnTheSameLineAsTheOpeningTag:
+                    parentNodeStartLineNumber === currentNodeStartLineNumber,
+                  elementName: getElementName(
+                    // @ts-ignore
+                    parentNode.name,
+                  ),
+                  range: classNameNode.range,
+                  startLineIndex: classNameNode.startLineIndex,
+                };
+              }
+            }
+          });
         }
         break;
       }
@@ -358,14 +360,22 @@ export function findTargetClassNameNodes(
                   line: z.number(),
                 }),
               }),
+              raw: z.string(),
             }),
           )
         ) {
-          // classNameNodes.push({
-          //   type: ClassNameType.USL,
-          //   range: [currentNodeRangeStart, currentNodeRangeEnd],
-          //   startLineIndex: node.loc.start.line - 1,
-          // });
+          classNameNodes.push({
+            type: 'unknown',
+            delimiterType:
+              // eslint-disable-next-line no-nested-ternary
+              node.raw[0] === SINGLE_QUOTE
+                ? 'single-quote'
+                : node.raw[0] === DOUBLE_QUOTE
+                ? 'double-quote'
+                : 'backtick',
+            range: [currentNodeRangeStart, currentNodeRangeEnd],
+            startLineIndex: node.loc.start.line - 1,
+          });
         }
         break;
       }
@@ -381,14 +391,24 @@ export function findTargetClassNameNodes(
                   line: z.number(),
                 }),
               }),
+              extra: z.object({
+                raw: z.string(),
+              }),
             }),
           )
         ) {
-          // classNameNodes.push({
-          //   type: ClassNameType.USL,
-          //   range: [currentNodeRangeStart, currentNodeRangeEnd],
-          //   startLineIndex: node.loc.start.line - 1,
-          // });
+          classNameNodes.push({
+            type: 'unknown',
+            delimiterType:
+              // eslint-disable-next-line no-nested-ternary
+              node.extra.raw[0] === SINGLE_QUOTE
+                ? 'single-quote'
+                : node.extra.raw[0] === DOUBLE_QUOTE
+                ? 'double-quote'
+                : 'backtick',
+            range: [currentNodeRangeStart, currentNodeRangeEnd],
+            startLineIndex: node.loc.start.line - 1,
+          });
         }
         break;
       }
@@ -639,6 +659,7 @@ export function findTargetClassNameNodesForVue(
                   line: z.number(),
                 }),
               }),
+              name: z.string(),
             }),
           ) &&
           parentNode.type === 'element' &&
@@ -722,14 +743,14 @@ export function findTargetClassNameNodesForVue(
             const parentNodeStartLineIndex = parentNode.sourceSpan.start.line;
             const nodeStartLineIndex = node.sourceSpan.start.line;
 
-            // classNameNodes.push({
-            //   type:
-            //     parentNodeStartLineIndex === nodeStartLineIndex
-            //       ? ClassNameType.ASL
-            //       : ClassNameType.AOL,
-            //   range: [classNameRangeStart, classNameRangeEnd],
-            //   startLineIndex: nodeStartLineIndex,
-            // });
+            classNameNodes.push({
+              type: 'attribute',
+              isTheFirstLineOnTheSameLineAsTheOpeningTag:
+                parentNodeStartLineIndex === nodeStartLineIndex,
+              elementName: parentNode.name,
+              range: [classNameRangeStart, classNameRangeEnd],
+              startLineIndex: nodeStartLineIndex,
+            });
           }
         }
         break;
@@ -987,6 +1008,7 @@ export function findTargetClassNameNodesForAstro(
                   line: z.number(),
                 }),
               }),
+              name: z.string(),
             }),
           ) &&
           (parentNode.type === 'element' || parentNode.type === 'component') &&
@@ -1051,14 +1073,14 @@ export function findTargetClassNameNodesForAstro(
             const parentNodeStartLineIndex = parentNode.position.start.line - 1;
             const nodeStartLineIndex = node.position.start.line - 1;
 
-            // classNameNodes.push({
-            //   type:
-            //     parentNodeStartLineIndex === nodeStartLineIndex
-            //       ? ClassNameType.ASL
-            //       : ClassNameType.AOL,
-            //   range: [classNameRangeStart, classNameRangeEnd],
-            //   startLineIndex: node.position.start.line - 1,
-            // });
+            classNameNodes.push({
+              type: 'attribute',
+              isTheFirstLineOnTheSameLineAsTheOpeningTag:
+                parentNodeStartLineIndex === nodeStartLineIndex,
+              elementName: parentNode.name,
+              range: [classNameRangeStart, classNameRangeEnd],
+              startLineIndex: node.position.start.line - 1,
+            });
           }
         }
         break;

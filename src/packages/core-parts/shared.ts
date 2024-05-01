@@ -24,6 +24,16 @@ export const TAB = '\t';
 export const TAB_SIZE = 4;
 
 /**
+ * single quote character
+ */
+export const SINGLE_QUOTE = "'";
+
+/**
+ * double quote character
+ */
+export const DOUBLE_QUOTE = '"';
+
+/**
  * @deprecated
  */
 export enum ClassNameType {
@@ -108,10 +118,13 @@ type LegacyNode = ClassNameNodeBase & {
 
 type UnknownNode = ClassNameNodeBase & {
   type: 'unknown';
+  delimiterType: 'single-quote' | 'double-quote' | 'backtick';
 };
 
 type AttributeNode = ClassNameNodeBase & {
   type: 'attribute';
+  isTheFirstLineOnTheSameLineAsTheOpeningTag: boolean;
+  elementName: string;
 };
 
 type ExpressionNode = ClassNameNodeBase & {

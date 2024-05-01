@@ -26,12 +26,11 @@ function parseLineByLine(formattedText: string, indentUnit: string): LineNode[] 
 }
 
 function getExtraIndentLevel(node: ClassNameNode) {
-  if (node.type === ClassNameType.ASL) {
-    return 2;
+  if (node.type === 'attribute') {
+    return node.isTheFirstLineOnTheSameLineAsTheOpeningTag ? 2 : 1;
   }
 
   if (
-    node.type === ClassNameType.AOL ||
     node.type === ClassNameType.SLSL ||
     node.type === ClassNameType.SLTO ||
     node.type === ClassNameType.TLSL ||
@@ -67,15 +66,11 @@ function getSomeKindOfQuotes(
       : '"';
 
   const opener = `${isMultiLineClassName && node.type === ClassNameType.SLOP ? '[' : ''}${
-    !isMultiLineClassName || node.type === ClassNameType.ASL || node.type === ClassNameType.AOL
-      ? baseQuote
-      : '`'
+    !isMultiLineClassName || node.type === 'attribute' ? baseQuote : '`'
   }`;
-  const closer = `${
-    !isMultiLineClassName || node.type === ClassNameType.ASL || node.type === ClassNameType.AOL
-      ? baseQuote
-      : '`'
-  }${isMultiLineClassName && node.type === ClassNameType.SLOP ? ']' : ''}`;
+  const closer = `${!isMultiLineClassName || node.type === 'attribute' ? baseQuote : '`'}${
+    isMultiLineClassName && node.type === ClassNameType.SLOP ? ']' : ''
+  }`;
 
   return [opener, closer];
 }
@@ -165,15 +160,9 @@ function replaceClassName({
 
       if (
         isSecondPhase &&
-        (((options.parser === 'vue' || options.parser === 'astro') &&
-          !(type === ClassNameType.ASL || type === ClassNameType.AOL)) ||
+        (((options.parser === 'vue' || options.parser === 'astro') && !(type === 'attribute')) ||
           (!(options.parser === 'vue' || options.parser === 'astro') &&
-            !(
-              type === ClassNameType.ASL ||
-              type === ClassNameType.AOL ||
-              type === ClassNameType.CTL ||
-              type === ClassNameType.TLSL
-            )))
+            !(type === 'attribute' || type === ClassNameType.CTL || type === ClassNameType.TLSL)))
       ) {
         return formattedPrevText;
       }
@@ -271,7 +260,8 @@ function replaceClassName({
       const spaceAfterElementName = ' ';
       const conditionForSameLineAttribute =
         isEndingPositionAbsolute &&
-        type === ClassNameType.ASL &&
+        type === 'attribute' &&
+        classNameNode.isTheFirstLineOnTheSameLineAsTheOpeningTag &&
         isMultiLineClassName &&
         formattedClassName.length +
           options.tabWidth -
@@ -279,7 +269,8 @@ function replaceClassName({
           options.printWidth;
       const conditionForOwnLineAttribute =
         isEndingPositionAbsolute &&
-        type === ClassNameType.AOL &&
+        type === 'attribute' &&
+        !classNameNode.isTheFirstLineOnTheSameLineAsTheOpeningTag &&
         !isMultiLineClassName &&
         classNameWithOriginalSpaces !== classNameBase &&
         formattedClassName.length -
@@ -290,7 +281,7 @@ function replaceClassName({
       const rawIndent = indentUnit.repeat(multiLineIndentLevel);
       const frozenIndent = freezeNonClassName(rawIndent);
 
-      const isAttributeType = type === ClassNameType.ASL || type === ClassNameType.AOL;
+      const isAttributeType = type === 'attribute';
       const substitute = `${isAttributeType ? '' : quoteStart}${classNameWithOriginalSpaces}${
         isAttributeType ? '' : quoteEnd
       }`
@@ -449,15 +440,9 @@ async function replaceClassNameAsync({
 
       if (
         isSecondPhase &&
-        (((options.parser === 'vue' || options.parser === 'astro') &&
-          !(type === ClassNameType.ASL || type === ClassNameType.AOL)) ||
+        (((options.parser === 'vue' || options.parser === 'astro') && !(type === 'attribute')) ||
           (!(options.parser === 'vue' || options.parser === 'astro') &&
-            !(
-              type === ClassNameType.ASL ||
-              type === ClassNameType.AOL ||
-              type === ClassNameType.CTL ||
-              type === ClassNameType.TLSL
-            )))
+            !(type === 'attribute' || type === ClassNameType.CTL || type === ClassNameType.TLSL)))
       ) {
         return formattedPrevTextPromise;
       }
@@ -561,7 +546,8 @@ async function replaceClassNameAsync({
       const spaceAfterElementName = ' ';
       const conditionForSameLineAttribute =
         isEndingPositionAbsolute &&
-        type === ClassNameType.ASL &&
+        type === 'attribute' &&
+        classNameNode.isTheFirstLineOnTheSameLineAsTheOpeningTag &&
         isMultiLineClassName &&
         formattedClassName.length +
           options.tabWidth -
@@ -569,7 +555,8 @@ async function replaceClassNameAsync({
           options.printWidth;
       const conditionForOwnLineAttribute =
         isEndingPositionAbsolute &&
-        type === ClassNameType.AOL &&
+        type === 'attribute' &&
+        !classNameNode.isTheFirstLineOnTheSameLineAsTheOpeningTag &&
         !isMultiLineClassName &&
         classNameWithOriginalSpaces !== classNameBase &&
         formattedClassName.length -
@@ -580,7 +567,7 @@ async function replaceClassNameAsync({
       const rawIndent = indentUnit.repeat(multiLineIndentLevel);
       const frozenIndent = freezeNonClassName(rawIndent);
 
-      const isAttributeType = type === ClassNameType.ASL || type === ClassNameType.AOL;
+      const isAttributeType = type === 'attribute';
       const substitute = `${isAttributeType ? '' : quoteStart}${classNameWithOriginalSpaces}${
         isAttributeType ? '' : quoteEnd
       }`
