@@ -2,7 +2,7 @@ import type { ZodTypeAny, infer as ZodInfer } from 'zod';
 import { z } from 'zod';
 
 import type { Dict, NodeRange, ClassNameNode, NarrowedParserOptions } from './shared';
-import { EOL, ClassNameType } from './shared';
+import { EOL } from './shared';
 
 type ASTNode = {
   type: string;
@@ -158,22 +158,22 @@ export function findTargetClassNameNodes(
         ) {
           keywordStartingNodes.push(currentASTNode);
 
-          classNameNodes.forEach((classNameNode) => {
-            const [classNameRangeStart, classNameRangeEnd] = classNameNode.range;
+          // classNameNodes.forEach((classNameNode) => {
+          //   const [classNameRangeStart, classNameRangeEnd] = classNameNode.range;
 
-            if (
-              currentNodeRangeStart <= classNameRangeStart &&
-              classNameRangeEnd <= currentNodeRangeEnd
-            ) {
-              if (
-                classNameNode.type === ClassNameType.USL ||
-                classNameNode.type === ClassNameType.UTL
-              ) {
-                // eslint-disable-next-line no-param-reassign
-                classNameNode.type = ClassNameType.FA;
-              }
-            }
-          });
+          //   if (
+          //     currentNodeRangeStart <= classNameRangeStart &&
+          //     classNameRangeEnd <= currentNodeRangeEnd
+          //   ) {
+          //     if (
+          //       classNameNode.type === ClassNameType.USL ||
+          //       classNameNode.type === ClassNameType.UTL
+          //     ) {
+          //       // eslint-disable-next-line no-param-reassign
+          //       classNameNode.type = ClassNameType.FA;
+          //     }
+          //   }
+          // });
         }
         break;
       }
@@ -236,27 +236,27 @@ export function findTargetClassNameNodes(
           const parentNodeStartLineNumber = parentNode.loc.start.line;
           const currentNodeStartLineNumber = node.loc.start.line;
 
-          classNameNodes.forEach((classNameNode) => {
-            const [classNameRangeStart, classNameRangeEnd] = classNameNode.range;
+          // classNameNodes.forEach((classNameNode) => {
+          //   const [classNameRangeStart, classNameRangeEnd] = classNameNode.range;
 
-            if (
-              currentNodeRangeStart <= classNameRangeStart &&
-              classNameRangeEnd <= currentNodeRangeEnd
-            ) {
-              if (classNameNode.type === ClassNameType.USL) {
-                // eslint-disable-next-line no-param-reassign
-                classNameNode.type =
-                  parentNodeStartLineNumber === currentNodeStartLineNumber
-                    ? ClassNameType.ASL
-                    : ClassNameType.AOL;
-                // eslint-disable-next-line no-param-reassign
-                classNameNode.elementName = getElementName(
-                  // @ts-ignore
-                  parentNode.name,
-                );
-              }
-            }
-          });
+          //   if (
+          //     currentNodeRangeStart <= classNameRangeStart &&
+          //     classNameRangeEnd <= currentNodeRangeEnd
+          //   ) {
+          //     if (classNameNode.type === ClassNameType.USL) {
+          //       // eslint-disable-next-line no-param-reassign
+          //       classNameNode.type =
+          //         parentNodeStartLineNumber === currentNodeStartLineNumber
+          //           ? ClassNameType.ASL
+          //           : ClassNameType.AOL;
+          //       // eslint-disable-next-line no-param-reassign
+          //       classNameNode.elementName = getElementName(
+          //         // @ts-ignore
+          //         parentNode.name,
+          //       );
+          //     }
+          //   }
+          // });
         }
         break;
       }
@@ -277,25 +277,25 @@ export function findTargetClassNameNodes(
         ) {
           const currentNodeStartLineIndex = node.loc.start.line - 1;
 
-          classNameNodes.forEach((classNameNode) => {
-            const [classNameRangeStart, classNameRangeEnd] = classNameNode.range;
+          // classNameNodes.forEach((classNameNode) => {
+          //   const [classNameRangeStart, classNameRangeEnd] = classNameNode.range;
 
-            if (
-              currentNodeRangeStart <= classNameRangeStart &&
-              classNameRangeEnd <= currentNodeRangeEnd
-            ) {
-              if (classNameNode.type === ClassNameType.USL) {
-                // eslint-disable-next-line no-param-reassign
-                classNameNode.type = ClassNameType.CSL;
-              } else if (classNameNode.type === ClassNameType.UTL) {
-                // eslint-disable-next-line no-param-reassign
-                classNameNode.type =
-                  classNameNode.startLineIndex === currentNodeStartLineIndex
-                    ? ClassNameType.TLSL
-                    : ClassNameType.CTL;
-              }
-            }
-          });
+          //   if (
+          //     currentNodeRangeStart <= classNameRangeStart &&
+          //     classNameRangeEnd <= currentNodeRangeEnd
+          //   ) {
+          //     if (classNameNode.type === ClassNameType.USL) {
+          //       // eslint-disable-next-line no-param-reassign
+          //       classNameNode.type = ClassNameType.CSL;
+          //     } else if (classNameNode.type === ClassNameType.UTL) {
+          //       // eslint-disable-next-line no-param-reassign
+          //       classNameNode.type =
+          //         classNameNode.startLineIndex === currentNodeStartLineIndex
+          //           ? ClassNameType.TLSL
+          //           : ClassNameType.CTL;
+          //     }
+          //   }
+          // });
         }
         break;
       }
@@ -303,46 +303,46 @@ export function findTargetClassNameNodes(
       case 'Property': {
         nonCommentNodes.push(currentASTNode);
 
-        classNameNodes.forEach((classNameNode) => {
-          const [classNameRangeStart, classNameRangeEnd] = classNameNode.range;
+        // classNameNodes.forEach((classNameNode) => {
+        //   const [classNameRangeStart, classNameRangeEnd] = classNameNode.range;
 
-          if (
-            currentNodeRangeStart <= classNameRangeStart &&
-            classNameRangeEnd <= currentNodeRangeEnd
-          ) {
-            if (classNameNode.type === ClassNameType.USL) {
-              // eslint-disable-next-line no-param-reassign
-              classNameNode.type = ClassNameType.SLOP;
-            } else if (classNameNode.type === ClassNameType.UTL) {
-              // eslint-disable-next-line no-param-reassign
-              classNameNode.type = ClassNameType.TLOP;
-            }
-          }
-        });
+        //   if (
+        //     currentNodeRangeStart <= classNameRangeStart &&
+        //     classNameRangeEnd <= currentNodeRangeEnd
+        //   ) {
+        //     if (classNameNode.type === ClassNameType.USL) {
+        //       // eslint-disable-next-line no-param-reassign
+        //       classNameNode.type = ClassNameType.SLOP;
+        //     } else if (classNameNode.type === ClassNameType.UTL) {
+        //       // eslint-disable-next-line no-param-reassign
+        //       classNameNode.type = ClassNameType.TLOP;
+        //     }
+        //   }
+        // });
         break;
       }
       case 'ConditionalExpression': {
         nonCommentNodes.push(currentASTNode);
 
-        classNameNodes.forEach((classNameNode) => {
-          const [classNameRangeStart, classNameRangeEnd] = classNameNode.range;
+        // classNameNodes.forEach((classNameNode) => {
+        //   const [classNameRangeStart, classNameRangeEnd] = classNameNode.range;
 
-          if (
-            currentNodeRangeStart <= classNameRangeStart &&
-            classNameRangeEnd <= currentNodeRangeEnd
-          ) {
-            if (classNameNode.type === ClassNameType.USL) {
-              // eslint-disable-next-line no-param-reassign
-              classNameNode.type = ClassNameType.SLTO;
-            } else if (classNameNode.type === ClassNameType.UTL) {
-              // eslint-disable-next-line no-param-reassign
-              classNameNode.type = ClassNameType.TLTO;
-            } else if (classNameNode.type === ClassNameType.TLPQ) {
-              // eslint-disable-next-line no-param-reassign
-              classNameNode.type = ClassNameType.TLPQTO;
-            }
-          }
-        });
+        //   if (
+        //     currentNodeRangeStart <= classNameRangeStart &&
+        //     classNameRangeEnd <= currentNodeRangeEnd
+        //   ) {
+        //     if (classNameNode.type === ClassNameType.USL) {
+        //       // eslint-disable-next-line no-param-reassign
+        //       classNameNode.type = ClassNameType.SLTO;
+        //     } else if (classNameNode.type === ClassNameType.UTL) {
+        //       // eslint-disable-next-line no-param-reassign
+        //       classNameNode.type = ClassNameType.TLTO;
+        //     } else if (classNameNode.type === ClassNameType.TLPQ) {
+        //       // eslint-disable-next-line no-param-reassign
+        //       classNameNode.type = ClassNameType.TLPQTO;
+        //     }
+        //   }
+        // });
         break;
       }
       case 'Literal': {
@@ -361,11 +361,11 @@ export function findTargetClassNameNodes(
             }),
           )
         ) {
-          classNameNodes.push({
-            type: ClassNameType.USL,
-            range: [currentNodeRangeStart, currentNodeRangeEnd],
-            startLineIndex: node.loc.start.line - 1,
-          });
+          // classNameNodes.push({
+          //   type: ClassNameType.USL,
+          //   range: [currentNodeRangeStart, currentNodeRangeEnd],
+          //   startLineIndex: node.loc.start.line - 1,
+          // });
         }
         break;
       }
@@ -384,11 +384,11 @@ export function findTargetClassNameNodes(
             }),
           )
         ) {
-          classNameNodes.push({
-            type: ClassNameType.USL,
-            range: [currentNodeRangeStart, currentNodeRangeEnd],
-            startLineIndex: node.loc.start.line - 1,
-          });
+          // classNameNodes.push({
+          //   type: ClassNameType.USL,
+          //   range: [currentNodeRangeStart, currentNodeRangeEnd],
+          //   startLineIndex: node.loc.start.line - 1,
+          // });
         }
         break;
       }
@@ -422,11 +422,11 @@ export function findTargetClassNameNodes(
             (options.singleQuote && cooked.indexOf("'") !== -1) ||
             (!options.singleQuote && cooked.indexOf('"') !== -1);
 
-          classNameNodes.push({
-            type: conditionForPreservation ? ClassNameType.TLPQ : ClassNameType.UTL,
-            range: [currentNodeRangeStart, currentNodeRangeEnd],
-            startLineIndex: node.loc.start.line - 1,
-          });
+          // classNameNodes.push({
+          //   type: conditionForPreservation ? ClassNameType.TLPQ : ClassNameType.UTL,
+          //   range: [currentNodeRangeStart, currentNodeRangeEnd],
+          //   startLineIndex: node.loc.start.line - 1,
+          // });
         }
         break;
       }
@@ -473,19 +473,19 @@ export function findTargetClassNameNodes(
         ) {
           keywordStartingNodes.push(currentASTNode);
 
-          classNameNodes.forEach((classNameNode) => {
-            const [classNameRangeStart, classNameRangeEnd] = classNameNode.range;
+          // classNameNodes.forEach((classNameNode) => {
+          //   const [classNameRangeStart, classNameRangeEnd] = classNameNode.range;
 
-            if (
-              currentNodeRangeStart <= classNameRangeStart &&
-              classNameRangeEnd <= currentNodeRangeEnd
-            ) {
-              if (classNameNode.type === ClassNameType.UTL) {
-                // eslint-disable-next-line no-param-reassign
-                classNameNode.type = ClassNameType.TLPQ;
-              }
-            }
-          });
+          //   if (
+          //     currentNodeRangeStart <= classNameRangeStart &&
+          //     classNameRangeEnd <= currentNodeRangeEnd
+          //   ) {
+          //     if (classNameNode.type === ClassNameType.UTL) {
+          //       // eslint-disable-next-line no-param-reassign
+          //       classNameNode.type = ClassNameType.TLPQ;
+          //     }
+          //   }
+          // });
         }
         break;
       }
@@ -687,10 +687,10 @@ export function findTargetClassNameNodesForVue(
                     range: [classNameNodeRangeStart, classNameNodeRangeEnd],
                     startLineIndex,
                   }) => {
-                    if (type === ClassNameType.CSL && startLineIndex === 0) {
-                      // eslint-disable-next-line no-param-reassign
-                      type = ClassNameType.SLSL;
-                    }
+                    // if (type === ClassNameType.CSL && startLineIndex === 0) {
+                    //   // eslint-disable-next-line no-param-reassign
+                    //   type = ClassNameType.SLSL;
+                    // }
 
                     const attributeOffset = -jsxStart.length + node.valueSpan.start.offset + 1;
 
@@ -705,7 +705,7 @@ export function findTargetClassNameNodesForVue(
                   },
                 );
 
-                classNameNodes.push(...targetClassNameNodesInAttribute);
+                // classNameNodes.push(...targetClassNameNodesInAttribute);
               } catch (error) {
                 // no action
               }
@@ -722,14 +722,14 @@ export function findTargetClassNameNodesForVue(
             const parentNodeStartLineIndex = parentNode.sourceSpan.start.line;
             const nodeStartLineIndex = node.sourceSpan.start.line;
 
-            classNameNodes.push({
-              type:
-                parentNodeStartLineIndex === nodeStartLineIndex
-                  ? ClassNameType.ASL
-                  : ClassNameType.AOL,
-              range: [classNameRangeStart, classNameRangeEnd],
-              startLineIndex: nodeStartLineIndex,
-            });
+            // classNameNodes.push({
+            //   type:
+            //     parentNodeStartLineIndex === nodeStartLineIndex
+            //       ? ClassNameType.ASL
+            //       : ClassNameType.AOL,
+            //   range: [classNameRangeStart, classNameRangeEnd],
+            //   startLineIndex: nodeStartLineIndex,
+            // });
           }
         }
         break;
@@ -791,7 +791,7 @@ export function findTargetClassNameNodesForVue(
               },
             );
 
-            classNameNodes.push(...targetClassNameNodesInScript);
+            // classNameNodes.push(...targetClassNameNodesInScript);
           }
         }
         break;
@@ -970,7 +970,7 @@ export function findTargetClassNameNodesForAstro(
               },
             );
 
-            classNameNodes.push(...targetClassNameNodesInFrontMatter);
+            // classNameNodes.push(...targetClassNameNodesInFrontMatter);
           }
         }
         break;
@@ -1023,10 +1023,10 @@ export function findTargetClassNameNodesForAstro(
                   range: [classNameNodeRangeStart, classNameNodeRangeEnd],
                   startLineIndex,
                 }) => {
-                  if (type === ClassNameType.CSL && startLineIndex === 0) {
-                    // eslint-disable-next-line no-param-reassign
-                    type = ClassNameType.SLSL;
-                  }
+                  // if (type === ClassNameType.CSL && startLineIndex === 0) {
+                  //   // eslint-disable-next-line no-param-reassign
+                  //   type = ClassNameType.SLSL;
+                  // }
 
                   const attributeOffset =
                     -jsxStart.length + currentNodeRangeStart + attributeStart.length;
@@ -1042,7 +1042,7 @@ export function findTargetClassNameNodesForAstro(
                 },
               );
 
-              classNameNodes.push(...targetClassNameNodesInAttribute);
+              // classNameNodes.push(...targetClassNameNodesInAttribute);
             }
           } else if (node.kind === 'quoted') {
             const classNameRangeStart = currentNodeRangeStart + attributeStart.length - 1;
@@ -1051,14 +1051,14 @@ export function findTargetClassNameNodesForAstro(
             const parentNodeStartLineIndex = parentNode.position.start.line - 1;
             const nodeStartLineIndex = node.position.start.line - 1;
 
-            classNameNodes.push({
-              type:
-                parentNodeStartLineIndex === nodeStartLineIndex
-                  ? ClassNameType.ASL
-                  : ClassNameType.AOL,
-              range: [classNameRangeStart, classNameRangeEnd],
-              startLineIndex: node.position.start.line - 1,
-            });
+            // classNameNodes.push({
+            //   type:
+            //     parentNodeStartLineIndex === nodeStartLineIndex
+            //       ? ClassNameType.ASL
+            //       : ClassNameType.AOL,
+            //   range: [classNameRangeStart, classNameRangeEnd],
+            //   startLineIndex: node.position.start.line - 1,
+            // });
           }
         }
         break;
