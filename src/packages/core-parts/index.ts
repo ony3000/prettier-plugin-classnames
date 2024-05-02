@@ -6,7 +6,7 @@ import {
   findTargetClassNameNodesForAstro,
 } from './finder';
 import type { Dict, ClassNameNode, NarrowedParserOptions } from './shared';
-import { EOL, PH, SPACE, TAB, TAB_SIZE, ClassNameType } from './shared';
+import { EOL, PH, SPACE, TAB, TAB_SIZE } from './shared';
 
 type LineNode = {
   indentLevel: number;
@@ -31,11 +31,8 @@ function getExtraIndentLevel(node: ClassNameNode) {
   }
 
   if (
-    node.type === ClassNameType.SLSL ||
-    node.type === ClassNameType.SLTO ||
-    node.type === ClassNameType.TLSL ||
-    node.type === ClassNameType.TLTO ||
-    node.type === ClassNameType.TLPQTO
+    node.type === 'expression' &&
+    (node.isTheFirstLineOnTheSameLineAsTheAttributeName || node.isItAnOperandOfTernaryOperator)
   ) {
     return 1;
   }
@@ -50,26 +47,27 @@ function getSomeKindOfQuotes(
 ): [string, string] {
   const baseQuote =
     // eslint-disable-next-line no-nested-ternary
-    node.type === ClassNameType.TLPQ || node.type === ClassNameType.TLPQTO
+    node.type === 'expression' && node.delimiterType === 'backtick' && node.shouldKeepDelimiter
       ? '`'
-      : parser === 'vue' &&
-        (node.type === ClassNameType.FA ||
-          node.type === ClassNameType.CSL ||
-          node.type === ClassNameType.SLSL ||
-          node.type === ClassNameType.SLOP ||
-          node.type === ClassNameType.SLTO ||
-          node.type === ClassNameType.CTL ||
-          node.type === ClassNameType.TLSL ||
-          node.type === ClassNameType.TLOP ||
-          node.type === ClassNameType.TLTO)
+      : parser === 'vue' && node.type === 'expression'
       ? "'"
       : '"';
 
-  const opener = `${isMultiLineClassName && node.type === ClassNameType.SLOP ? '[' : ''}${
-    !isMultiLineClassName || node.type === 'attribute' ? baseQuote : '`'
-  }`;
+  const opener = `${
+    isMultiLineClassName &&
+    node.type === 'expression' &&
+    node.delimiterType !== 'backtick' &&
+    node.isItAnObjectProperty
+      ? '['
+      : ''
+  }${!isMultiLineClassName || node.type === 'attribute' ? baseQuote : '`'}`;
   const closer = `${!isMultiLineClassName || node.type === 'attribute' ? baseQuote : '`'}${
-    isMultiLineClassName && node.type === ClassNameType.SLOP ? ']' : ''
+    isMultiLineClassName &&
+    node.type === 'expression' &&
+    node.delimiterType !== 'backtick' &&
+    node.isItAnObjectProperty
+      ? ']'
+      : ''
   }`;
 
   return [opener, closer];
@@ -162,7 +160,15 @@ function replaceClassName({
         isSecondPhase &&
         (((options.parser === 'vue' || options.parser === 'astro') && !(type === 'attribute')) ||
           (!(options.parser === 'vue' || options.parser === 'astro') &&
-            !(type === 'attribute' || type === ClassNameType.CTL || type === ClassNameType.TLSL)))
+            !(
+              type === 'attribute' ||
+              (type === 'expression' &&
+                classNameNode.delimiterType === 'backtick' &&
+                !classNameNode.isItAnObjectProperty &&
+                !classNameNode.isItAnOperandOfTernaryOperator &&
+                !classNameNode.isItFunctionArgument &&
+                !classNameNode.shouldKeepDelimiter)
+            )))
       ) {
         return formattedPrevText;
       }
@@ -307,7 +313,13 @@ function replaceClassName({
         });
       }
 
-      const sliceOffset = !isMultiLineClassName && type === ClassNameType.TLOP ? 1 : 0;
+      const sliceOffset =
+        !isMultiLineClassName &&
+        type === 'expression' &&
+        classNameNode.delimiterType === 'backtick' &&
+        classNameNode.isItAnObjectProperty
+          ? 1
+          : 0;
       const classNamePartialWrappedText = `${formattedPrevText.slice(
         0,
         rangeStart - sliceOffset + (isAttributeType ? 1 : 0),
@@ -442,7 +454,15 @@ async function replaceClassNameAsync({
         isSecondPhase &&
         (((options.parser === 'vue' || options.parser === 'astro') && !(type === 'attribute')) ||
           (!(options.parser === 'vue' || options.parser === 'astro') &&
-            !(type === 'attribute' || type === ClassNameType.CTL || type === ClassNameType.TLSL)))
+            !(
+              type === 'attribute' ||
+              (type === 'expression' &&
+                classNameNode.delimiterType === 'backtick' &&
+                !classNameNode.isItAnObjectProperty &&
+                !classNameNode.isItAnOperandOfTernaryOperator &&
+                !classNameNode.isItFunctionArgument &&
+                !classNameNode.shouldKeepDelimiter)
+            )))
       ) {
         return formattedPrevTextPromise;
       }
@@ -593,7 +613,13 @@ async function replaceClassNameAsync({
         });
       }
 
-      const sliceOffset = !isMultiLineClassName && type === ClassNameType.TLOP ? 1 : 0;
+      const sliceOffset =
+        !isMultiLineClassName &&
+        type === 'expression' &&
+        classNameNode.delimiterType === 'backtick' &&
+        classNameNode.isItAnObjectProperty
+          ? 1
+          : 0;
       const classNamePartialWrappedText = `${formattedPrevText.slice(
         0,
         rangeStart - sliceOffset + (isAttributeType ? 1 : 0),

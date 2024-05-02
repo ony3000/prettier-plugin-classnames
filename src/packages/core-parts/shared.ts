@@ -129,6 +129,12 @@ type AttributeNode = ClassNameNodeBase & {
 
 type ExpressionNode = ClassNameNodeBase & {
   type: 'expression';
+  delimiterType: 'single-quote' | 'double-quote' | 'backtick';
+  isTheFirstLineOnTheSameLineAsTheAttributeName: boolean;
+  isItAnObjectProperty: boolean;
+  isItAnOperandOfTernaryOperator: boolean;
+  isItFunctionArgument: boolean;
+  shouldKeepDelimiter: boolean;
 };
 
 export type ClassNameNode = LegacyNode | UnknownNode | AttributeNode | ExpressionNode;
