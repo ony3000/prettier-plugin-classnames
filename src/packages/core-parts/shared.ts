@@ -53,7 +53,7 @@ type AttributeNode = ClassNameNodeBase & {
   elementName: string;
 };
 
-type ExpressionNode = ClassNameNodeBase & {
+export type ExpressionNode = ClassNameNodeBase & {
   type: 'expression';
   delimiterType: 'single-quote' | 'double-quote' | 'backtick';
   isTheFirstLineOnTheSameLineAsTheAttributeName: boolean;

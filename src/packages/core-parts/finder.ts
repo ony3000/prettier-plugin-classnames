@@ -1,7 +1,13 @@
 import type { ZodTypeAny, infer as ZodInfer } from 'zod';
 import { z } from 'zod';
 
-import type { Dict, NodeRange, ClassNameNode, NarrowedParserOptions } from './shared';
+import type {
+  Dict,
+  NodeRange,
+  ExpressionNode,
+  ClassNameNode,
+  NarrowedParserOptions,
+} from './shared';
 import { EOL, SINGLE_QUOTE, DOUBLE_QUOTE } from './shared';
 
 type ASTNode = {
@@ -32,6 +38,21 @@ function getElementName(
   }
 
   return `${getElementName(param.object)}.${param.property.name}`;
+}
+
+function createExpressionNode(
+  arg: Pick<ExpressionNode, 'delimiterType' | 'range' | 'startLineIndex'> &
+    Partial<Omit<ExpressionNode, 'type' | 'delimiterType' | 'range' | 'startLineIndex'>>,
+): ExpressionNode {
+  return {
+    type: 'expression',
+    isTheFirstLineOnTheSameLineAsTheAttributeName: false,
+    isItAnObjectProperty: false,
+    isItAnOperandOfTernaryOperator: false,
+    isItFunctionArgument: false,
+    shouldKeepDelimiter: false,
+    ...arg,
+  };
 }
 
 function filterAndSortClassNameNodes(
@@ -172,17 +193,12 @@ export function findTargetClassNameNodes(
             ) {
               if (classNameNode.type === 'unknown') {
                 // eslint-disable-next-line no-param-reassign
-                array[index] = {
-                  type: 'expression',
+                array[index] = createExpressionNode({
                   delimiterType: classNameNode.delimiterType,
-                  isTheFirstLineOnTheSameLineAsTheAttributeName: false,
-                  isItAnObjectProperty: false,
-                  isItAnOperandOfTernaryOperator: false,
                   isItFunctionArgument: true,
-                  shouldKeepDelimiter: false,
                   range: classNameNode.range,
                   startLineIndex: classNameNode.startLineIndex,
-                };
+                });
               }
             }
           });
@@ -301,31 +317,20 @@ export function findTargetClassNameNodes(
               if (classNameNode.type === 'unknown') {
                 if (classNameNode.delimiterType !== 'backtick') {
                   // eslint-disable-next-line no-param-reassign
-                  array[index] = {
-                    type: 'expression',
+                  array[index] = createExpressionNode({
                     delimiterType: classNameNode.delimiterType,
-                    isTheFirstLineOnTheSameLineAsTheAttributeName: false,
-                    isItAnObjectProperty: false,
-                    isItAnOperandOfTernaryOperator: false,
-                    isItFunctionArgument: false,
-                    shouldKeepDelimiter: false,
                     range: classNameNode.range,
                     startLineIndex: classNameNode.startLineIndex,
-                  };
+                  });
                 } else {
                   // eslint-disable-next-line no-param-reassign
-                  array[index] = {
-                    type: 'expression',
+                  array[index] = createExpressionNode({
                     delimiterType: classNameNode.delimiterType,
                     isTheFirstLineOnTheSameLineAsTheAttributeName:
                       classNameNode.startLineIndex === currentNodeStartLineIndex,
-                    isItAnObjectProperty: false,
-                    isItAnOperandOfTernaryOperator: false,
-                    isItFunctionArgument: false,
-                    shouldKeepDelimiter: false,
                     range: classNameNode.range,
                     startLineIndex: classNameNode.startLineIndex,
-                  };
+                  });
                 }
               }
             }
@@ -346,17 +351,12 @@ export function findTargetClassNameNodes(
           ) {
             if (classNameNode.type === 'unknown') {
               // eslint-disable-next-line no-param-reassign
-              array[index] = {
-                type: 'expression',
+              array[index] = createExpressionNode({
                 delimiterType: classNameNode.delimiterType,
-                isTheFirstLineOnTheSameLineAsTheAttributeName: false,
                 isItAnObjectProperty: true,
-                isItAnOperandOfTernaryOperator: false,
-                isItFunctionArgument: false,
-                shouldKeepDelimiter: false,
                 range: classNameNode.range,
                 startLineIndex: classNameNode.startLineIndex,
-              };
+              });
             }
           }
         });
@@ -374,17 +374,12 @@ export function findTargetClassNameNodes(
           ) {
             if (classNameNode.type === 'unknown') {
               // eslint-disable-next-line no-param-reassign
-              array[index] = {
-                type: 'expression',
+              array[index] = createExpressionNode({
                 delimiterType: classNameNode.delimiterType,
-                isTheFirstLineOnTheSameLineAsTheAttributeName: false,
-                isItAnObjectProperty: false,
                 isItAnOperandOfTernaryOperator: true,
-                isItFunctionArgument: false,
-                shouldKeepDelimiter: false,
                 range: classNameNode.range,
                 startLineIndex: classNameNode.startLineIndex,
-              };
+              });
             } else if (classNameNode.type === 'expression') {
               if (classNameNode.delimiterType === 'backtick' && classNameNode.shouldKeepDelimiter) {
                 // eslint-disable-next-line no-param-reassign
@@ -491,17 +486,14 @@ export function findTargetClassNameNodes(
             (!options.singleQuote && cooked.indexOf('"') !== -1);
 
           if (conditionForPreservation) {
-            classNameNodes.push({
-              type: 'expression',
-              delimiterType: 'backtick',
-              isTheFirstLineOnTheSameLineAsTheAttributeName: false,
-              isItAnObjectProperty: false,
-              isItAnOperandOfTernaryOperator: false,
-              isItFunctionArgument: false,
-              shouldKeepDelimiter: true,
-              range: [currentNodeRangeStart, currentNodeRangeEnd],
-              startLineIndex: node.loc.start.line - 1,
-            });
+            classNameNodes.push(
+              createExpressionNode({
+                delimiterType: 'backtick',
+                shouldKeepDelimiter: true,
+                range: [currentNodeRangeStart, currentNodeRangeEnd],
+                startLineIndex: node.loc.start.line - 1,
+              }),
+            );
           } else {
             classNameNodes.push({
               type: 'unknown',
@@ -565,17 +557,12 @@ export function findTargetClassNameNodes(
             ) {
               if (classNameNode.type === 'unknown' && classNameNode.delimiterType === 'backtick') {
                 // eslint-disable-next-line no-param-reassign
-                array[index] = {
-                  type: 'expression',
+                array[index] = createExpressionNode({
                   delimiterType: classNameNode.delimiterType,
-                  isTheFirstLineOnTheSameLineAsTheAttributeName: false,
-                  isItAnObjectProperty: false,
-                  isItAnOperandOfTernaryOperator: false,
-                  isItFunctionArgument: false,
                   shouldKeepDelimiter: true,
                   range: classNameNode.range,
                   startLineIndex: classNameNode.startLineIndex,
-                };
+                });
               }
             }
           });
