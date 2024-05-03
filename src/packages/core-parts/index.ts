@@ -149,7 +149,7 @@ function replaceClassName({
 
   const icedFormattedText = targetClassNameNodes.reduce(
     (formattedPrevText, classNameNode, classNameNodeIndex) => {
-      const [rangeStart, rangeEnd] = classNameNode.range;
+      const [classNameNodeRangeStart, classNameNodeRangeEnd] = classNameNode.range;
 
       if (
         isSecondPhase &&
@@ -169,7 +169,7 @@ function replaceClassName({
         return formattedPrevText;
       }
 
-      const correctedRangeEnd = rangeEnd - rangeCorrectionValues[classNameNodeIndex];
+      const correctedRangeEnd = classNameNodeRangeEnd - rangeCorrectionValues[classNameNodeIndex];
 
       const isStartingPositionRelative = options.endingPosition !== 'absolute';
       const isEndingPositionAbsolute = options.endingPosition !== 'relative';
@@ -181,7 +181,10 @@ function replaceClassName({
         ? baseIndentLevel + extraIndentLevel
         : 0;
 
-      const classNameBase = formattedPrevText.slice(rangeStart + 1, correctedRangeEnd - 1);
+      const classNameBase = formattedPrevText.slice(
+        classNameNodeRangeStart + 1,
+        correctedRangeEnd - 1,
+      );
 
       // preprocess (first)
       const [leadingSpace, classNameWithoutSpacesAtBothEnds, trailingSpace] =
@@ -193,7 +196,7 @@ function replaceClassName({
         .reduce((textLength, line) => textLength + line.length + EOL.length, 0);
       const firstLineIndentLength = indentUnit.length * baseIndentLevel;
       const firstLinePadLength =
-        rangeStart +
+        classNameNodeRangeStart +
         1 -
         totalTextLengthUptoPrevLine -
         firstLineIndentLength +
@@ -318,7 +321,7 @@ function replaceClassName({
           : 0;
       const classNamePartialWrappedText = `${formattedPrevText.slice(
         0,
-        rangeStart - sliceOffset + (isAttributeType ? 1 : 0),
+        classNameNodeRangeStart - sliceOffset + (isAttributeType ? 1 : 0),
       )}${substitute}${
         isAttributeType
           ? formattedPrevText.slice(
@@ -340,9 +343,13 @@ function replaceClassName({
         const [nthNodeRangeStart, nthNodeRangeEnd] =
           targetClassNameNodes[rangeCorrectionIndex].range;
 
-        if (nthNodeRangeStart < rangeStart && rangeEnd < nthNodeRangeEnd) {
+        if (
+          nthNodeRangeStart < classNameNodeRangeStart &&
+          classNameNodeRangeEnd < nthNodeRangeEnd
+        ) {
           // eslint-disable-next-line no-param-reassign
-          array[rangeCorrectionIndex] += correctedRangeEnd - rangeStart - substitute.length;
+          array[rangeCorrectionIndex] +=
+            correctedRangeEnd - classNameNodeRangeStart - substitute.length;
         }
       });
 
@@ -439,7 +446,7 @@ async function replaceClassNameAsync({
 
   const icedFormattedText = await targetClassNameNodes.reduce(
     async (formattedPrevTextPromise, classNameNode, classNameNodeIndex) => {
-      const [rangeStart, rangeEnd] = classNameNode.range;
+      const [classNameNodeRangeStart, classNameNodeRangeEnd] = classNameNode.range;
 
       if (
         isSecondPhase &&
@@ -461,7 +468,7 @@ async function replaceClassNameAsync({
 
       const formattedPrevText = await formattedPrevTextPromise;
 
-      const correctedRangeEnd = rangeEnd - rangeCorrectionValues[classNameNodeIndex];
+      const correctedRangeEnd = classNameNodeRangeEnd - rangeCorrectionValues[classNameNodeIndex];
 
       const isStartingPositionRelative = options.endingPosition !== 'absolute';
       const isEndingPositionAbsolute = options.endingPosition !== 'relative';
@@ -473,7 +480,10 @@ async function replaceClassNameAsync({
         ? baseIndentLevel + extraIndentLevel
         : 0;
 
-      const classNameBase = formattedPrevText.slice(rangeStart + 1, correctedRangeEnd - 1);
+      const classNameBase = formattedPrevText.slice(
+        classNameNodeRangeStart + 1,
+        correctedRangeEnd - 1,
+      );
 
       // preprocess (first)
       const [leadingSpace, classNameWithoutSpacesAtBothEnds, trailingSpace] =
@@ -485,7 +495,7 @@ async function replaceClassNameAsync({
         .reduce((textLength, line) => textLength + line.length + EOL.length, 0);
       const firstLineIndentLength = indentUnit.length * baseIndentLevel;
       const firstLinePadLength =
-        rangeStart +
+        classNameNodeRangeStart +
         1 -
         totalTextLengthUptoPrevLine -
         firstLineIndentLength +
@@ -614,7 +624,7 @@ async function replaceClassNameAsync({
           : 0;
       const classNamePartialWrappedText = `${formattedPrevText.slice(
         0,
-        rangeStart - sliceOffset + (isAttributeType ? 1 : 0),
+        classNameNodeRangeStart - sliceOffset + (isAttributeType ? 1 : 0),
       )}${substitute}${
         isAttributeType
           ? formattedPrevText.slice(
@@ -636,9 +646,13 @@ async function replaceClassNameAsync({
         const [nthNodeRangeStart, nthNodeRangeEnd] =
           targetClassNameNodes[rangeCorrectionIndex].range;
 
-        if (nthNodeRangeStart < rangeStart && rangeEnd < nthNodeRangeEnd) {
+        if (
+          nthNodeRangeStart < classNameNodeRangeStart &&
+          classNameNodeRangeEnd < nthNodeRangeEnd
+        ) {
           // eslint-disable-next-line no-param-reassign
-          array[rangeCorrectionIndex] += correctedRangeEnd - rangeStart - substitute.length;
+          array[rangeCorrectionIndex] +=
+            correctedRangeEnd - classNameNodeRangeStart - substitute.length;
         }
       });
 

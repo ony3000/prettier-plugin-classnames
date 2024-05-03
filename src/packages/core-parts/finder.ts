@@ -41,10 +41,13 @@ function filterAndSortClassNameNodes(
   classNameNodes: ClassNameNode[],
 ): ClassNameNode[] {
   const ignoreRanges = prettierIgnoreNodes.map(({ range }) => {
-    const [, prettierIgnoreRangeEnd] = range;
+    const [, prettierIgnoreNodeRangeEnd] = range;
 
     const ignoringNodeOrNot = nonCommentNodes
-      .filter(({ range: [nonCommentRangeStart] }) => prettierIgnoreRangeEnd < nonCommentRangeStart)
+      .filter(
+        ({ range: [nonCommentNodeRangeStart] }) =>
+          prettierIgnoreNodeRangeEnd < nonCommentNodeRangeStart,
+      )
       .sort(
         (
           { range: [formerNodeRangeStart, formerNodeRangeEnd] },
@@ -59,15 +62,17 @@ function filterAndSortClassNameNodes(
 
   return classNameNodes
     .filter(
-      ({ range: [classNameRangeStart, classNameRangeEnd] }) =>
+      ({ range: [classNameNodeRangeStart, classNameNodeRangeEnd] }) =>
         ignoreRanges.every(
           ([ignoreRangeStart, ignoreRangeEnd]) =>
-            !(ignoreRangeStart <= classNameRangeStart && classNameRangeEnd <= ignoreRangeEnd),
+            !(
+              ignoreRangeStart <= classNameNodeRangeStart && classNameNodeRangeEnd <= ignoreRangeEnd
+            ),
         ) &&
         keywordStartingRanges.some(
           ([keywordStartingRangeStart, keywordStartingRangeEnd]) =>
-            keywordStartingRangeStart < classNameRangeStart &&
-            classNameRangeEnd <= keywordStartingRangeEnd,
+            keywordStartingRangeStart < classNameNodeRangeStart &&
+            classNameNodeRangeEnd <= keywordStartingRangeEnd,
         ),
     )
     .sort(
@@ -159,11 +164,11 @@ export function findTargetClassNameNodes(
           keywordStartingNodes.push(currentASTNode);
 
           classNameNodes.forEach((classNameNode, index, array) => {
-            const [classNameRangeStart, classNameRangeEnd] = classNameNode.range;
+            const [classNameNodeRangeStart, classNameNodeRangeEnd] = classNameNode.range;
 
             if (
-              currentNodeRangeStart <= classNameRangeStart &&
-              classNameRangeEnd <= currentNodeRangeEnd
+              currentNodeRangeStart <= classNameNodeRangeStart &&
+              classNameNodeRangeEnd <= currentNodeRangeEnd
             ) {
               if (classNameNode.type === 'unknown') {
                 // eslint-disable-next-line no-param-reassign
@@ -244,11 +249,11 @@ export function findTargetClassNameNodes(
           const currentNodeStartLineNumber = node.loc.start.line;
 
           classNameNodes.forEach((classNameNode, index, array) => {
-            const [classNameRangeStart, classNameRangeEnd] = classNameNode.range;
+            const [classNameNodeRangeStart, classNameNodeRangeEnd] = classNameNode.range;
 
             if (
-              currentNodeRangeStart <= classNameRangeStart &&
-              classNameRangeEnd <= currentNodeRangeEnd
+              currentNodeRangeStart <= classNameNodeRangeStart &&
+              classNameNodeRangeEnd <= currentNodeRangeEnd
             ) {
               if (classNameNode.type === 'unknown' && classNameNode.delimiterType !== 'backtick') {
                 // eslint-disable-next-line no-param-reassign
@@ -287,11 +292,11 @@ export function findTargetClassNameNodes(
           const currentNodeStartLineIndex = node.loc.start.line - 1;
 
           classNameNodes.forEach((classNameNode, index, array) => {
-            const [classNameRangeStart, classNameRangeEnd] = classNameNode.range;
+            const [classNameNodeRangeStart, classNameNodeRangeEnd] = classNameNode.range;
 
             if (
-              currentNodeRangeStart <= classNameRangeStart &&
-              classNameRangeEnd <= currentNodeRangeEnd
+              currentNodeRangeStart <= classNameNodeRangeStart &&
+              classNameNodeRangeEnd <= currentNodeRangeEnd
             ) {
               if (classNameNode.type === 'unknown') {
                 if (classNameNode.delimiterType !== 'backtick') {
@@ -333,11 +338,11 @@ export function findTargetClassNameNodes(
         nonCommentNodes.push(currentASTNode);
 
         classNameNodes.forEach((classNameNode, index, array) => {
-          const [classNameRangeStart, classNameRangeEnd] = classNameNode.range;
+          const [classNameNodeRangeStart, classNameNodeRangeEnd] = classNameNode.range;
 
           if (
-            currentNodeRangeStart <= classNameRangeStart &&
-            classNameRangeEnd <= currentNodeRangeEnd
+            currentNodeRangeStart <= classNameNodeRangeStart &&
+            classNameNodeRangeEnd <= currentNodeRangeEnd
           ) {
             if (classNameNode.type === 'unknown') {
               // eslint-disable-next-line no-param-reassign
@@ -361,11 +366,11 @@ export function findTargetClassNameNodes(
         nonCommentNodes.push(currentASTNode);
 
         classNameNodes.forEach((classNameNode, index, array) => {
-          const [classNameRangeStart, classNameRangeEnd] = classNameNode.range;
+          const [classNameNodeRangeStart, classNameNodeRangeEnd] = classNameNode.range;
 
           if (
-            currentNodeRangeStart <= classNameRangeStart &&
-            classNameRangeEnd <= currentNodeRangeEnd
+            currentNodeRangeStart <= classNameNodeRangeStart &&
+            classNameNodeRangeEnd <= currentNodeRangeEnd
           ) {
             if (classNameNode.type === 'unknown') {
               // eslint-disable-next-line no-param-reassign
@@ -552,11 +557,11 @@ export function findTargetClassNameNodes(
           keywordStartingNodes.push(currentASTNode);
 
           classNameNodes.forEach((classNameNode, index, array) => {
-            const [classNameRangeStart, classNameRangeEnd] = classNameNode.range;
+            const [classNameNodeRangeStart, classNameNodeRangeEnd] = classNameNode.range;
 
             if (
-              currentNodeRangeStart <= classNameRangeStart &&
-              classNameRangeEnd <= currentNodeRangeEnd
+              currentNodeRangeStart <= classNameNodeRangeStart &&
+              classNameNodeRangeEnd <= currentNodeRangeEnd
             ) {
               if (classNameNode.type === 'unknown' && classNameNode.delimiterType === 'backtick') {
                 // eslint-disable-next-line no-param-reassign
@@ -771,7 +776,7 @@ export function findTargetClassNameNodesForVue(
                   babelAst,
                   options,
                 ).map<ClassNameNode>((classNameNode) => {
-                  const [classNameRangeStart, classNameRangeEnd] = classNameNode.range;
+                  const [classNameNodeRangeStart, classNameNodeRangeEnd] = classNameNode.range;
 
                   if (
                     classNameNode.type === 'expression' &&
@@ -787,8 +792,8 @@ export function findTargetClassNameNodesForVue(
                   return {
                     ...classNameNode,
                     range: [
-                      classNameRangeStart + attributeOffset,
-                      classNameRangeEnd + attributeOffset,
+                      classNameNodeRangeStart + attributeOffset,
+                      classNameNodeRangeEnd + attributeOffset,
                     ],
                     startLineIndex: classNameNode.startLineIndex + node.sourceSpan.start.line,
                   };
@@ -800,12 +805,12 @@ export function findTargetClassNameNodesForVue(
               }
             }
           } else {
-            const classNameRangeStart = node.valueSpan.start.offset;
-            const classNameRangeEnd = node.valueSpan.end.offset;
+            const classNameNodeRangeStart = node.valueSpan.start.offset;
+            const classNameNodeRangeEnd = node.valueSpan.end.offset;
 
             nonCommentNodes.push({
               type: 'StringLiteral',
-              range: [classNameRangeStart, classNameRangeEnd],
+              range: [classNameNodeRangeStart, classNameNodeRangeEnd],
             });
 
             const parentNodeStartLineIndex = parentNode.sourceSpan.start.line;
@@ -816,7 +821,7 @@ export function findTargetClassNameNodesForVue(
               isTheFirstLineOnTheSameLineAsTheOpeningTag:
                 parentNodeStartLineIndex === nodeStartLineIndex,
               elementName: parentNode.name,
-              range: [classNameRangeStart, classNameRangeEnd],
+              range: [classNameNodeRangeStart, classNameNodeRangeEnd],
               startLineIndex: nodeStartLineIndex,
             });
           }
@@ -862,13 +867,16 @@ export function findTargetClassNameNodesForVue(
               typescriptAst,
               options,
             ).map<ClassNameNode>((classNameNode) => {
-              const [classNameRangeStart, classNameRangeEnd] = classNameNode.range;
+              const [classNameNodeRangeStart, classNameNodeRangeEnd] = classNameNode.range;
 
               const scriptOffset = node.startSourceSpan.end.offset;
 
               return {
                 ...classNameNode,
-                range: [classNameRangeStart + scriptOffset, classNameRangeEnd + scriptOffset],
+                range: [
+                  classNameNodeRangeStart + scriptOffset,
+                  classNameNodeRangeEnd + scriptOffset,
+                ],
                 startLineIndex: classNameNode.startLineIndex + node.sourceSpan.start.line,
               };
             });
@@ -1034,15 +1042,15 @@ export function findTargetClassNameNodesForAstro(
               customAttributes: supportedAttributes,
               customFunctions: supportedFunctions,
             }).map<ClassNameNode>((classNameNode) => {
-              const [classNameRangeStart, classNameRangeEnd] = classNameNode.range;
+              const [classNameNodeRangeStart, classNameNodeRangeEnd] = classNameNode.range;
 
               const frontMatterOffset = '---'.length;
 
               return {
                 ...classNameNode,
                 range: [
-                  classNameRangeStart + frontMatterOffset,
-                  classNameRangeEnd + frontMatterOffset,
+                  classNameNodeRangeStart + frontMatterOffset,
+                  classNameNodeRangeEnd + frontMatterOffset,
                 ],
                 startLineIndex: classNameNode.startLineIndex,
               };
@@ -1124,9 +1132,6 @@ export function findTargetClassNameNodesForAstro(
               classNameNodes.push(...targetClassNameNodesInAttribute);
             }
           } else if (node.kind === 'quoted') {
-            const classNameRangeStart = currentNodeRangeStart + attributeStart.length - 1;
-            const classNameRangeEnd = currentNodeRangeEnd;
-
             const parentNodeStartLineIndex = parentNode.position.start.line - 1;
             const nodeStartLineIndex = node.position.start.line - 1;
 
@@ -1135,7 +1140,7 @@ export function findTargetClassNameNodesForAstro(
               isTheFirstLineOnTheSameLineAsTheOpeningTag:
                 parentNodeStartLineIndex === nodeStartLineIndex,
               elementName: parentNode.name,
-              range: [classNameRangeStart, classNameRangeEnd],
+              range: [currentNodeRangeStart + attributeStart.length - 1, currentNodeRangeEnd],
               startLineIndex: node.position.start.line - 1,
             });
           }
