@@ -1152,12 +1152,11 @@ export function findTargetClassNameNodesForAstro(
           ) &&
           node.value.trim() === 'prettier-ignore'
         ) {
-          const [rangeStart, rangeEnd] = currentASTNode.range;
           const commentOffset = '<!--'.length;
 
           prettierIgnoreNodes.push({
             ...currentASTNode,
-            range: [rangeStart - commentOffset, rangeEnd],
+            range: [currentNodeRangeStart - commentOffset, currentNodeRangeEnd],
           });
         }
         break;

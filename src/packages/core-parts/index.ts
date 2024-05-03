@@ -149,20 +149,16 @@ function replaceClassName({
 
   const icedFormattedText = targetClassNameNodes.reduce(
     (formattedPrevText, classNameNode, classNameNodeIndex) => {
-      const {
-        type,
-        range: [rangeStart, rangeEnd],
-        startLineIndex,
-        elementName,
-      } = classNameNode;
+      const [rangeStart, rangeEnd] = classNameNode.range;
 
       if (
         isSecondPhase &&
-        (((options.parser === 'vue' || options.parser === 'astro') && !(type === 'attribute')) ||
+        (((options.parser === 'vue' || options.parser === 'astro') &&
+          !(classNameNode.type === 'attribute')) ||
           (!(options.parser === 'vue' || options.parser === 'astro') &&
             !(
-              type === 'attribute' ||
-              (type === 'expression' &&
+              classNameNode.type === 'attribute' ||
+              (classNameNode.type === 'expression' &&
                 classNameNode.delimiterType === 'backtick' &&
                 !classNameNode.isItAnObjectProperty &&
                 !classNameNode.isItAnOperandOfTernaryOperator &&
@@ -179,7 +175,7 @@ function replaceClassName({
       const isEndingPositionAbsolute = options.endingPosition !== 'relative';
       const isOutputIdeal = isStartingPositionRelative && isEndingPositionAbsolute;
 
-      const { indentLevel: baseIndentLevel } = lineNodes[startLineIndex];
+      const { indentLevel: baseIndentLevel } = lineNodes[classNameNode.startLineIndex];
       const extraIndentLevel = getExtraIndentLevel(classNameNode);
       const multiLineIndentLevel = isStartingPositionRelative
         ? baseIndentLevel + extraIndentLevel
@@ -193,7 +189,7 @@ function replaceClassName({
 
       const totalTextLengthUptoPrevLine = formattedPrevText
         .split(EOL)
-        .slice(0, startLineIndex)
+        .slice(0, classNameNode.startLineIndex)
         .reduce((textLength, line) => textLength + line.length + EOL.length, 0);
       const firstLineIndentLength = indentUnit.length * baseIndentLevel;
       const firstLinePadLength =
@@ -266,28 +262,28 @@ function replaceClassName({
       const spaceAfterElementName = ' ';
       const conditionForSameLineAttribute =
         isEndingPositionAbsolute &&
-        type === 'attribute' &&
+        classNameNode.type === 'attribute' &&
         classNameNode.isTheFirstLineOnTheSameLineAsTheOpeningTag &&
         isMultiLineClassName &&
         formattedClassName.length +
           options.tabWidth -
-          (elementName ? `${elementOpener}${elementName}${spaceAfterElementName}`.length : 0) <=
+          `${elementOpener}${classNameNode.elementName}${spaceAfterElementName}`.length <=
           options.printWidth;
       const conditionForOwnLineAttribute =
         isEndingPositionAbsolute &&
-        type === 'attribute' &&
+        classNameNode.type === 'attribute' &&
         !classNameNode.isTheFirstLineOnTheSameLineAsTheOpeningTag &&
         !isMultiLineClassName &&
         classNameWithOriginalSpaces !== classNameBase &&
         formattedClassName.length -
           options.tabWidth +
-          (elementName ? `${elementOpener}${elementName}${spaceAfterElementName}`.length : 0) >
+          `${elementOpener}${classNameNode.elementName}${spaceAfterElementName}`.length >
           options.printWidth;
 
       const rawIndent = indentUnit.repeat(multiLineIndentLevel);
       const frozenIndent = freezeNonClassName(rawIndent);
 
-      const isAttributeType = type === 'attribute';
+      const isAttributeType = classNameNode.type === 'attribute';
       const substitute = `${isAttributeType ? '' : quoteStart}${classNameWithOriginalSpaces}${
         isAttributeType ? '' : quoteEnd
       }`
@@ -315,7 +311,7 @@ function replaceClassName({
 
       const sliceOffset =
         !isMultiLineClassName &&
-        type === 'expression' &&
+        classNameNode.type === 'expression' &&
         classNameNode.delimiterType === 'backtick' &&
         classNameNode.isItAnObjectProperty
           ? 1
@@ -443,20 +439,16 @@ async function replaceClassNameAsync({
 
   const icedFormattedText = await targetClassNameNodes.reduce(
     async (formattedPrevTextPromise, classNameNode, classNameNodeIndex) => {
-      const {
-        type,
-        range: [rangeStart, rangeEnd],
-        startLineIndex,
-        elementName,
-      } = classNameNode;
+      const [rangeStart, rangeEnd] = classNameNode.range;
 
       if (
         isSecondPhase &&
-        (((options.parser === 'vue' || options.parser === 'astro') && !(type === 'attribute')) ||
+        (((options.parser === 'vue' || options.parser === 'astro') &&
+          !(classNameNode.type === 'attribute')) ||
           (!(options.parser === 'vue' || options.parser === 'astro') &&
             !(
-              type === 'attribute' ||
-              (type === 'expression' &&
+              classNameNode.type === 'attribute' ||
+              (classNameNode.type === 'expression' &&
                 classNameNode.delimiterType === 'backtick' &&
                 !classNameNode.isItAnObjectProperty &&
                 !classNameNode.isItAnOperandOfTernaryOperator &&
@@ -475,7 +467,7 @@ async function replaceClassNameAsync({
       const isEndingPositionAbsolute = options.endingPosition !== 'relative';
       const isOutputIdeal = isStartingPositionRelative && isEndingPositionAbsolute;
 
-      const { indentLevel: baseIndentLevel } = lineNodes[startLineIndex];
+      const { indentLevel: baseIndentLevel } = lineNodes[classNameNode.startLineIndex];
       const extraIndentLevel = getExtraIndentLevel(classNameNode);
       const multiLineIndentLevel = isStartingPositionRelative
         ? baseIndentLevel + extraIndentLevel
@@ -489,7 +481,7 @@ async function replaceClassNameAsync({
 
       const totalTextLengthUptoPrevLine = formattedPrevText
         .split(EOL)
-        .slice(0, startLineIndex)
+        .slice(0, classNameNode.startLineIndex)
         .reduce((textLength, line) => textLength + line.length + EOL.length, 0);
       const firstLineIndentLength = indentUnit.length * baseIndentLevel;
       const firstLinePadLength =
@@ -566,28 +558,28 @@ async function replaceClassNameAsync({
       const spaceAfterElementName = ' ';
       const conditionForSameLineAttribute =
         isEndingPositionAbsolute &&
-        type === 'attribute' &&
+        classNameNode.type === 'attribute' &&
         classNameNode.isTheFirstLineOnTheSameLineAsTheOpeningTag &&
         isMultiLineClassName &&
         formattedClassName.length +
           options.tabWidth -
-          (elementName ? `${elementOpener}${elementName}${spaceAfterElementName}`.length : 0) <=
+          `${elementOpener}${classNameNode.elementName}${spaceAfterElementName}`.length <=
           options.printWidth;
       const conditionForOwnLineAttribute =
         isEndingPositionAbsolute &&
-        type === 'attribute' &&
+        classNameNode.type === 'attribute' &&
         !classNameNode.isTheFirstLineOnTheSameLineAsTheOpeningTag &&
         !isMultiLineClassName &&
         classNameWithOriginalSpaces !== classNameBase &&
         formattedClassName.length -
           options.tabWidth +
-          (elementName ? `${elementOpener}${elementName}${spaceAfterElementName}`.length : 0) >
+          `${elementOpener}${classNameNode.elementName}${spaceAfterElementName}`.length >
           options.printWidth;
 
       const rawIndent = indentUnit.repeat(multiLineIndentLevel);
       const frozenIndent = freezeNonClassName(rawIndent);
 
-      const isAttributeType = type === 'attribute';
+      const isAttributeType = classNameNode.type === 'attribute';
       const substitute = `${isAttributeType ? '' : quoteStart}${classNameWithOriginalSpaces}${
         isAttributeType ? '' : quoteEnd
       }`
@@ -615,7 +607,7 @@ async function replaceClassNameAsync({
 
       const sliceOffset =
         !isMultiLineClassName &&
-        type === 'expression' &&
+        classNameNode.type === 'expression' &&
         classNameNode.delimiterType === 'backtick' &&
         classNameNode.isItAnObjectProperty
           ? 1
