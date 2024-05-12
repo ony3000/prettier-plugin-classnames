@@ -19,11 +19,6 @@ export const SPACE = ' ';
 export const TAB = '\t';
 
 /**
- * size of tab character as space
- */
-export const TAB_SIZE = 4;
-
-/**
  * single quote character
  */
 export const SINGLE_QUOTE = "'";
