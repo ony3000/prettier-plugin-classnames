@@ -1,10 +1,7 @@
-import { format } from 'prettier';
 import type { Fixture } from 'test-settings';
 import { baseOptions } from 'test-settings';
-import { describe, expect, test } from 'vitest';
 
-// eslint-disable-next-line import/no-extraneous-dependencies
-import * as thisPlugin from '@/packages/v3-plugin';
+import { thisPlugin, testEach } from '../../adaptor';
 
 const options = {
   ...baseOptions,
@@ -293,20 +290,4 @@ const fixtures: Fixture[] = [
   },
 ];
 
-describe.each(fixtures)('$name', async ({ input, output, options: fixtureOptions }) => {
-  const fixedOptions = {
-    ...options,
-    ...(fixtureOptions ?? {}),
-  };
-  const formattedText = await format(input, fixedOptions);
-
-  test('expectation', () => {
-    expect(formattedText).toBe(output);
-  });
-
-  test.runIf(formattedText === output)('consistency', async () => {
-    const doubleFormattedText = await format(formattedText, fixedOptions);
-
-    expect(doubleFormattedText).toBe(formattedText);
-  });
-});
+testEach(fixtures, options);
