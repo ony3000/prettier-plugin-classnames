@@ -108,8 +108,8 @@ const fixtures: Fixture[] = [
     <div
       v-bind:class="
         classNames({
-          [\`lorem ipsum dolor sit amet consectetur adipiscing
-          elit proin\`]: true,
+          [\`lorem ipsum dolor sit amet consectetur
+          adipiscing elit proin\`]: true,
         })
       "
     >
@@ -167,8 +167,8 @@ const fixtures: Fixture[] = [
     <div
       v-bind:class="
         classNames({
-          [\`lorem ipsum dolor sit amet consectetur adipiscing
-          elit proin\`]: true,
+          [\`lorem ipsum dolor sit amet consectetur
+          adipiscing elit proin\`]: true,
         })
       "
     >
@@ -194,9 +194,9 @@ const fixtures: Fixture[] = [
     <div
       v-bind:class="
         classNames({
-          [\`lorem ipsum dolor sit amet consectetur adipiscing
-          elit proin ex massa hendrerit eu posuere eu
-          volutpat id neque pellentesque\`]: true,
+          [\`lorem ipsum dolor sit amet consectetur
+          adipiscing elit proin ex massa hendrerit eu
+          posuere eu volutpat id neque pellentesque\`]: true,
         })
       "
     >
@@ -255,9 +255,9 @@ const fixtures: Fixture[] = [
     <div
       v-bind:class="
         classNames({
-          [\`lorem ipsum dolor sit amet consectetur adipiscing
-          elit proin ex massa hendrerit eu posuere eu
-          volutpat id neque pellentesque\`]: true,
+          [\`lorem ipsum dolor sit amet consectetur
+          adipiscing elit proin ex massa hendrerit eu
+          posuere eu volutpat id neque pellentesque\`]: true,
         })
       "
     >
@@ -283,8 +283,9 @@ const fixtures: Fixture[] = [
     <Box
       v-bind:class="
         classNames({
-          [\`lorem ipsum dolor sit amet consectetur adipiscing
-          elit proin ex massa hendrerit eu posuere\`]: true,
+          [\`lorem ipsum dolor sit amet consectetur
+          adipiscing elit proin ex massa hendrerit eu
+          posuere\`]: true,
         })
       "
     >
@@ -310,8 +311,9 @@ const fixtures: Fixture[] = [
     <div
       :class="
         classNames({
-          [\`lorem ipsum dolor sit amet consectetur adipiscing
-          elit proin ex massa hendrerit eu posuere\`]: true,
+          [\`lorem ipsum dolor sit amet consectetur
+          adipiscing elit proin ex massa hendrerit eu
+          posuere\`]: true,
         })
       "
     >

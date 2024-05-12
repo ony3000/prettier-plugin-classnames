@@ -108,8 +108,8 @@ const fixtures: Fixture[] = [
     <div
       v-bind:class="
         classNames({
-          [\`lorem ipsum dolor sit amet consectetur adipiscing
-elit proin\`]: true,
+          [\`lorem ipsum dolor sit amet consectetur
+adipiscing elit proin\`]: true,
         })
       "
     >
@@ -167,8 +167,8 @@ adipiscing elit proin \`]: true,
     <div
       v-bind:class="
         classNames({
-          [\`lorem ipsum dolor sit amet consectetur adipiscing
-elit proin\`]: true,
+          [\`lorem ipsum dolor sit amet consectetur
+adipiscing elit proin\`]: true,
         })
       "
     >
@@ -194,9 +194,9 @@ elit proin\`]: true,
     <div
       v-bind:class="
         classNames({
-          [\`lorem ipsum dolor sit amet consectetur adipiscing
-elit proin ex massa hendrerit eu posuere eu volutpat id
-neque pellentesque\`]: true,
+          [\`lorem ipsum dolor sit amet consectetur
+adipiscing elit proin ex massa hendrerit eu posuere eu
+volutpat id neque pellentesque\`]: true,
         })
       "
     >
@@ -255,9 +255,9 @@ volutpat id neque pellentesque \`]: true,
     <div
       v-bind:class="
         classNames({
-          [\`lorem ipsum dolor sit amet consectetur adipiscing
-elit proin ex massa hendrerit eu posuere eu volutpat id
-neque pellentesque\`]: true,
+          [\`lorem ipsum dolor sit amet consectetur
+adipiscing elit proin ex massa hendrerit eu posuere eu
+volutpat id neque pellentesque\`]: true,
         })
       "
     >
@@ -283,8 +283,8 @@ neque pellentesque\`]: true,
     <Box
       v-bind:class="
         classNames({
-          [\`lorem ipsum dolor sit amet consectetur adipiscing
-elit proin ex massa hendrerit eu posuere\`]: true,
+          [\`lorem ipsum dolor sit amet consectetur
+adipiscing elit proin ex massa hendrerit eu posuere\`]: true,
         })
       "
     >
@@ -310,8 +310,8 @@ elit proin ex massa hendrerit eu posuere\`]: true,
     <div
       :class="
         classNames({
-          [\`lorem ipsum dolor sit amet consectetur adipiscing
-elit proin ex massa hendrerit eu posuere\`]: true,
+          [\`lorem ipsum dolor sit amet consectetur
+adipiscing elit proin ex massa hendrerit eu posuere\`]: true,
         })
       "
     >
