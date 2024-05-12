@@ -6,7 +6,7 @@ import {
   findTargetClassNameNodesForAstro,
 } from './finder';
 import type { Dict, ClassNameNode, NarrowedParserOptions } from './shared';
-import { EOL, PH, SPACE, TAB, TAB_SIZE } from './shared';
+import { EOL, PH, SPACE, TAB } from './shared';
 
 type LineNode = {
   indentLevel: number;
@@ -200,7 +200,7 @@ function replaceClassName({
         1 -
         totalTextLengthUptoPrevLine -
         firstLineIndentLength +
-        (indentUnit === TAB ? TAB_SIZE : indentUnit.length) * baseIndentLevel;
+        options.tabWidth * baseIndentLevel;
 
       // preprocess (first+1)
       const classNameWithFirstLinePadding = `${PH.repeat(
@@ -227,8 +227,7 @@ function replaceClassName({
           return firstLine;
         }
 
-        const multiLinePadLength =
-          (indentUnit === TAB ? TAB_SIZE : indentUnit.length) * multiLineIndentLevel;
+        const multiLinePadLength = options.tabWidth * multiLineIndentLevel;
 
         const formattedRest = format(rest.join(EOL), {
           ...options,
@@ -499,7 +498,7 @@ async function replaceClassNameAsync({
         1 -
         totalTextLengthUptoPrevLine -
         firstLineIndentLength +
-        (indentUnit === TAB ? TAB_SIZE : indentUnit.length) * baseIndentLevel;
+        options.tabWidth * baseIndentLevel;
 
       // preprocess (first+1)
       const classNameWithFirstLinePadding = `${PH.repeat(
@@ -528,8 +527,7 @@ async function replaceClassNameAsync({
           return firstLine;
         }
 
-        const multiLinePadLength =
-          (indentUnit === TAB ? TAB_SIZE : indentUnit.length) * multiLineIndentLevel;
+        const multiLinePadLength = options.tabWidth * multiLineIndentLevel;
 
         const formattedRest = (
           await format(rest.join(EOL), {
