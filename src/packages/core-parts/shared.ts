@@ -28,6 +28,11 @@ export const SINGLE_QUOTE = "'";
  */
 export const DOUBLE_QUOTE = '"';
 
+/**
+ * backtick character
+ */
+export const BACKTICK = '`';
+
 export type Dict<T = unknown> = Record<string, T | undefined>;
 
 export type NodeRange = [number, number];

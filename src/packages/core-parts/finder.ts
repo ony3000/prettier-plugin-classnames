@@ -482,8 +482,8 @@ export function findTargetClassNameNodes(
           const { cooked } = node.quasis[0].value;
           const conditionForPreservation =
             !node.quasis[0].tail ||
-            (options.singleQuote && cooked.indexOf("'") !== -1) ||
-            (!options.singleQuote && cooked.indexOf('"') !== -1);
+            (options.singleQuote && cooked.indexOf(SINGLE_QUOTE) !== -1) ||
+            (!options.singleQuote && cooked.indexOf(DOUBLE_QUOTE) !== -1);
 
           if (conditionForPreservation) {
             classNameNodes.push(

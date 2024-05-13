@@ -6,7 +6,7 @@ import {
   findTargetClassNameNodesForAstro,
 } from './finder';
 import type { Dict, ClassNameNode, NarrowedParserOptions } from './shared';
-import { EOL, PH, SPACE, TAB } from './shared';
+import { EOL, PH, SPACE, TAB, SINGLE_QUOTE, DOUBLE_QUOTE, BACKTICK } from './shared';
 
 type LineNode = {
   indentLevel: number;
@@ -48,10 +48,10 @@ function getSomeKindOfQuotes(
   const baseQuote =
     // eslint-disable-next-line no-nested-ternary
     node.type === 'expression' && node.delimiterType === 'backtick' && node.shouldKeepDelimiter
-      ? '`'
+      ? BACKTICK
       : parser === 'vue' && node.type === 'expression'
-      ? "'"
-      : '"';
+      ? SINGLE_QUOTE
+      : DOUBLE_QUOTE;
 
   const opener = `${
     isMultiLineClassName &&
@@ -60,8 +60,8 @@ function getSomeKindOfQuotes(
     node.isItAnObjectProperty
       ? '['
       : ''
-  }${!isMultiLineClassName || node.type === 'attribute' ? baseQuote : '`'}`;
-  const closer = `${!isMultiLineClassName || node.type === 'attribute' ? baseQuote : '`'}${
+  }${!isMultiLineClassName || node.type === 'attribute' ? baseQuote : BACKTICK}`;
+  const closer = `${!isMultiLineClassName || node.type === 'attribute' ? baseQuote : BACKTICK}${
     isMultiLineClassName &&
     node.type === 'expression' &&
     node.delimiterType !== 'backtick' &&
