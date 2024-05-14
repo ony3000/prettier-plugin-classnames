@@ -308,9 +308,13 @@ function replaceClassName({
       const frozenIndent = freezeNonClassName(rawIndent);
 
       const isAttributeType = classNameNode.type === 'attribute';
-      const substitute = `${isAttributeType ? '' : delimiterStart}${classNameWithOriginalSpaces}${
-        isAttributeType ? '' : delimiterEnd
-      }`
+      const substitute = `${isAttributeType ? '' : delimiterStart}${
+        classNameNode.type === 'expression' &&
+        classNameNode.delimiterType !== 'backtick' &&
+        isMultiLineClassName
+          ? classNameWithOriginalSpaces.replace(/`/g, '\\`')
+          : classNameWithOriginalSpaces
+      }${isAttributeType ? '' : delimiterEnd}`
         .split(EOL)
         .map((raw) => {
           const frozen = freezeClassName(raw);
@@ -611,9 +615,13 @@ async function replaceClassNameAsync({
       const frozenIndent = freezeNonClassName(rawIndent);
 
       const isAttributeType = classNameNode.type === 'attribute';
-      const substitute = `${isAttributeType ? '' : delimiterStart}${classNameWithOriginalSpaces}${
-        isAttributeType ? '' : delimiterEnd
-      }`
+      const substitute = `${isAttributeType ? '' : delimiterStart}${
+        classNameNode.type === 'expression' &&
+        classNameNode.delimiterType !== 'backtick' &&
+        isMultiLineClassName
+          ? classNameWithOriginalSpaces.replace(/`/g, '\\`')
+          : classNameWithOriginalSpaces
+      }${isAttributeType ? '' : delimiterEnd}`
         .split(EOL)
         .map((raw) => {
           const frozen = freezeClassName(raw);
