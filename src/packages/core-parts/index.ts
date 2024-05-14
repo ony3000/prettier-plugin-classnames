@@ -6,7 +6,7 @@ import {
   findTargetClassNameNodesForAstro,
 } from './finder';
 import type { Dict, ClassNameNode, NarrowedParserOptions } from './shared';
-import { EOL, PH, SPACE, TAB } from './shared';
+import { EOL, PH, SPACE, TAB, SINGLE_QUOTE, DOUBLE_QUOTE, BACKTICK } from './shared';
 
 type LineNode = {
   indentLevel: number;
@@ -40,18 +40,39 @@ function getExtraIndentLevel(node: ClassNameNode) {
   return 0;
 }
 
-function getSomeKindOfQuotes(
+function getDelimiters(
   node: ClassNameNode,
   isMultiLineClassName: boolean,
   parser: string,
+  singleQuote: boolean,
 ): [string, string] {
-  const baseQuote =
-    // eslint-disable-next-line no-nested-ternary
-    node.type === 'expression' && node.delimiterType === 'backtick' && node.shouldKeepDelimiter
-      ? '`'
-      : parser === 'vue' && node.type === 'expression'
-      ? "'"
-      : '"';
+  let baseDelimiter = DOUBLE_QUOTE;
+
+  if (node.type === 'expression') {
+    if (node.delimiterType === 'backtick' && node.shouldKeepDelimiter) {
+      baseDelimiter = BACKTICK;
+    } else if (parser === 'vue') {
+      baseDelimiter = SINGLE_QUOTE;
+    } else if (singleQuote && node.hasSingleQuote) {
+      if (node.shouldKeepDelimiter) {
+        if (node.delimiterType === 'backtick') {
+          baseDelimiter = BACKTICK;
+        } else if (node.delimiterType === 'single-quote') {
+          baseDelimiter = SINGLE_QUOTE;
+        }
+      }
+    } else if (!singleQuote && node.hasDoubleQuote) {
+      if (node.shouldKeepDelimiter) {
+        if (node.delimiterType === 'backtick') {
+          baseDelimiter = BACKTICK;
+        } else if (node.delimiterType === 'single-quote') {
+          baseDelimiter = SINGLE_QUOTE;
+        }
+      } else {
+        baseDelimiter = SINGLE_QUOTE;
+      }
+    }
+  }
 
   const opener = `${
     isMultiLineClassName &&
@@ -60,8 +81,8 @@ function getSomeKindOfQuotes(
     node.isItAnObjectProperty
       ? '['
       : ''
-  }${!isMultiLineClassName || node.type === 'attribute' ? baseQuote : '`'}`;
-  const closer = `${!isMultiLineClassName || node.type === 'attribute' ? baseQuote : '`'}${
+  }${!isMultiLineClassName || node.type === 'attribute' ? baseDelimiter : BACKTICK}`;
+  const closer = `${!isMultiLineClassName || node.type === 'attribute' ? baseDelimiter : BACKTICK}${
     isMultiLineClassName &&
     node.type === 'expression' &&
     node.delimiterType !== 'backtick' &&
@@ -254,10 +275,11 @@ function replaceClassName({
       )}${trailingSpace}`;
 
       const isMultiLineClassName = classNameWithOriginalSpaces.split(EOL).length > 1;
-      const [quoteStart, quoteEnd] = getSomeKindOfQuotes(
+      const [delimiterStart, delimiterEnd] = getDelimiters(
         classNameNode,
         isMultiLineClassName,
         options.parser,
+        options.singleQuote,
       );
 
       const elementOpener = '<';
@@ -286,9 +308,13 @@ function replaceClassName({
       const frozenIndent = freezeNonClassName(rawIndent);
 
       const isAttributeType = classNameNode.type === 'attribute';
-      const substitute = `${isAttributeType ? '' : quoteStart}${classNameWithOriginalSpaces}${
-        isAttributeType ? '' : quoteEnd
-      }`
+      const substitute = `${isAttributeType ? '' : delimiterStart}${
+        classNameNode.type === 'expression' &&
+        classNameNode.delimiterType !== 'backtick' &&
+        isMultiLineClassName
+          ? classNameWithOriginalSpaces.replace(/`/g, '\\`')
+          : classNameWithOriginalSpaces
+      }${isAttributeType ? '' : delimiterEnd}`
         .split(EOL)
         .map((raw) => {
           const frozen = freezeClassName(raw);
@@ -556,10 +582,11 @@ async function replaceClassNameAsync({
       )}${trailingSpace}`;
 
       const isMultiLineClassName = classNameWithOriginalSpaces.split(EOL).length > 1;
-      const [quoteStart, quoteEnd] = getSomeKindOfQuotes(
+      const [delimiterStart, delimiterEnd] = getDelimiters(
         classNameNode,
         isMultiLineClassName,
         options.parser,
+        options.singleQuote,
       );
 
       const elementOpener = '<';
@@ -588,9 +615,13 @@ async function replaceClassNameAsync({
       const frozenIndent = freezeNonClassName(rawIndent);
 
       const isAttributeType = classNameNode.type === 'attribute';
-      const substitute = `${isAttributeType ? '' : quoteStart}${classNameWithOriginalSpaces}${
-        isAttributeType ? '' : quoteEnd
-      }`
+      const substitute = `${isAttributeType ? '' : delimiterStart}${
+        classNameNode.type === 'expression' &&
+        classNameNode.delimiterType !== 'backtick' &&
+        isMultiLineClassName
+          ? classNameWithOriginalSpaces.replace(/`/g, '\\`')
+          : classNameWithOriginalSpaces
+      }${isAttributeType ? '' : delimiterEnd}`
         .split(EOL)
         .map((raw) => {
           const frozen = freezeClassName(raw);
