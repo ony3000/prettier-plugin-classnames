@@ -40,36 +40,36 @@ function getExtraIndentLevel(node: ClassNameNode) {
   return 0;
 }
 
-function getSomeKindOfQuotes(
+function getDelimiters(
   node: ClassNameNode,
   isMultiLineClassName: boolean,
   parser: string,
   singleQuote: boolean,
 ): [string, string] {
-  let baseQuote = DOUBLE_QUOTE;
+  let baseDelimiter = DOUBLE_QUOTE;
 
   if (node.type === 'expression') {
     if (node.delimiterType === 'backtick' && node.shouldKeepDelimiter) {
-      baseQuote = BACKTICK;
+      baseDelimiter = BACKTICK;
     } else if (parser === 'vue') {
-      baseQuote = SINGLE_QUOTE;
+      baseDelimiter = SINGLE_QUOTE;
     } else if (singleQuote && node.hasSingleQuote) {
       if (node.shouldKeepDelimiter) {
         if (node.delimiterType === 'backtick') {
-          baseQuote = BACKTICK;
+          baseDelimiter = BACKTICK;
         } else if (node.delimiterType === 'single-quote') {
-          baseQuote = SINGLE_QUOTE;
+          baseDelimiter = SINGLE_QUOTE;
         }
       }
     } else if (!singleQuote && node.hasDoubleQuote) {
       if (node.shouldKeepDelimiter) {
         if (node.delimiterType === 'backtick') {
-          baseQuote = BACKTICK;
+          baseDelimiter = BACKTICK;
         } else if (node.delimiterType === 'single-quote') {
-          baseQuote = SINGLE_QUOTE;
+          baseDelimiter = SINGLE_QUOTE;
         }
       } else {
-        baseQuote = SINGLE_QUOTE;
+        baseDelimiter = SINGLE_QUOTE;
       }
     }
   }
@@ -81,8 +81,8 @@ function getSomeKindOfQuotes(
     node.isItAnObjectProperty
       ? '['
       : ''
-  }${!isMultiLineClassName || node.type === 'attribute' ? baseQuote : BACKTICK}`;
-  const closer = `${!isMultiLineClassName || node.type === 'attribute' ? baseQuote : BACKTICK}${
+  }${!isMultiLineClassName || node.type === 'attribute' ? baseDelimiter : BACKTICK}`;
+  const closer = `${!isMultiLineClassName || node.type === 'attribute' ? baseDelimiter : BACKTICK}${
     isMultiLineClassName &&
     node.type === 'expression' &&
     node.delimiterType !== 'backtick' &&
@@ -275,7 +275,7 @@ function replaceClassName({
       )}${trailingSpace}`;
 
       const isMultiLineClassName = classNameWithOriginalSpaces.split(EOL).length > 1;
-      const [quoteStart, quoteEnd] = getSomeKindOfQuotes(
+      const [delimiterStart, delimiterEnd] = getDelimiters(
         classNameNode,
         isMultiLineClassName,
         options.parser,
@@ -308,8 +308,8 @@ function replaceClassName({
       const frozenIndent = freezeNonClassName(rawIndent);
 
       const isAttributeType = classNameNode.type === 'attribute';
-      const substitute = `${isAttributeType ? '' : quoteStart}${classNameWithOriginalSpaces}${
-        isAttributeType ? '' : quoteEnd
+      const substitute = `${isAttributeType ? '' : delimiterStart}${classNameWithOriginalSpaces}${
+        isAttributeType ? '' : delimiterEnd
       }`
         .split(EOL)
         .map((raw) => {
@@ -578,7 +578,7 @@ async function replaceClassNameAsync({
       )}${trailingSpace}`;
 
       const isMultiLineClassName = classNameWithOriginalSpaces.split(EOL).length > 1;
-      const [quoteStart, quoteEnd] = getSomeKindOfQuotes(
+      const [delimiterStart, delimiterEnd] = getDelimiters(
         classNameNode,
         isMultiLineClassName,
         options.parser,
@@ -611,8 +611,8 @@ async function replaceClassNameAsync({
       const frozenIndent = freezeNonClassName(rawIndent);
 
       const isAttributeType = classNameNode.type === 'attribute';
-      const substitute = `${isAttributeType ? '' : quoteStart}${classNameWithOriginalSpaces}${
-        isAttributeType ? '' : quoteEnd
+      const substitute = `${isAttributeType ? '' : delimiterStart}${classNameWithOriginalSpaces}${
+        isAttributeType ? '' : delimiterEnd
       }`
         .split(EOL)
         .map((raw) => {

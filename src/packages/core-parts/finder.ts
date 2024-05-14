@@ -127,7 +127,7 @@ export function findTargetClassNameNodes(
    */
   const keywordStartingNodes: ASTNode[] = [];
   /**
-   * Class names enclosed in some kind of quotes
+   * Class names enclosed in delimiters
    */
   const classNameNodes: ClassNameNode[] = [];
 
@@ -668,7 +668,7 @@ export function findTargetClassNameNodesForVue(
    */
   const keywordStartingNodes: ASTNode[] = [];
   /**
-   * Class names enclosed in some kind of quotes
+   * Class names enclosed in delimiters
    */
   const classNameNodes: ClassNameNode[] = [];
 
@@ -945,7 +945,7 @@ export function findTargetClassNameNodesForAstro(
    */
   const keywordStartingNodes: ASTNode[] = [];
   /**
-   * Class names enclosed in some kind of quotes
+   * Class names enclosed in delimiters
    */
   const classNameNodes: ClassNameNode[] = [];
 
