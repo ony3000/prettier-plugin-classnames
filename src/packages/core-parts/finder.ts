@@ -8,7 +8,7 @@ import type {
   ClassNameNode,
   NarrowedParserOptions,
 } from './shared';
-import { EOL, SINGLE_QUOTE, DOUBLE_QUOTE } from './shared';
+import { EOL, SINGLE_QUOTE, DOUBLE_QUOTE, BACKTICK } from './shared';
 
 type ASTNode = {
   type: string;
@@ -50,6 +50,9 @@ function createExpressionNode(
     isItAnObjectProperty: false,
     isItAnOperandOfTernaryOperator: false,
     isItFunctionArgument: false,
+    hasSingleQuote: false,
+    hasDoubleQuote: false,
+    hasBacktick: false,
     shouldKeepDelimiter: false,
     ...arg,
   };
@@ -319,6 +322,11 @@ export function findTargetClassNameNodes(
                   // eslint-disable-next-line no-param-reassign
                   array[index] = createExpressionNode({
                     delimiterType: classNameNode.delimiterType,
+                    hasSingleQuote: classNameNode.hasSingleQuote,
+                    hasDoubleQuote: classNameNode.hasDoubleQuote,
+                    hasBacktick: classNameNode.hasBacktick,
+                    shouldKeepDelimiter:
+                      classNameNode.hasSingleQuote && classNameNode.hasDoubleQuote,
                     range: classNameNode.range,
                     startLineIndex: classNameNode.startLineIndex,
                   });
@@ -416,6 +424,9 @@ export function findTargetClassNameNodes(
                 : node.raw[0] === DOUBLE_QUOTE
                 ? 'double-quote'
                 : 'backtick',
+            hasSingleQuote: node.value.indexOf(SINGLE_QUOTE) !== -1,
+            hasDoubleQuote: node.value.indexOf(DOUBLE_QUOTE) !== -1,
+            hasBacktick: node.value.indexOf(BACKTICK) !== -1,
             range: [currentNodeRangeStart, currentNodeRangeEnd],
             startLineIndex: node.loc.start.line - 1,
           });
@@ -437,6 +448,7 @@ export function findTargetClassNameNodes(
               extra: z.object({
                 raw: z.string(),
               }),
+              value: z.string(),
             }),
           )
         ) {
@@ -449,6 +461,9 @@ export function findTargetClassNameNodes(
                 : node.extra.raw[0] === DOUBLE_QUOTE
                 ? 'double-quote'
                 : 'backtick',
+            hasSingleQuote: node.value.indexOf(SINGLE_QUOTE) !== -1,
+            hasDoubleQuote: node.value.indexOf(DOUBLE_QUOTE) !== -1,
+            hasBacktick: node.value.indexOf(BACKTICK) !== -1,
             range: [currentNodeRangeStart, currentNodeRangeEnd],
             startLineIndex: node.loc.start.line - 1,
           });

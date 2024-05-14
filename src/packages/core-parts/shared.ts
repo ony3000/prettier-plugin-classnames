@@ -45,6 +45,9 @@ type ClassNameNodeBase = {
 type UnknownNode = ClassNameNodeBase & {
   type: 'unknown';
   delimiterType: 'single-quote' | 'double-quote' | 'backtick';
+  hasSingleQuote?: boolean;
+  hasDoubleQuote?: boolean;
+  hasBacktick?: boolean;
 };
 
 type AttributeNode = ClassNameNodeBase & {
@@ -60,6 +63,9 @@ export type ExpressionNode = ClassNameNodeBase & {
   isItAnObjectProperty: boolean;
   isItAnOperandOfTernaryOperator: boolean;
   isItFunctionArgument: boolean;
+  hasSingleQuote: boolean;
+  hasDoubleQuote: boolean;
+  hasBacktick: boolean;
   shouldKeepDelimiter: boolean;
 };
 

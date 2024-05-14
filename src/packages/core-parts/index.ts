@@ -44,14 +44,35 @@ function getSomeKindOfQuotes(
   node: ClassNameNode,
   isMultiLineClassName: boolean,
   parser: string,
+  singleQuote: boolean,
 ): [string, string] {
-  const baseQuote =
-    // eslint-disable-next-line no-nested-ternary
-    node.type === 'expression' && node.delimiterType === 'backtick' && node.shouldKeepDelimiter
-      ? BACKTICK
-      : parser === 'vue' && node.type === 'expression'
-      ? SINGLE_QUOTE
-      : DOUBLE_QUOTE;
+  let baseQuote = DOUBLE_QUOTE;
+
+  if (node.type === 'expression') {
+    if (node.delimiterType === 'backtick' && node.shouldKeepDelimiter) {
+      baseQuote = BACKTICK;
+    } else if (parser === 'vue') {
+      baseQuote = SINGLE_QUOTE;
+    } else if (singleQuote && node.hasSingleQuote) {
+      if (node.shouldKeepDelimiter) {
+        if (node.delimiterType === 'backtick') {
+          baseQuote = BACKTICK;
+        } else if (node.delimiterType === 'single-quote') {
+          baseQuote = SINGLE_QUOTE;
+        }
+      }
+    } else if (!singleQuote && node.hasDoubleQuote) {
+      if (node.shouldKeepDelimiter) {
+        if (node.delimiterType === 'backtick') {
+          baseQuote = BACKTICK;
+        } else if (node.delimiterType === 'single-quote') {
+          baseQuote = SINGLE_QUOTE;
+        }
+      } else {
+        baseQuote = SINGLE_QUOTE;
+      }
+    }
+  }
 
   const opener = `${
     isMultiLineClassName &&
@@ -258,6 +279,7 @@ function replaceClassName({
         classNameNode,
         isMultiLineClassName,
         options.parser,
+        options.singleQuote,
       );
 
       const elementOpener = '<';
@@ -560,6 +582,7 @@ async function replaceClassNameAsync({
         classNameNode,
         isMultiLineClassName,
         options.parser,
+        options.singleQuote,
       );
 
       const elementOpener = '<';
