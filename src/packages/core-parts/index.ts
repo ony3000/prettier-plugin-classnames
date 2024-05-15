@@ -95,7 +95,7 @@ function getDelimiters(
 }
 
 function replaceSpacesAtBothEnds(className: string): [string, string, string] {
-  const matchArray = className.match(/^(\s*)[^\s](?:.*[^\s])?(\s*)$/);
+  const matchArray = className.match(/^(\s*)[^\s](?:[\s\w\W]*[^\s])?(\s*)$/);
   const leadingSpace = matchArray?.[1] ?? '';
   const trailingSpace = matchArray?.[2] ?? '';
 
@@ -202,10 +202,20 @@ function replaceClassName({
         ? baseIndentLevel + extraIndentLevel
         : 0;
 
-      const classNameBase = formattedPrevText.slice(
+      let classNameBase = formattedPrevText.slice(
         classNameNodeRangeStart + 1,
         correctedRangeEnd - 1,
       );
+      if (classNameNode.type === 'attribute') {
+        classNameBase = classNameBase.trim();
+      } else if (classNameNode.type === 'expression') {
+        const hasLeadingSpace = classNameBase !== classNameBase.trimStart();
+        const hasTrailingSpace = classNameBase !== classNameBase.trimEnd();
+
+        classNameBase = `${hasLeadingSpace ? SPACE : ''}${classNameBase
+          .trim()
+          .replace(/\\\n/g, '')}${hasTrailingSpace ? SPACE : ''}`;
+      }
 
       // preprocess (first)
       const [leadingSpace, classNameWithoutSpacesAtBothEnds, trailingSpace] =
@@ -505,10 +515,20 @@ async function replaceClassNameAsync({
         ? baseIndentLevel + extraIndentLevel
         : 0;
 
-      const classNameBase = formattedPrevText.slice(
+      let classNameBase = formattedPrevText.slice(
         classNameNodeRangeStart + 1,
         correctedRangeEnd - 1,
       );
+      if (classNameNode.type === 'attribute') {
+        classNameBase = classNameBase.trim();
+      } else if (classNameNode.type === 'expression') {
+        const hasLeadingSpace = classNameBase !== classNameBase.trimStart();
+        const hasTrailingSpace = classNameBase !== classNameBase.trimEnd();
+
+        classNameBase = `${hasLeadingSpace ? SPACE : ''}${classNameBase
+          .trim()
+          .replace(/\\\n/g, '')}${hasTrailingSpace ? SPACE : ''}`;
+      }
 
       // preprocess (first)
       const [leadingSpace, classNameWithoutSpacesAtBothEnds, trailingSpace] =
