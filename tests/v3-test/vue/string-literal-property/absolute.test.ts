@@ -1,10 +1,7 @@
-import { format } from 'prettier';
 import type { Fixture } from 'test-settings';
 import { baseOptions } from 'test-settings';
-import { describe, expect, test } from 'vitest';
 
-// eslint-disable-next-line import/no-extraneous-dependencies
-import * as thisPlugin from '@/packages/v3-plugin';
+import { thisPlugin, testEach } from '../../adaptor';
 
 const options = {
   ...baseOptions,
@@ -108,8 +105,8 @@ const fixtures: Fixture[] = [
     <div
       v-bind:class="
         classNames({
-          [\`lorem ipsum dolor sit amet consectetur adipiscing
-elit proin\`]: true,
+          [\`lorem ipsum dolor sit amet consectetur
+adipiscing elit proin\`]: true,
         })
       "
     >
@@ -167,8 +164,8 @@ adipiscing elit proin \`]: true,
     <div
       v-bind:class="
         classNames({
-          [\`lorem ipsum dolor sit amet consectetur adipiscing
-elit proin\`]: true,
+          [\`lorem ipsum dolor sit amet consectetur
+adipiscing elit proin\`]: true,
         })
       "
     >
@@ -194,9 +191,9 @@ elit proin\`]: true,
     <div
       v-bind:class="
         classNames({
-          [\`lorem ipsum dolor sit amet consectetur adipiscing
-elit proin ex massa hendrerit eu posuere eu volutpat id
-neque pellentesque\`]: true,
+          [\`lorem ipsum dolor sit amet consectetur
+adipiscing elit proin ex massa hendrerit eu posuere eu
+volutpat id neque pellentesque\`]: true,
         })
       "
     >
@@ -255,9 +252,9 @@ volutpat id neque pellentesque \`]: true,
     <div
       v-bind:class="
         classNames({
-          [\`lorem ipsum dolor sit amet consectetur adipiscing
-elit proin ex massa hendrerit eu posuere eu volutpat id
-neque pellentesque\`]: true,
+          [\`lorem ipsum dolor sit amet consectetur
+adipiscing elit proin ex massa hendrerit eu posuere eu
+volutpat id neque pellentesque\`]: true,
         })
       "
     >
@@ -283,8 +280,8 @@ neque pellentesque\`]: true,
     <Box
       v-bind:class="
         classNames({
-          [\`lorem ipsum dolor sit amet consectetur adipiscing
-elit proin ex massa hendrerit eu posuere\`]: true,
+          [\`lorem ipsum dolor sit amet consectetur
+adipiscing elit proin ex massa hendrerit eu posuere\`]: true,
         })
       "
     >
@@ -310,8 +307,8 @@ elit proin ex massa hendrerit eu posuere\`]: true,
     <div
       :class="
         classNames({
-          [\`lorem ipsum dolor sit amet consectetur adipiscing
-elit proin ex massa hendrerit eu posuere\`]: true,
+          [\`lorem ipsum dolor sit amet consectetur
+adipiscing elit proin ex massa hendrerit eu posuere\`]: true,
         })
       "
     >
@@ -323,20 +320,4 @@ elit proin ex massa hendrerit eu posuere\`]: true,
   },
 ];
 
-describe.each(fixtures)('$name', async ({ input, output, options: fixtureOptions }) => {
-  const fixedOptions = {
-    ...options,
-    ...(fixtureOptions ?? {}),
-  };
-  const formattedText = await format(input, fixedOptions);
-
-  test('expectation', () => {
-    expect(formattedText).toBe(output);
-  });
-
-  test.runIf(formattedText === output)('consistency', async () => {
-    const doubleFormattedText = await format(formattedText, fixedOptions);
-
-    expect(doubleFormattedText).toBe(formattedText);
-  });
-});
+testEach(fixtures, options);

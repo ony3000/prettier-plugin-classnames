@@ -69,6 +69,74 @@ const combination = classNames(
 </template>
 `,
   },
+  {
+    name: 'tagged template (1)',
+    input: `
+<script setup lang="ts">
+const classes = tw\`lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere\`;
+</script>
+`,
+    output: `<script setup lang="ts">
+const classes = tw\`lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit
+eu posuere\`;
+</script>
+`,
+    options: {
+      customFunctions: ['tw'],
+      endingPosition: 'relative',
+    },
+  },
+  {
+    name: 'tagged template (2)',
+    input: `
+<script setup lang="ts">
+const Bar = tw.foo\`lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere\`;
+</script>
+`,
+    output: `<script setup lang="ts">
+const Bar = tw.foo\`lorem ipsum dolor sit amet consectetur adipiscing elit proin
+ex massa hendrerit eu posuere\`;
+</script>
+`,
+    options: {
+      customFunctions: ['tw'],
+      endingPosition: 'absolute',
+    },
+  },
+  {
+    name: 'tagged template (3)',
+    input: `
+<script setup lang="ts">
+const Bar = tw(Foo)\`lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere\`;
+</script>
+`,
+    output: `<script setup lang="ts">
+const Bar = tw(
+  Foo,
+)\`lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa
+hendrerit eu posuere\`;
+</script>
+`,
+    options: {
+      customFunctions: ['tw'],
+      endingPosition: 'absolute-with-indent',
+    },
+  },
+  {
+    name: 'tagged template (4) - short enough class name',
+    input: `
+<script setup lang="ts">
+const classes = tw\`lorem ipsum dolor sit amet\`;
+</script>
+`,
+    output: `<script setup lang="ts">
+const classes = tw\`lorem ipsum dolor sit amet\`;
+</script>
+`,
+    options: {
+      customFunctions: ['tw'],
+    },
+  },
 ];
 
 describe('vue/variable-declaration', () => {

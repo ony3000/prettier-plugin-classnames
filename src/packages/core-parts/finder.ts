@@ -1,8 +1,14 @@
 import type { ZodTypeAny, infer as ZodInfer } from 'zod';
 import { z } from 'zod';
 
-import type { Dict, NodeRange, ClassNameNode, NarrowedParserOptions } from './shared';
-import { EOL, ClassNameType } from './shared';
+import type {
+  Dict,
+  NodeRange,
+  ExpressionNode,
+  ClassNameNode,
+  NarrowedParserOptions,
+} from './shared';
+import { EOL, SINGLE_QUOTE, DOUBLE_QUOTE, BACKTICK } from './shared';
 
 type ASTNode = {
   type: string;
@@ -34,6 +40,24 @@ function getElementName(
   return `${getElementName(param.object)}.${param.property.name}`;
 }
 
+function createExpressionNode(
+  arg: Pick<ExpressionNode, 'delimiterType' | 'range' | 'startLineIndex'> &
+    Partial<Omit<ExpressionNode, 'type' | 'delimiterType' | 'range' | 'startLineIndex'>>,
+): ExpressionNode {
+  return {
+    type: 'expression',
+    isTheFirstLineOnTheSameLineAsTheAttributeName: false,
+    isItAnObjectProperty: false,
+    isItAnOperandOfTernaryOperator: false,
+    isItFunctionArgument: false,
+    hasSingleQuote: false,
+    hasDoubleQuote: false,
+    hasBacktick: false,
+    shouldKeepDelimiter: false,
+    ...arg,
+  };
+}
+
 function filterAndSortClassNameNodes(
   nonCommentNodes: ASTNode[],
   prettierIgnoreNodes: ASTNode[],
@@ -41,10 +65,13 @@ function filterAndSortClassNameNodes(
   classNameNodes: ClassNameNode[],
 ): ClassNameNode[] {
   const ignoreRanges = prettierIgnoreNodes.map(({ range }) => {
-    const [, prettierIgnoreRangeEnd] = range;
+    const [, prettierIgnoreNodeRangeEnd] = range;
 
     const ignoringNodeOrNot = nonCommentNodes
-      .filter(({ range: [nonCommentRangeStart] }) => prettierIgnoreRangeEnd < nonCommentRangeStart)
+      .filter(
+        ({ range: [nonCommentNodeRangeStart] }) =>
+          prettierIgnoreNodeRangeEnd < nonCommentNodeRangeStart,
+      )
       .sort(
         (
           { range: [formerNodeRangeStart, formerNodeRangeEnd] },
@@ -59,15 +86,17 @@ function filterAndSortClassNameNodes(
 
   return classNameNodes
     .filter(
-      ({ range: [classNameRangeStart, classNameRangeEnd] }) =>
+      ({ range: [classNameNodeRangeStart, classNameNodeRangeEnd] }) =>
         ignoreRanges.every(
           ([ignoreRangeStart, ignoreRangeEnd]) =>
-            !(ignoreRangeStart <= classNameRangeStart && classNameRangeEnd <= ignoreRangeEnd),
+            !(
+              ignoreRangeStart <= classNameNodeRangeStart && classNameNodeRangeEnd <= ignoreRangeEnd
+            ),
         ) &&
         keywordStartingRanges.some(
           ([keywordStartingRangeStart, keywordStartingRangeEnd]) =>
-            keywordStartingRangeStart < classNameRangeStart &&
-            classNameRangeEnd <= keywordStartingRangeEnd,
+            keywordStartingRangeStart < classNameNodeRangeStart &&
+            classNameNodeRangeEnd <= keywordStartingRangeEnd,
         ),
     )
     .sort(
@@ -98,7 +127,7 @@ export function findTargetClassNameNodes(
    */
   const keywordStartingNodes: ASTNode[] = [];
   /**
-   * Class names enclosed in some kind of quotes
+   * Class names enclosed in delimiters
    */
   const classNameNodes: ClassNameNode[] = [];
 
@@ -158,19 +187,21 @@ export function findTargetClassNameNodes(
         ) {
           keywordStartingNodes.push(currentASTNode);
 
-          classNameNodes.forEach((classNameNode) => {
-            const [classNameRangeStart, classNameRangeEnd] = classNameNode.range;
+          classNameNodes.forEach((classNameNode, index, array) => {
+            const [classNameNodeRangeStart, classNameNodeRangeEnd] = classNameNode.range;
 
             if (
-              currentNodeRangeStart <= classNameRangeStart &&
-              classNameRangeEnd <= currentNodeRangeEnd
+              currentNodeRangeStart <= classNameNodeRangeStart &&
+              classNameNodeRangeEnd <= currentNodeRangeEnd
             ) {
-              if (
-                classNameNode.type === ClassNameType.USL ||
-                classNameNode.type === ClassNameType.UTL
-              ) {
+              if (classNameNode.type === 'unknown') {
                 // eslint-disable-next-line no-param-reassign
-                classNameNode.type = ClassNameType.FA;
+                array[index] = createExpressionNode({
+                  delimiterType: classNameNode.delimiterType,
+                  isItFunctionArgument: true,
+                  range: classNameNode.range,
+                  startLineIndex: classNameNode.startLineIndex,
+                });
               }
             }
           });
@@ -236,24 +267,26 @@ export function findTargetClassNameNodes(
           const parentNodeStartLineNumber = parentNode.loc.start.line;
           const currentNodeStartLineNumber = node.loc.start.line;
 
-          classNameNodes.forEach((classNameNode) => {
-            const [classNameRangeStart, classNameRangeEnd] = classNameNode.range;
+          classNameNodes.forEach((classNameNode, index, array) => {
+            const [classNameNodeRangeStart, classNameNodeRangeEnd] = classNameNode.range;
 
             if (
-              currentNodeRangeStart <= classNameRangeStart &&
-              classNameRangeEnd <= currentNodeRangeEnd
+              currentNodeRangeStart <= classNameNodeRangeStart &&
+              classNameNodeRangeEnd <= currentNodeRangeEnd
             ) {
-              if (classNameNode.type === ClassNameType.USL) {
+              if (classNameNode.type === 'unknown' && classNameNode.delimiterType !== 'backtick') {
                 // eslint-disable-next-line no-param-reassign
-                classNameNode.type =
-                  parentNodeStartLineNumber === currentNodeStartLineNumber
-                    ? ClassNameType.ASL
-                    : ClassNameType.AOL;
-                // eslint-disable-next-line no-param-reassign
-                classNameNode.elementName = getElementName(
-                  // @ts-ignore
-                  parentNode.name,
-                );
+                array[index] = {
+                  type: 'attribute',
+                  isTheFirstLineOnTheSameLineAsTheOpeningTag:
+                    parentNodeStartLineNumber === currentNodeStartLineNumber,
+                  elementName: getElementName(
+                    // @ts-ignore
+                    parentNode.name,
+                  ),
+                  range: classNameNode.range,
+                  startLineIndex: classNameNode.startLineIndex,
+                };
               }
             }
           });
@@ -277,22 +310,36 @@ export function findTargetClassNameNodes(
         ) {
           const currentNodeStartLineIndex = node.loc.start.line - 1;
 
-          classNameNodes.forEach((classNameNode) => {
-            const [classNameRangeStart, classNameRangeEnd] = classNameNode.range;
+          classNameNodes.forEach((classNameNode, index, array) => {
+            const [classNameNodeRangeStart, classNameNodeRangeEnd] = classNameNode.range;
 
             if (
-              currentNodeRangeStart <= classNameRangeStart &&
-              classNameRangeEnd <= currentNodeRangeEnd
+              currentNodeRangeStart <= classNameNodeRangeStart &&
+              classNameNodeRangeEnd <= currentNodeRangeEnd
             ) {
-              if (classNameNode.type === ClassNameType.USL) {
-                // eslint-disable-next-line no-param-reassign
-                classNameNode.type = ClassNameType.CSL;
-              } else if (classNameNode.type === ClassNameType.UTL) {
-                // eslint-disable-next-line no-param-reassign
-                classNameNode.type =
-                  classNameNode.startLineIndex === currentNodeStartLineIndex
-                    ? ClassNameType.TLSL
-                    : ClassNameType.CTL;
+              if (classNameNode.type === 'unknown') {
+                if (classNameNode.delimiterType !== 'backtick') {
+                  // eslint-disable-next-line no-param-reassign
+                  array[index] = createExpressionNode({
+                    delimiterType: classNameNode.delimiterType,
+                    hasSingleQuote: classNameNode.hasSingleQuote,
+                    hasDoubleQuote: classNameNode.hasDoubleQuote,
+                    hasBacktick: classNameNode.hasBacktick,
+                    shouldKeepDelimiter:
+                      classNameNode.hasSingleQuote && classNameNode.hasDoubleQuote,
+                    range: classNameNode.range,
+                    startLineIndex: classNameNode.startLineIndex,
+                  });
+                } else {
+                  // eslint-disable-next-line no-param-reassign
+                  array[index] = createExpressionNode({
+                    delimiterType: classNameNode.delimiterType,
+                    isTheFirstLineOnTheSameLineAsTheAttributeName:
+                      classNameNode.startLineIndex === currentNodeStartLineIndex,
+                    range: classNameNode.range,
+                    startLineIndex: classNameNode.startLineIndex,
+                  });
+                }
               }
             }
           });
@@ -303,19 +350,21 @@ export function findTargetClassNameNodes(
       case 'Property': {
         nonCommentNodes.push(currentASTNode);
 
-        classNameNodes.forEach((classNameNode) => {
-          const [classNameRangeStart, classNameRangeEnd] = classNameNode.range;
+        classNameNodes.forEach((classNameNode, index, array) => {
+          const [classNameNodeRangeStart, classNameNodeRangeEnd] = classNameNode.range;
 
           if (
-            currentNodeRangeStart <= classNameRangeStart &&
-            classNameRangeEnd <= currentNodeRangeEnd
+            currentNodeRangeStart <= classNameNodeRangeStart &&
+            classNameNodeRangeEnd <= currentNodeRangeEnd
           ) {
-            if (classNameNode.type === ClassNameType.USL) {
+            if (classNameNode.type === 'unknown') {
               // eslint-disable-next-line no-param-reassign
-              classNameNode.type = ClassNameType.SLOP;
-            } else if (classNameNode.type === ClassNameType.UTL) {
-              // eslint-disable-next-line no-param-reassign
-              classNameNode.type = ClassNameType.TLOP;
+              array[index] = createExpressionNode({
+                delimiterType: classNameNode.delimiterType,
+                isItAnObjectProperty: true,
+                range: classNameNode.range,
+                startLineIndex: classNameNode.startLineIndex,
+              });
             }
           }
         });
@@ -324,22 +373,26 @@ export function findTargetClassNameNodes(
       case 'ConditionalExpression': {
         nonCommentNodes.push(currentASTNode);
 
-        classNameNodes.forEach((classNameNode) => {
-          const [classNameRangeStart, classNameRangeEnd] = classNameNode.range;
+        classNameNodes.forEach((classNameNode, index, array) => {
+          const [classNameNodeRangeStart, classNameNodeRangeEnd] = classNameNode.range;
 
           if (
-            currentNodeRangeStart <= classNameRangeStart &&
-            classNameRangeEnd <= currentNodeRangeEnd
+            currentNodeRangeStart <= classNameNodeRangeStart &&
+            classNameNodeRangeEnd <= currentNodeRangeEnd
           ) {
-            if (classNameNode.type === ClassNameType.USL) {
+            if (classNameNode.type === 'unknown') {
               // eslint-disable-next-line no-param-reassign
-              classNameNode.type = ClassNameType.SLTO;
-            } else if (classNameNode.type === ClassNameType.UTL) {
-              // eslint-disable-next-line no-param-reassign
-              classNameNode.type = ClassNameType.TLTO;
-            } else if (classNameNode.type === ClassNameType.TLPQ) {
-              // eslint-disable-next-line no-param-reassign
-              classNameNode.type = ClassNameType.TLPQTO;
+              array[index] = createExpressionNode({
+                delimiterType: classNameNode.delimiterType,
+                isItAnOperandOfTernaryOperator: true,
+                range: classNameNode.range,
+                startLineIndex: classNameNode.startLineIndex,
+              });
+            } else if (classNameNode.type === 'expression') {
+              if (classNameNode.delimiterType === 'backtick' && classNameNode.shouldKeepDelimiter) {
+                // eslint-disable-next-line no-param-reassign
+                classNameNode.isItAnOperandOfTernaryOperator = true;
+              }
             }
           }
         });
@@ -358,11 +411,22 @@ export function findTargetClassNameNodes(
                   line: z.number(),
                 }),
               }),
+              raw: z.string(),
             }),
           )
         ) {
           classNameNodes.push({
-            type: ClassNameType.USL,
+            type: 'unknown',
+            delimiterType:
+              // eslint-disable-next-line no-nested-ternary
+              node.raw[0] === SINGLE_QUOTE
+                ? 'single-quote'
+                : node.raw[0] === DOUBLE_QUOTE
+                ? 'double-quote'
+                : 'backtick',
+            hasSingleQuote: node.value.indexOf(SINGLE_QUOTE) !== -1,
+            hasDoubleQuote: node.value.indexOf(DOUBLE_QUOTE) !== -1,
+            hasBacktick: node.value.indexOf(BACKTICK) !== -1,
             range: [currentNodeRangeStart, currentNodeRangeEnd],
             startLineIndex: node.loc.start.line - 1,
           });
@@ -381,11 +445,25 @@ export function findTargetClassNameNodes(
                   line: z.number(),
                 }),
               }),
+              extra: z.object({
+                raw: z.string(),
+              }),
+              value: z.string(),
             }),
           )
         ) {
           classNameNodes.push({
-            type: ClassNameType.USL,
+            type: 'unknown',
+            delimiterType:
+              // eslint-disable-next-line no-nested-ternary
+              node.extra.raw[0] === SINGLE_QUOTE
+                ? 'single-quote'
+                : node.extra.raw[0] === DOUBLE_QUOTE
+                ? 'double-quote'
+                : 'backtick',
+            hasSingleQuote: node.value.indexOf(SINGLE_QUOTE) !== -1,
+            hasDoubleQuote: node.value.indexOf(DOUBLE_QUOTE) !== -1,
+            hasBacktick: node.value.indexOf(BACKTICK) !== -1,
             range: [currentNodeRangeStart, currentNodeRangeEnd],
             startLineIndex: node.loc.start.line - 1,
           });
@@ -419,13 +497,89 @@ export function findTargetClassNameNodes(
           const { cooked } = node.quasis[0].value;
           const conditionForPreservation =
             !node.quasis[0].tail ||
-            (options.singleQuote && cooked.indexOf("'") !== -1) ||
-            (!options.singleQuote && cooked.indexOf('"') !== -1);
+            (options.singleQuote && cooked.indexOf(SINGLE_QUOTE) !== -1) ||
+            (!options.singleQuote && cooked.indexOf(DOUBLE_QUOTE) !== -1);
 
-          classNameNodes.push({
-            type: conditionForPreservation ? ClassNameType.TLPQ : ClassNameType.UTL,
-            range: [currentNodeRangeStart, currentNodeRangeEnd],
-            startLineIndex: node.loc.start.line - 1,
+          if (conditionForPreservation) {
+            classNameNodes.push(
+              createExpressionNode({
+                delimiterType: 'backtick',
+                shouldKeepDelimiter: true,
+                range: [currentNodeRangeStart, currentNodeRangeEnd],
+                startLineIndex: node.loc.start.line - 1,
+              }),
+            );
+          } else {
+            classNameNodes.push({
+              type: 'unknown',
+              delimiterType: 'backtick',
+              range: [currentNodeRangeStart, currentNodeRangeEnd],
+              startLineIndex: node.loc.start.line - 1,
+            });
+          }
+        }
+        break;
+      }
+      case 'TaggedTemplateExpression': {
+        nonCommentNodes.push(currentASTNode);
+
+        if (
+          (isTypeof(
+            node,
+            z.object({
+              tag: z.object({
+                type: z.literal('Identifier'),
+                name: z.string(),
+              }),
+            }),
+          ) &&
+            supportedFunctions.includes(node.tag.name)) ||
+          (isTypeof(
+            node,
+            z.object({
+              tag: z.object({
+                type: z.literal('MemberExpression'),
+                object: z.object({
+                  type: z.literal('Identifier'),
+                  name: z.string(),
+                }),
+              }),
+            }),
+          ) &&
+            supportedFunctions.includes(node.tag.object.name)) ||
+          (isTypeof(
+            node,
+            z.object({
+              tag: z.object({
+                type: z.literal('CallExpression'),
+                callee: z.object({
+                  type: z.literal('Identifier'),
+                  name: z.string(),
+                }),
+              }),
+            }),
+          ) &&
+            supportedFunctions.includes(node.tag.callee.name))
+        ) {
+          keywordStartingNodes.push(currentASTNode);
+
+          classNameNodes.forEach((classNameNode, index, array) => {
+            const [classNameNodeRangeStart, classNameNodeRangeEnd] = classNameNode.range;
+
+            if (
+              currentNodeRangeStart <= classNameNodeRangeStart &&
+              classNameNodeRangeEnd <= currentNodeRangeEnd
+            ) {
+              if (classNameNode.type === 'unknown' && classNameNode.delimiterType === 'backtick') {
+                // eslint-disable-next-line no-param-reassign
+                array[index] = createExpressionNode({
+                  delimiterType: classNameNode.delimiterType,
+                  shouldKeepDelimiter: true,
+                  range: classNameNode.range,
+                  startLineIndex: classNameNode.startLineIndex,
+                });
+              }
+            }
           });
         }
         break;
@@ -514,7 +668,7 @@ export function findTargetClassNameNodesForVue(
    */
   const keywordStartingNodes: ASTNode[] = [];
   /**
-   * Class names enclosed in some kind of quotes
+   * Class names enclosed in delimiters
    */
   const classNameNodes: ClassNameNode[] = [];
 
@@ -580,6 +734,7 @@ export function findTargetClassNameNodesForVue(
                   line: z.number(),
                 }),
               }),
+              name: z.string(),
             }),
           ) &&
           parentNode.type === 'element' &&
@@ -622,29 +777,29 @@ export function findTargetClassNameNodesForVue(
                 const targetClassNameNodesInAttribute = findTargetClassNameNodes(
                   babelAst,
                   options,
-                ).map<ClassNameNode>(
-                  ({
-                    type,
-                    range: [classNameNodeRangeStart, classNameNodeRangeEnd],
-                    startLineIndex,
-                  }) => {
-                    if (type === ClassNameType.CSL && startLineIndex === 0) {
-                      // eslint-disable-next-line no-param-reassign
-                      type = ClassNameType.SLSL;
-                    }
+                ).map<ClassNameNode>((classNameNode) => {
+                  const [classNameNodeRangeStart, classNameNodeRangeEnd] = classNameNode.range;
 
-                    const attributeOffset = -jsxStart.length + node.valueSpan.start.offset + 1;
+                  if (
+                    classNameNode.type === 'expression' &&
+                    classNameNode.delimiterType !== 'backtick' &&
+                    classNameNode.startLineIndex === 0
+                  ) {
+                    // eslint-disable-next-line no-param-reassign
+                    classNameNode.isTheFirstLineOnTheSameLineAsTheAttributeName = true;
+                  }
 
-                    return {
-                      type,
-                      range: [
-                        classNameNodeRangeStart + attributeOffset,
-                        classNameNodeRangeEnd + attributeOffset,
-                      ],
-                      startLineIndex: startLineIndex + node.sourceSpan.start.line,
-                    };
-                  },
-                );
+                  const attributeOffset = -jsxStart.length + node.valueSpan.start.offset + 1;
+
+                  return {
+                    ...classNameNode,
+                    range: [
+                      classNameNodeRangeStart + attributeOffset,
+                      classNameNodeRangeEnd + attributeOffset,
+                    ],
+                    startLineIndex: classNameNode.startLineIndex + node.sourceSpan.start.line,
+                  };
+                });
 
                 classNameNodes.push(...targetClassNameNodesInAttribute);
               } catch (error) {
@@ -652,23 +807,23 @@ export function findTargetClassNameNodesForVue(
               }
             }
           } else {
-            const classNameRangeStart = node.valueSpan.start.offset;
-            const classNameRangeEnd = node.valueSpan.end.offset;
+            const classNameNodeRangeStart = node.valueSpan.start.offset;
+            const classNameNodeRangeEnd = node.valueSpan.end.offset;
 
             nonCommentNodes.push({
               type: 'StringLiteral',
-              range: [classNameRangeStart, classNameRangeEnd],
+              range: [classNameNodeRangeStart, classNameNodeRangeEnd],
             });
 
             const parentNodeStartLineIndex = parentNode.sourceSpan.start.line;
             const nodeStartLineIndex = node.sourceSpan.start.line;
 
             classNameNodes.push({
-              type:
-                parentNodeStartLineIndex === nodeStartLineIndex
-                  ? ClassNameType.ASL
-                  : ClassNameType.AOL,
-              range: [classNameRangeStart, classNameRangeEnd],
+              type: 'attribute',
+              isTheFirstLineOnTheSameLineAsTheOpeningTag:
+                parentNodeStartLineIndex === nodeStartLineIndex,
+              elementName: parentNode.name,
+              range: [classNameNodeRangeStart, classNameNodeRangeEnd],
               startLineIndex: nodeStartLineIndex,
             });
           }
@@ -713,24 +868,20 @@ export function findTargetClassNameNodesForVue(
             const targetClassNameNodesInScript = findTargetClassNameNodes(
               typescriptAst,
               options,
-            ).map<ClassNameNode>(
-              ({
-                type,
-                range: [classNameNodeRangeStart, classNameNodeRangeEnd],
-                startLineIndex,
-              }) => {
-                const scriptOffset = node.startSourceSpan.end.offset;
+            ).map<ClassNameNode>((classNameNode) => {
+              const [classNameNodeRangeStart, classNameNodeRangeEnd] = classNameNode.range;
 
-                return {
-                  type,
-                  range: [
-                    classNameNodeRangeStart + scriptOffset,
-                    classNameNodeRangeEnd + scriptOffset,
-                  ],
-                  startLineIndex: startLineIndex + node.sourceSpan.start.line,
-                };
-              },
-            );
+              const scriptOffset = node.startSourceSpan.end.offset;
+
+              return {
+                ...classNameNode,
+                range: [
+                  classNameNodeRangeStart + scriptOffset,
+                  classNameNodeRangeEnd + scriptOffset,
+                ],
+                startLineIndex: classNameNode.startLineIndex + node.sourceSpan.start.line,
+              };
+            });
 
             classNameNodes.push(...targetClassNameNodesInScript);
           }
@@ -794,7 +945,7 @@ export function findTargetClassNameNodesForAstro(
    */
   const keywordStartingNodes: ASTNode[] = [];
   /**
-   * Class names enclosed in some kind of quotes
+   * Class names enclosed in delimiters
    */
   const classNameNodes: ClassNameNode[] = [];
 
@@ -892,24 +1043,20 @@ export function findTargetClassNameNodesForAstro(
               ...options,
               customAttributes: supportedAttributes,
               customFunctions: supportedFunctions,
-            }).map<ClassNameNode>(
-              ({
-                type,
-                range: [classNameNodeRangeStart, classNameNodeRangeEnd],
-                startLineIndex,
-              }) => {
-                const frontMatterOffset = '---'.length;
+            }).map<ClassNameNode>((classNameNode) => {
+              const [classNameNodeRangeStart, classNameNodeRangeEnd] = classNameNode.range;
 
-                return {
-                  type,
-                  range: [
-                    classNameNodeRangeStart + frontMatterOffset,
-                    classNameNodeRangeEnd + frontMatterOffset,
-                  ],
-                  startLineIndex,
-                };
-              },
-            );
+              const frontMatterOffset = '---'.length;
+
+              return {
+                ...classNameNode,
+                range: [
+                  classNameNodeRangeStart + frontMatterOffset,
+                  classNameNodeRangeEnd + frontMatterOffset,
+                ],
+                startLineIndex: classNameNode.startLineIndex,
+              };
+            });
 
             classNameNodes.push(...targetClassNameNodesInFrontMatter);
           }
@@ -928,6 +1075,7 @@ export function findTargetClassNameNodesForAstro(
                   line: z.number(),
                 }),
               }),
+              name: z.string(),
             }),
           ) &&
           (parentNode.type === 'element' || parentNode.type === 'component') &&
@@ -958,46 +1106,43 @@ export function findTargetClassNameNodesForAstro(
                 ...options,
                 customAttributes: supportedAttributes,
                 customFunctions: supportedFunctions,
-              }).map<ClassNameNode>(
-                ({
-                  type,
-                  range: [classNameNodeRangeStart, classNameNodeRangeEnd],
-                  startLineIndex,
-                }) => {
-                  if (type === ClassNameType.CSL && startLineIndex === 0) {
-                    // eslint-disable-next-line no-param-reassign
-                    type = ClassNameType.SLSL;
-                  }
+              }).map<ClassNameNode>((classNameNode) => {
+                const [classNameNodeRangeStart, classNameNodeRangeEnd] = classNameNode.range;
 
-                  const attributeOffset =
-                    -jsxStart.length + currentNodeRangeStart + attributeStart.length;
+                if (
+                  classNameNode.type === 'expression' &&
+                  classNameNode.delimiterType !== 'backtick' &&
+                  classNameNode.startLineIndex === 0
+                ) {
+                  // eslint-disable-next-line no-param-reassign
+                  classNameNode.isTheFirstLineOnTheSameLineAsTheAttributeName = true;
+                }
 
-                  return {
-                    type,
-                    range: [
-                      classNameNodeRangeStart + attributeOffset,
-                      classNameNodeRangeEnd + attributeOffset,
-                    ],
-                    startLineIndex: startLineIndex + node.position.start.line - 1,
-                  };
-                },
-              );
+                const attributeOffset =
+                  -jsxStart.length + currentNodeRangeStart + attributeStart.length;
+
+                return {
+                  ...classNameNode,
+                  range: [
+                    classNameNodeRangeStart + attributeOffset,
+                    classNameNodeRangeEnd + attributeOffset,
+                  ],
+                  startLineIndex: classNameNode.startLineIndex + node.position.start.line - 1,
+                };
+              });
 
               classNameNodes.push(...targetClassNameNodesInAttribute);
             }
           } else if (node.kind === 'quoted') {
-            const classNameRangeStart = currentNodeRangeStart + attributeStart.length - 1;
-            const classNameRangeEnd = currentNodeRangeEnd;
-
             const parentNodeStartLineIndex = parentNode.position.start.line - 1;
             const nodeStartLineIndex = node.position.start.line - 1;
 
             classNameNodes.push({
-              type:
-                parentNodeStartLineIndex === nodeStartLineIndex
-                  ? ClassNameType.ASL
-                  : ClassNameType.AOL,
-              range: [classNameRangeStart, classNameRangeEnd],
+              type: 'attribute',
+              isTheFirstLineOnTheSameLineAsTheOpeningTag:
+                parentNodeStartLineIndex === nodeStartLineIndex,
+              elementName: parentNode.name,
+              range: [currentNodeRangeStart + attributeStart.length - 1, currentNodeRangeEnd],
               startLineIndex: node.position.start.line - 1,
             });
           }
@@ -1014,12 +1159,11 @@ export function findTargetClassNameNodesForAstro(
           ) &&
           node.value.trim() === 'prettier-ignore'
         ) {
-          const [rangeStart, rangeEnd] = currentASTNode.range;
           const commentOffset = '<!--'.length;
 
           prettierIgnoreNodes.push({
             ...currentASTNode,
-            range: [rangeStart - commentOffset, rangeEnd],
+            range: [currentNodeRangeStart - commentOffset, currentNodeRangeEnd],
           });
         }
         break;

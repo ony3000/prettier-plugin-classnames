@@ -1,5 +1,4 @@
 import { parseLineByLineAndReplaceAsync } from 'core-parts';
-import { ClassNameType } from 'core-parts/shared';
 import type { Parser, ParserOptions, Plugin } from 'prettier';
 import { format } from 'prettier';
 import { parsers as babelParsers } from 'prettier/plugins/babel';
@@ -58,6 +57,7 @@ function transformParser(
         options,
         format,
         addon,
+        isSecondPhase: false,
       });
 
       let secondFormattedText: string;
@@ -82,10 +82,7 @@ function transformParser(
         options,
         format,
         addon,
-        targetClassNameTypes:
-          parserName === 'vue' || parserName === 'astro'
-            ? [ClassNameType.ASL, ClassNameType.AOL]
-            : [ClassNameType.ASL, ClassNameType.AOL, ClassNameType.CTL, ClassNameType.TLSL],
+        isSecondPhase: true,
       });
 
       return {
