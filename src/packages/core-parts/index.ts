@@ -172,24 +172,6 @@ function replaceClassName({
     (formattedPrevText, classNameNode, classNameNodeIndex) => {
       const [classNameNodeRangeStart, classNameNodeRangeEnd] = classNameNode.range;
 
-      if (
-        isSecondPhase &&
-        (((options.parser === 'vue' || options.parser === 'astro') &&
-          !(classNameNode.type === 'attribute')) ||
-          (!(options.parser === 'vue' || options.parser === 'astro') &&
-            !(
-              classNameNode.type === 'attribute' ||
-              (classNameNode.type === 'expression' &&
-                classNameNode.delimiterType === 'backtick' &&
-                !classNameNode.isItAnObjectProperty &&
-                !classNameNode.isItAnOperandOfTernaryOperator &&
-                !classNameNode.isItFunctionArgument &&
-                !classNameNode.shouldKeepDelimiter)
-            )))
-      ) {
-        return formattedPrevText;
-      }
-
       const correctedRangeEnd = classNameNodeRangeEnd - rangeCorrectionValues[classNameNodeIndex];
 
       const isStartingPositionRelative = options.endingPosition !== 'absolute';
@@ -482,24 +464,6 @@ async function replaceClassNameAsync({
   const icedFormattedText = await targetClassNameNodes.reduce(
     async (formattedPrevTextPromise, classNameNode, classNameNodeIndex) => {
       const [classNameNodeRangeStart, classNameNodeRangeEnd] = classNameNode.range;
-
-      if (
-        isSecondPhase &&
-        (((options.parser === 'vue' || options.parser === 'astro') &&
-          !(classNameNode.type === 'attribute')) ||
-          (!(options.parser === 'vue' || options.parser === 'astro') &&
-            !(
-              classNameNode.type === 'attribute' ||
-              (classNameNode.type === 'expression' &&
-                classNameNode.delimiterType === 'backtick' &&
-                !classNameNode.isItAnObjectProperty &&
-                !classNameNode.isItAnOperandOfTernaryOperator &&
-                !classNameNode.isItFunctionArgument &&
-                !classNameNode.shouldKeepDelimiter)
-            )))
-      ) {
-        return formattedPrevTextPromise;
-      }
 
       const formattedPrevText = await formattedPrevTextPromise;
 
