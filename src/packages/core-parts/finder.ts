@@ -202,6 +202,9 @@ export function findTargetClassNameNodes(
                   range: classNameNode.range,
                   startLineIndex: classNameNode.startLineIndex,
                 });
+              } else if (classNameNode.type === 'expression') {
+                // eslint-disable-next-line no-param-reassign
+                classNameNode.isItFunctionArgument = true;
               }
             }
           });
@@ -340,6 +343,10 @@ export function findTargetClassNameNodes(
                     startLineIndex: classNameNode.startLineIndex,
                   });
                 }
+              } else if (classNameNode.type === 'expression') {
+                // eslint-disable-next-line no-param-reassign
+                classNameNode.isTheFirstLineOnTheSameLineAsTheAttributeName =
+                  classNameNode.startLineIndex === currentNodeStartLineIndex;
               }
             }
           });
@@ -365,6 +372,9 @@ export function findTargetClassNameNodes(
                 range: classNameNode.range,
                 startLineIndex: classNameNode.startLineIndex,
               });
+            } else if (classNameNode.type === 'expression') {
+              // eslint-disable-next-line no-param-reassign
+              classNameNode.isItAnObjectProperty = true;
             }
           }
         });
@@ -389,10 +399,8 @@ export function findTargetClassNameNodes(
                 startLineIndex: classNameNode.startLineIndex,
               });
             } else if (classNameNode.type === 'expression') {
-              if (classNameNode.delimiterType === 'backtick' && classNameNode.shouldKeepDelimiter) {
-                // eslint-disable-next-line no-param-reassign
-                classNameNode.isItAnOperandOfTernaryOperator = true;
-              }
+              // eslint-disable-next-line no-param-reassign
+              classNameNode.isItAnOperandOfTernaryOperator = true;
             }
           }
         });
@@ -495,28 +503,22 @@ export function findTargetClassNameNodes(
           )
         ) {
           const { cooked } = node.quasis[0].value;
-          const conditionForPreservation =
-            !node.quasis[0].tail ||
-            (options.singleQuote && cooked.indexOf(SINGLE_QUOTE) !== -1) ||
-            (!options.singleQuote && cooked.indexOf(DOUBLE_QUOTE) !== -1);
 
-          if (conditionForPreservation) {
-            classNameNodes.push(
-              createExpressionNode({
-                delimiterType: 'backtick',
-                shouldKeepDelimiter: true,
-                range: [currentNodeRangeStart, currentNodeRangeEnd],
-                startLineIndex: node.loc.start.line - 1,
-              }),
-            );
-          } else {
-            classNameNodes.push({
-              type: 'unknown',
+          const hasSingleQuote = cooked.indexOf(SINGLE_QUOTE) !== -1;
+          const hasDoubleQuote = cooked.indexOf(DOUBLE_QUOTE) !== -1;
+          const hasBacktick = cooked.indexOf(BACKTICK) !== -1;
+
+          classNameNodes.push(
+            createExpressionNode({
               delimiterType: 'backtick',
+              hasSingleQuote,
+              hasDoubleQuote,
+              hasBacktick,
+              shouldKeepDelimiter: !node.quasis[0].tail || (hasSingleQuote && hasDoubleQuote),
               range: [currentNodeRangeStart, currentNodeRangeEnd],
               startLineIndex: node.loc.start.line - 1,
-            });
-          }
+            }),
+          );
         }
         break;
       }
