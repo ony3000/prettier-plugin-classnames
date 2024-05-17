@@ -49,25 +49,27 @@ function getDelimiters(
   let baseDelimiter = DOUBLE_QUOTE;
 
   if (node.type === 'expression') {
-    if (parser === 'vue') {
-      baseDelimiter = SINGLE_QUOTE;
-    } else if (singleQuote && node.hasSingleQuote) {
-      if (node.shouldKeepDelimiter) {
-        if (node.delimiterType === 'backtick') {
-          baseDelimiter = BACKTICK;
-        } else if (node.delimiterType === 'single-quote') {
-          baseDelimiter = SINGLE_QUOTE;
-        }
+    if (node.shouldKeepDelimiter) {
+      if (node.delimiterType === 'backtick') {
+        baseDelimiter = BACKTICK;
+      } else if (node.delimiterType === 'single-quote') {
+        baseDelimiter = SINGLE_QUOTE;
+      } else {
+        // baseDelimiter = DOUBLE_QUOTE;
       }
-    } else if (!singleQuote && node.hasDoubleQuote) {
-      if (node.shouldKeepDelimiter) {
-        if (node.delimiterType === 'backtick') {
-          baseDelimiter = BACKTICK;
-        } else if (node.delimiterType === 'single-quote') {
-          baseDelimiter = SINGLE_QUOTE;
-        }
+    } else if (parser === 'vue') {
+      baseDelimiter = SINGLE_QUOTE;
+    } else if (singleQuote) {
+      if (node.hasSingleQuote) {
+        // baseDelimiter = DOUBLE_QUOTE;
       } else {
         baseDelimiter = SINGLE_QUOTE;
+      }
+    } else if (!singleQuote) {
+      if (node.hasDoubleQuote) {
+        baseDelimiter = SINGLE_QUOTE;
+      } else {
+        // baseDelimiter = DOUBLE_QUOTE;
       }
     }
   }
