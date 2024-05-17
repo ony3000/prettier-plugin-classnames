@@ -352,37 +352,3 @@
      );
    }
    ```
-
-## (제목 미정)
-
-표현식으로 작성된 클래스명은, 줄바꿈 과정에서 입력 텍스트가 그대로 사용되지 않는다. 문자열로 평가된 값이 사용된다.
-
-예를 들어 다음과 같은 경우, 입력 텍스트의 클래스명 길이는 `printWidth`를 초과하지만, 이것을 문자열로 평가한 값은 초과하지 않는다. 따라서 서식 지정 결과에는 줄바꿈이 발생하지 않는다.
-
-<!-- prettier-ignore -->
-```typescript
-// options
-{ printWidth: 60, endingPosition: 'relative' }
-
-// input
-export function Foo({ children }) {
-  return (
-    <div className={`lorem ipsum do\`or sit amet consectetur adipiscing elit proin`}>
-      {children}
-    </div>
-  );
-}
-
-// output
-export function Foo({ children }) {
-  return (
-    <div
-      className={
-        "lorem ipsum do`or sit amet consectetur adipiscing elit proin"
-      }
-    >
-      {children}
-    </div>
-  );
-}
-```
