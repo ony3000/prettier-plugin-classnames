@@ -334,7 +334,7 @@ function replaceClassName({
         })
         .join(`${EOL}${frozenIndent}`);
 
-      if (isStartingPositionRelative && isMultiLineClassName) {
+      if (isStartingPositionRelative && isMultiLineClassName && rawIndent.length) {
         freezer.push({
           type: 'indent',
           from: frozenIndent,
@@ -646,7 +646,7 @@ async function replaceClassNameAsync({
         })
         .join(`${EOL}${frozenIndent}`);
 
-      if (isStartingPositionRelative && isMultiLineClassName) {
+      if (isStartingPositionRelative && isMultiLineClassName && rawIndent.length) {
         freezer.push({
           type: 'indent',
           from: frozenIndent,
