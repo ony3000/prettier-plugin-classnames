@@ -45,7 +45,7 @@ export function Callout({ children }) {
   return (
     <div
       className={
-        \`""\` + "rounded-xl border border-zinc-400/30 bg-gray-100/50 px-4 py-4"
+        '""' + "rounded-xl border border-zinc-400/30 bg-gray-100/50 px-4 py-4"
       }
     >
       {children}
@@ -65,7 +65,7 @@ export function Callout({ children }) {
   return (
     <div
       className={
-        \`''\` + 'rounded-xl border border-zinc-400/30 bg-gray-100/50 px-4 py-4'
+        "''" + 'rounded-xl border border-zinc-400/30 bg-gray-100/50 px-4 py-4'
       }
     >
       {children}
