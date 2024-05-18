@@ -352,3 +352,31 @@
      );
    }
    ```
+
+## 조건부 이스케이프
+
+클래스명 양 끝의 구분자가 결정된 후, 구분자와 같은 문자가 클래스명에 포함되어있으면 그 문자는 이스케이프 처리된다.
+
+<!-- prettier-ignore -->
+```typescript
+// input
+export function Foo({ children }) {
+  return (
+    <div className={"lorem ipsum do`or sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere"}>
+      {children}
+    </div>
+  );
+}
+
+// output
+export function Foo({ children }) {
+  return (
+    <div
+      className={`lorem ipsum do\`or sit amet consectetur adipiscing elit
+        proin ex massa hendrerit eu posuere`}
+    >
+      {children}
+    </div>
+  );
+}
+```

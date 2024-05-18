@@ -352,3 +352,31 @@ For class names written as expressions, the delimiters at both ends can be conve
      );
    }
    ```
+
+## Conditional Escape
+
+After the delimiters at both ends of the class name are determined, if the same character as the delimiter is included in the class name, that character is escaped.
+
+<!-- prettier-ignore -->
+```typescript
+// input
+export function Foo({ children }) {
+  return (
+    <div className={"lorem ipsum do`or sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere"}>
+      {children}
+    </div>
+  );
+}
+
+// output
+export function Foo({ children }) {
+  return (
+    <div
+      className={`lorem ipsum do\`or sit amet consectetur adipiscing elit
+        proin ex massa hendrerit eu posuere`}
+    >
+      {children}
+    </div>
+  );
+}
+```
