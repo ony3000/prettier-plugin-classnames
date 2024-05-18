@@ -380,3 +380,56 @@ export function Foo({ children }) {
   );
 }
 ```
+
+## 구문 평가
+
+서식 지정 과정에서, 일부 구문은 문자열로 평가된 것 처럼 간주된다.
+
+1. `prettier.format` 단계에서 처리되는 구문
+
+   <!-- prettier-ignore -->
+   ```typescript
+   // input
+   export function Foo({ children }) {
+     return (
+       <div className={"lorem ipsum do\"or sit amet"}>
+         {children}
+       </div>
+     );
+   }
+
+   // output
+   export function Foo({ children }) {
+     return (
+       <div className={'lorem ipsum do"or sit amet'}>
+         {children}
+       </div>
+     );
+   }
+   ```
+
+1. 줄바꿈 단계에서 처리되는 구문
+
+   <!-- prettier-ignore -->
+   ```typescript
+   // input
+   export function Foo({ children }) {
+     return (
+       <div className={
+         'lorem ipsum\
+         dolor sit amet'
+       }>
+         {children}
+       </div>
+     );
+   }
+
+   // output
+   export function Foo({ children }) {
+     return (
+       <div className={"lorem ipsum dolor sit amet"}>
+         {children}
+       </div>
+     );
+   }
+   ```

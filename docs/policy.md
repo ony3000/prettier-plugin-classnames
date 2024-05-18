@@ -380,3 +380,56 @@ export function Foo({ children }) {
   );
 }
 ```
+
+## Syntax Evaluation
+
+During the formatting process, some syntax is treated as if it were evaluated as a string.
+
+1. Syntax treated in the `prettier.format` phase
+
+   <!-- prettier-ignore -->
+   ```typescript
+   // input
+   export function Foo({ children }) {
+     return (
+       <div className={"lorem ipsum do\"or sit amet"}>
+         {children}
+       </div>
+     );
+   }
+
+   // output
+   export function Foo({ children }) {
+     return (
+       <div className={'lorem ipsum do"or sit amet'}>
+         {children}
+       </div>
+     );
+   }
+   ```
+
+1. Syntax treated in the line wrapping phase
+
+   <!-- prettier-ignore -->
+   ```typescript
+   // input
+   export function Foo({ children }) {
+     return (
+       <div className={
+         'lorem ipsum\
+         dolor sit amet'
+       }>
+         {children}
+       </div>
+     );
+   }
+
+   // output
+   export function Foo({ children }) {
+     return (
+       <div className={"lorem ipsum dolor sit amet"}>
+         {children}
+       </div>
+     );
+   }
+   ```
