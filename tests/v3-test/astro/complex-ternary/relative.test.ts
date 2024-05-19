@@ -96,11 +96,11 @@ const fixtures: Fixture[] = [
         ? "lorem ipsum dolor sit amet"
         : condition
         ? \`lorem ipsum dolor sit amet
-          \${"consectetur adipiscing elit proin"} ex massa
-          hendrerit eu posuere\`
+          \${"consectetur adipiscing elit proin"} ex massa hendrerit eu
+          posuere\`
         : \`lorem ipsum dolor sit amet
-          \${"consectetur adipiscing elit proin"} ex massa
-          hendrerit eu posuere\`}
+          \${"consectetur adipiscing elit proin"} ex massa hendrerit eu
+          posuere\`}
     >
       <slot />
     </div>
@@ -129,11 +129,11 @@ const fixtures: Fixture[] = [
       class={condition
         ? condition
           ? \`lorem ipsum dolor sit amet
-            \${"consectetur adipiscing elit proin"} ex massa
-            hendrerit eu posuere\`
+            \${"consectetur adipiscing elit proin"} ex massa hendrerit eu
+            posuere\`
           : \`lorem ipsum dolor sit amet
-            \${"consectetur adipiscing elit proin"} ex massa
-            hendrerit eu posuere\`
+            \${"consectetur adipiscing elit proin"} ex massa hendrerit eu
+            posuere\`
         : "lorem ipsum dolor sit amet"}
     >
       <slot />
@@ -238,11 +238,11 @@ const fixtures: Fixture[] = [
         ? "lorem ipsum dolor sit amet consectetur adipiscing elit proin"
         : condition
         ? \`lorem ipsum dolor sit amet
-          \${"consectetur adipiscing elit proin"} ex massa
-          hendrerit eu posuere\`
+          \${"consectetur adipiscing elit proin"} ex massa hendrerit eu
+          posuere\`
         : \`lorem ipsum dolor sit amet
-          \${"consectetur adipiscing elit proin"} ex massa
-          hendrerit eu posuere\`}
+          \${"consectetur adipiscing elit proin"} ex massa hendrerit eu
+          posuere\`}
     >
       <slot />
     </div>
@@ -274,11 +274,11 @@ const fixtures: Fixture[] = [
         ? condition
           ? condition
             ? \`lorem ipsum dolor sit amet
-              \${"consectetur adipiscing elit proin"} ex
-              massa hendrerit eu posuere\`
+              \${"consectetur adipiscing elit proin"} ex massa hendrerit eu
+              posuere\`
             : \`lorem ipsum dolor sit amet
-              \${"consectetur adipiscing elit proin"} ex
-              massa hendrerit eu posuere\`
+              \${"consectetur adipiscing elit proin"} ex massa hendrerit eu
+              posuere\`
           : "lorem ipsum dolor sit amet consectetur adipiscing elit proin"
         : "lorem ipsum dolor sit amet"}
     >
