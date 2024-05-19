@@ -162,7 +162,7 @@ function replaceClassName({
   format: (source: string, options?: any) => string;
   isSecondPhase: boolean;
 }): string {
-  const freezer: { type: 'string' | 'indent'; from: string; to: string }[] = [];
+  const freezer: { type: 'string'; from: string; to: string }[] = [];
   const rangeCorrectionValues = [...Array(targetClassNameNodes.length)].map(() => 0);
 
   const icedFormattedText = targetClassNameNodes.reduce(
@@ -291,7 +291,6 @@ function replaceClassName({
       }
 
       const rawIndent = indentUnit.repeat(multiLineIndentLevel);
-      const frozenIndent = freezeNonClassName(rawIndent);
 
       const isAttributeType = classNameNode.type === 'attribute';
       const substitute = substituteBase
@@ -307,15 +306,7 @@ function replaceClassName({
 
           return frozen;
         })
-        .join(`${EOL}${frozenIndent}`);
-
-      if (isStartingPositionRelative && isMultiLineClassName && rawIndent.length) {
-        freezer.push({
-          type: 'indent',
-          from: frozenIndent,
-          to: rawIndent,
-        });
-      }
+        .join(`${EOL}${rawIndent}`);
 
       const sliceOffset =
         !isMultiLineClassName &&
@@ -360,10 +351,7 @@ function replaceClassName({
   );
 
   return freezer.reduceRight(
-    (prevText, { type, from, to }) =>
-      type === 'indent'
-        ? prevText.replace(new RegExp(`^\\s*${from}`, 'gm'), to)
-        : prevText.replace(from, to),
+    (prevText, { type, from, to }) => prevText.replace(from, to),
     icedFormattedText,
   );
 }
@@ -437,7 +425,7 @@ async function replaceClassNameAsync({
   format: (source: string, options?: any) => Promise<string>;
   isSecondPhase: boolean;
 }): Promise<string> {
-  const freezer: { type: 'string' | 'indent'; from: string; to: string }[] = [];
+  const freezer: { type: 'string'; from: string; to: string }[] = [];
   const rangeCorrectionValues = [...Array(targetClassNameNodes.length)].map(() => 0);
 
   const icedFormattedText = await targetClassNameNodes.reduce(
@@ -572,7 +560,6 @@ async function replaceClassNameAsync({
       }
 
       const rawIndent = indentUnit.repeat(multiLineIndentLevel);
-      const frozenIndent = freezeNonClassName(rawIndent);
 
       const isAttributeType = classNameNode.type === 'attribute';
       const substitute = substituteBase
@@ -588,15 +575,7 @@ async function replaceClassNameAsync({
 
           return frozen;
         })
-        .join(`${EOL}${frozenIndent}`);
-
-      if (isStartingPositionRelative && isMultiLineClassName && rawIndent.length) {
-        freezer.push({
-          type: 'indent',
-          from: frozenIndent,
-          to: rawIndent,
-        });
-      }
+        .join(`${EOL}${rawIndent}`);
 
       const sliceOffset =
         !isMultiLineClassName &&
@@ -641,10 +620,7 @@ async function replaceClassNameAsync({
   );
 
   return freezer.reduceRight(
-    (prevText, { type, from, to }) =>
-      type === 'indent'
-        ? prevText.replace(new RegExp(`^\\s*${from}`, 'gm'), to)
-        : prevText.replace(from, to),
+    (prevText, { type, from, to }) => prevText.replace(from, to),
     icedFormattedText,
   );
 }
