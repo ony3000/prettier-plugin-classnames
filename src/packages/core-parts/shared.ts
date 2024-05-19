@@ -52,6 +52,9 @@ type UnknownNode = ClassNameNodeBase & {
 
 type AttributeNode = ClassNameNodeBase & {
   type: 'attribute';
+  /**
+   * @deprecated
+   */
   isTheFirstLineOnTheSameLineAsTheOpeningTag: boolean;
   elementName: string;
 };

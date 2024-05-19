@@ -27,7 +27,7 @@ function parseLineByLine(formattedText: string, indentUnit: string): LineNode[] 
 
 function getExtraIndentLevel(node: ClassNameNode) {
   if (node.type === 'attribute') {
-    return node.isTheFirstLineOnTheSameLineAsTheOpeningTag ? 2 : 1;
+    return 1;
   }
 
   if (
@@ -144,9 +144,6 @@ function freezeClassName(input: string): string {
 
   return `${prefix}${rest}`;
 }
-
-const frozenAttributeName = freezeNonClassName('attribute');
-const doubleFrozenAttributeName = freezeNonClassName(frozenAttributeName);
 
 function replaceClassName({
   formattedText,
@@ -274,28 +271,6 @@ function replaceClassName({
         options.singleQuote,
       );
 
-      const elementOpener = '<';
-      const spaceAfterElementName = ' ';
-      const conditionForSameLineAttribute =
-        isEndingPositionAbsolute &&
-        classNameNode.type === 'attribute' &&
-        classNameNode.isTheFirstLineOnTheSameLineAsTheOpeningTag &&
-        isMultiLineClassName &&
-        formattedClassName.length +
-          options.tabWidth -
-          `${elementOpener}${classNameNode.elementName}${spaceAfterElementName}`.length <=
-          options.printWidth;
-      const conditionForOwnLineAttribute =
-        isEndingPositionAbsolute &&
-        classNameNode.type === 'attribute' &&
-        !classNameNode.isTheFirstLineOnTheSameLineAsTheOpeningTag &&
-        !isMultiLineClassName &&
-        classNameWithOriginalSpaces !== classNameBase &&
-        formattedClassName.length -
-          options.tabWidth +
-          `${elementOpener}${classNameNode.elementName}${spaceAfterElementName}`.length >
-          options.printWidth;
-
       let substituteBase = classNameWithOriginalSpaces;
       if (classNameNode.type === 'expression') {
         if (delimiterStart === SINGLE_QUOTE) {
@@ -359,10 +334,6 @@ function replaceClassName({
               correctedRangeEnd + sliceOffset,
             )
           : ''
-      }${
-        conditionForSameLineAttribute || conditionForOwnLineAttribute
-          ? `${EOL}${frozenAttributeName}${EOL}`
-          : ''
       }${formattedPrevText.slice(correctedRangeEnd + sliceOffset)}`;
 
       rangeCorrectionValues.forEach((_, rangeCorrectionIndex, array) => {
@@ -388,16 +359,13 @@ function replaceClassName({
     formattedText,
   );
 
-  return freezer
-    .reduceRight(
-      (prevText, { type, from, to }) =>
-        type === 'indent'
-          ? prevText.replace(new RegExp(`^\\s*${from}`, 'gm'), to)
-          : prevText.replace(from, to),
-      icedFormattedText,
-    )
-    .replace(new RegExp(`^\\s*${doubleFrozenAttributeName}${EOL}`, 'gm'), '')
-    .replace(new RegExp(`${frozenAttributeName}`, 'gm'), doubleFrozenAttributeName);
+  return freezer.reduceRight(
+    (prevText, { type, from, to }) =>
+      type === 'indent'
+        ? prevText.replace(new RegExp(`^\\s*${from}`, 'gm'), to)
+        : prevText.replace(from, to),
+    icedFormattedText,
+  );
 }
 
 export function parseLineByLineAndReplace({
@@ -449,9 +417,7 @@ export function parseLineByLineAndReplace({
     isSecondPhase,
   });
 
-  return isSecondPhase
-    ? classNameWrappedText.replace(new RegExp(`^\\s*${doubleFrozenAttributeName}${EOL}`, 'gm'), '')
-    : classNameWrappedText;
+  return classNameWrappedText;
 }
 
 async function replaceClassNameAsync({
@@ -586,28 +552,6 @@ async function replaceClassNameAsync({
         options.singleQuote,
       );
 
-      const elementOpener = '<';
-      const spaceAfterElementName = ' ';
-      const conditionForSameLineAttribute =
-        isEndingPositionAbsolute &&
-        classNameNode.type === 'attribute' &&
-        classNameNode.isTheFirstLineOnTheSameLineAsTheOpeningTag &&
-        isMultiLineClassName &&
-        formattedClassName.length +
-          options.tabWidth -
-          `${elementOpener}${classNameNode.elementName}${spaceAfterElementName}`.length <=
-          options.printWidth;
-      const conditionForOwnLineAttribute =
-        isEndingPositionAbsolute &&
-        classNameNode.type === 'attribute' &&
-        !classNameNode.isTheFirstLineOnTheSameLineAsTheOpeningTag &&
-        !isMultiLineClassName &&
-        classNameWithOriginalSpaces !== classNameBase &&
-        formattedClassName.length -
-          options.tabWidth +
-          `${elementOpener}${classNameNode.elementName}${spaceAfterElementName}`.length >
-          options.printWidth;
-
       let substituteBase = classNameWithOriginalSpaces;
       if (classNameNode.type === 'expression') {
         if (delimiterStart === SINGLE_QUOTE) {
@@ -671,10 +615,6 @@ async function replaceClassNameAsync({
               correctedRangeEnd + sliceOffset,
             )
           : ''
-      }${
-        conditionForSameLineAttribute || conditionForOwnLineAttribute
-          ? `${EOL}${frozenAttributeName}${EOL}`
-          : ''
       }${formattedPrevText.slice(correctedRangeEnd + sliceOffset)}`;
 
       rangeCorrectionValues.forEach((_, rangeCorrectionIndex, array) => {
@@ -700,16 +640,13 @@ async function replaceClassNameAsync({
     Promise.resolve(formattedText),
   );
 
-  return freezer
-    .reduceRight(
-      (prevText, { type, from, to }) =>
-        type === 'indent'
-          ? prevText.replace(new RegExp(`^\\s*${from}`, 'gm'), to)
-          : prevText.replace(from, to),
-      icedFormattedText,
-    )
-    .replace(new RegExp(`^\\s*${doubleFrozenAttributeName}${EOL}`, 'gm'), '')
-    .replace(new RegExp(`${frozenAttributeName}`, 'gm'), doubleFrozenAttributeName);
+  return freezer.reduceRight(
+    (prevText, { type, from, to }) =>
+      type === 'indent'
+        ? prevText.replace(new RegExp(`^\\s*${from}`, 'gm'), to)
+        : prevText.replace(from, to),
+    icedFormattedText,
+  );
 }
 
 export async function parseLineByLineAndReplaceAsync({
@@ -761,7 +698,5 @@ export async function parseLineByLineAndReplaceAsync({
     isSecondPhase,
   });
 
-  return isSecondPhase
-    ? classNameWrappedText.replace(new RegExp(`^\\s*${doubleFrozenAttributeName}${EOL}`, 'gm'), '')
-    : classNameWrappedText;
+  return classNameWrappedText;
 }
