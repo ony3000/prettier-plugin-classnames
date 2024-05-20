@@ -162,7 +162,7 @@ function replaceClassName({
   format: (source: string, options?: any) => string;
   isSecondPhase: boolean;
 }): string {
-  const freezer: { type: 'string'; from: string; to: string }[] = [];
+  const freezer: { from: string[]; to: string[] }[] = [];
   const rangeCorrectionValues = [...Array(targetClassNameNodes.length)].map(() => 0);
 
   const icedFormattedText = targetClassNameNodes.reduce(
@@ -180,6 +180,44 @@ function replaceClassName({
       const multiLineIndentLevel = isStartingPositionRelative
         ? baseIndentLevel + extraIndentLevel
         : 0;
+
+      if (classNameNode.type === 'ternary') {
+        const ternaryExpression = formattedPrevText.slice(
+          classNameNodeRangeStart,
+          correctedRangeEnd,
+        );
+        const frozenTernaryExpression = freezeNonClassName(ternaryExpression);
+
+        freezer.push({
+          from: [frozenTernaryExpression],
+          to: [ternaryExpression],
+        });
+
+        const ternarySubstitutedText = `${formattedPrevText.slice(
+          0,
+          classNameNodeRangeStart,
+        )}${frozenTernaryExpression}${formattedPrevText.slice(correctedRangeEnd)}`;
+
+        rangeCorrectionValues.forEach((_, rangeCorrectionIndex, array) => {
+          if (rangeCorrectionIndex <= classNameNodeIndex) {
+            return;
+          }
+
+          const [nthNodeRangeStart, nthNodeRangeEnd] =
+            targetClassNameNodes[rangeCorrectionIndex].range;
+
+          if (
+            nthNodeRangeStart < classNameNodeRangeStart &&
+            classNameNodeRangeEnd < nthNodeRangeEnd
+          ) {
+            // eslint-disable-next-line no-param-reassign
+            array[rangeCorrectionIndex] +=
+              correctedRangeEnd - classNameNodeRangeStart - frozenTernaryExpression.length;
+          }
+        });
+
+        return ternarySubstitutedText;
+      }
 
       let classNameBase = formattedPrevText.slice(
         classNameNodeRangeStart + 1,
@@ -292,22 +330,25 @@ function replaceClassName({
 
       const rawIndent = indentUnit.repeat(multiLineIndentLevel);
 
-      const isAttributeType = classNameNode.type === 'attribute';
+      const classNamePieces: string[] = [];
+      const frozenClassNamePieces: string[] = [];
       const substitute = substituteBase
         .split(EOL)
         .map((raw) => {
           const frozen = freezeClassName(raw);
 
-          freezer.push({
-            type: 'string',
-            from: frozen,
-            to: raw,
-          });
+          classNamePieces.push(raw);
+          frozenClassNamePieces.push(frozen);
 
           return frozen;
         })
         .join(`${EOL}${rawIndent}`);
+      freezer.push({
+        from: frozenClassNamePieces,
+        to: classNamePieces,
+      });
 
+      const isAttributeType = classNameNode.type === 'attribute';
       const sliceOffset =
         !isMultiLineClassName &&
         classNameNode.type === 'expression' &&
@@ -350,10 +391,25 @@ function replaceClassName({
     formattedText,
   );
 
-  return freezer.reduceRight(
-    (prevText, { type, from, to }) => prevText.replace(from, to),
-    icedFormattedText,
-  );
+  return freezer.reduceRight((prevText, { from, to }) => {
+    const regExp = new RegExp(from.join('(\\s*)'));
+    const matchResult = prevText.match(regExp);
+
+    if (!matchResult) {
+      return prevText;
+    }
+
+    return prevText.replace(regExp, (_, ...rest) => {
+      const capturedGroups = rest.slice(0, matchResult.length - 1);
+
+      return to
+        .map(
+          (raw, index) =>
+            `${raw}${capturedGroups[index] === undefined ? '' : capturedGroups[index]}`,
+        )
+        .join('');
+    });
+  }, icedFormattedText);
 }
 
 export function parseLineByLineAndReplace({
@@ -425,7 +481,7 @@ async function replaceClassNameAsync({
   format: (source: string, options?: any) => Promise<string>;
   isSecondPhase: boolean;
 }): Promise<string> {
-  const freezer: { type: 'string'; from: string; to: string }[] = [];
+  const freezer: { from: string[]; to: string[] }[] = [];
   const rangeCorrectionValues = [...Array(targetClassNameNodes.length)].map(() => 0);
 
   const icedFormattedText = await targetClassNameNodes.reduce(
@@ -445,6 +501,44 @@ async function replaceClassNameAsync({
       const multiLineIndentLevel = isStartingPositionRelative
         ? baseIndentLevel + extraIndentLevel
         : 0;
+
+      if (classNameNode.type === 'ternary') {
+        const ternaryExpression = formattedPrevText.slice(
+          classNameNodeRangeStart,
+          correctedRangeEnd,
+        );
+        const frozenTernaryExpression = freezeNonClassName(ternaryExpression);
+
+        freezer.push({
+          from: [frozenTernaryExpression],
+          to: [ternaryExpression],
+        });
+
+        const ternarySubstitutedText = `${formattedPrevText.slice(
+          0,
+          classNameNodeRangeStart,
+        )}${frozenTernaryExpression}${formattedPrevText.slice(correctedRangeEnd)}`;
+
+        rangeCorrectionValues.forEach((_, rangeCorrectionIndex, array) => {
+          if (rangeCorrectionIndex <= classNameNodeIndex) {
+            return;
+          }
+
+          const [nthNodeRangeStart, nthNodeRangeEnd] =
+            targetClassNameNodes[rangeCorrectionIndex].range;
+
+          if (
+            nthNodeRangeStart < classNameNodeRangeStart &&
+            classNameNodeRangeEnd < nthNodeRangeEnd
+          ) {
+            // eslint-disable-next-line no-param-reassign
+            array[rangeCorrectionIndex] +=
+              correctedRangeEnd - classNameNodeRangeStart - frozenTernaryExpression.length;
+          }
+        });
+
+        return ternarySubstitutedText;
+      }
 
       let classNameBase = formattedPrevText.slice(
         classNameNodeRangeStart + 1,
@@ -561,22 +655,25 @@ async function replaceClassNameAsync({
 
       const rawIndent = indentUnit.repeat(multiLineIndentLevel);
 
-      const isAttributeType = classNameNode.type === 'attribute';
+      const classNamePieces: string[] = [];
+      const frozenClassNamePieces: string[] = [];
       const substitute = substituteBase
         .split(EOL)
         .map((raw) => {
           const frozen = freezeClassName(raw);
 
-          freezer.push({
-            type: 'string',
-            from: frozen,
-            to: raw,
-          });
+          classNamePieces.push(raw);
+          frozenClassNamePieces.push(frozen);
 
           return frozen;
         })
         .join(`${EOL}${rawIndent}`);
+      freezer.push({
+        from: frozenClassNamePieces,
+        to: classNamePieces,
+      });
 
+      const isAttributeType = classNameNode.type === 'attribute';
       const sliceOffset =
         !isMultiLineClassName &&
         classNameNode.type === 'expression' &&
@@ -619,10 +716,25 @@ async function replaceClassNameAsync({
     Promise.resolve(formattedText),
   );
 
-  return freezer.reduceRight(
-    (prevText, { type, from, to }) => prevText.replace(from, to),
-    icedFormattedText,
-  );
+  return freezer.reduceRight((prevText, { from, to }) => {
+    const regExp = new RegExp(from.join('(\\s*)'));
+    const matchResult = prevText.match(regExp);
+
+    if (!matchResult) {
+      return prevText;
+    }
+
+    return prevText.replace(regExp, (_, ...rest) => {
+      const capturedGroups = rest.slice(0, matchResult.length - 1);
+
+      return to
+        .map(
+          (raw, index) =>
+            `${raw}${capturedGroups[index] === undefined ? '' : capturedGroups[index]}`,
+        )
+        .join('');
+    });
+  }, icedFormattedText);
 }
 
 export async function parseLineByLineAndReplaceAsync({

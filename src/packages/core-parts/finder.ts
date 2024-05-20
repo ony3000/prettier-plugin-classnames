@@ -404,6 +404,25 @@ export function findTargetClassNameNodes(
             }
           }
         });
+
+        if (
+          isTypeof(
+            node,
+            z.object({
+              loc: z.object({
+                start: z.object({
+                  line: z.number(),
+                }),
+              }),
+            }),
+          )
+        ) {
+          classNameNodes.push({
+            type: 'ternary',
+            range: [currentNodeRangeStart, currentNodeRangeEnd],
+            startLineIndex: node.loc.start.line - 1,
+          });
+        }
         break;
       }
       case 'Literal': {
