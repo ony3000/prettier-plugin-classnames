@@ -131,7 +131,7 @@ export function Foo({ children }) {
   return (
     <div
       className={\`lorem ipsum dolor sit amet \${
-        condition
+condition
           ? "consectetur adipiscing elit proin"
           : \`lorem ipsum dolor sit amet consectetur
 adipiscing elit proin ex massa hendrerit eu posuere\`
@@ -160,7 +160,7 @@ export function Foo({ children }) {
   return (
     <div
       className={\`lorem ipsum dolor sit amet \${
-        condition
+condition
           ? "consectetur adipiscing elit proin"
           : \`lorem ipsum dolor sit amet consectetur
 adipiscing elit proin ex massa hendrerit eu posuere\`
@@ -192,10 +192,10 @@ export function Foo({ children }) {
     <div
       className={\`lorem ipsum dolor sit amet \${\`lorem ipsum
 dolor sit amet \${
-  condition
-    ? "consectetur adipiscing elit proin"
-    : \`lorem ipsum dolor sit amet consectetur adipiscing
-elit proin ex massa hendrerit eu posuere\`
+condition
+          ? "consectetur adipiscing elit proin"
+          : \`lorem ipsum dolor sit amet consectetur
+adipiscing elit proin ex massa hendrerit eu posuere\`
 } ex massa hendrerit eu posuere\`} ex massa hendrerit eu
 posuere\`}
     >
@@ -225,10 +225,10 @@ export function Foo({ children }) {
     <div
       className={\`lorem ipsum dolor sit amet \${\`lorem ipsum
 dolor sit amet \${
-  condition
-    ? "consectetur adipiscing elit proin"
-    : \`lorem ipsum dolor sit amet consectetur adipiscing
-elit proin ex massa hendrerit eu posuere\`
+condition
+          ? "consectetur adipiscing elit proin"
+          : \`lorem ipsum dolor sit amet consectetur
+adipiscing elit proin ex massa hendrerit eu posuere\`
 } ex massa hendrerit eu posuere\`} ex massa hendrerit eu
 posuere\`}
     >

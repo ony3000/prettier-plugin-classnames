@@ -31,8 +31,7 @@ import classNames from "classnames";
 
 const combination = classNames(
   \`relative cursor-default select-none py-2 pl-10 pr-4 \${
-    active ? "bg-teal-600 text-white" : "text-gray-900"
-  }\`,
+  active ? "bg-teal-600 text-white" : "text-gray-900" }\`,
 );
 ---
 `,
@@ -53,7 +52,7 @@ const combination = classNames(
     output: `---
 const combination = classNames(
   \`relative cursor-default select-none py-2 pl-10 pr-4 \${
-    active
+  active
       ? \`bg-teal-600 \${active ? "bg-teal-600 text-white" : "text-gray-900"}
         text-white\`
       : "text-gray-900"

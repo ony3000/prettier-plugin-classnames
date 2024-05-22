@@ -135,7 +135,7 @@ posuere\`"
   <div>
     <div
       v-bind:class="\`lorem ipsum dolor sit amet \${
-        condition
+condition
           ? 'consectetur adipiscing elit proin'
           : \`lorem ipsum dolor sit amet consectetur
 adipiscing elit proin ex massa hendrerit eu posuere\`
@@ -164,7 +164,7 @@ adipiscing elit proin ex massa hendrerit eu posuere\`
   <div>
     <div
       v-bind:class="\`lorem ipsum dolor sit amet \${
-        condition
+condition
           ? 'consectetur adipiscing elit proin'
           : \`lorem ipsum dolor sit amet consectetur
 adipiscing elit proin ex massa hendrerit eu posuere\`
@@ -196,10 +196,10 @@ adipiscing elit proin ex massa hendrerit eu posuere\`
     <div
       v-bind:class="\`lorem ipsum dolor sit amet \${\`lorem
 ipsum dolor sit amet \${
-  condition
-    ? 'consectetur adipiscing elit proin'
-    : \`lorem ipsum dolor sit amet consectetur adipiscing
-elit proin ex massa hendrerit eu posuere\`
+condition
+          ? 'consectetur adipiscing elit proin'
+          : \`lorem ipsum dolor sit amet consectetur
+adipiscing elit proin ex massa hendrerit eu posuere\`
 } ex massa hendrerit eu posuere\`} ex massa hendrerit eu
 posuere\`"
     >
@@ -229,10 +229,10 @@ posuere\`"
     <div
       v-bind:class="\`lorem ipsum dolor sit amet \${\`lorem
 ipsum dolor sit amet \${
-  condition
-    ? 'consectetur adipiscing elit proin'
-    : \`lorem ipsum dolor sit amet consectetur adipiscing
-elit proin ex massa hendrerit eu posuere\`
+condition
+          ? 'consectetur adipiscing elit proin'
+          : \`lorem ipsum dolor sit amet consectetur
+adipiscing elit proin ex massa hendrerit eu posuere\`
 } ex massa hendrerit eu posuere\`} ex massa hendrerit eu
 posuere\`"
     >
