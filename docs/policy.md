@@ -359,6 +359,9 @@ After the delimiters at both ends of the class name are determined, if the same 
 
 <!-- prettier-ignore -->
 ```typescript
+// options
+{ printWidth: 60, endingPosition: 'relative' }
+
 // input
 export function Foo({ children }) {
   return (
@@ -433,3 +436,73 @@ During the formatting process, some syntax is treated as if it were evaluated as
      );
    }
    ```
+
+## Freezing
+
+At the line wrapping phase, the class name whose formatting has been completed is temporarily &ldquo;frozen&rdquo; until the formatting of the remaining class names is completed.
+
+In simple class names, this freezing process does not have much meaning, but in nested expressions, it is used for the purpose of keeping the formatting results of the inner class name.
+
+For example, in the following input, the outer class name(`` `lorem ipsum dolor sit amet ${...} ex massa hendrerit eu posuere` ``) is formatted after the inner class name(`'consectetur adipiscing elit proin'`) has been formatted. If there is no freezing processing, the format of the inner class name may be broken when processing the outer class name.
+
+<!-- prettier-ignore -->
+```typescript
+// options
+{ printWidth: 60, endingPosition: 'relative' }
+
+// input
+export function Foo({ children }) {
+  return (
+    <div className={`lorem ipsum dolor sit amet ${
+      'consectetur adipiscing elit proin'
+    } ex massa hendrerit eu posuere`}>
+      {children}
+    </div>
+  );
+}
+
+// output
+export function Foo({ children }) {
+  return (
+    <div
+      className={`lorem ipsum dolor sit amet
+        ${"consectetur adipiscing elit proin"} ex massa hendrerit eu
+        posuere`}
+    >
+      {children}
+    </div>
+  );
+}
+```
+
+Non-class name syntaxes are generally not touched, but the ternary operator is treated as an exception. The ternary operator freezes the entire syntax without formatting.
+
+<!-- prettier-ignore -->
+```typescript
+// options
+{ printWidth: 60, endingPosition: 'relative' }
+
+// input
+export function Foo({ children }) {
+  return (
+    <div className={`lorem ipsum dolor sit amet ${
+      condition ? 'adipiscing' : 'elit proin'
+    } ex massa hendrerit eu posuere`}>
+      {children}
+    </div>
+  );
+}
+
+// output
+export function Foo({ children }) {
+  return (
+    <div
+      className={`lorem ipsum dolor sit amet ${
+        condition ? "adipiscing" : "elit proin" } ex massa hendrerit
+        eu posuere`}
+    >
+      {children}
+    </div>
+  );
+}
+```

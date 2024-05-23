@@ -359,6 +359,9 @@
 
 <!-- prettier-ignore -->
 ```typescript
+// options
+{ printWidth: 60, endingPosition: 'relative' }
+
 // input
 export function Foo({ children }) {
   return (
@@ -433,3 +436,73 @@ export function Foo({ children }) {
      );
    }
    ```
+
+## 냉동
+
+줄바꿈 단계에서, 서식 지정이 완료된 클래스명은 나머지 클래스명의 서식 지정이 완료될 때까지 일시적으로 &ldquo;냉동&rdquo; 처리된다.
+
+단순한 클래스명에서는 이 냉동 처리에 큰 의미가 없지만, 중첩 표현식에서는 안쪽 클래스명의 서식 지정 결과를 유지하는 목적으로 활용된다.
+
+예를 들어, 다음 입력에서는 안쪽 클래스명(`'consectetur adipiscing elit proin'`)에 서식 지정이 완료된 후 바깥쪽 클래스명(`` `lorem ipsum dolor sit amet ${...} ex massa hendrerit eu posuere` ``)에 서식이 지정되는데, 냉동 처리가 없다면 바깥쪽 클래스명을 처리할 때 안쪽 클래스명의 서식이 깨질 수 있다.
+
+<!-- prettier-ignore -->
+```typescript
+// options
+{ printWidth: 60, endingPosition: 'relative' }
+
+// input
+export function Foo({ children }) {
+  return (
+    <div className={`lorem ipsum dolor sit amet ${
+      'consectetur adipiscing elit proin'
+    } ex massa hendrerit eu posuere`}>
+      {children}
+    </div>
+  );
+}
+
+// output
+export function Foo({ children }) {
+  return (
+    <div
+      className={`lorem ipsum dolor sit amet
+        ${"consectetur adipiscing elit proin"} ex massa hendrerit eu
+        posuere`}
+    >
+      {children}
+    </div>
+  );
+}
+```
+
+클래스명이 아닌 구문은 일반적으로 건드리지 않지만, 삼항 연산자의 경우 예외적으로 처리한다. 삼항 연산자는 서식 지정 없이 구문 전체를 냉동 처리한다.
+
+<!-- prettier-ignore -->
+```typescript
+// options
+{ printWidth: 60, endingPosition: 'relative' }
+
+// input
+export function Foo({ children }) {
+  return (
+    <div className={`lorem ipsum dolor sit amet ${
+      condition ? 'adipiscing' : 'elit proin'
+    } ex massa hendrerit eu posuere`}>
+      {children}
+    </div>
+  );
+}
+
+// output
+export function Foo({ children }) {
+  return (
+    <div
+      className={`lorem ipsum dolor sit amet ${
+        condition ? "adipiscing" : "elit proin" } ex massa hendrerit
+        eu posuere`}
+    >
+      {children}
+    </div>
+  );
+}
+```
