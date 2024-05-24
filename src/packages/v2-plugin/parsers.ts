@@ -61,6 +61,13 @@ function transformParser(
         isSecondPhase: false,
       });
 
+      if (classNameWrappedText === firstFormattedText) {
+        return {
+          type: 'FormattedText',
+          body: classNameWrappedText,
+        };
+      }
+
       let secondFormattedText: string;
       try {
         secondFormattedText = format(classNameWrappedText, {
@@ -73,6 +80,13 @@ function transformParser(
         throw new Error(
           'The second format failed. This is likely a bug in this plugin. Please file an issue.',
         );
+      }
+
+      if (secondFormattedText === firstFormattedText) {
+        return {
+          type: 'FormattedText',
+          body: classNameWrappedText,
+        };
       }
 
       const secondAst = defaultParser.parse(
