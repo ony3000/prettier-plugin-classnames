@@ -50,6 +50,7 @@ function createExpressionNode(
     isItAnObjectProperty: false,
     isItAnOperandOfTernaryOperator: false,
     isItFunctionArgument: false,
+    isItInVueTemplate: false,
     hasSingleQuote: false,
     hasDoubleQuote: false,
     hasBacktick: false,
@@ -810,13 +811,17 @@ export function findTargetClassNameNodesForVue(
                 ).map<ClassNameNode>((classNameNode) => {
                   const [classNameNodeRangeStart, classNameNodeRangeEnd] = classNameNode.range;
 
-                  if (
-                    classNameNode.type === 'expression' &&
-                    classNameNode.delimiterType !== 'backtick' &&
-                    classNameNode.startLineIndex === 0
-                  ) {
+                  if (classNameNode.type === 'expression') {
                     // eslint-disable-next-line no-param-reassign
-                    classNameNode.isTheFirstLineOnTheSameLineAsTheAttributeName = true;
+                    classNameNode.isItInVueTemplate = true;
+
+                    if (
+                      classNameNode.delimiterType !== 'backtick' &&
+                      classNameNode.startLineIndex === 0
+                    ) {
+                      // eslint-disable-next-line no-param-reassign
+                      classNameNode.isTheFirstLineOnTheSameLineAsTheAttributeName = true;
+                    }
                   }
 
                   const attributeOffset = -jsxStart.length + node.valueSpan.start.offset + 1;

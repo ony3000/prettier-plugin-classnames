@@ -66,6 +66,7 @@ export type ExpressionNode = ClassNameNodeBase & {
   isItAnObjectProperty: boolean;
   isItAnOperandOfTernaryOperator: boolean;
   isItFunctionArgument: boolean;
+  isItInVueTemplate: boolean;
   hasSingleQuote: boolean;
   hasDoubleQuote: boolean;
   hasBacktick: boolean;

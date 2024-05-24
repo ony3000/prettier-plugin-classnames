@@ -57,7 +57,7 @@ function getDelimiters(
       } else {
         // baseDelimiter = DOUBLE_QUOTE;
       }
-    } else if (parser === 'vue') {
+    } else if (node.isItInVueTemplate) {
       baseDelimiter = SINGLE_QUOTE;
     } else if (singleQuote) {
       if (node.hasSingleQuote) {
