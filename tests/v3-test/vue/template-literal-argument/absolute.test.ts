@@ -316,6 +316,28 @@ elit proin ex massa hendrerit eu posuere\`,
 </template>
 `,
   },
+  {
+    name: 'syntax variants (3) - script tag',
+    input: `
+<script setup lang="ts">
+const combination = classNames([
+  \`lorem ipsum dolor sit amet\`,
+  {[\`lorem ipsum dolor sit amet\`]: true},
+  condition ? \`lorem ipsum dolor sit amet\` : \`lorem ipsum dolor sit amet\`,
+])
+</script>
+`,
+    output: `<script setup lang="ts">
+const combination = classNames([
+  "lorem ipsum dolor sit amet",
+  { "lorem ipsum dolor sit amet": true },
+  condition
+    ? "lorem ipsum dolor sit amet"
+    : "lorem ipsum dolor sit amet",
+]);
+</script>
+`,
+  },
 ];
 
 testEach(fixtures, options);
