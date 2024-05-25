@@ -80,7 +80,9 @@ const fixtures: Fixture[] = [
   <div>
     <div
       v-bind:class="
-        classNames({ 'lorem ipsum dolor sit amet': true })
+        classNames({
+          'lorem ipsum dolor sit amet': true,
+        })
       "
     >
       <slot></slot>

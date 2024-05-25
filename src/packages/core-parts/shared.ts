@@ -52,6 +52,9 @@ type UnknownNode = ClassNameNodeBase & {
 
 type AttributeNode = ClassNameNodeBase & {
   type: 'attribute';
+  /**
+   * @deprecated
+   */
   isTheFirstLineOnTheSameLineAsTheOpeningTag: boolean;
   elementName: string;
 };
@@ -63,13 +66,21 @@ export type ExpressionNode = ClassNameNodeBase & {
   isItAnObjectProperty: boolean;
   isItAnOperandOfTernaryOperator: boolean;
   isItFunctionArgument: boolean;
+  isItInVueTemplate: boolean;
   hasSingleQuote: boolean;
   hasDoubleQuote: boolean;
   hasBacktick: boolean;
   shouldKeepDelimiter: boolean;
 };
 
-export type ClassNameNode = UnknownNode | AttributeNode | ExpressionNode;
+/**
+ * In fact, the ternary operator itself is not a class name node, but it defines a type as an exception because it needs to be frozen when processing complex expressions.
+ */
+type TernaryExpressionNode = ClassNameNodeBase & {
+  type: 'ternary';
+};
+
+export type ClassNameNode = UnknownNode | AttributeNode | ExpressionNode | TernaryExpressionNode;
 
 export type NarrowedParserOptions = {
   printWidth: number;

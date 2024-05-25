@@ -72,8 +72,8 @@ const fixtures: Fixture[] = [
     output: `<template>
   <div>
     <div
-      v-bind:class="\`lorem ipsum do\\\`or sit amet consectetur adipiscing elit proin
-        ex massa hendrerit eu posuere\`"
+      v-bind:class="\`lorem ipsum do\\\`or sit amet consectetur adipiscing elit
+        proin ex massa hendrerit eu posuere\`"
     >
       <slot></slot>
     </div>
@@ -95,8 +95,8 @@ const fixtures: Fixture[] = [
     output: `<template>
   <div>
     <div
-      v-bind:class="\`lorem ipsum do\\\`or sit amet consectetur adipiscing elit proin
-        ex massa hendrerit eu posuere\`"
+      v-bind:class="\`lorem ipsum do\\\`or sit amet consectetur adipiscing elit
+        proin ex massa hendrerit eu posuere\`"
     >
       <slot></slot>
     </div>

@@ -198,7 +198,7 @@ export function Foo({ children }) {
     <div
       className={\`lorem ipsum dolor sit amet \${\`lorem ipsum
         dolor sit amet \${
-          condition
+        condition
             ? "consectetur adipiscing elit proin"
             : \`lorem ipsum dolor sit amet consectetur
               adipiscing elit proin ex massa hendrerit eu
@@ -232,7 +232,7 @@ export function Foo({ children }) {
     <div
       className={\`lorem ipsum dolor sit amet \${\`lorem ipsum
         dolor sit amet \${
-          condition
+        condition
             ? "consectetur adipiscing elit proin"
             : \`lorem ipsum dolor sit amet consectetur
               adipiscing elit proin ex massa hendrerit eu

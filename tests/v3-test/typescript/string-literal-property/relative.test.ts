@@ -102,7 +102,8 @@ export function Foo({ children }) {
   return (
     <div
       className={classNames({
-        "lorem ipsum dolor sit amet consectetur adipiscing elit proin": true,
+        "lorem ipsum dolor sit amet consectetur adipiscing elit proin":
+          true,
       })}
     >
       {children}
@@ -156,7 +157,8 @@ export function Foo({ children }) {
   return (
     <div
       className={classNames({
-        "lorem ipsum dolor sit amet consectetur adipiscing elit proin": true,
+        "lorem ipsum dolor sit amet consectetur adipiscing elit proin":
+          true,
       })}
     >
       {children}

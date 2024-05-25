@@ -50,6 +50,7 @@ function createExpressionNode(
     isItAnObjectProperty: false,
     isItAnOperandOfTernaryOperator: false,
     isItFunctionArgument: false,
+    isItInVueTemplate: false,
     hasSingleQuote: false,
     hasDoubleQuote: false,
     hasBacktick: false,
@@ -202,6 +203,9 @@ export function findTargetClassNameNodes(
                   range: classNameNode.range,
                   startLineIndex: classNameNode.startLineIndex,
                 });
+              } else if (classNameNode.type === 'expression') {
+                // eslint-disable-next-line no-param-reassign
+                classNameNode.isItFunctionArgument = true;
               }
             }
           });
@@ -340,6 +344,10 @@ export function findTargetClassNameNodes(
                     startLineIndex: classNameNode.startLineIndex,
                   });
                 }
+              } else if (classNameNode.type === 'expression') {
+                // eslint-disable-next-line no-param-reassign
+                classNameNode.isTheFirstLineOnTheSameLineAsTheAttributeName =
+                  classNameNode.startLineIndex === currentNodeStartLineIndex;
               }
             }
           });
@@ -365,6 +373,9 @@ export function findTargetClassNameNodes(
                 range: classNameNode.range,
                 startLineIndex: classNameNode.startLineIndex,
               });
+            } else if (classNameNode.type === 'expression') {
+              // eslint-disable-next-line no-param-reassign
+              classNameNode.isItAnObjectProperty = true;
             }
           }
         });
@@ -389,13 +400,30 @@ export function findTargetClassNameNodes(
                 startLineIndex: classNameNode.startLineIndex,
               });
             } else if (classNameNode.type === 'expression') {
-              if (classNameNode.delimiterType === 'backtick' && classNameNode.shouldKeepDelimiter) {
-                // eslint-disable-next-line no-param-reassign
-                classNameNode.isItAnOperandOfTernaryOperator = true;
-              }
+              // eslint-disable-next-line no-param-reassign
+              classNameNode.isItAnOperandOfTernaryOperator = true;
             }
           }
         });
+
+        if (
+          isTypeof(
+            node,
+            z.object({
+              loc: z.object({
+                start: z.object({
+                  line: z.number(),
+                }),
+              }),
+            }),
+          )
+        ) {
+          classNameNodes.push({
+            type: 'ternary',
+            range: [currentNodeRangeStart, currentNodeRangeEnd],
+            startLineIndex: node.loc.start.line - 1,
+          });
+        }
         break;
       }
       case 'Literal': {
@@ -495,28 +523,22 @@ export function findTargetClassNameNodes(
           )
         ) {
           const { cooked } = node.quasis[0].value;
-          const conditionForPreservation =
-            !node.quasis[0].tail ||
-            (options.singleQuote && cooked.indexOf(SINGLE_QUOTE) !== -1) ||
-            (!options.singleQuote && cooked.indexOf(DOUBLE_QUOTE) !== -1);
 
-          if (conditionForPreservation) {
-            classNameNodes.push(
-              createExpressionNode({
-                delimiterType: 'backtick',
-                shouldKeepDelimiter: true,
-                range: [currentNodeRangeStart, currentNodeRangeEnd],
-                startLineIndex: node.loc.start.line - 1,
-              }),
-            );
-          } else {
-            classNameNodes.push({
-              type: 'unknown',
+          const hasSingleQuote = cooked.indexOf(SINGLE_QUOTE) !== -1;
+          const hasDoubleQuote = cooked.indexOf(DOUBLE_QUOTE) !== -1;
+          const hasBacktick = cooked.indexOf(BACKTICK) !== -1;
+
+          classNameNodes.push(
+            createExpressionNode({
               delimiterType: 'backtick',
+              hasSingleQuote,
+              hasDoubleQuote,
+              hasBacktick,
+              shouldKeepDelimiter: !node.quasis[0].tail || (hasSingleQuote && hasDoubleQuote),
               range: [currentNodeRangeStart, currentNodeRangeEnd],
               startLineIndex: node.loc.start.line - 1,
-            });
-          }
+            }),
+          );
         }
         break;
       }
@@ -574,10 +596,19 @@ export function findTargetClassNameNodes(
                 // eslint-disable-next-line no-param-reassign
                 array[index] = createExpressionNode({
                   delimiterType: classNameNode.delimiterType,
+                  isItFunctionArgument: node.tag.type === 'CallExpression',
                   shouldKeepDelimiter: true,
                   range: classNameNode.range,
                   startLineIndex: classNameNode.startLineIndex,
                 });
+              } else if (
+                classNameNode.type === 'expression' &&
+                classNameNode.delimiterType === 'backtick'
+              ) {
+                // eslint-disable-next-line no-param-reassign
+                classNameNode.isItFunctionArgument = node.tag.type === 'CallExpression';
+                // eslint-disable-next-line no-param-reassign
+                classNameNode.shouldKeepDelimiter = true;
               }
             }
           });
@@ -780,13 +811,17 @@ export function findTargetClassNameNodesForVue(
                 ).map<ClassNameNode>((classNameNode) => {
                   const [classNameNodeRangeStart, classNameNodeRangeEnd] = classNameNode.range;
 
-                  if (
-                    classNameNode.type === 'expression' &&
-                    classNameNode.delimiterType !== 'backtick' &&
-                    classNameNode.startLineIndex === 0
-                  ) {
+                  if (classNameNode.type === 'expression') {
                     // eslint-disable-next-line no-param-reassign
-                    classNameNode.isTheFirstLineOnTheSameLineAsTheAttributeName = true;
+                    classNameNode.isItInVueTemplate = true;
+
+                    if (
+                      classNameNode.delimiterType !== 'backtick' &&
+                      classNameNode.startLineIndex === 0
+                    ) {
+                      // eslint-disable-next-line no-param-reassign
+                      classNameNode.isTheFirstLineOnTheSameLineAsTheAttributeName = true;
+                    }
                   }
 
                   const attributeOffset = -jsxStart.length + node.valueSpan.start.offset + 1;
