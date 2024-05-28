@@ -427,7 +427,7 @@ export function parseLineByLineAndReplace({
   addon: Dict<(text: string, options: any) => any>;
   isSecondPhase: boolean;
 }): string {
-  if (formattedText === '') {
+  if (formattedText === '' || options.parser === 'svelte') {
     return formattedText;
   }
 
@@ -752,7 +752,7 @@ export async function parseLineByLineAndReplaceAsync({
   addon: Dict<(text: string, options: any) => any>;
   isSecondPhase: boolean;
 }): Promise<string> {
-  if (formattedText === '') {
+  if (formattedText === '' || options.parser === 'svelte') {
     return formattedText;
   }
 
