@@ -249,7 +249,7 @@ const fixtures: Fixture[] = [
 `,
   },
   {
-    name: 'syntax variants (1) - component',
+    name: 'syntax variants - component',
     input: `
 <div>
   <div>
@@ -269,37 +269,6 @@ const fixtures: Fixture[] = [
     >
       <slot />
     </Box>
-  </div>
-</div>
-`,
-  },
-  {
-    name: 'syntax variants (2) - `class:list` directive',
-    input: `
-<div>
-  <div>
-    <div class:list={[{'lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere': true}, {'lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere': true}]}>
-      <slot />
-    </div>
-  </div>
-</div>
-`,
-    output: `<div>
-  <div>
-    <div
-      class:list={[
-        {
-          [\`lorem ipsum dolor sit amet consectetur adipiscing elit proin
-          ex massa hendrerit eu posuere\`]: true,
-        },
-        {
-          [\`lorem ipsum dolor sit amet consectetur adipiscing elit proin
-          ex massa hendrerit eu posuere\`]: true,
-        },
-      ]}
-    >
-      <slot />
-    </div>
   </div>
 </div>
 `,

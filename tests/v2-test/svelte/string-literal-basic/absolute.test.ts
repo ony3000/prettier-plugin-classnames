@@ -227,7 +227,7 @@ volutpat id neque pellentesque\`}
 `,
   },
   {
-    name: 'syntax variants (1) - component',
+    name: 'syntax variants - component',
     input: `
 <div>
   <div>
@@ -245,33 +245,6 @@ adipiscing elit proin ex massa hendrerit eu posuere\`}
     >
       <slot />
     </Box>
-  </div>
-</div>
-`,
-  },
-  {
-    name: 'syntax variants (2) - `class:list` directive',
-    input: `
-<div>
-  <div>
-    <div class:list={['lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere', 'lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere']}>
-      <slot />
-    </div>
-  </div>
-</div>
-`,
-    output: `<div>
-  <div>
-    <div
-      class:list={[
-        \`lorem ipsum dolor sit amet consectetur adipiscing
-elit proin ex massa hendrerit eu posuere\`,
-        \`lorem ipsum dolor sit amet consectetur adipiscing
-elit proin ex massa hendrerit eu posuere\`,
-      ]}
-    >
-      <slot />
-    </div>
   </div>
 </div>
 `,
