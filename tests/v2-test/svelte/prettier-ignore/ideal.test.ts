@@ -77,7 +77,7 @@ const fixtures: Fixture[] = [
 `,
   },
   {
-    name: '🟠 valid ignore comment (3) - class name combination (the astro plugin does not work properly)',
+    name: 'valid ignore comment (3) - class name combination',
     input: `
 <div>
   <div>
@@ -97,8 +97,8 @@ const fixtures: Fixture[] = [
   <div>
     <div
       class={classNames(
-      // prettier-ignore
-        "lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere",
+        // prettier-ignore
+        'lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere',
         \`lorem ipsum dolor sit amet consectetur adipiscing
         elit proin ex massa hendrerit eu posuere\`,
       )}
