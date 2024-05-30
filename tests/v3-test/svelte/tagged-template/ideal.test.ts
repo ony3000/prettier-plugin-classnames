@@ -16,122 +16,122 @@ const fixtures: Fixture[] = [
   {
     name: 'short enough (1)',
     input: `
----
+<script>
 const classes = tw\`lorem ipsum dolor sit amet\`;
----
+</script>
 `,
-    output: `---
-const classes = tw\`lorem ipsum dolor sit amet\`;
----
+    output: `<script>
+  const classes = tw\`lorem ipsum dolor sit amet\`;
+</script>
 `,
   },
   {
     name: 'short enough (2)',
     input: `
----
+<script>
 const Bar = tw.foo\`lorem ipsum dolor sit amet\`;
----
+</script>
 `,
-    output: `---
-const Bar = tw.foo\`lorem ipsum dolor sit amet\`;
----
+    output: `<script>
+  const Bar = tw.foo\`lorem ipsum dolor sit amet\`;
+</script>
 `,
   },
   {
     name: 'short enough (3)',
     input: `
----
+<script>
 const Bar = tw(Foo)\`lorem ipsum dolor sit amet\`;
----
+</script>
 `,
-    output: `---
-const Bar = tw(Foo)\`lorem ipsum dolor sit amet\`;
----
+    output: `<script>
+  const Bar = tw(Foo)\`lorem ipsum dolor sit amet\`;
+</script>
 `,
   },
   {
     name: 'near boundary (1)',
     input: `
----
+<script>
 const classes = tw\`lorem ipsum dolor sit amet consectetur adipiscing elit proin\`;
----
+</script>
 `,
-    output: `---
-const classes = tw\`lorem ipsum dolor sit amet consectetur
-adipiscing elit proin\`;
----
+    output: `<script>
+  const classes = tw\`lorem ipsum dolor sit amet consectetur
+  adipiscing elit proin\`;
+</script>
 `,
   },
   {
     name: 'near boundary (2)',
     input: `
----
+<script>
 const Bar = tw.foo\`lorem ipsum dolor sit amet consectetur adipiscing elit proin\`;
----
+</script>
 `,
-    output: `---
-const Bar = tw.foo\`lorem ipsum dolor sit amet consectetur
-adipiscing elit proin\`;
----
+    output: `<script>
+  const Bar = tw.foo\`lorem ipsum dolor sit amet consectetur
+  adipiscing elit proin\`;
+</script>
 `,
   },
   {
     name: 'near boundary (3)',
     input: `
----
+<script>
 const Bar = tw(Foo)\`lorem ipsum dolor sit amet consectetur adipiscing elit proin\`;
----
+</script>
 `,
-    output: `---
-const Bar = tw(
-  Foo,
-)\`lorem ipsum dolor sit amet consectetur adipiscing elit
-proin\`;
----
+    output: `<script>
+  const Bar = tw(
+    Foo,
+  )\`lorem ipsum dolor sit amet consectetur adipiscing elit
+  proin\`;
+</script>
 `,
   },
   {
     name: 'long enough (1)',
     input: `
----
+<script>
 const classes = tw\`lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere eu volutpat id neque pellentesque\`;
----
+</script>
 `,
-    output: `---
-const classes = tw\`lorem ipsum dolor sit amet consectetur
-adipiscing elit proin ex massa hendrerit eu posuere eu
-volutpat id neque pellentesque\`;
----
+    output: `<script>
+  const classes = tw\`lorem ipsum dolor sit amet consectetur
+  adipiscing elit proin ex massa hendrerit eu posuere eu
+  volutpat id neque pellentesque\`;
+</script>
 `,
   },
   {
     name: 'long enough (2)',
     input: `
----
+<script>
 const Bar = tw.foo\`lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere eu volutpat id neque pellentesque\`;
----
+</script>
 `,
-    output: `---
-const Bar = tw.foo\`lorem ipsum dolor sit amet consectetur
-adipiscing elit proin ex massa hendrerit eu posuere eu
-volutpat id neque pellentesque\`;
----
+    output: `<script>
+  const Bar = tw.foo\`lorem ipsum dolor sit amet consectetur
+  adipiscing elit proin ex massa hendrerit eu posuere eu
+  volutpat id neque pellentesque\`;
+</script>
 `,
   },
   {
     name: 'long enough (3)',
     input: `
----
+<script>
 const Bar = tw(Foo)\`lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere eu volutpat id neque pellentesque\`;
----
+</script>
 `,
-    output: `---
-const Bar = tw(
-  Foo,
-)\`lorem ipsum dolor sit amet consectetur adipiscing elit
-proin ex massa hendrerit eu posuere eu volutpat id neque
-pellentesque\`;
----
+    output: `<script>
+  const Bar = tw(
+    Foo,
+  )\`lorem ipsum dolor sit amet consectetur adipiscing elit
+  proin ex massa hendrerit eu posuere eu volutpat id neque
+  pellentesque\`;
+</script>
 `,
   },
 ];
