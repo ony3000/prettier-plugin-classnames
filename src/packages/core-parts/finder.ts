@@ -1,13 +1,7 @@
 import type { ZodTypeAny, infer as ZodInfer } from 'zod';
 import { z } from 'zod';
 
-import type {
-  Dict,
-  NodeRange,
-  ExpressionNode,
-  ClassNameNode,
-  NarrowedParserOptions,
-} from './shared';
+import type { Dict, NodeRange, ExpressionNode, ClassNameNode } from './shared';
 import { EOL, SINGLE_QUOTE, DOUBLE_QUOTE, BACKTICK } from './shared';
 
 type ASTNode = {
@@ -109,10 +103,7 @@ function filterAndSortClassNameNodes(
     );
 }
 
-export function findTargetClassNameNodes(
-  ast: any,
-  options: NarrowedParserOptions,
-): ClassNameNode[] {
+export function findTargetClassNameNodes(ast: any, options: ResolvedOptions): ClassNameNode[] {
   const supportedAttributes: string[] = ['className', ...options.customAttributes];
   const supportedFunctions: string[] = ['classNames', ...options.customFunctions];
   /**
@@ -680,7 +671,7 @@ export function findTargetClassNameNodes(
 
 export function findTargetClassNameNodesForVue(
   ast: any,
-  options: NarrowedParserOptions,
+  options: ResolvedOptions,
   addon: Dict<(text: string, options: any) => any>,
 ): ClassNameNode[] {
   const supportedAttributes: string[] = ['className', 'class', ...options.customAttributes];
@@ -957,7 +948,7 @@ export function findTargetClassNameNodesForVue(
 export function findTargetClassNameNodesForAstro(
   formattedText: string,
   ast: any,
-  options: NarrowedParserOptions,
+  options: ResolvedOptions,
   addon: Dict<(text: string, options: any) => any>,
 ): ClassNameNode[] {
   const supportedAttributes: string[] = [
@@ -1225,7 +1216,7 @@ export function findTargetClassNameNodesForAstro(
 export function findTargetClassNameNodesForSvelte(
   formattedText: string,
   ast: any,
-  options: NarrowedParserOptions,
+  options: ResolvedOptions,
   addon: Dict<(text: string, options: any) => any>,
 ): ClassNameNode[] {
   const supportedAttributes: string[] = ['class', ...options.customAttributes];

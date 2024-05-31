@@ -19,10 +19,11 @@ function transformParser(
 ): Parser {
   return {
     ...defaultParser,
+    // @ts-ignore
     parse: (
       text: string,
       parsers: { [parserName: string]: Parser },
-      options: ParserOptions,
+      options: ParserOptions & ThisPluginOptions,
     ): FormattedTextAST => {
       const plugins = options.plugins.filter((plugin) => typeof plugin !== 'string') as Plugin[];
 
@@ -58,7 +59,6 @@ function transformParser(
       const classNameWrappedText = parseLineByLineAndReplace({
         formattedText: firstFormattedText,
         ast,
-        // @ts-ignore
         options,
         format,
         addon,
@@ -101,7 +101,6 @@ function transformParser(
       const classNameSecondWrappedText = parseLineByLineAndReplace({
         formattedText: secondFormattedText,
         ast: secondAst,
-        // @ts-ignore
         options,
         format,
         addon,

@@ -87,14 +87,3 @@ type TernaryExpressionNode = ClassNameNodeBase & {
 };
 
 export type ClassNameNode = UnknownNode | AttributeNode | ExpressionNode | TernaryExpressionNode;
-
-export type NarrowedParserOptions = {
-  printWidth: number;
-  tabWidth: number;
-  useTabs: boolean;
-  singleQuote: boolean;
-  parser: string;
-  customAttributes: string[];
-  customFunctions: string[];
-  endingPosition: 'relative' | 'absolute' | 'absolute-with-indent';
-};

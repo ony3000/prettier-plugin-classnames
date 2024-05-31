@@ -30,6 +30,8 @@ declare global {
     endingPosition: 'relative' | 'absolute' | 'absolute-with-indent';
   };
 
+  type ResolvedOptions = PrettierBaseOptions & { parser: unknown } & ThisPluginOptions;
+
   type SupportedParserNames = 'babel' | 'typescript' | 'vue' | 'astro' | 'svelte';
 
   type FormattedTextAST = {

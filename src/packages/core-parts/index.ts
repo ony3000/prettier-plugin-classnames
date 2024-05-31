@@ -6,7 +6,7 @@ import {
   findTargetClassNameNodesForAstro,
   findTargetClassNameNodesForSvelte,
 } from './finder';
-import type { Dict, ClassNameNode, NarrowedParserOptions } from './shared';
+import type { Dict, ClassNameNode } from './shared';
 import { EOL, PH, SPACE, TAB, SINGLE_QUOTE, DOUBLE_QUOTE, BACKTICK } from './shared';
 
 type LineNode = {
@@ -44,7 +44,6 @@ function getExtraIndentLevel(node: ClassNameNode) {
 function getDelimiters(
   node: ClassNameNode,
   isMultiLineClassName: boolean,
-  parser: string,
   singleQuote: boolean,
 ): [string, string] {
   let baseDelimiter = DOUBLE_QUOTE;
@@ -159,7 +158,7 @@ function replaceClassName({
   indentUnit: string;
   targetClassNameNodes: ClassNameNode[];
   lineNodes: LineNode[];
-  options: NarrowedParserOptions;
+  options: ResolvedOptions;
   format: (source: string, options?: any) => string;
   isSecondPhase: boolean;
 }): string {
@@ -306,7 +305,6 @@ function replaceClassName({
       const [delimiterStart, delimiterEnd] = getDelimiters(
         classNameNode,
         isMultiLineClassName,
-        options.parser,
         options.singleQuote,
       );
 
@@ -423,7 +421,7 @@ export function parseLineByLineAndReplace({
 }: {
   formattedText: string;
   ast: any;
-  options: NarrowedParserOptions;
+  options: ResolvedOptions;
   format: (source: string, options?: any) => string;
   addon: Dict<(text: string, options: any) => any>;
   isSecondPhase: boolean;
@@ -482,7 +480,7 @@ async function replaceClassNameAsync({
   indentUnit: string;
   targetClassNameNodes: ClassNameNode[];
   lineNodes: LineNode[];
-  options: NarrowedParserOptions;
+  options: ResolvedOptions;
   format: (source: string, options?: any) => Promise<string>;
   isSecondPhase: boolean;
 }): Promise<string> {
@@ -635,7 +633,6 @@ async function replaceClassNameAsync({
       const [delimiterStart, delimiterEnd] = getDelimiters(
         classNameNode,
         isMultiLineClassName,
-        options.parser,
         options.singleQuote,
       );
 
@@ -752,7 +749,7 @@ export async function parseLineByLineAndReplaceAsync({
 }: {
   formattedText: string;
   ast: any;
-  options: NarrowedParserOptions;
+  options: ResolvedOptions;
   format: (source: string, options?: any) => Promise<string>;
   addon: Dict<(text: string, options: any) => any>;
   isSecondPhase: boolean;

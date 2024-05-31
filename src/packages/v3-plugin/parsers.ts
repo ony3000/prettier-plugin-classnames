@@ -18,7 +18,11 @@ function transformParser(
 ): Parser {
   return {
     ...defaultParser,
-    parse: async (text: string, options: ParserOptions): Promise<FormattedTextAST> => {
+    // @ts-ignore
+    parse: async (
+      text: string,
+      options: ParserOptions & ThisPluginOptions,
+    ): Promise<FormattedTextAST> => {
       const plugins = options.plugins.filter((plugin) => typeof plugin !== 'string') as Plugin[];
 
       let languageImplementedPlugin: Plugin | undefined;
@@ -53,8 +57,10 @@ function transformParser(
       const classNameWrappedText = await parseLineByLineAndReplaceAsync({
         formattedText: firstFormattedText,
         ast,
-        // @ts-ignore
-        options,
+        options: {
+          ...options,
+          useTabs: options.useTabs ?? false,
+        },
         format,
         addon,
         isSecondPhase: false,
@@ -92,8 +98,10 @@ function transformParser(
       const classNameSecondWrappedText = await parseLineByLineAndReplaceAsync({
         formattedText: secondFormattedText,
         ast: secondAst,
-        // @ts-ignore
-        options,
+        options: {
+          ...options,
+          useTabs: options.useTabs ?? false,
+        },
         format,
         addon,
         isSecondPhase: true,
