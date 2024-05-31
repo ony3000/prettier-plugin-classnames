@@ -31,6 +31,11 @@ declare global {
   };
 
   type SupportedParserNames = 'babel' | 'typescript' | 'vue' | 'astro' | 'svelte';
+
+  type FormattedTextAST = {
+    type: 'FormattedText';
+    body: string;
+  };
 }
 
 export {};

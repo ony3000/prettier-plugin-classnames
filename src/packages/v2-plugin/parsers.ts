@@ -19,7 +19,11 @@ function transformParser(
 ): Parser {
   return {
     ...defaultParser,
-    parse: (text: string, parsers: { [parserName: string]: Parser }, options: ParserOptions) => {
+    parse: (
+      text: string,
+      parsers: { [parserName: string]: Parser },
+      options: ParserOptions,
+    ): FormattedTextAST => {
       const plugins = options.plugins.filter((plugin) => typeof plugin !== 'string') as Plugin[];
 
       let languageImplementedPlugin: Plugin | undefined;

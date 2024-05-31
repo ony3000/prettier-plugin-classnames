@@ -18,7 +18,7 @@ function transformParser(
 ): Parser {
   return {
     ...defaultParser,
-    parse: async (text: string, options: ParserOptions) => {
+    parse: async (text: string, options: ParserOptions): Promise<FormattedTextAST> => {
       const plugins = options.plugins.filter((plugin) => typeof plugin !== 'string') as Plugin[];
 
       let languageImplementedPlugin: Plugin | undefined;
