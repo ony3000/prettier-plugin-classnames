@@ -56,6 +56,9 @@ type AttributeNode = ClassNameNodeBase & {
    * @deprecated
    */
   isTheFirstLineOnTheSameLineAsTheOpeningTag: boolean;
+  /**
+   * @deprecated
+   */
   elementName: string;
 };
 
@@ -65,6 +68,9 @@ export type ExpressionNode = ClassNameNodeBase & {
   isTheFirstLineOnTheSameLineAsTheAttributeName: boolean;
   isItAnObjectProperty: boolean;
   isItAnOperandOfTernaryOperator: boolean;
+  /**
+   * @deprecated
+   */
   isItFunctionArgument: boolean;
   isItInVueTemplate: boolean;
   hasSingleQuote: boolean;

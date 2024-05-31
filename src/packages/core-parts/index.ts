@@ -4,6 +4,7 @@ import {
   findTargetClassNameNodes,
   findTargetClassNameNodesForVue,
   findTargetClassNameNodesForAstro,
+  findTargetClassNameNodesForSvelte,
 } from './finder';
 import type { Dict, ClassNameNode, NarrowedParserOptions } from './shared';
 import { EOL, PH, SPACE, TAB, SINGLE_QUOTE, DOUBLE_QUOTE, BACKTICK } from './shared';
@@ -439,6 +440,10 @@ export function parseLineByLineAndReplace({
       targetClassNameNodes = findTargetClassNameNodesForAstro(formattedText, ast, options, addon);
       break;
     }
+    case 'svelte': {
+      targetClassNameNodes = findTargetClassNameNodesForSvelte(formattedText, ast, options, addon);
+      break;
+    }
     case 'vue': {
       targetClassNameNodes = findTargetClassNameNodesForVue(ast, options, addon);
       break;
@@ -762,6 +767,10 @@ export async function parseLineByLineAndReplaceAsync({
   switch (options.parser) {
     case 'astro': {
       targetClassNameNodes = findTargetClassNameNodesForAstro(formattedText, ast, options, addon);
+      break;
+    }
+    case 'svelte': {
+      targetClassNameNodes = findTargetClassNameNodesForSvelte(formattedText, ast, options, addon);
       break;
     }
     case 'vue': {

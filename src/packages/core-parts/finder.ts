@@ -1221,3 +1221,508 @@ export function findTargetClassNameNodesForAstro(
     classNameNodes,
   );
 }
+
+export function findTargetClassNameNodesForSvelte(
+  formattedText: string,
+  ast: any,
+  options: NarrowedParserOptions,
+  addon: Dict<(text: string, options: any) => any>,
+): ClassNameNode[] {
+  const supportedAttributes: string[] = ['class', ...options.customAttributes];
+  const supportedFunctions: string[] = ['classNames', ...options.customFunctions];
+  /**
+   * Most nodes
+   */
+  const nonCommentNodes: ASTNode[] = [];
+  /**
+   * Nodes with a valid 'prettier-ignore' syntax
+   */
+  const prettierIgnoreNodes: ASTNode[] = [];
+  /**
+   * Nodes starting with supported attribute names or supported function names
+   */
+  const keywordStartingNodes: ASTNode[] = [];
+  /**
+   * Class names enclosed in delimiters
+   */
+  const classNameNodes: ClassNameNode[] = [];
+
+  function recursion(node: unknown, parentNode?: { type?: unknown }): void {
+    if (!isTypeof(node, z.object({ type: z.string() }))) {
+      return;
+    }
+
+    Object.entries(node).forEach(([key, value]) => {
+      if (key === 'type') {
+        return;
+      }
+
+      if (Array.isArray(value)) {
+        value.forEach((childNode: unknown) => {
+          recursion(childNode, node);
+        });
+        return;
+      }
+
+      recursion(value, node);
+    });
+
+    if (
+      !isTypeof(
+        node,
+        z.object({
+          start: z.number(),
+          end: z.number(),
+        }),
+      )
+    ) {
+      return;
+    }
+
+    const currentNodeRangeStart = node.start;
+    const currentNodeRangeEnd = node.end;
+    const currentASTNode: ASTNode = {
+      type: node.type,
+      range: [currentNodeRangeStart, currentNodeRangeEnd],
+    };
+
+    switch (node.type) {
+      case 'CallExpression': {
+        nonCommentNodes.push(currentASTNode);
+
+        if (
+          isTypeof(
+            node,
+            z.object({
+              callee: z.object({
+                type: z.literal('Identifier'),
+                name: z.string(),
+              }),
+            }),
+          ) &&
+          supportedFunctions.includes(node.callee.name)
+        ) {
+          keywordStartingNodes.push(currentASTNode);
+
+          classNameNodes.forEach((classNameNode, index, array) => {
+            const [classNameNodeRangeStart, classNameNodeRangeEnd] = classNameNode.range;
+
+            if (
+              currentNodeRangeStart <= classNameNodeRangeStart &&
+              classNameNodeRangeEnd <= currentNodeRangeEnd
+            ) {
+              if (classNameNode.type === 'unknown') {
+                // eslint-disable-next-line no-param-reassign
+                array[index] = createExpressionNode({
+                  delimiterType: classNameNode.delimiterType,
+                  isItFunctionArgument: true,
+                  range: classNameNode.range,
+                  startLineIndex: classNameNode.startLineIndex,
+                });
+              } else if (classNameNode.type === 'expression') {
+                // eslint-disable-next-line no-param-reassign
+                classNameNode.isItFunctionArgument = true;
+              }
+            }
+          });
+        }
+        break;
+      }
+      case 'Attribute': {
+        nonCommentNodes.push(currentASTNode);
+
+        if (
+          isTypeof(
+            node,
+            z.object({
+              name: z.string(),
+              value: z.array(
+                z.object({
+                  type: z.string(),
+                  start: z.number(),
+                  end: z.number(),
+                }),
+              ),
+            }),
+          ) &&
+          supportedAttributes.includes(node.name)
+        ) {
+          keywordStartingNodes.push(currentASTNode);
+
+          classNameNodes.forEach((classNameNode, index, array) => {
+            const [classNameNodeRangeStart, classNameNodeRangeEnd] = classNameNode.range;
+
+            if (
+              currentNodeRangeStart <= classNameNodeRangeStart &&
+              classNameNodeRangeEnd <= currentNodeRangeEnd
+            ) {
+              if (classNameNode.type === 'unknown' && classNameNode.delimiterType !== 'backtick') {
+                // eslint-disable-next-line no-param-reassign
+                array[index] = {
+                  type: 'attribute',
+                  isTheFirstLineOnTheSameLineAsTheOpeningTag: false,
+                  elementName: '',
+                  range: classNameNode.range,
+                  startLineIndex: classNameNode.startLineIndex,
+                };
+              }
+            }
+          });
+        }
+        break;
+      }
+      case 'MustacheTag': {
+        nonCommentNodes.push(currentASTNode);
+
+        const currentNodeStartLineIndex =
+          formattedText.slice(0, currentNodeRangeStart).split(EOL).length - 1;
+
+        classNameNodes.forEach((classNameNode, index, array) => {
+          const [classNameNodeRangeStart, classNameNodeRangeEnd] = classNameNode.range;
+
+          if (
+            currentNodeRangeStart <= classNameNodeRangeStart &&
+            classNameNodeRangeEnd <= currentNodeRangeEnd
+          ) {
+            if (classNameNode.type === 'unknown') {
+              if (classNameNode.delimiterType !== 'backtick') {
+                // eslint-disable-next-line no-param-reassign
+                array[index] = createExpressionNode({
+                  delimiterType: classNameNode.delimiterType,
+                  hasSingleQuote: classNameNode.hasSingleQuote,
+                  hasDoubleQuote: classNameNode.hasDoubleQuote,
+                  hasBacktick: classNameNode.hasBacktick,
+                  shouldKeepDelimiter: classNameNode.hasSingleQuote && classNameNode.hasDoubleQuote,
+                  range: classNameNode.range,
+                  startLineIndex: classNameNode.startLineIndex,
+                });
+              } else {
+                // eslint-disable-next-line no-param-reassign
+                array[index] = createExpressionNode({
+                  delimiterType: classNameNode.delimiterType,
+                  isTheFirstLineOnTheSameLineAsTheAttributeName:
+                    classNameNode.startLineIndex === currentNodeStartLineIndex,
+                  range: classNameNode.range,
+                  startLineIndex: classNameNode.startLineIndex,
+                });
+              }
+            } else if (classNameNode.type === 'expression') {
+              // eslint-disable-next-line no-param-reassign
+              classNameNode.isTheFirstLineOnTheSameLineAsTheAttributeName =
+                classNameNode.startLineIndex === currentNodeStartLineIndex;
+            }
+          }
+        });
+        break;
+      }
+      case 'Property': {
+        nonCommentNodes.push(currentASTNode);
+
+        classNameNodes.forEach((classNameNode, index, array) => {
+          const [classNameNodeRangeStart, classNameNodeRangeEnd] = classNameNode.range;
+
+          if (
+            currentNodeRangeStart <= classNameNodeRangeStart &&
+            classNameNodeRangeEnd <= currentNodeRangeEnd
+          ) {
+            if (classNameNode.type === 'unknown') {
+              // eslint-disable-next-line no-param-reassign
+              array[index] = createExpressionNode({
+                delimiterType: classNameNode.delimiterType,
+                isItAnObjectProperty: true,
+                range: classNameNode.range,
+                startLineIndex: classNameNode.startLineIndex,
+              });
+            } else if (classNameNode.type === 'expression') {
+              // eslint-disable-next-line no-param-reassign
+              classNameNode.isItAnObjectProperty = true;
+            }
+          }
+        });
+        break;
+      }
+      case 'ConditionalExpression': {
+        nonCommentNodes.push(currentASTNode);
+
+        classNameNodes.forEach((classNameNode, index, array) => {
+          const [classNameNodeRangeStart, classNameNodeRangeEnd] = classNameNode.range;
+
+          if (
+            currentNodeRangeStart <= classNameNodeRangeStart &&
+            classNameNodeRangeEnd <= currentNodeRangeEnd
+          ) {
+            if (classNameNode.type === 'unknown') {
+              // eslint-disable-next-line no-param-reassign
+              array[index] = createExpressionNode({
+                delimiterType: classNameNode.delimiterType,
+                isItAnOperandOfTernaryOperator: true,
+                range: classNameNode.range,
+                startLineIndex: classNameNode.startLineIndex,
+              });
+            } else if (classNameNode.type === 'expression') {
+              // eslint-disable-next-line no-param-reassign
+              classNameNode.isItAnOperandOfTernaryOperator = true;
+            }
+          }
+        });
+
+        if (
+          isTypeof(
+            node,
+            z.object({
+              loc: z.object({
+                start: z.object({
+                  line: z.number(),
+                }),
+              }),
+            }),
+          )
+        ) {
+          classNameNodes.push({
+            type: 'ternary',
+            range: [currentNodeRangeStart, currentNodeRangeEnd],
+            startLineIndex: node.loc.start.line - 1,
+          });
+        }
+        break;
+      }
+      case 'Text': {
+        if (
+          isTypeof(
+            parentNode,
+            z.object({
+              type: z.literal('Attribute'),
+              name: z.string(),
+            }),
+          ) &&
+          isTypeof(
+            node,
+            z.object({
+              data: z.string(),
+            }),
+          )
+        ) {
+          nonCommentNodes.push(currentASTNode);
+
+          const delimiter = formattedText[node.start - 1];
+          const currentNodeStartLineIndex =
+            formattedText.slice(0, currentNodeRangeStart).split(EOL).length - 1;
+
+          classNameNodes.push({
+            type: 'unknown',
+            delimiterType:
+              // eslint-disable-next-line no-nested-ternary
+              delimiter === SINGLE_QUOTE
+                ? 'single-quote'
+                : delimiter === DOUBLE_QUOTE
+                ? 'double-quote'
+                : 'backtick',
+            hasSingleQuote: node.data.indexOf(SINGLE_QUOTE) !== -1,
+            hasDoubleQuote: node.data.indexOf(DOUBLE_QUOTE) !== -1,
+            hasBacktick: node.data.indexOf(BACKTICK) !== -1,
+            range: [currentNodeRangeStart - 1, currentNodeRangeEnd + 1],
+            startLineIndex: currentNodeStartLineIndex,
+          });
+        }
+        break;
+      }
+      case 'Literal': {
+        nonCommentNodes.push(currentASTNode);
+
+        if (
+          isTypeof(
+            node,
+            z.object({
+              loc: z.object({
+                start: z.object({
+                  line: z.number(),
+                }),
+              }),
+              value: z.string(),
+              raw: z.string(),
+            }),
+          )
+        ) {
+          classNameNodes.push({
+            type: 'unknown',
+            delimiterType:
+              // eslint-disable-next-line no-nested-ternary
+              node.raw[0] === SINGLE_QUOTE
+                ? 'single-quote'
+                : node.raw[0] === DOUBLE_QUOTE
+                ? 'double-quote'
+                : 'backtick',
+            hasSingleQuote: node.value.indexOf(SINGLE_QUOTE) !== -1,
+            hasDoubleQuote: node.value.indexOf(DOUBLE_QUOTE) !== -1,
+            hasBacktick: node.value.indexOf(BACKTICK) !== -1,
+            range: [currentNodeRangeStart, currentNodeRangeEnd],
+            startLineIndex: node.loc.start.line - 1,
+          });
+        }
+        break;
+      }
+      case 'TemplateLiteral': {
+        nonCommentNodes.push(currentASTNode);
+
+        if (
+          isTypeof(
+            node,
+            z.object({
+              loc: z.object({
+                start: z.object({
+                  line: z.number(),
+                }),
+              }),
+              quasis: z.array(
+                z.object({
+                  type: z.literal('TemplateElement'),
+                  value: z.object({
+                    cooked: z.string(),
+                  }),
+                  tail: z.boolean(),
+                }),
+              ),
+            }),
+          )
+        ) {
+          const { cooked } = node.quasis[0].value;
+
+          const hasSingleQuote = cooked.indexOf(SINGLE_QUOTE) !== -1;
+          const hasDoubleQuote = cooked.indexOf(DOUBLE_QUOTE) !== -1;
+          const hasBacktick = cooked.indexOf(BACKTICK) !== -1;
+
+          classNameNodes.push(
+            createExpressionNode({
+              delimiterType: 'backtick',
+              hasSingleQuote,
+              hasDoubleQuote,
+              hasBacktick,
+              shouldKeepDelimiter: !node.quasis[0].tail || (hasSingleQuote && hasDoubleQuote),
+              range: [currentNodeRangeStart, currentNodeRangeEnd],
+              startLineIndex: node.loc.start.line - 1,
+            }),
+          );
+        }
+        break;
+      }
+      case 'TaggedTemplateExpression': {
+        nonCommentNodes.push(currentASTNode);
+
+        if (
+          (isTypeof(
+            node,
+            z.object({
+              tag: z.object({
+                type: z.literal('Identifier'),
+                name: z.string(),
+              }),
+            }),
+          ) &&
+            supportedFunctions.includes(node.tag.name)) ||
+          (isTypeof(
+            node,
+            z.object({
+              tag: z.object({
+                type: z.literal('MemberExpression'),
+                object: z.object({
+                  type: z.literal('Identifier'),
+                  name: z.string(),
+                }),
+              }),
+            }),
+          ) &&
+            supportedFunctions.includes(node.tag.object.name)) ||
+          (isTypeof(
+            node,
+            z.object({
+              tag: z.object({
+                type: z.literal('CallExpression'),
+                callee: z.object({
+                  type: z.literal('Identifier'),
+                  name: z.string(),
+                }),
+              }),
+            }),
+          ) &&
+            supportedFunctions.includes(node.tag.callee.name))
+        ) {
+          keywordStartingNodes.push(currentASTNode);
+
+          classNameNodes.forEach((classNameNode, index, array) => {
+            const [classNameNodeRangeStart, classNameNodeRangeEnd] = classNameNode.range;
+
+            if (
+              currentNodeRangeStart <= classNameNodeRangeStart &&
+              classNameNodeRangeEnd <= currentNodeRangeEnd
+            ) {
+              if (classNameNode.type === 'unknown' && classNameNode.delimiterType === 'backtick') {
+                // eslint-disable-next-line no-param-reassign
+                array[index] = createExpressionNode({
+                  delimiterType: classNameNode.delimiterType,
+                  isItFunctionArgument: node.tag.type === 'CallExpression',
+                  shouldKeepDelimiter: true,
+                  range: classNameNode.range,
+                  startLineIndex: classNameNode.startLineIndex,
+                });
+              } else if (
+                classNameNode.type === 'expression' &&
+                classNameNode.delimiterType === 'backtick'
+              ) {
+                // eslint-disable-next-line no-param-reassign
+                classNameNode.isItFunctionArgument = node.tag.type === 'CallExpression';
+                // eslint-disable-next-line no-param-reassign
+                classNameNode.shouldKeepDelimiter = true;
+              }
+            }
+          });
+        }
+        break;
+      }
+      case 'Block':
+      case 'Line': {
+        if (
+          isTypeof(
+            node,
+            z.object({
+              value: z.string(),
+            }),
+          ) &&
+          node.value.trim() === 'prettier-ignore'
+        ) {
+          prettierIgnoreNodes.push(currentASTNode);
+        }
+        break;
+      }
+      case 'Comment': {
+        if (
+          isTypeof(
+            node,
+            z.object({
+              data: z.string(),
+            }),
+          ) &&
+          node.data.trim() === 'prettier-ignore'
+        ) {
+          prettierIgnoreNodes.push(currentASTNode);
+        }
+        break;
+      }
+      default: {
+        nonCommentNodes.push(currentASTNode);
+        break;
+      }
+    }
+  }
+
+  if (!ast.type) {
+    ast.type = 'Root';
+  }
+  recursion(ast);
+
+  return filterAndSortClassNameNodes(
+    nonCommentNodes,
+    prettierIgnoreNodes,
+    keywordStartingNodes,
+    classNameNodes,
+  );
+}
