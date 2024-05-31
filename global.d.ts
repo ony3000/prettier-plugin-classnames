@@ -29,6 +29,8 @@ declare global {
     customFunctions: string[];
     endingPosition: 'relative' | 'absolute' | 'absolute-with-indent';
   };
+
+  type SupportedParserNames = 'babel' | 'typescript' | 'vue' | 'astro' | 'svelte';
 }
 
 export {};

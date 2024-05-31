@@ -13,7 +13,7 @@ const addon = {
 };
 
 function transformParser(
-  parserName: 'babel' | 'typescript' | 'vue' | 'astro' | 'svelte',
+  parserName: SupportedParserNames,
   defaultParser: Parser,
   languageName?: string,
 ): Parser {
