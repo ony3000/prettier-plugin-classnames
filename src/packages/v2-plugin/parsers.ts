@@ -62,7 +62,6 @@ function transformParser(
         options,
         format,
         addon,
-        isSecondPhase: false,
       });
 
       if (classNameWrappedText === firstFormattedText) {
@@ -104,7 +103,6 @@ function transformParser(
         options,
         format,
         addon,
-        isSecondPhase: true,
       });
 
       return {

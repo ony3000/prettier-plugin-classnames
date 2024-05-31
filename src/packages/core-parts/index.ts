@@ -152,7 +152,6 @@ function replaceClassName({
   lineNodes,
   options,
   format,
-  isSecondPhase,
 }: {
   formattedText: string;
   indentUnit: string;
@@ -160,7 +159,6 @@ function replaceClassName({
   lineNodes: LineNode[];
   options: ResolvedOptions;
   format: (source: string, options?: any) => string;
-  isSecondPhase: boolean;
 }): string {
   const freezer: { from: string[]; to: string[] }[] = [];
   const rangeCorrectionValues = [...Array(targetClassNameNodes.length)].map(() => 0);
@@ -319,6 +317,7 @@ function replaceClassName({
             substituteBase = substituteBase.replace(/"/g, `\\${DOUBLE_QUOTE}`);
           }
         } else {
+          // eslint-disable-next-line no-lonely-if
           if (classNameNode.delimiterType !== 'backtick' && classNameNode.hasBacktick) {
             substituteBase = substituteBase.replace(/`/g, `\\${BACKTICK}`);
           }
@@ -417,14 +416,12 @@ export function parseLineByLineAndReplace({
   options,
   format,
   addon,
-  isSecondPhase,
 }: {
   formattedText: string;
   ast: any;
   options: ResolvedOptions;
   format: (source: string, options?: any) => string;
   addon: Dict<(text: string, options: any) => any>;
-  isSecondPhase: boolean;
 }): string {
   if (formattedText === '') {
     return formattedText;
@@ -439,7 +436,7 @@ export function parseLineByLineAndReplace({
       break;
     }
     case 'svelte': {
-      targetClassNameNodes = findTargetClassNameNodesForSvelte(formattedText, ast, options, addon);
+      targetClassNameNodes = findTargetClassNameNodesForSvelte(formattedText, ast, options);
       break;
     }
     case 'vue': {
@@ -461,7 +458,6 @@ export function parseLineByLineAndReplace({
     lineNodes,
     options,
     format,
-    isSecondPhase,
   });
 
   return classNameWrappedText;
@@ -474,7 +470,6 @@ async function replaceClassNameAsync({
   lineNodes,
   options,
   format,
-  isSecondPhase,
 }: {
   formattedText: string;
   indentUnit: string;
@@ -482,7 +477,6 @@ async function replaceClassNameAsync({
   lineNodes: LineNode[];
   options: ResolvedOptions;
   format: (source: string, options?: any) => Promise<string>;
-  isSecondPhase: boolean;
 }): Promise<string> {
   const freezer: { from: string[]; to: string[] }[] = [];
   const rangeCorrectionValues = [...Array(targetClassNameNodes.length)].map(() => 0);
@@ -647,6 +641,7 @@ async function replaceClassNameAsync({
             substituteBase = substituteBase.replace(/"/g, `\\${DOUBLE_QUOTE}`);
           }
         } else {
+          // eslint-disable-next-line no-lonely-if
           if (classNameNode.delimiterType !== 'backtick' && classNameNode.hasBacktick) {
             substituteBase = substituteBase.replace(/`/g, `\\${BACKTICK}`);
           }
@@ -745,14 +740,12 @@ export async function parseLineByLineAndReplaceAsync({
   options,
   format,
   addon,
-  isSecondPhase,
 }: {
   formattedText: string;
   ast: any;
   options: ResolvedOptions;
   format: (source: string, options?: any) => Promise<string>;
   addon: Dict<(text: string, options: any) => any>;
-  isSecondPhase: boolean;
 }): Promise<string> {
   if (formattedText === '') {
     return formattedText;
@@ -767,7 +760,7 @@ export async function parseLineByLineAndReplaceAsync({
       break;
     }
     case 'svelte': {
-      targetClassNameNodes = findTargetClassNameNodesForSvelte(formattedText, ast, options, addon);
+      targetClassNameNodes = findTargetClassNameNodesForSvelte(formattedText, ast, options);
       break;
     }
     case 'vue': {
@@ -789,7 +782,6 @@ export async function parseLineByLineAndReplaceAsync({
     lineNodes,
     options,
     format,
-    isSecondPhase,
   });
 
   return classNameWrappedText;

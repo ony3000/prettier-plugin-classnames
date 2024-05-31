@@ -1217,7 +1217,6 @@ export function findTargetClassNameNodesForSvelte(
   formattedText: string,
   ast: any,
   options: ResolvedOptions,
-  addon: Dict<(text: string, options: any) => any>,
 ): ClassNameNode[] {
   const supportedAttributes: string[] = ['class', ...options.customAttributes];
   const supportedFunctions: string[] = ['classNames', ...options.customFunctions];
@@ -1706,6 +1705,7 @@ export function findTargetClassNameNodesForSvelte(
   }
 
   if (!ast.type) {
+    // eslint-disable-next-line no-param-reassign
     ast.type = 'Root';
   }
   recursion(ast);
