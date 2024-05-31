@@ -4,6 +4,7 @@ import {
   findTargetClassNameNodes,
   findTargetClassNameNodesForVue,
   findTargetClassNameNodesForAstro,
+  findTargetClassNameNodesForSvelte,
 } from './finder';
 import type { Dict, ClassNameNode, NarrowedParserOptions } from './shared';
 import { EOL, PH, SPACE, TAB, SINGLE_QUOTE, DOUBLE_QUOTE, BACKTICK } from './shared';
@@ -427,7 +428,7 @@ export function parseLineByLineAndReplace({
   addon: Dict<(text: string, options: any) => any>;
   isSecondPhase: boolean;
 }): string {
-  if (formattedText === '' || options.parser === 'svelte') {
+  if (formattedText === '') {
     return formattedText;
   }
 
@@ -437,6 +438,10 @@ export function parseLineByLineAndReplace({
   switch (options.parser) {
     case 'astro': {
       targetClassNameNodes = findTargetClassNameNodesForAstro(formattedText, ast, options, addon);
+      break;
+    }
+    case 'svelte': {
+      targetClassNameNodes = findTargetClassNameNodesForSvelte(formattedText, ast, options, addon);
       break;
     }
     case 'vue': {
@@ -752,7 +757,7 @@ export async function parseLineByLineAndReplaceAsync({
   addon: Dict<(text: string, options: any) => any>;
   isSecondPhase: boolean;
 }): Promise<string> {
-  if (formattedText === '' || options.parser === 'svelte') {
+  if (formattedText === '') {
     return formattedText;
   }
 
@@ -762,6 +767,10 @@ export async function parseLineByLineAndReplaceAsync({
   switch (options.parser) {
     case 'astro': {
       targetClassNameNodes = findTargetClassNameNodesForAstro(formattedText, ast, options, addon);
+      break;
+    }
+    case 'svelte': {
+      targetClassNameNodes = findTargetClassNameNodesForSvelte(formattedText, ast, options, addon);
       break;
     }
     case 'vue': {
