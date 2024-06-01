@@ -1215,13 +1215,13 @@ export function findTargetClassNameNodesForAstro(
           // Note: In fact, the script element is not a `keywordStartingNode`, but it is considered a kind of safe list to maintain the `classNameNode`s obtained from the code inside the element.
           keywordStartingNodes.push(currentASTNode);
 
-          const textInScript = node.children.at(0);
+          const textNodeInScript = node.children.at(0);
 
-          if (addon.parseTypescript && textInScript) {
-            const openingTagEndingLineIndex = textInScript.position.start.line - 1;
-            const scriptOffset = textInScript.position.start.offset;
+          if (addon.parseTypescript && textNodeInScript) {
+            const openingTagEndingLineIndex = textNodeInScript.position.start.line - 1;
+            const openingTagEndingOffset = textNodeInScript.position.start.offset;
 
-            const typescriptAst = addon.parseTypescript(textInScript.value, {
+            const typescriptAst = addon.parseTypescript(textNodeInScript.value, {
               ...options,
               parser: 'typescript',
             });
@@ -1234,8 +1234,8 @@ export function findTargetClassNameNodesForAstro(
               return {
                 ...classNameNode,
                 range: [
-                  classNameNodeRangeStart + scriptOffset,
-                  classNameNodeRangeEnd + scriptOffset,
+                  classNameNodeRangeStart + openingTagEndingOffset,
+                  classNameNodeRangeEnd + openingTagEndingOffset,
                 ],
                 startLineIndex: classNameNode.startLineIndex + openingTagEndingLineIndex,
               };
