@@ -185,6 +185,29 @@ proin ex massa hendrerit eu posuere\`,
 `,
   },
   {
+    name: 'valid ignore comment (7) - multi-line script opening tag',
+    input: `
+<script zero-one-two-three-four-five-six-seven-eight-nine="0123456789">
+const combination = classNames(
+  // prettier-ignore
+  'lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere',
+  'lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere',
+)
+</script>
+`,
+    output: `<script
+  zero-one-two-three-four-five-six-seven-eight-nine="0123456789"
+>
+  const combination = classNames(
+    // prettier-ignore
+    'lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere',
+    \`lorem ipsum dolor sit amet consectetur adipiscing elit
+proin ex massa hendrerit eu posuere\`,
+  );
+</script>
+`,
+  },
+  {
     name: 'invalid ignore comment (1) - formatting works as usual',
     input: `
 <!--
