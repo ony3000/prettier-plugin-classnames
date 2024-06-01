@@ -2,7 +2,7 @@ import type { ZodTypeAny, infer as ZodInfer } from 'zod';
 import { z } from 'zod';
 
 import type { Dict, NodeRange, ExpressionNode, ClassNameNode } from './shared';
-import { EOL, SINGLE_QUOTE, DOUBLE_QUOTE, BACKTICK } from './shared';
+import { EOL, SINGLE_QUOTE, DOUBLE_QUOTE, BACKTICK, UNKNOWN_DELIMITER } from './shared';
 
 type ASTNode = {
   type: string;
@@ -1047,7 +1047,7 @@ export function findTargetClassNameNodesForAstro(
         (node.position.end.column - 1)
       : currentNodeRangeStart +
         (node.type === 'attribute'
-          ? `${node.name}=?${node.value}?`.length
+          ? `${node.name}=${UNKNOWN_DELIMITER}${node.value}${UNKNOWN_DELIMITER}`.length
           : `${node.value}`.length);
     const currentASTNode: ASTNode = {
       type: node.type,
@@ -1123,7 +1123,7 @@ export function findTargetClassNameNodesForAstro(
             }),
           )
         ) {
-          const attributeStart = `${node.name}=?`;
+          const attributeStart = `${node.name}=${UNKNOWN_DELIMITER}`;
 
           if (node.kind === 'expression') {
             keywordStartingNodes.push(currentASTNode);

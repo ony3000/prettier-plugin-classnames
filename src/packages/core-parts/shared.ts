@@ -33,6 +33,11 @@ export const DOUBLE_QUOTE = '"';
  */
 export const BACKTICK = '`';
 
+/**
+ * placeholder of delimiter
+ */
+export const UNKNOWN_DELIMITER = '?';
+
 export type Dict<T = unknown> = Record<string, T | undefined>;
 
 export type NodeRange = [number, number];
