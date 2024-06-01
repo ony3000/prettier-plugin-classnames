@@ -872,13 +872,9 @@ export function findTargetClassNameNodesForVue(
           isTypeof(
             node,
             z.object({
-              sourceSpan: z.object({
-                start: z.object({
-                  line: z.number(),
-                }),
-              }),
               startSourceSpan: z.object({
                 end: z.object({
+                  line: z.number(),
                   offset: z.number(),
                 }),
               }),
@@ -895,8 +891,13 @@ export function findTargetClassNameNodesForVue(
           // Note: In fact, the script element is not a `keywordStartingNode`, but it is considered a kind of safe list to maintain the `classNameNode`s obtained from the code inside the element.
           keywordStartingNodes.push(currentASTNode);
 
-          if (addon.parseTypescript) {
-            const typescriptAst = addon.parseTypescript(node.children.at(0)?.value ?? '', {
+          const textNodeInScript = node.children.at(0);
+
+          if (addon.parseTypescript && textNodeInScript) {
+            const openingTagEndingLineIndex = node.startSourceSpan.end.line;
+            const openingTagEndingOffset = node.startSourceSpan.end.offset;
+
+            const typescriptAst = addon.parseTypescript(textNodeInScript.value, {
               ...options,
               parser: 'typescript',
             });
@@ -906,15 +907,13 @@ export function findTargetClassNameNodesForVue(
             ).map<ClassNameNode>((classNameNode) => {
               const [classNameNodeRangeStart, classNameNodeRangeEnd] = classNameNode.range;
 
-              const scriptOffset = node.startSourceSpan.end.offset;
-
               return {
                 ...classNameNode,
                 range: [
-                  classNameNodeRangeStart + scriptOffset,
-                  classNameNodeRangeEnd + scriptOffset,
+                  classNameNodeRangeStart + openingTagEndingOffset,
+                  classNameNodeRangeEnd + openingTagEndingOffset,
                 ],
-                startLineIndex: classNameNode.startLineIndex + node.sourceSpan.start.line,
+                startLineIndex: classNameNode.startLineIndex + openingTagEndingLineIndex,
               };
             });
 
