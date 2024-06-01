@@ -779,17 +779,21 @@ export function findTargetClassNameNodesForVue(
                 }),
               }),
             }),
-          ) &&
-          supportedAttributes.includes(node.name.replace(boundAttributeRegExp, ''))
+          )
         ) {
-          keywordStartingNodes.push(currentASTNode);
-
           const isBoundAttribute = node.name.match(boundAttributeRegExp) !== null;
 
           if (isBoundAttribute) {
+            keywordStartingNodes.push(currentASTNode);
+
             if (addon.parseBabel) {
               try {
-                const jsxStart = '<div className={';
+                const plainAttributeName = node.name.replace(boundAttributeRegExp, '');
+                const isSupportedAttribute = supportedAttributes.includes(plainAttributeName);
+
+                const jsxStart = `<div ${
+                  isSupportedAttribute ? 'className' : plainAttributeName
+                }={`;
                 const jsxEnd = '}></div>';
 
                 const babelAst = addon.parseBabel(`${jsxStart}${node.value}${jsxEnd}`, {
@@ -833,25 +837,30 @@ export function findTargetClassNameNodesForVue(
               }
             }
           } else {
-            const classNameNodeRangeStart = node.valueSpan.start.offset;
-            const classNameNodeRangeEnd = node.valueSpan.end.offset;
+            // eslint-disable-next-line no-lonely-if
+            if (supportedAttributes.includes(node.name)) {
+              keywordStartingNodes.push(currentASTNode);
 
-            nonCommentNodes.push({
-              type: 'StringLiteral',
-              range: [classNameNodeRangeStart, classNameNodeRangeEnd],
-            });
+              const classNameNodeRangeStart = node.valueSpan.start.offset;
+              const classNameNodeRangeEnd = node.valueSpan.end.offset;
 
-            const parentNodeStartLineIndex = parentNode.sourceSpan.start.line;
-            const nodeStartLineIndex = node.sourceSpan.start.line;
+              nonCommentNodes.push({
+                type: 'StringLiteral',
+                range: [classNameNodeRangeStart, classNameNodeRangeEnd],
+              });
 
-            classNameNodes.push({
-              type: 'attribute',
-              isTheFirstLineOnTheSameLineAsTheOpeningTag:
-                parentNodeStartLineIndex === nodeStartLineIndex,
-              elementName: parentNode.name,
-              range: [classNameNodeRangeStart, classNameNodeRangeEnd],
-              startLineIndex: nodeStartLineIndex,
-            });
+              const parentNodeStartLineIndex = parentNode.sourceSpan.start.line;
+              const nodeStartLineIndex = node.sourceSpan.start.line;
+
+              classNameNodes.push({
+                type: 'attribute',
+                isTheFirstLineOnTheSameLineAsTheOpeningTag:
+                  parentNodeStartLineIndex === nodeStartLineIndex,
+                elementName: parentNode.name,
+                range: [classNameNodeRangeStart, classNameNodeRangeEnd],
+                startLineIndex: nodeStartLineIndex,
+              });
+            }
           }
         }
         break;
@@ -1112,16 +1121,17 @@ export function findTargetClassNameNodesForAstro(
               name: z.string(),
               value: z.string(),
             }),
-          ) &&
-          supportedAttributes.includes(node.name)
+          )
         ) {
-          keywordStartingNodes.push(currentASTNode);
-
           const attributeStart = `${node.name}=?`;
 
           if (node.kind === 'expression') {
+            keywordStartingNodes.push(currentASTNode);
+
             if (addon.parseTypescript) {
-              const jsxStart = '<div className={';
+              const isSupportedAttribute = supportedAttributes.includes(node.name);
+
+              const jsxStart = `<div ${isSupportedAttribute ? 'className' : node.name}={`;
               const jsxEnd = '}></div>';
 
               const typescriptAst = addon.parseTypescript(`${jsxStart}${node.value}${jsxEnd}`, {
@@ -1160,17 +1170,21 @@ export function findTargetClassNameNodesForAstro(
               classNameNodes.push(...targetClassNameNodesInAttribute);
             }
           } else if (node.kind === 'quoted') {
-            const parentNodeStartLineIndex = parentNode.position.start.line - 1;
-            const nodeStartLineIndex = node.position.start.line - 1;
+            if (supportedAttributes.includes(node.name)) {
+              keywordStartingNodes.push(currentASTNode);
 
-            classNameNodes.push({
-              type: 'attribute',
-              isTheFirstLineOnTheSameLineAsTheOpeningTag:
-                parentNodeStartLineIndex === nodeStartLineIndex,
-              elementName: parentNode.name,
-              range: [currentNodeRangeStart + attributeStart.length - 1, currentNodeRangeEnd],
-              startLineIndex: node.position.start.line - 1,
-            });
+              const parentNodeStartLineIndex = parentNode.position.start.line - 1;
+              const nodeStartLineIndex = node.position.start.line - 1;
+
+              classNameNodes.push({
+                type: 'attribute',
+                isTheFirstLineOnTheSameLineAsTheOpeningTag:
+                  parentNodeStartLineIndex === nodeStartLineIndex,
+                elementName: parentNode.name,
+                range: [currentNodeRangeStart + attributeStart.length - 1, currentNodeRangeEnd],
+                startLineIndex: node.position.start.line - 1,
+              });
+            }
           }
         }
         break;
