@@ -1189,6 +1189,63 @@ export function findTargetClassNameNodesForAstro(
         }
         break;
       }
+      case 'element': {
+        nonCommentNodes.push(currentASTNode);
+
+        if (
+          isTypeof(
+            node,
+            z.object({
+              name: z.string(),
+              children: z.array(
+                z.object({
+                  value: z.string(),
+                  position: z.object({
+                    start: z.object({
+                      line: z.number(),
+                      offset: z.number(),
+                    }),
+                  }),
+                }),
+              ),
+            }),
+          ) &&
+          node.name === 'script'
+        ) {
+          // Note: In fact, the script element is not a `keywordStartingNode`, but it is considered a kind of safe list to maintain the `classNameNode`s obtained from the code inside the element.
+          keywordStartingNodes.push(currentASTNode);
+
+          const textInScript = node.children.at(0);
+
+          if (addon.parseTypescript && textInScript) {
+            const openingTagEndingLineIndex = textInScript.position.start.line - 1;
+            const scriptOffset = textInScript.position.start.offset;
+
+            const typescriptAst = addon.parseTypescript(textInScript.value, {
+              ...options,
+              parser: 'typescript',
+            });
+            const targetClassNameNodesInScript = findTargetClassNameNodes(
+              typescriptAst,
+              options,
+            ).map<ClassNameNode>((classNameNode) => {
+              const [classNameNodeRangeStart, classNameNodeRangeEnd] = classNameNode.range;
+
+              return {
+                ...classNameNode,
+                range: [
+                  classNameNodeRangeStart + scriptOffset,
+                  classNameNodeRangeEnd + scriptOffset,
+                ],
+                startLineIndex: classNameNode.startLineIndex + openingTagEndingLineIndex,
+              };
+            });
+
+            classNameNodes.push(...targetClassNameNodesInScript);
+          }
+        }
+        break;
+      }
       case 'comment': {
         if (
           isTypeof(
