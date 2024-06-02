@@ -104,7 +104,7 @@ function filterAndSortClassNameNodes(
 }
 
 export function findTargetClassNameNodes(ast: any, options: ResolvedOptions): ClassNameNode[] {
-  const supportedAttributes: string[] = ['className', ...options.customAttributes];
+  const supportedAttributes: string[] = ['class', 'className', ...options.customAttributes];
   const supportedFunctions: string[] = ['classNames', ...options.customFunctions];
   /**
    * Most nodes
@@ -1288,7 +1288,7 @@ export function findTargetClassNameNodesForSvelte(
   ast: any,
   options: ResolvedOptions,
 ): ClassNameNode[] {
-  const supportedAttributes: string[] = ['class', ...options.customAttributes];
+  const supportedAttributes: string[] = ['class', 'className', ...options.customAttributes];
   const supportedFunctions: string[] = ['classNames', ...options.customFunctions];
   /**
    * Most nodes
