@@ -21,6 +21,9 @@ const fixtures: Fixture[] = [
       <div class={classNames('lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere')}>
         <span>lorem ipsum</span>
       </div>
+      <div className={classNames('lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere')}>
+        <span>lorem ipsum</span>
+      </div>
     </div>
   </div>
 </div>
@@ -30,6 +33,14 @@ const fixtures: Fixture[] = [
     <div>
       <div
         class={classNames(
+          \`lorem ipsum dolor sit amet consectetur adipiscing
+          elit proin ex massa hendrerit eu posuere\`,
+        )}
+      >
+        <span>lorem ipsum</span>
+      </div>
+      <div
+        className={classNames(
           \`lorem ipsum dolor sit amet consectetur adipiscing
           elit proin ex massa hendrerit eu posuere\`,
         )}
@@ -50,6 +61,9 @@ const fixtures: Fixture[] = [
       <div class={foo('lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere')}>
         <span>lorem ipsum</span>
       </div>
+      <div className={foo('lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere')}>
+        <span>lorem ipsum</span>
+      </div>
     </div>
   </div>
 </div>
@@ -59,6 +73,14 @@ const fixtures: Fixture[] = [
     <div>
       <div
         class={foo(
+          \`lorem ipsum dolor sit amet consectetur adipiscing
+          elit proin ex massa hendrerit eu posuere\`,
+        )}
+      >
+        <span>lorem ipsum</span>
+      </div>
+      <div
+        className={foo(
           \`lorem ipsum dolor sit amet consectetur adipiscing
           elit proin ex massa hendrerit eu posuere\`,
         )}
