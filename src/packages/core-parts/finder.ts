@@ -674,7 +674,7 @@ export function findTargetClassNameNodesForVue(
   options: ResolvedOptions,
   addon: Dict<(text: string, options: any) => any>,
 ): ClassNameNode[] {
-  const supportedAttributes: string[] = ['className', 'class', ...options.customAttributes];
+  const supportedAttributes: string[] = ['class', 'className', ...options.customAttributes];
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const supportedFunctions: string[] = ['classNames', ...options.customFunctions];
   /**
@@ -960,8 +960,8 @@ export function findTargetClassNameNodesForAstro(
   addon: Dict<(text: string, options: any) => any>,
 ): ClassNameNode[] {
   const supportedAttributes: string[] = [
-    'className',
     'class',
+    'className',
     'class:list',
     ...options.customAttributes,
   ];
