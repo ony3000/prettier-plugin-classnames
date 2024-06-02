@@ -18,6 +18,9 @@ const fixtures: Fixture[] = [
 export function Foo() {
   return (
     <div>
+      <div class={classNames('lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere')}>
+        <span>lorem ipsum</span>
+      </div>
       <div className={classNames('lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere')}>
         <span>lorem ipsum</span>
       </div>
@@ -28,6 +31,14 @@ export function Foo() {
     output: `export function Foo() {
   return (
     <div>
+      <div
+        class={classNames(
+          \`lorem ipsum dolor sit amet consectetur adipiscing
+elit proin ex massa hendrerit eu posuere\`,
+        )}
+      >
+        <span>lorem ipsum</span>
+      </div>
       <div
         className={classNames(
           \`lorem ipsum dolor sit amet consectetur adipiscing
@@ -47,6 +58,9 @@ elit proin ex massa hendrerit eu posuere\`,
 export function Foo() {
   return (
     <div>
+      <div class={foo('lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere')}>
+        <span>lorem ipsum</span>
+      </div>
       <div className={foo('lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere')}>
         <span>lorem ipsum</span>
       </div>
@@ -57,6 +71,14 @@ export function Foo() {
     output: `export function Foo() {
   return (
     <div>
+      <div
+        class={foo(
+          \`lorem ipsum dolor sit amet consectetur adipiscing
+elit proin ex massa hendrerit eu posuere\`,
+        )}
+      >
+        <span>lorem ipsum</span>
+      </div>
       <div
         className={foo(
           \`lorem ipsum dolor sit amet consectetur adipiscing
