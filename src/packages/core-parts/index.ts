@@ -423,7 +423,7 @@ export function parseLineByLineAndReplace({
   format: (source: string, options?: any) => string;
   addon: Dict<(text: string, options: any) => any>;
 }): string {
-  if (formattedText === '') {
+  if (formattedText === '' || options.parser === 'angular') {
     return formattedText;
   }
 
@@ -747,7 +747,7 @@ export async function parseLineByLineAndReplaceAsync({
   format: (source: string, options?: any) => Promise<string>;
   addon: Dict<(text: string, options: any) => any>;
 }): Promise<string> {
-  if (formattedText === '') {
+  if (formattedText === '' || options.parser === 'angular') {
     return formattedText;
   }
 
