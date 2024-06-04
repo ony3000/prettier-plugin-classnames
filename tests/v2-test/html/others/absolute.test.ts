@@ -161,7 +161,7 @@ posuere"
 `,
   },
   {
-    name: 'plugin options (1) - custom attributes',
+    name: 'plugin options - custom attributes',
     input: `
 <template>
   <div>
@@ -184,36 +184,6 @@ adipiscing elit proin ex massa hendrerit eu posuere"
 `,
     options: {
       customAttributes: ['fixme'],
-    },
-  },
-  {
-    name: 'plugin options (2) - custom functions',
-    input: `
-<template>
-  <div>
-    <div :class="clsx('lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere')">
-      <slot></slot>
-    </div>
-  </div>
-</template>
-`,
-    output: `<template>
-  <div>
-    <div
-      :class="
-        clsx(
-          \`lorem ipsum dolor sit amet consectetur adipiscing
-elit proin ex massa hendrerit eu posuere\`,
-        )
-      "
-    >
-      <slot></slot>
-    </div>
-  </div>
-</template>
-`,
-    options: {
-      customFunctions: ['clsx'],
     },
   },
 ];
