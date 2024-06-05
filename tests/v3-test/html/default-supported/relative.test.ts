@@ -13,15 +13,15 @@ const options = {
 
 const fixtures: Fixture[] = [
   {
-    name: 'supported attributes and supported functions',
+    name: 'supported attributes',
     input: `
 <template>
   <div>
     <div>
-      <div v-bind:class="classNames('lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere')">
+      <div class="lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere">
         <span>lorem ipsum</span>
       </div>
-      <div :className="classNames('lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere')">
+      <div className="lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere">
         <span>lorem ipsum</span>
       </div>
     </div>
@@ -32,22 +32,14 @@ const fixtures: Fixture[] = [
   <div>
     <div>
       <div
-        v-bind:class="
-          classNames(
-            \`lorem ipsum dolor sit amet consectetur adipiscing elit proin
-            ex massa hendrerit eu posuere\`,
-          )
-        "
+        class="lorem ipsum dolor sit amet consectetur adipiscing elit proin
+          ex massa hendrerit eu posuere"
       >
         <span>lorem ipsum</span>
       </div>
       <div
-        :className="
-          classNames(
-            \`lorem ipsum dolor sit amet consectetur adipiscing elit proin
-            ex massa hendrerit eu posuere\`,
-          )
-        "
+        className="lorem ipsum dolor sit amet consectetur adipiscing elit proin
+          ex massa hendrerit eu posuere"
       >
         <span>lorem ipsum</span>
       </div>
@@ -57,12 +49,12 @@ const fixtures: Fixture[] = [
 `,
   },
   {
-    name: 'unsupported attributes and unsupported functions',
+    name: 'unsupported attributes',
     input: `
 <template>
   <div>
     <div>
-      <div v-bind:title="foo('lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere')">
+      <div title="lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere">
         <span>lorem ipsum</span>
       </div>
     </div>
@@ -73,11 +65,7 @@ const fixtures: Fixture[] = [
   <div>
     <div>
       <div
-        v-bind:title="
-          foo(
-            'lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere',
-          )
-        "
+        title="lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere"
       >
         <span>lorem ipsum</span>
       </div>

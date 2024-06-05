@@ -18,12 +18,10 @@ const fixtures: Fixture[] = [
 <template>
   <div>
     <!-- prettier-ignore -->
-    <div
-      :class="classNames(
-        'lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere',
-        'lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere',
-      )"
-    >
+    <div class="lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere">
+      <slot></slot>
+    </div>
+    <div class="lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere">
       <slot></slot>
     </div>
   </div>
@@ -32,11 +30,12 @@ const fixtures: Fixture[] = [
     output: `<template>
   <div>
     <!-- prettier-ignore -->
+    <div class="lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere">
+      <slot></slot>
+    </div>
     <div
-      :class="classNames(
-        'lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere',
-        'lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere',
-      )"
+      class="lorem ipsum dolor sit amet consectetur adipiscing elit proin
+        ex massa hendrerit eu posuere"
     >
       <slot></slot>
     </div>
@@ -56,12 +55,12 @@ const combination = classNames(
 </script>
 `,
     output: `<script setup lang="ts">
-const combination = classNames(
-  /* prettier-ignore */
-  'lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere',
-  \`lorem ipsum dolor sit amet consectetur adipiscing elit proin
-  ex massa hendrerit eu posuere\`,
-);
+  const combination = classNames(
+    /* prettier-ignore */
+    'lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere',
+    \`lorem ipsum dolor sit amet consectetur adipiscing elit proin
+    ex massa hendrerit eu posuere\`,
+  );
 </script>
 `,
   },
@@ -77,12 +76,12 @@ const combination = classNames(
 </script>
 `,
     output: `<script setup lang="ts">
-const combination = classNames(
-  // prettier-ignore
-  'lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere',
-  \`lorem ipsum dolor sit amet consectetur adipiscing elit proin
-  ex massa hendrerit eu posuere\`,
-);
+  const combination = classNames(
+    // prettier-ignore
+    'lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere',
+    \`lorem ipsum dolor sit amet consectetur adipiscing elit proin
+    ex massa hendrerit eu posuere\`,
+  );
 </script>
 `,
   },
@@ -102,12 +101,12 @@ const combination = classNames(
   lang="ts"
   zero-one-two-three-four-five-six-seven-eight-nine="0123456789"
 >
-const combination = classNames(
-  // prettier-ignore
-  'lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere',
-  \`lorem ipsum dolor sit amet consectetur adipiscing elit proin
-  ex massa hendrerit eu posuere\`,
-);
+  const combination = classNames(
+    // prettier-ignore
+    'lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere',
+    \`lorem ipsum dolor sit amet consectetur adipiscing elit proin
+    ex massa hendrerit eu posuere\`,
+  );
 </script>
 `,
   },
@@ -119,7 +118,7 @@ const combination = classNames(
 -->
 <template>
   <div>
-    <div :class="classNames('lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere')">
+    <div class="lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere">
       <slot></slot>
     </div>
   </div>
@@ -131,12 +130,8 @@ const combination = classNames(
 <template>
   <div>
     <div
-      :class="
-        classNames(
-          \`lorem ipsum dolor sit amet consectetur adipiscing elit proin
-          ex massa hendrerit eu posuere\`,
-        )
-      "
+      class="lorem ipsum dolor sit amet consectetur adipiscing elit proin
+        ex massa hendrerit eu posuere"
     >
       <slot></slot>
     </div>
@@ -150,7 +145,7 @@ const combination = classNames(
 <!-- /* prettier-ignore */ -->
 <template>
   <div>
-    <div :class="classNames('lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere')">
+    <div class="lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere">
       <slot></slot>
     </div>
   </div>
@@ -160,12 +155,8 @@ const combination = classNames(
 <template>
   <div>
     <div
-      :class="
-        classNames(
-          \`lorem ipsum dolor sit amet consectetur adipiscing elit proin
-          ex massa hendrerit eu posuere\`,
-        )
-      "
+      class="lorem ipsum dolor sit amet consectetur adipiscing elit proin
+        ex massa hendrerit eu posuere"
     >
       <slot></slot>
     </div>
