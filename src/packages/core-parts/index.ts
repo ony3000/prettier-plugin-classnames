@@ -2,6 +2,7 @@ import { createHash } from 'node:crypto';
 
 import {
   findTargetClassNameNodes,
+  findTargetClassNameNodesForHtml,
   findTargetClassNameNodesForVue,
   findTargetClassNameNodesForAstro,
   findTargetClassNameNodesForSvelte,
@@ -423,7 +424,7 @@ export function parseLineByLineAndReplace({
   format: (source: string, options?: any) => string;
   addon: Dict<(text: string, options: any) => any>;
 }): string {
-  if (formattedText === '' || options.parser === 'angular' || options.parser === 'html') {
+  if (formattedText === '' || options.parser === 'angular') {
     return formattedText;
   }
 
@@ -437,6 +438,10 @@ export function parseLineByLineAndReplace({
     }
     case 'svelte': {
       targetClassNameNodes = findTargetClassNameNodesForSvelte(formattedText, ast, options);
+      break;
+    }
+    case 'html': {
+      targetClassNameNodes = findTargetClassNameNodesForHtml(ast, options, addon);
       break;
     }
     case 'vue': {
@@ -747,7 +752,7 @@ export async function parseLineByLineAndReplaceAsync({
   format: (source: string, options?: any) => Promise<string>;
   addon: Dict<(text: string, options: any) => any>;
 }): Promise<string> {
-  if (formattedText === '' || options.parser === 'angular' || options.parser === 'html') {
+  if (formattedText === '' || options.parser === 'angular') {
     return formattedText;
   }
 
@@ -761,6 +766,10 @@ export async function parseLineByLineAndReplaceAsync({
     }
     case 'svelte': {
       targetClassNameNodes = findTargetClassNameNodesForSvelte(formattedText, ast, options);
+      break;
+    }
+    case 'html': {
+      targetClassNameNodes = findTargetClassNameNodesForHtml(ast, options, addon);
       break;
     }
     case 'vue': {
