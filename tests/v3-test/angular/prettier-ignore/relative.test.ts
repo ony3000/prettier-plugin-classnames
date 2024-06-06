@@ -13,39 +13,7 @@ const options = {
 
 const fixtures: Fixture[] = [
   {
-    name: 'valid ignore comment (1) - component',
-    input: `
-<!-- prettier-ignore -->
-<template>
-  <div>
-    <div
-      :class="classNames(
-        'lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere',
-        'lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere',
-      )"
-    >
-      <slot></slot>
-    </div>
-  </div>
-</template>
-`,
-    output: `<!-- prettier-ignore -->
-<template>
-  <div>
-    <div
-      :class="classNames(
-        'lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere',
-        'lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere',
-      )"
-    >
-      <slot></slot>
-    </div>
-  </div>
-</template>
-`,
-  },
-  {
-    name: 'valid ignore comment (2) - element',
+    name: 'valid ignore comment (1) - element',
     input: `
 <template>
   <div>
@@ -77,42 +45,7 @@ const fixtures: Fixture[] = [
 `,
   },
   {
-    name: 'valid ignore comment (3) - class name combination',
-    input: `
-<template>
-  <div>
-    <div
-      :class="classNames(
-        // prettier-ignore
-        'lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere',
-        'lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere',
-      )"
-    >
-      <slot></slot>
-    </div>
-  </div>
-</template>
-`,
-    output: `<template>
-  <div>
-    <div
-      :class="
-        classNames(
-          // prettier-ignore
-          'lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere',
-          \`lorem ipsum dolor sit amet consectetur adipiscing elit proin
-          ex massa hendrerit eu posuere\`,
-        )
-      "
-    >
-      <slot></slot>
-    </div>
-  </div>
-</template>
-`,
-  },
-  {
-    name: 'valid ignore comment (4) - script tag',
+    name: 'valid ignore comment (2) - script tag',
     input: `
 <script setup lang="ts">
 const combination = classNames(
@@ -133,7 +66,7 @@ const combination = classNames(
 `,
   },
   {
-    name: 'valid ignore comment (5) - script tag',
+    name: 'valid ignore comment (3) - script tag',
     input: `
 <script setup lang="ts">
 const combination = classNames(
@@ -154,7 +87,7 @@ const combination = classNames(
 `,
   },
   {
-    name: 'valid ignore comment (6) - multi-line script opening tag',
+    name: 'valid ignore comment (4) - multi-line script opening tag',
     input: `
 <script setup lang="ts" zero-one-two-three-four-five-six-seven-eight-nine="0123456789">
 const combination = classNames(

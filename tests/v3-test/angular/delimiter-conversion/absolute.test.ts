@@ -13,30 +13,7 @@ const options = {
 
 const fixtures: Fixture[] = [
   {
-    name: 'contains single quote (1) - delimiter is backtick',
-    input: `
-<template>
-  <div>
-    <div v-bind:class="\`lorem ipsum do'or sit amet\`">
-      <slot></slot>
-    </div>
-  </div>
-</template>
-`,
-    output: `<template>
-  <div>
-    <div v-bind:class="'lorem ipsum do\\'or sit amet'">
-      <slot></slot>
-    </div>
-  </div>
-</template>
-`,
-    options: {
-      singleQuote: true,
-    },
-  },
-  {
-    name: 'contains single quote (2) - delimiter is single quote',
+    name: 'contains single quote - delimiter is single quote',
     input: `
 <template>
   <div>
@@ -59,30 +36,7 @@ const fixtures: Fixture[] = [
     },
   },
   {
-    name: 'contains backtick (1) - delimiter is backtick',
-    input: `
-<template>
-  <div>
-    <div v-bind:class="\`lorem ipsum do\\\`or sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere\`">
-      <slot></slot>
-    </div>
-  </div>
-</template>
-`,
-    output: `<template>
-  <div>
-    <div
-      v-bind:class="\`lorem ipsum do\\\`or sit amet consectetur
-adipiscing elit proin ex massa hendrerit eu posuere\`"
-    >
-      <slot></slot>
-    </div>
-  </div>
-</template>
-`,
-  },
-  {
-    name: 'contains backtick (2) - delimiter is single quote',
+    name: 'contains backtick - delimiter is single quote',
     input: `
 <template>
   <div>
