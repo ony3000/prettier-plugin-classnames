@@ -17,7 +17,7 @@ const fixtures: Fixture[] = [
     input: `
 <template>
   <div>
-    <div v-bind:class="'lorem ipsum dolor sit amet'">
+    <div [class]="'lorem ipsum dolor sit amet'">
       <slot></slot>
     </div>
   </div>
@@ -25,7 +25,7 @@ const fixtures: Fixture[] = [
 `,
     output: `<template>
   <div>
-    <div v-bind:class="'lorem ipsum dolor sit amet'">
+    <div [class]="'lorem ipsum dolor sit amet'">
       <slot></slot>
     </div>
   </div>
@@ -37,7 +37,7 @@ const fixtures: Fixture[] = [
     input: `
 <template>
   <div>
-    <div v-bind:class="'  lorem ipsum dolor sit amet  '">
+    <div [class]="'  lorem ipsum dolor sit amet  '">
       <slot></slot>
     </div>
   </div>
@@ -45,7 +45,7 @@ const fixtures: Fixture[] = [
 `,
     output: `<template>
   <div>
-    <div v-bind:class="' lorem ipsum dolor sit amet '">
+    <div [class]="' lorem ipsum dolor sit amet '">
       <slot></slot>
     </div>
   </div>
@@ -57,8 +57,8 @@ const fixtures: Fixture[] = [
     input: `
 <template>
   <div>
-    <div v-bind:class="
-      'lorem ipsum\\
+    <div [class]="
+      'lorem ipsum
       dolor sit amet'
     ">
       <slot></slot>
@@ -68,7 +68,11 @@ const fixtures: Fixture[] = [
 `,
     output: `<template>
   <div>
-    <div v-bind:class="'lorem ipsum dolor sit amet'">
+    <div
+      [class]="
+      'lorem ipsum dolor sit amet'
+    "
+    >
       <slot></slot>
     </div>
   </div>
@@ -80,7 +84,7 @@ const fixtures: Fixture[] = [
     input: `
 <template>
   <div>
-    <div v-bind:class="'lorem ipsum dolor sit amet consectetur adipiscing elit proin'">
+    <div [class]="'lorem ipsum dolor sit amet consectetur adipiscing elit proin'">
       <slot></slot>
     </div>
   </div>
@@ -89,8 +93,8 @@ const fixtures: Fixture[] = [
     output: `<template>
   <div>
     <div
-      v-bind:class="\`lorem ipsum dolor sit amet consectetur
-        adipiscing elit proin\`"
+      [class]="'lorem ipsum dolor sit amet consectetur
+        adipiscing elit proin'"
     >
       <slot></slot>
     </div>
@@ -103,7 +107,7 @@ const fixtures: Fixture[] = [
     input: `
 <template>
   <div>
-    <div v-bind:class="'   lorem ipsum dolor sit amet consectetur adipiscing elit proin   '">
+    <div [class]="'   lorem ipsum dolor sit amet consectetur adipiscing elit proin   '">
       <slot></slot>
     </div>
   </div>
@@ -112,8 +116,8 @@ const fixtures: Fixture[] = [
     output: `<template>
   <div>
     <div
-      v-bind:class="\` lorem ipsum dolor sit amet consectetur
-        adipiscing elit proin \`"
+      [class]="' lorem ipsum dolor sit amet consectetur
+        adipiscing elit proin '"
     >
       <slot></slot>
     </div>
@@ -126,10 +130,10 @@ const fixtures: Fixture[] = [
     input: `
 <template>
   <div>
-    <div v-bind:class="
-      'lorem ipsum\\
-      dolor sit amet\\
-      consectetur adipiscing elit\\
+    <div [class]="
+      'lorem ipsum
+      dolor sit amet
+      consectetur adipiscing elit
       proin'
     ">
       <slot></slot>
@@ -140,8 +144,10 @@ const fixtures: Fixture[] = [
     output: `<template>
   <div>
     <div
-      v-bind:class="\`lorem ipsum dolor sit amet consectetur
-        adipiscing elit proin\`"
+      [class]="
+      'lorem ipsum dolor sit amet consectetur adipiscing
+      elit proin'
+    "
     >
       <slot></slot>
     </div>
@@ -154,7 +160,7 @@ const fixtures: Fixture[] = [
     input: `
 <template>
   <div>
-    <div v-bind:class="'lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere eu volutpat id neque pellentesque'">
+    <div [class]="'lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere eu volutpat id neque pellentesque'">
       <slot></slot>
     </div>
   </div>
@@ -163,9 +169,9 @@ const fixtures: Fixture[] = [
     output: `<template>
   <div>
     <div
-      v-bind:class="\`lorem ipsum dolor sit amet consectetur
+      [class]="'lorem ipsum dolor sit amet consectetur
         adipiscing elit proin ex massa hendrerit eu posuere
-        eu volutpat id neque pellentesque\`"
+        eu volutpat id neque pellentesque'"
     >
       <slot></slot>
     </div>
@@ -178,7 +184,7 @@ const fixtures: Fixture[] = [
     input: `
 <template>
   <div>
-    <div v-bind:class="'    lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere eu volutpat id neque pellentesque    '">
+    <div [class]="'    lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere eu volutpat id neque pellentesque    '">
       <slot></slot>
     </div>
   </div>
@@ -187,9 +193,9 @@ const fixtures: Fixture[] = [
     output: `<template>
   <div>
     <div
-      v-bind:class="\` lorem ipsum dolor sit amet consectetur
+      [class]="' lorem ipsum dolor sit amet consectetur
         adipiscing elit proin ex massa hendrerit eu posuere
-        eu volutpat id neque pellentesque \`"
+        eu volutpat id neque pellentesque '"
     >
       <slot></slot>
     </div>
@@ -202,10 +208,10 @@ const fixtures: Fixture[] = [
     input: `
 <template>
   <div>
-    <div v-bind:class="
-      'lorem ipsum\\
-      dolor sit amet\\
-      consectetur adipiscing elit\\
+    <div [class]="
+      'lorem ipsum
+      dolor sit amet
+      consectetur adipiscing elit
       proin ex massa hendrerit eu posuere eu volutpat id neque pellentesque'
     ">
       <slot></slot>
@@ -216,9 +222,11 @@ const fixtures: Fixture[] = [
     output: `<template>
   <div>
     <div
-      v-bind:class="\`lorem ipsum dolor sit amet consectetur
-        adipiscing elit proin ex massa hendrerit eu posuere
-        eu volutpat id neque pellentesque\`"
+      [class]="
+      'lorem ipsum dolor sit amet consectetur adipiscing
+      elit proin ex massa hendrerit eu posuere eu volutpat
+      id neque pellentesque'
+    "
     >
       <slot></slot>
     </div>
@@ -231,7 +239,7 @@ const fixtures: Fixture[] = [
     input: `
 <template>
   <div>
-    <Box v-bind:class="'lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere'">
+    <Box [class]="'lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere'">
       <slot></slot>
     </Box>
   </div>
@@ -240,8 +248,8 @@ const fixtures: Fixture[] = [
     output: `<template>
   <div>
     <Box
-      v-bind:class="\`lorem ipsum dolor sit amet consectetur
-        adipiscing elit proin ex massa hendrerit eu posuere\`"
+      [class]="'lorem ipsum dolor sit amet consectetur
+        adipiscing elit proin ex massa hendrerit eu posuere'"
     >
       <slot></slot>
     </Box>
@@ -250,11 +258,11 @@ const fixtures: Fixture[] = [
 `,
   },
   {
-    name: 'syntax variants (2) - shorthand',
+    name: 'syntax variants (2) - property binding',
     input: `
 <template>
   <div>
-    <div :class="'lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere'">
+    <div [className]="'lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere'">
       <slot></slot>
     </div>
   </div>
@@ -263,8 +271,54 @@ const fixtures: Fixture[] = [
     output: `<template>
   <div>
     <div
-      :class="\`lorem ipsum dolor sit amet consectetur
-        adipiscing elit proin ex massa hendrerit eu posuere\`"
+      [className]="'lorem ipsum dolor sit amet consectetur
+        adipiscing elit proin ex massa hendrerit eu posuere'"
+    >
+      <slot></slot>
+    </div>
+  </div>
+</template>
+`,
+  },
+  {
+    name: 'syntax variants (3) - attribute binding',
+    input: `
+<template>
+  <div>
+    <div [attr.class]="'lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere'">
+      <slot></slot>
+    </div>
+  </div>
+</template>
+`,
+    output: `<template>
+  <div>
+    <div
+      [attr.class]="'lorem ipsum dolor sit amet consectetur
+        adipiscing elit proin ex massa hendrerit eu posuere'"
+    >
+      <slot></slot>
+    </div>
+  </div>
+</template>
+`,
+  },
+  {
+    name: 'syntax variants (4) - built-in directive',
+    input: `
+<template>
+  <div>
+    <div [ngClass]="'lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere'">
+      <slot></slot>
+    </div>
+  </div>
+</template>
+`,
+    output: `<template>
+  <div>
+    <div
+      [ngClass]="'lorem ipsum dolor sit amet consectetur
+        adipiscing elit proin ex massa hendrerit eu posuere'"
     >
       <slot></slot>
     </div>

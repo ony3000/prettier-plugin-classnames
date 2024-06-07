@@ -19,7 +19,7 @@ const fixtures: Fixture[] = [
   <div>
     <!-- prettier-ignore -->
     <div
-      :class="classNames(
+      [class]="classNames(
         'lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere',
         'lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere',
       )"
@@ -33,7 +33,7 @@ const fixtures: Fixture[] = [
   <div>
     <!-- prettier-ignore -->
     <div
-      :class="classNames(
+      [class]="classNames(
         'lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere',
         'lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere',
       )"
@@ -56,12 +56,12 @@ const combination = classNames(
 </script>
 `,
     output: `<script setup lang="ts">
-const combination = classNames(
-  /* prettier-ignore */
-  'lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere',
-  \`lorem ipsum dolor sit amet consectetur adipiscing elit
+  const combination = classNames(
+    /* prettier-ignore */
+    'lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere',
+    \`lorem ipsum dolor sit amet consectetur adipiscing elit
 proin ex massa hendrerit eu posuere\`,
-);
+  );
 </script>
 `,
   },
@@ -77,12 +77,12 @@ const combination = classNames(
 </script>
 `,
     output: `<script setup lang="ts">
-const combination = classNames(
-  // prettier-ignore
-  'lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere',
-  \`lorem ipsum dolor sit amet consectetur adipiscing elit
+  const combination = classNames(
+    // prettier-ignore
+    'lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere',
+    \`lorem ipsum dolor sit amet consectetur adipiscing elit
 proin ex massa hendrerit eu posuere\`,
-);
+  );
 </script>
 `,
   },
@@ -102,12 +102,12 @@ const combination = classNames(
   lang="ts"
   zero-one-two-three-four-five-six-seven-eight-nine="0123456789"
 >
-const combination = classNames(
-  // prettier-ignore
-  'lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere',
-  \`lorem ipsum dolor sit amet consectetur adipiscing elit
+  const combination = classNames(
+    // prettier-ignore
+    'lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere',
+    \`lorem ipsum dolor sit amet consectetur adipiscing elit
 proin ex massa hendrerit eu posuere\`,
-);
+  );
 </script>
 `,
   },
@@ -119,7 +119,7 @@ proin ex massa hendrerit eu posuere\`,
 -->
 <template>
   <div>
-    <div :class="classNames('lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere')">
+    <div [class]="classNames('lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere')">
       <slot></slot>
     </div>
   </div>
@@ -131,12 +131,9 @@ proin ex massa hendrerit eu posuere\`,
 <template>
   <div>
     <div
-      :class="
-        classNames(
-          \`lorem ipsum dolor sit amet consectetur adipiscing
-elit proin ex massa hendrerit eu posuere\`,
-        )
-      "
+      [class]="classNames('lorem ipsum dolor sit amet
+consectetur adipiscing elit proin ex massa hendrerit eu
+posuere')"
     >
       <slot></slot>
     </div>
@@ -150,7 +147,7 @@ elit proin ex massa hendrerit eu posuere\`,
 <!-- /* prettier-ignore */ -->
 <template>
   <div>
-    <div :class="classNames('lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere')">
+    <div [class]="classNames('lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere')">
       <slot></slot>
     </div>
   </div>
@@ -160,12 +157,9 @@ elit proin ex massa hendrerit eu posuere\`,
 <template>
   <div>
     <div
-      :class="
-        classNames(
-          \`lorem ipsum dolor sit amet consectetur adipiscing
-elit proin ex massa hendrerit eu posuere\`,
-        )
-      "
+      [class]="classNames('lorem ipsum dolor sit amet
+consectetur adipiscing elit proin ex massa hendrerit eu
+posuere')"
     >
       <slot></slot>
     </div>

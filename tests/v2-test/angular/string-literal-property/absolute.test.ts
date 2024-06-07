@@ -17,7 +17,7 @@ const fixtures: Fixture[] = [
     input: `
 <template>
   <div>
-    <div v-bind:class="classNames({'lorem ipsum dolor sit amet': true})">
+    <div [class]="classNames({'lorem ipsum dolor sit amet': true})">
       <slot></slot>
     </div>
   </div>
@@ -26,9 +26,7 @@ const fixtures: Fixture[] = [
     output: `<template>
   <div>
     <div
-      v-bind:class="
-        classNames({ 'lorem ipsum dolor sit amet': true })
-      "
+      [class]="classNames({'lorem ipsum dolor sit amet': true})"
     >
       <slot></slot>
     </div>
@@ -41,7 +39,7 @@ const fixtures: Fixture[] = [
     input: `
 <template>
   <div>
-    <div v-bind:class="classNames({'  lorem ipsum dolor sit amet  ': true})">
+    <div [class]="classNames({'  lorem ipsum dolor sit amet  ': true})">
       <slot></slot>
     </div>
   </div>
@@ -50,11 +48,7 @@ const fixtures: Fixture[] = [
     output: `<template>
   <div>
     <div
-      v-bind:class="
-        classNames({
-          ' lorem ipsum dolor sit amet ': true,
-        })
-      "
+      [class]="classNames({' lorem ipsum dolor sit amet ': true})"
     >
       <slot></slot>
     </div>
@@ -67,8 +61,8 @@ const fixtures: Fixture[] = [
     input: `
 <template>
   <div>
-    <div v-bind:class="classNames({
-      'lorem ipsum\\
+    <div [class]="classNames({
+      'lorem ipsum
       dolor sit amet': true
     })">
       <slot></slot>
@@ -79,11 +73,9 @@ const fixtures: Fixture[] = [
     output: `<template>
   <div>
     <div
-      v-bind:class="
-        classNames({
-          'lorem ipsum dolor sit amet': true,
-        })
-      "
+      [class]="classNames({
+      'lorem ipsum dolor sit amet': true
+    })"
     >
       <slot></slot>
     </div>
@@ -96,7 +88,7 @@ const fixtures: Fixture[] = [
     input: `
 <template>
   <div>
-    <div v-bind:class="classNames({'lorem ipsum dolor sit amet consectetur adipiscing elit proin': true})">
+    <div [class]="classNames({'lorem ipsum dolor sit amet consectetur adipiscing elit proin': true})">
       <slot></slot>
     </div>
   </div>
@@ -105,12 +97,8 @@ const fixtures: Fixture[] = [
     output: `<template>
   <div>
     <div
-      v-bind:class="
-        classNames({
-          [\`lorem ipsum dolor sit amet consectetur
-adipiscing elit proin\`]: true,
-        })
-      "
+      [class]="classNames({'lorem ipsum dolor sit amet
+consectetur adipiscing elit proin': true})"
     >
       <slot></slot>
     </div>
@@ -123,7 +111,7 @@ adipiscing elit proin\`]: true,
     input: `
 <template>
   <div>
-    <div v-bind:class="classNames({'   lorem ipsum dolor sit amet consectetur adipiscing elit proin   ': true})">
+    <div [class]="classNames({'   lorem ipsum dolor sit amet consectetur adipiscing elit proin   ': true})">
       <slot></slot>
     </div>
   </div>
@@ -132,12 +120,8 @@ adipiscing elit proin\`]: true,
     output: `<template>
   <div>
     <div
-      v-bind:class="
-        classNames({
-          [\` lorem ipsum dolor sit amet consectetur
-adipiscing elit proin \`]: true,
-        })
-      "
+      [class]="classNames({' lorem ipsum dolor sit amet
+consectetur adipiscing elit proin ': true})"
     >
       <slot></slot>
     </div>
@@ -150,10 +134,10 @@ adipiscing elit proin \`]: true,
     input: `
 <template>
   <div>
-    <div v-bind:class="classNames({
-      'lorem ipsum\\
-      dolor sit amet\\
-      consectetur adipiscing elit\\
+    <div [class]="classNames({
+      'lorem ipsum
+      dolor sit amet
+      consectetur adipiscing elit
       proin': true
     })">
       <slot></slot>
@@ -164,12 +148,10 @@ adipiscing elit proin \`]: true,
     output: `<template>
   <div>
     <div
-      v-bind:class="
-        classNames({
-          [\`lorem ipsum dolor sit amet consectetur
-adipiscing elit proin\`]: true,
-        })
-      "
+      [class]="classNames({
+      'lorem ipsum dolor sit amet consectetur adipiscing
+elit proin': true
+    })"
     >
       <slot></slot>
     </div>
@@ -182,7 +164,7 @@ adipiscing elit proin\`]: true,
     input: `
 <template>
   <div>
-    <div v-bind:class="classNames({'lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere eu volutpat id neque pellentesque': true})">
+    <div [class]="classNames({'lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere eu volutpat id neque pellentesque': true})">
       <slot></slot>
     </div>
   </div>
@@ -191,13 +173,9 @@ adipiscing elit proin\`]: true,
     output: `<template>
   <div>
     <div
-      v-bind:class="
-        classNames({
-          [\`lorem ipsum dolor sit amet consectetur
-adipiscing elit proin ex massa hendrerit eu posuere eu
-volutpat id neque pellentesque\`]: true,
-        })
-      "
+      [class]="classNames({'lorem ipsum dolor sit amet
+consectetur adipiscing elit proin ex massa hendrerit eu
+posuere eu volutpat id neque pellentesque': true})"
     >
       <slot></slot>
     </div>
@@ -210,7 +188,7 @@ volutpat id neque pellentesque\`]: true,
     input: `
 <template>
   <div>
-    <div v-bind:class="classNames({'    lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere eu volutpat id neque pellentesque    ': true})">
+    <div [class]="classNames({'    lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere eu volutpat id neque pellentesque    ': true})">
       <slot></slot>
     </div>
   </div>
@@ -219,13 +197,9 @@ volutpat id neque pellentesque\`]: true,
     output: `<template>
   <div>
     <div
-      v-bind:class="
-        classNames({
-          [\` lorem ipsum dolor sit amet consectetur
-adipiscing elit proin ex massa hendrerit eu posuere eu
-volutpat id neque pellentesque \`]: true,
-        })
-      "
+      [class]="classNames({' lorem ipsum dolor sit amet
+consectetur adipiscing elit proin ex massa hendrerit eu
+posuere eu volutpat id neque pellentesque ': true})"
     >
       <slot></slot>
     </div>
@@ -238,10 +212,10 @@ volutpat id neque pellentesque \`]: true,
     input: `
 <template>
   <div>
-    <div v-bind:class="classNames({
-      'lorem ipsum\\
-      dolor sit amet\\
-      consectetur adipiscing elit\\
+    <div [class]="classNames({
+      'lorem ipsum
+      dolor sit amet
+      consectetur adipiscing elit
       proin ex massa hendrerit eu posuere eu volutpat id neque pellentesque': true
     })">
       <slot></slot>
@@ -252,13 +226,11 @@ volutpat id neque pellentesque \`]: true,
     output: `<template>
   <div>
     <div
-      v-bind:class="
-        classNames({
-          [\`lorem ipsum dolor sit amet consectetur
-adipiscing elit proin ex massa hendrerit eu posuere eu
-volutpat id neque pellentesque\`]: true,
-        })
-      "
+      [class]="classNames({
+      'lorem ipsum dolor sit amet consectetur adipiscing
+elit proin ex massa hendrerit eu posuere eu volutpat id
+neque pellentesque': true
+    })"
     >
       <slot></slot>
     </div>
@@ -271,7 +243,7 @@ volutpat id neque pellentesque\`]: true,
     input: `
 <template>
   <div>
-    <Box v-bind:class="classNames({'lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere': true})">
+    <Box [class]="classNames({'lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere': true})">
       <slot></slot>
     </Box>
   </div>
@@ -280,12 +252,9 @@ volutpat id neque pellentesque\`]: true,
     output: `<template>
   <div>
     <Box
-      v-bind:class="
-        classNames({
-          [\`lorem ipsum dolor sit amet consectetur
-adipiscing elit proin ex massa hendrerit eu posuere\`]: true,
-        })
-      "
+      [class]="classNames({'lorem ipsum dolor sit amet
+consectetur adipiscing elit proin ex massa hendrerit eu
+posuere': true})"
     >
       <slot></slot>
     </Box>
@@ -294,11 +263,11 @@ adipiscing elit proin ex massa hendrerit eu posuere\`]: true,
 `,
   },
   {
-    name: 'syntax variants (2) - shorthand',
+    name: 'syntax variants (2) - property binding',
     input: `
 <template>
   <div>
-    <div :class="classNames({'lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere': true})">
+    <div [className]="classNames({'lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere': true})">
       <slot></slot>
     </div>
   </div>
@@ -307,12 +276,57 @@ adipiscing elit proin ex massa hendrerit eu posuere\`]: true,
     output: `<template>
   <div>
     <div
-      :class="
-        classNames({
-          [\`lorem ipsum dolor sit amet consectetur
-adipiscing elit proin ex massa hendrerit eu posuere\`]: true,
-        })
-      "
+      [className]="classNames({'lorem ipsum dolor sit amet
+consectetur adipiscing elit proin ex massa hendrerit eu
+posuere': true})"
+    >
+      <slot></slot>
+    </div>
+  </div>
+</template>
+`,
+  },
+  {
+    name: 'syntax variants (3) - attribute binding',
+    input: `
+<template>
+  <div>
+    <div [attr.class]="classNames({'lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere': true})">
+      <slot></slot>
+    </div>
+  </div>
+</template>
+`,
+    output: `<template>
+  <div>
+    <div
+      [attr.class]="classNames({'lorem ipsum dolor sit amet
+consectetur adipiscing elit proin ex massa hendrerit eu
+posuere': true})"
+    >
+      <slot></slot>
+    </div>
+  </div>
+</template>
+`,
+  },
+  {
+    name: 'syntax variants (4) - built-in directive',
+    input: `
+<template>
+  <div>
+    <div [ngClass]="classNames({'lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere': true})">
+      <slot></slot>
+    </div>
+  </div>
+</template>
+`,
+    output: `<template>
+  <div>
+    <div
+      [ngClass]="classNames({'lorem ipsum dolor sit amet
+consectetur adipiscing elit proin ex massa hendrerit eu
+posuere': true})"
     >
       <slot></slot>
     </div>

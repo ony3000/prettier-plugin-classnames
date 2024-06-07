@@ -18,10 +18,10 @@ const fixtures: Fixture[] = [
 <template>
   <div>
     <div>
-      <div v-bind:class="classNames('lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere')">
+      <div [class]="classNames('lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere')">
         <span>lorem ipsum</span>
       </div>
-      <div :className="classNames('lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere')">
+      <div [className]="classNames('lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere')">
         <span>lorem ipsum</span>
       </div>
     </div>
@@ -32,24 +32,16 @@ const fixtures: Fixture[] = [
   <div>
     <div>
       <div
-        v-bind:class="
-          classNames(
-            \`lorem ipsum dolor sit amet consectetur
-            adipiscing elit proin ex massa hendrerit eu
-            posuere\`,
-          )
-        "
+        [class]="classNames('lorem ipsum dolor sit amet
+          consectetur adipiscing elit proin ex massa
+          hendrerit eu posuere')"
       >
         <span>lorem ipsum</span>
       </div>
       <div
-        :className="
-          classNames(
-            \`lorem ipsum dolor sit amet consectetur
-            adipiscing elit proin ex massa hendrerit eu
-            posuere\`,
-          )
-        "
+        [className]="classNames('lorem ipsum dolor sit amet
+          consectetur adipiscing elit proin ex massa
+          hendrerit eu posuere')"
       >
         <span>lorem ipsum</span>
       </div>
@@ -64,10 +56,10 @@ const fixtures: Fixture[] = [
 <template>
   <div>
     <div>
-      <div v-bind:class="foo('lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere')">
+      <div [class]="foo('lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere')">
         <span>lorem ipsum</span>
       </div>
-      <div :className="foo('lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere')">
+      <div [className]="foo('lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere')">
         <span>lorem ipsum</span>
       </div>
     </div>
@@ -78,24 +70,16 @@ const fixtures: Fixture[] = [
   <div>
     <div>
       <div
-        v-bind:class="
-          foo(
-            \`lorem ipsum dolor sit amet consectetur
-            adipiscing elit proin ex massa hendrerit eu
-            posuere\`,
-          )
-        "
+        [class]="foo('lorem ipsum dolor sit amet consectetur
+          adipiscing elit proin ex massa hendrerit eu
+          posuere')"
       >
         <span>lorem ipsum</span>
       </div>
       <div
-        :className="
-          foo(
-            \`lorem ipsum dolor sit amet consectetur
-            adipiscing elit proin ex massa hendrerit eu
-            posuere\`,
-          )
-        "
+        [className]="foo('lorem ipsum dolor sit amet
+          consectetur adipiscing elit proin ex massa
+          hendrerit eu posuere')"
       >
         <span>lorem ipsum</span>
       </div>
@@ -110,7 +94,7 @@ const fixtures: Fixture[] = [
 <template>
   <div>
     <div>
-      <div v-bind:title="classNames('lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere')">
+      <div [title]="classNames('lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere')">
         <span>lorem ipsum</span>
       </div>
     </div>
@@ -121,13 +105,9 @@ const fixtures: Fixture[] = [
   <div>
     <div>
       <div
-        v-bind:title="
-          classNames(
-            \`lorem ipsum dolor sit amet consectetur
-            adipiscing elit proin ex massa hendrerit eu
-            posuere\`,
-          )
-        "
+        [title]="classNames('lorem ipsum dolor sit amet
+          consectetur adipiscing elit proin ex massa
+          hendrerit eu posuere')"
       >
         <span>lorem ipsum</span>
       </div>
@@ -142,7 +122,7 @@ const fixtures: Fixture[] = [
 <template>
   <div>
     <div>
-      <div v-bind:title="foo('lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere')">
+      <div [title]="foo('lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere')">
         <span>lorem ipsum</span>
       </div>
     </div>
@@ -153,11 +133,9 @@ const fixtures: Fixture[] = [
   <div>
     <div>
       <div
-        v-bind:title="
-          foo(
-            'lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere',
-          )
-        "
+        [title]="foo('lorem ipsum dolor sit amet consectetur
+          adipiscing elit proin ex massa hendrerit eu
+          posuere')"
       >
         <span>lorem ipsum</span>
       </div>

@@ -17,7 +17,7 @@ const fixtures: Fixture[] = [
     input: `
 <template>
   <div>
-    <div v-bind:class="condition ? 'lorem ipsum dolor sit amet' : 'lorem ipsum dolor sit amet'">
+    <div [class]="condition ? 'lorem ipsum dolor sit amet' : 'lorem ipsum dolor sit amet'">
       <slot></slot>
     </div>
   </div>
@@ -26,11 +26,8 @@ const fixtures: Fixture[] = [
     output: `<template>
   <div>
     <div
-      v-bind:class="
-        condition
-          ? 'lorem ipsum dolor sit amet'
-          : 'lorem ipsum dolor sit amet'
-      "
+      [class]="condition ? 'lorem ipsum dolor sit amet' : 'lorem
+ipsum dolor sit amet'"
     >
       <slot></slot>
     </div>
@@ -43,7 +40,7 @@ const fixtures: Fixture[] = [
     input: `
 <template>
   <div>
-    <div v-bind:class="condition ? '  lorem ipsum dolor sit amet  ' : '  lorem ipsum dolor sit amet  '">
+    <div [class]="condition ? '  lorem ipsum dolor sit amet  ' : '  lorem ipsum dolor sit amet  '">
       <slot></slot>
     </div>
   </div>
@@ -52,11 +49,8 @@ const fixtures: Fixture[] = [
     output: `<template>
   <div>
     <div
-      v-bind:class="
-        condition
-          ? ' lorem ipsum dolor sit amet '
-          : ' lorem ipsum dolor sit amet '
-      "
+      [class]="condition ? ' lorem ipsum dolor sit amet ' : ' lorem
+ipsum dolor sit amet '"
     >
       <slot></slot>
     </div>
@@ -69,9 +63,9 @@ const fixtures: Fixture[] = [
     input: `
 <template>
   <div>
-    <div v-bind:class="
-      condition ? 'lorem ipsum\\
-      dolor sit amet' : 'lorem ipsum\\
+    <div [class]="
+      condition ? 'lorem ipsum
+      dolor sit amet' : 'lorem ipsum
       dolor sit amet'
     ">
       <slot></slot>
@@ -82,11 +76,10 @@ const fixtures: Fixture[] = [
     output: `<template>
   <div>
     <div
-      v-bind:class="
-        condition
-          ? 'lorem ipsum dolor sit amet'
-          : 'lorem ipsum dolor sit amet'
-      "
+      [class]="
+      condition ? 'lorem ipsum dolor sit amet' : 'lorem
+ipsum dolor sit amet'
+    "
     >
       <slot></slot>
     </div>
@@ -99,7 +92,7 @@ const fixtures: Fixture[] = [
     input: `
 <template>
   <div>
-    <div v-bind:class="condition ? 'lorem ipsum dolor sit amet consectetur adipiscing elit proin' : 'lorem ipsum dolor sit amet consectetur adipiscing elit proin'">
+    <div [class]="condition ? 'lorem ipsum dolor sit amet consectetur adipiscing elit proin' : 'lorem ipsum dolor sit amet consectetur adipiscing elit proin'">
       <slot></slot>
     </div>
   </div>
@@ -108,13 +101,9 @@ const fixtures: Fixture[] = [
     output: `<template>
   <div>
     <div
-      v-bind:class="
-        condition
-          ? \`lorem ipsum dolor sit amet consectetur
-adipiscing elit proin\`
-          : \`lorem ipsum dolor sit amet consectetur
-adipiscing elit proin\`
-      "
+      [class]="condition ? 'lorem ipsum dolor sit amet
+consectetur adipiscing elit proin' : 'lorem ipsum dolor sit
+amet consectetur adipiscing elit proin'"
     >
       <slot></slot>
     </div>
@@ -127,7 +116,7 @@ adipiscing elit proin\`
     input: `
 <template>
   <div>
-    <div v-bind:class="condition ? '   lorem ipsum dolor sit amet consectetur adipiscing elit proin   ' : '   lorem ipsum dolor sit amet consectetur adipiscing elit proin   '">
+    <div [class]="condition ? '   lorem ipsum dolor sit amet consectetur adipiscing elit proin   ' : '   lorem ipsum dolor sit amet consectetur adipiscing elit proin   '">
       <slot></slot>
     </div>
   </div>
@@ -136,13 +125,9 @@ adipiscing elit proin\`
     output: `<template>
   <div>
     <div
-      v-bind:class="
-        condition
-          ? \` lorem ipsum dolor sit amet consectetur
-adipiscing elit proin \`
-          : \` lorem ipsum dolor sit amet consectetur
-adipiscing elit proin \`
-      "
+      [class]="condition ? ' lorem ipsum dolor sit amet
+consectetur adipiscing elit proin ' : ' lorem ipsum dolor
+sit amet consectetur adipiscing elit proin '"
     >
       <slot></slot>
     </div>
@@ -155,13 +140,13 @@ adipiscing elit proin \`
     input: `
 <template>
   <div>
-    <div v-bind:class="
-      condition ? 'lorem ipsum\\
-      dolor sit amet\\
-      consectetur adipiscing elit\\
-      proin' : 'lorem ipsum\\
-      dolor sit amet\\
-      consectetur adipiscing elit\\
+    <div [class]="
+      condition ? 'lorem ipsum
+      dolor sit amet
+      consectetur adipiscing elit
+      proin' : 'lorem ipsum
+      dolor sit amet
+      consectetur adipiscing elit
       proin'
     ">
       <slot></slot>
@@ -172,13 +157,11 @@ adipiscing elit proin \`
     output: `<template>
   <div>
     <div
-      v-bind:class="
-        condition
-          ? \`lorem ipsum dolor sit amet consectetur
-adipiscing elit proin\`
-          : \`lorem ipsum dolor sit amet consectetur
-adipiscing elit proin\`
-      "
+      [class]="
+      condition ? 'lorem ipsum dolor sit amet consectetur
+adipiscing elit proin' : 'lorem ipsum dolor sit amet
+consectetur adipiscing elit proin'
+    "
     >
       <slot></slot>
     </div>
@@ -191,7 +174,7 @@ adipiscing elit proin\`
     input: `
 <template>
   <div>
-    <div v-bind:class="condition ? 'lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere eu volutpat id neque pellentesque' : 'lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere eu volutpat id neque pellentesque'">
+    <div [class]="condition ? 'lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere eu volutpat id neque pellentesque' : 'lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere eu volutpat id neque pellentesque'">
       <slot></slot>
     </div>
   </div>
@@ -200,15 +183,11 @@ adipiscing elit proin\`
     output: `<template>
   <div>
     <div
-      v-bind:class="
-        condition
-          ? \`lorem ipsum dolor sit amet consectetur
-adipiscing elit proin ex massa hendrerit eu posuere eu
-volutpat id neque pellentesque\`
-          : \`lorem ipsum dolor sit amet consectetur
-adipiscing elit proin ex massa hendrerit eu posuere eu
-volutpat id neque pellentesque\`
-      "
+      [class]="condition ? 'lorem ipsum dolor sit amet
+consectetur adipiscing elit proin ex massa hendrerit eu
+posuere eu volutpat id neque pellentesque' : 'lorem ipsum
+dolor sit amet consectetur adipiscing elit proin ex massa
+hendrerit eu posuere eu volutpat id neque pellentesque'"
     >
       <slot></slot>
     </div>
@@ -221,7 +200,7 @@ volutpat id neque pellentesque\`
     input: `
 <template>
   <div>
-    <div v-bind:class="condition ? '    lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere eu volutpat id neque pellentesque    ' : '    lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere eu volutpat id neque pellentesque    '">
+    <div [class]="condition ? '    lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere eu volutpat id neque pellentesque    ' : '    lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere eu volutpat id neque pellentesque    '">
       <slot></slot>
     </div>
   </div>
@@ -230,15 +209,11 @@ volutpat id neque pellentesque\`
     output: `<template>
   <div>
     <div
-      v-bind:class="
-        condition
-          ? \` lorem ipsum dolor sit amet consectetur
-adipiscing elit proin ex massa hendrerit eu posuere eu
-volutpat id neque pellentesque \`
-          : \` lorem ipsum dolor sit amet consectetur
-adipiscing elit proin ex massa hendrerit eu posuere eu
-volutpat id neque pellentesque \`
-      "
+      [class]="condition ? ' lorem ipsum dolor sit amet
+consectetur adipiscing elit proin ex massa hendrerit eu
+posuere eu volutpat id neque pellentesque ' : ' lorem ipsum
+dolor sit amet consectetur adipiscing elit proin ex massa
+hendrerit eu posuere eu volutpat id neque pellentesque '"
     >
       <slot></slot>
     </div>
@@ -251,13 +226,13 @@ volutpat id neque pellentesque \`
     input: `
 <template>
   <div>
-    <div v-bind:class="
-      condition ? 'lorem ipsum\\
-      dolor sit amet\\
-      consectetur adipiscing elit\\
-      proin ex massa hendrerit eu posuere eu volutpat id neque pellentesque' : 'lorem ipsum\\
-      dolor sit amet\\
-      consectetur adipiscing elit\\
+    <div [class]="
+      condition ? 'lorem ipsum
+      dolor sit amet
+      consectetur adipiscing elit
+      proin ex massa hendrerit eu posuere eu volutpat id neque pellentesque' : 'lorem ipsum
+      dolor sit amet
+      consectetur adipiscing elit
       proin ex massa hendrerit eu posuere eu volutpat id neque pellentesque'
     ">
       <slot></slot>
@@ -268,15 +243,13 @@ volutpat id neque pellentesque \`
     output: `<template>
   <div>
     <div
-      v-bind:class="
-        condition
-          ? \`lorem ipsum dolor sit amet consectetur
+      [class]="
+      condition ? 'lorem ipsum dolor sit amet consectetur
 adipiscing elit proin ex massa hendrerit eu posuere eu
-volutpat id neque pellentesque\`
-          : \`lorem ipsum dolor sit amet consectetur
-adipiscing elit proin ex massa hendrerit eu posuere eu
-volutpat id neque pellentesque\`
-      "
+volutpat id neque pellentesque' : 'lorem ipsum dolor sit
+amet consectetur adipiscing elit proin ex massa hendrerit eu
+posuere eu volutpat id neque pellentesque'
+    "
     >
       <slot></slot>
     </div>
@@ -289,7 +262,7 @@ volutpat id neque pellentesque\`
     input: `
 <template>
   <div>
-    <Box v-bind:class="condition ? 'lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere' : 'lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere'">
+    <Box [class]="condition ? 'lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere' : 'lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere'">
       <slot></slot>
     </Box>
   </div>
@@ -298,13 +271,10 @@ volutpat id neque pellentesque\`
     output: `<template>
   <div>
     <Box
-      v-bind:class="
-        condition
-          ? \`lorem ipsum dolor sit amet consectetur
-adipiscing elit proin ex massa hendrerit eu posuere\`
-          : \`lorem ipsum dolor sit amet consectetur
-adipiscing elit proin ex massa hendrerit eu posuere\`
-      "
+      [class]="condition ? 'lorem ipsum dolor sit amet
+consectetur adipiscing elit proin ex massa hendrerit eu
+posuere' : 'lorem ipsum dolor sit amet consectetur
+adipiscing elit proin ex massa hendrerit eu posuere'"
     >
       <slot></slot>
     </Box>
@@ -313,11 +283,11 @@ adipiscing elit proin ex massa hendrerit eu posuere\`
 `,
   },
   {
-    name: 'syntax variants (2) - shorthand',
+    name: 'syntax variants (2) - property binding',
     input: `
 <template>
   <div>
-    <div :class="condition ? 'lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere' : 'lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere'">
+    <div [className]="condition ? 'lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere' : 'lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere'">
       <slot></slot>
     </div>
   </div>
@@ -326,13 +296,60 @@ adipiscing elit proin ex massa hendrerit eu posuere\`
     output: `<template>
   <div>
     <div
-      :class="
-        condition
-          ? \`lorem ipsum dolor sit amet consectetur
-adipiscing elit proin ex massa hendrerit eu posuere\`
-          : \`lorem ipsum dolor sit amet consectetur
-adipiscing elit proin ex massa hendrerit eu posuere\`
-      "
+      [className]="condition ? 'lorem ipsum dolor sit amet
+consectetur adipiscing elit proin ex massa hendrerit eu
+posuere' : 'lorem ipsum dolor sit amet consectetur
+adipiscing elit proin ex massa hendrerit eu posuere'"
+    >
+      <slot></slot>
+    </div>
+  </div>
+</template>
+`,
+  },
+  {
+    name: 'syntax variants (3) - attribute binding',
+    input: `
+<template>
+  <div>
+    <div [attr.class]="condition ? 'lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere' : 'lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere'">
+      <slot></slot>
+    </div>
+  </div>
+</template>
+`,
+    output: `<template>
+  <div>
+    <div
+      [attr.class]="condition ? 'lorem ipsum dolor sit amet
+consectetur adipiscing elit proin ex massa hendrerit eu
+posuere' : 'lorem ipsum dolor sit amet consectetur
+adipiscing elit proin ex massa hendrerit eu posuere'"
+    >
+      <slot></slot>
+    </div>
+  </div>
+</template>
+`,
+  },
+  {
+    name: 'syntax variants (4) - built-in directive',
+    input: `
+<template>
+  <div>
+    <div [ngClass]="condition ? 'lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere' : 'lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere'">
+      <slot></slot>
+    </div>
+  </div>
+</template>
+`,
+    output: `<template>
+  <div>
+    <div
+      [ngClass]="condition ? 'lorem ipsum dolor sit amet
+consectetur adipiscing elit proin ex massa hendrerit eu
+posuere' : 'lorem ipsum dolor sit amet consectetur
+adipiscing elit proin ex massa hendrerit eu posuere'"
     >
       <slot></slot>
     </div>

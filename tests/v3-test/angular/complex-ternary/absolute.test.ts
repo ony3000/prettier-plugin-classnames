@@ -17,7 +17,7 @@ const fixtures: Fixture[] = [
     input: `
 <template>
   <div>
-    <div v-bind:class="
+    <div [class]="
       condition
         ? 'lorem ipsum dolor sit amet'
         : (condition ? 'lorem ipsum dolor sit amet consectetur adipiscing elit proin' : 'lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere')
@@ -30,15 +30,14 @@ const fixtures: Fixture[] = [
     output: `<template>
   <div>
     <div
-      v-bind:class="
-        condition
-          ? 'lorem ipsum dolor sit amet'
-          : condition
-          ? \`lorem ipsum dolor sit amet consectetur
-adipiscing elit proin\`
-          : \`lorem ipsum dolor sit amet consectetur
-adipiscing elit proin ex massa hendrerit eu posuere\`
-      "
+      [class]="
+      condition
+        ? 'lorem ipsum dolor sit amet'
+        : (condition ? 'lorem ipsum dolor sit amet
+consectetur adipiscing elit proin' : 'lorem ipsum dolor sit
+amet consectetur adipiscing elit proin ex massa hendrerit eu
+posuere')
+    "
     >
       <slot></slot>
     </div>
@@ -51,7 +50,7 @@ adipiscing elit proin ex massa hendrerit eu posuere\`
     input: `
 <template>
   <div>
-    <div v-bind:class="
+    <div [class]="
       condition
         ? 'lorem ipsum dolor sit amet'
         : (condition
@@ -66,18 +65,17 @@ adipiscing elit proin ex massa hendrerit eu posuere\`
     output: `<template>
   <div>
     <div
-      v-bind:class="
-        condition
-          ? 'lorem ipsum dolor sit amet'
-          : condition
-          ? \`lorem ipsum dolor sit amet consectetur
-adipiscing elit proin\`
-          : condition
-          ? \`lorem ipsum dolor sit amet consectetur
-adipiscing elit proin\`
-          : \`lorem ipsum dolor sit amet consectetur
-adipiscing elit proin ex massa hendrerit eu posuere\`
-      "
+      [class]="
+      condition
+        ? 'lorem ipsum dolor sit amet'
+        : (condition
+            ? 'lorem ipsum dolor sit amet consectetur
+adipiscing elit proin'
+            : (condition ? 'lorem ipsum dolor sit amet
+consectetur adipiscing elit proin' : 'lorem ipsum dolor sit
+amet consectetur adipiscing elit proin ex massa hendrerit eu
+posuere'))
+    "
     >
       <slot></slot>
     </div>

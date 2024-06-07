@@ -17,7 +17,7 @@ const fixtures: Fixture[] = [
     input: `
 <template>
   <div>
-    <div v-bind:class="classNames('lorem ipsum dolor sit amet')">
+    <div [class]="classNames('lorem ipsum dolor sit amet')">
       <slot></slot>
     </div>
   </div>
@@ -25,11 +25,7 @@ const fixtures: Fixture[] = [
 `,
     output: `<template>
   <div>
-    <div
-      v-bind:class="
-        classNames('lorem ipsum dolor sit amet')
-      "
-    >
+    <div [class]="classNames('lorem ipsum dolor sit amet')">
       <slot></slot>
     </div>
   </div>
@@ -41,7 +37,7 @@ const fixtures: Fixture[] = [
     input: `
 <template>
   <div>
-    <div v-bind:class="classNames('  lorem ipsum dolor sit amet  ')">
+    <div [class]="classNames('  lorem ipsum dolor sit amet  ')">
       <slot></slot>
     </div>
   </div>
@@ -50,9 +46,7 @@ const fixtures: Fixture[] = [
     output: `<template>
   <div>
     <div
-      v-bind:class="
-        classNames(' lorem ipsum dolor sit amet ')
-      "
+      [class]="classNames(' lorem ipsum dolor sit amet ')"
     >
       <slot></slot>
     </div>
@@ -65,8 +59,8 @@ const fixtures: Fixture[] = [
     input: `
 <template>
   <div>
-    <div v-bind:class="classNames(
-      'lorem ipsum\\
+    <div [class]="classNames(
+      'lorem ipsum
       dolor sit amet'
     )">
       <slot></slot>
@@ -77,9 +71,9 @@ const fixtures: Fixture[] = [
     output: `<template>
   <div>
     <div
-      v-bind:class="
-        classNames('lorem ipsum dolor sit amet')
-      "
+      [class]="classNames(
+      'lorem ipsum dolor sit amet'
+    )"
     >
       <slot></slot>
     </div>
@@ -92,7 +86,7 @@ const fixtures: Fixture[] = [
     input: `
 <template>
   <div>
-    <div v-bind:class="classNames('lorem ipsum dolor sit amet consectetur adipiscing elit proin')">
+    <div [class]="classNames('lorem ipsum dolor sit amet consectetur adipiscing elit proin')">
       <slot></slot>
     </div>
   </div>
@@ -101,12 +95,8 @@ const fixtures: Fixture[] = [
     output: `<template>
   <div>
     <div
-      v-bind:class="
-        classNames(
-          \`lorem ipsum dolor sit amet consectetur adipiscing
-elit proin\`,
-        )
-      "
+      [class]="classNames('lorem ipsum dolor sit amet
+consectetur adipiscing elit proin')"
     >
       <slot></slot>
     </div>
@@ -119,7 +109,7 @@ elit proin\`,
     input: `
 <template>
   <div>
-    <div v-bind:class="classNames('   lorem ipsum dolor sit amet consectetur adipiscing elit proin   ')">
+    <div [class]="classNames('   lorem ipsum dolor sit amet consectetur adipiscing elit proin   ')">
       <slot></slot>
     </div>
   </div>
@@ -128,12 +118,8 @@ elit proin\`,
     output: `<template>
   <div>
     <div
-      v-bind:class="
-        classNames(
-          \` lorem ipsum dolor sit amet consectetur
-adipiscing elit proin \`,
-        )
-      "
+      [class]="classNames(' lorem ipsum dolor sit amet
+consectetur adipiscing elit proin ')"
     >
       <slot></slot>
     </div>
@@ -146,10 +132,10 @@ adipiscing elit proin \`,
     input: `
 <template>
   <div>
-    <div v-bind:class="classNames(
-      'lorem ipsum\\
-      dolor sit amet\\
-      consectetur adipiscing elit\\
+    <div [class]="classNames(
+      'lorem ipsum
+      dolor sit amet
+      consectetur adipiscing elit
       proin'
     )">
       <slot></slot>
@@ -160,12 +146,10 @@ adipiscing elit proin \`,
     output: `<template>
   <div>
     <div
-      v-bind:class="
-        classNames(
-          \`lorem ipsum dolor sit amet consectetur adipiscing
-elit proin\`,
-        )
-      "
+      [class]="classNames(
+      'lorem ipsum dolor sit amet consectetur adipiscing
+elit proin'
+    )"
     >
       <slot></slot>
     </div>
@@ -178,7 +162,7 @@ elit proin\`,
     input: `
 <template>
   <div>
-    <div v-bind:class="classNames('lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere eu volutpat id neque pellentesque')">
+    <div [class]="classNames('lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere eu volutpat id neque pellentesque')">
       <slot></slot>
     </div>
   </div>
@@ -187,13 +171,9 @@ elit proin\`,
     output: `<template>
   <div>
     <div
-      v-bind:class="
-        classNames(
-          \`lorem ipsum dolor sit amet consectetur adipiscing
-elit proin ex massa hendrerit eu posuere eu volutpat id
-neque pellentesque\`,
-        )
-      "
+      [class]="classNames('lorem ipsum dolor sit amet
+consectetur adipiscing elit proin ex massa hendrerit eu
+posuere eu volutpat id neque pellentesque')"
     >
       <slot></slot>
     </div>
@@ -206,7 +186,7 @@ neque pellentesque\`,
     input: `
 <template>
   <div>
-    <div v-bind:class="classNames('    lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere eu volutpat id neque pellentesque    ')">
+    <div [class]="classNames('    lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere eu volutpat id neque pellentesque    ')">
       <slot></slot>
     </div>
   </div>
@@ -215,13 +195,9 @@ neque pellentesque\`,
     output: `<template>
   <div>
     <div
-      v-bind:class="
-        classNames(
-          \` lorem ipsum dolor sit amet consectetur
-adipiscing elit proin ex massa hendrerit eu posuere eu
-volutpat id neque pellentesque \`,
-        )
-      "
+      [class]="classNames(' lorem ipsum dolor sit amet
+consectetur adipiscing elit proin ex massa hendrerit eu
+posuere eu volutpat id neque pellentesque ')"
     >
       <slot></slot>
     </div>
@@ -234,10 +210,10 @@ volutpat id neque pellentesque \`,
     input: `
 <template>
   <div>
-    <div v-bind:class="classNames(
-      'lorem ipsum\\
-      dolor sit amet\\
-      consectetur adipiscing elit\\
+    <div [class]="classNames(
+      'lorem ipsum
+      dolor sit amet
+      consectetur adipiscing elit
       proin ex massa hendrerit eu posuere eu volutpat id neque pellentesque'
     )">
       <slot></slot>
@@ -248,13 +224,11 @@ volutpat id neque pellentesque \`,
     output: `<template>
   <div>
     <div
-      v-bind:class="
-        classNames(
-          \`lorem ipsum dolor sit amet consectetur adipiscing
+      [class]="classNames(
+      'lorem ipsum dolor sit amet consectetur adipiscing
 elit proin ex massa hendrerit eu posuere eu volutpat id
-neque pellentesque\`,
-        )
-      "
+neque pellentesque'
+    )"
     >
       <slot></slot>
     </div>
@@ -267,7 +241,7 @@ neque pellentesque\`,
     input: `
 <template>
   <div>
-    <Box v-bind:class="classNames('lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere')">
+    <Box [class]="classNames('lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere')">
       <slot></slot>
     </Box>
   </div>
@@ -276,12 +250,9 @@ neque pellentesque\`,
     output: `<template>
   <div>
     <Box
-      v-bind:class="
-        classNames(
-          \`lorem ipsum dolor sit amet consectetur adipiscing
-elit proin ex massa hendrerit eu posuere\`,
-        )
-      "
+      [class]="classNames('lorem ipsum dolor sit amet
+consectetur adipiscing elit proin ex massa hendrerit eu
+posuere')"
     >
       <slot></slot>
     </Box>
@@ -290,11 +261,11 @@ elit proin ex massa hendrerit eu posuere\`,
 `,
   },
   {
-    name: 'syntax variants (2) - shorthand',
+    name: 'syntax variants (2) - property binding',
     input: `
 <template>
   <div>
-    <div :class="classNames('lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere')">
+    <div [className]="classNames('lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere')">
       <slot></slot>
     </div>
   </div>
@@ -303,12 +274,9 @@ elit proin ex massa hendrerit eu posuere\`,
     output: `<template>
   <div>
     <div
-      :class="
-        classNames(
-          \`lorem ipsum dolor sit amet consectetur adipiscing
-elit proin ex massa hendrerit eu posuere\`,
-        )
-      "
+      [className]="classNames('lorem ipsum dolor sit amet
+consectetur adipiscing elit proin ex massa hendrerit eu
+posuere')"
     >
       <slot></slot>
     </div>
@@ -317,7 +285,55 @@ elit proin ex massa hendrerit eu posuere\`,
 `,
   },
   {
-    name: 'syntax variants (3) - script tag',
+    name: 'syntax variants (3) - attribute binding',
+    input: `
+<template>
+  <div>
+    <div [attr.class]="classNames('lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere')">
+      <slot></slot>
+    </div>
+  </div>
+</template>
+`,
+    output: `<template>
+  <div>
+    <div
+      [attr.class]="classNames('lorem ipsum dolor sit amet
+consectetur adipiscing elit proin ex massa hendrerit eu
+posuere')"
+    >
+      <slot></slot>
+    </div>
+  </div>
+</template>
+`,
+  },
+  {
+    name: 'syntax variants (4) - built-in directive',
+    input: `
+<template>
+  <div>
+    <div [ngClass]="classNames('lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere')">
+      <slot></slot>
+    </div>
+  </div>
+</template>
+`,
+    output: `<template>
+  <div>
+    <div
+      [ngClass]="classNames('lorem ipsum dolor sit amet
+consectetur adipiscing elit proin ex massa hendrerit eu
+posuere')"
+    >
+      <slot></slot>
+    </div>
+  </div>
+</template>
+`,
+  },
+  {
+    name: 'syntax variants (5) - script tag',
     input: `
 <script setup lang="ts">
 const combination = classNames([
@@ -328,13 +344,13 @@ const combination = classNames([
 </script>
 `,
     output: `<script setup lang="ts">
-const combination = classNames([
-  "lorem ipsum dolor sit amet",
-  { "lorem ipsum dolor sit amet": true },
-  condition
-    ? "lorem ipsum dolor sit amet"
-    : "lorem ipsum dolor sit amet",
-]);
+  const combination = classNames([
+    "lorem ipsum dolor sit amet",
+    { "lorem ipsum dolor sit amet": true },
+    condition
+      ? "lorem ipsum dolor sit amet"
+      : "lorem ipsum dolor sit amet",
+  ]);
 </script>
 `,
   },

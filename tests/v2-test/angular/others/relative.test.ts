@@ -190,7 +190,7 @@ const fixtures: Fixture[] = [
     input: `
 <template>
   <div>
-    <div :class="clsx('lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere')">
+    <div [class]="clsx('lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere')">
       <slot></slot>
     </div>
   </div>
@@ -199,12 +199,8 @@ const fixtures: Fixture[] = [
     output: `<template>
   <div>
     <div
-      :class="
-        clsx(
-          \`lorem ipsum dolor sit amet consectetur adipiscing elit proin
-          ex massa hendrerit eu posuere\`,
-        )
-      "
+      [class]="clsx('lorem ipsum dolor sit amet consectetur adipiscing elit proin
+        ex massa hendrerit eu posuere')"
     >
       <slot></slot>
     </div>
