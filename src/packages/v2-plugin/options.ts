@@ -8,7 +8,7 @@ export const options: SupportOptions = {
     category: 'Format',
     default: [{ value: [] }],
     description:
-      'List of attributes that enclosing class names. The `className` attribute is always supported, even if no options are specified.',
+      'List of attributes that enclosing class names. The `class` and `className` attributes are always supported, even if no options are specified.',
   },
   customFunctions: {
     since: '0.1.0',

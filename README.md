@@ -54,7 +54,7 @@ export default {
 ### Custom Attributes
 
 List of attributes that enclosing class names.<br>
-Language-specific attribute names for writing class names, and `className` attribute are always supported, even if no options are specified.
+The `class` and `className` attributes are always supported, even if no options are specified.
 
 <!-- prettier-ignore -->
 Default | CLI&nbsp;Override | API&nbsp;Override

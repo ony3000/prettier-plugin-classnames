@@ -1,5 +1,4 @@
 import { parseLineByLineAndReplace } from 'core-parts';
-import { ClassNameType } from 'core-parts/shared';
 import type { Parser, ParserOptions, Plugin } from 'prettier';
 import { format } from 'prettier';
 import { parsers as babelParsers } from 'prettier/parser-babel';
@@ -14,13 +13,18 @@ const addon = {
 };
 
 function transformParser(
-  parserName: 'babel' | 'typescript' | 'vue' | 'astro',
+  parserName: SupportedParserNames,
   defaultParser: Parser,
   languageName?: string,
 ): Parser {
   return {
     ...defaultParser,
-    parse: (text: string, parsers: { [parserName: string]: Parser }, options: ParserOptions) => {
+    // @ts-ignore
+    parse: (
+      text: string,
+      parsers: { [parserName: string]: Parser },
+      options: ParserOptions & ThisPluginOptions,
+    ): FormattedTextAST => {
       const plugins = options.plugins.filter((plugin) => typeof plugin !== 'string') as Plugin[];
 
       let languageImplementedPlugin: Plugin | undefined;
@@ -55,11 +59,17 @@ function transformParser(
       const classNameWrappedText = parseLineByLineAndReplace({
         formattedText: firstFormattedText,
         ast,
-        // @ts-ignore
         options,
         format,
         addon,
       });
+
+      if (classNameWrappedText === firstFormattedText) {
+        return {
+          type: 'FormattedText',
+          body: classNameWrappedText,
+        };
+      }
 
       let secondFormattedText: string;
       try {
@@ -75,6 +85,13 @@ function transformParser(
         );
       }
 
+      if (secondFormattedText === firstFormattedText) {
+        return {
+          type: 'FormattedText',
+          body: classNameWrappedText,
+        };
+      }
+
       const secondAst = defaultParser.parse(
         secondFormattedText,
         { [parserName]: defaultParser },
@@ -83,14 +100,9 @@ function transformParser(
       const classNameSecondWrappedText = parseLineByLineAndReplace({
         formattedText: secondFormattedText,
         ast: secondAst,
-        // @ts-ignore
         options,
         format,
         addon,
-        targetClassNameTypes:
-          parserName === 'vue' || parserName === 'astro'
-            ? [ClassNameType.ASL, ClassNameType.AOL]
-            : [ClassNameType.ASL, ClassNameType.AOL, ClassNameType.CTL, ClassNameType.TLSL],
       });
 
       return {
@@ -105,6 +117,9 @@ function transformParser(
 export const parsers: { [parserName: string]: Parser } = {
   babel: transformParser('babel', babelParsers.babel),
   typescript: transformParser('typescript', typescriptParsers.typescript),
+  angular: transformParser('angular', htmlParsers.angular),
+  html: transformParser('html', htmlParsers.html),
   vue: transformParser('vue', htmlParsers.vue),
   astro: transformParser('astro', {} as Parser, 'astro'),
+  svelte: transformParser('svelte', {} as Parser, 'svelte'),
 };

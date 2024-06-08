@@ -19,91 +19,77 @@ export const SPACE = ' ';
 export const TAB = '\t';
 
 /**
- * size of tab character as space
+ * single quote character
  */
-export const TAB_SIZE = 4;
+export const SINGLE_QUOTE = "'";
 
-export enum ClassNameType {
-  /**
-   * Attributes on the same line as the opening tag and enclosed in quotes
-   */
-  ASL,
-  /**
-   * Attributes on their own line and enclosed in quotes
-   */
-  AOL,
-  /**
-   * String literal or template literal passed as function argument
-   */
-  FA,
-  /**
-   * Common string literal
-   */
-  CSL,
-  /**
-   * String literal starting on the same line as the attribute
-   */
-  SLSL,
-  /**
-   * String literal as object property
-   */
-  SLOP,
-  /**
-   * String literal in ternary operator
-   */
-  SLTO,
-  /**
-   * Common template literal
-   */
-  CTL,
-  /**
-   * Template literal starting on the same line as the attribute
-   */
-  TLSL,
-  /**
-   * Template literal as object property
-   */
-  TLOP,
-  /**
-   * Template literal in ternary operator
-   */
-  TLTO,
-  /**
-   * Template literal that preserve quotes
-   */
-  TLPQ,
-  /**
-   * Template literal that preserve quotes (in ternary operator)
-   */
-  TLPQTO,
-  /**
-   * Unknown string literal
-   */
-  USL,
-  /**
-   * Unknown template literal
-   */
-  UTL,
-}
+/**
+ * double quote character
+ */
+export const DOUBLE_QUOTE = '"';
+
+/**
+ * backtick character
+ */
+export const BACKTICK = '`';
+
+/**
+ * placeholder of delimiter
+ */
+export const UNKNOWN_DELIMITER = '?';
 
 export type Dict<T = unknown> = Record<string, T | undefined>;
 
 export type NodeRange = [number, number];
 
-export type ClassNameNode = {
-  type: ClassNameType;
+type ClassNameNodeBase = {
   range: NodeRange;
   startLineIndex: number;
-  elementName?: string;
 };
 
-export type NarrowedParserOptions = {
-  printWidth: number;
-  tabWidth: number;
-  useTabs: boolean;
-  singleQuote: boolean;
-  parser: string;
-  customAttributes: string[];
-  customFunctions: string[];
-  endingPosition: 'relative' | 'absolute' | 'absolute-with-indent';
+type UnknownNode = ClassNameNodeBase & {
+  type: 'unknown';
+  delimiterType: 'single-quote' | 'double-quote' | 'backtick';
+  hasSingleQuote?: boolean;
+  hasDoubleQuote?: boolean;
+  hasBacktick?: boolean;
 };
+
+type AttributeNode = ClassNameNodeBase & {
+  type: 'attribute';
+  /**
+   * @deprecated
+   */
+  isTheFirstLineOnTheSameLineAsTheOpeningTag: boolean;
+  /**
+   * @deprecated
+   */
+  elementName: string;
+};
+
+export type ExpressionNode = ClassNameNodeBase & {
+  type: 'expression';
+  delimiterType: 'single-quote' | 'double-quote' | 'backtick';
+  isTheFirstLineOnTheSameLineAsTheAttributeName: boolean;
+  isItAnObjectProperty: boolean;
+  isItAnOperandOfTernaryOperator: boolean;
+  /**
+   * @deprecated
+   */
+  isItFunctionArgument: boolean;
+  isItInVueTemplate: boolean;
+  isItAngularExpression: boolean;
+  hasSingleQuote: boolean;
+  hasDoubleQuote: boolean;
+  hasBacktick: boolean;
+  shouldKeepDelimiter: boolean;
+};
+
+/**
+ * In fact, the ternary operator itself is not a class name node, but it defines a type as an exception because it needs to be frozen when processing complex expressions.
+ */
+type TernaryExpressionNode = ClassNameNodeBase & {
+  type: 'ternary';
+};
+
+export type ClassNameNode = UnknownNode | AttributeNode | ExpressionNode | TernaryExpressionNode;

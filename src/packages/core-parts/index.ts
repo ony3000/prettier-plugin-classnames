@@ -2,11 +2,14 @@ import { createHash } from 'node:crypto';
 
 import {
   findTargetClassNameNodes,
+  findTargetClassNameNodesForHtml,
   findTargetClassNameNodesForVue,
+  findTargetClassNameNodesForAngular,
   findTargetClassNameNodesForAstro,
+  findTargetClassNameNodesForSvelte,
 } from './finder';
-import type { Dict, ClassNameNode, NarrowedParserOptions } from './shared';
-import { EOL, PH, SPACE, TAB, TAB_SIZE, ClassNameType } from './shared';
+import type { Dict, ClassNameNode } from './shared';
+import { EOL, PH, SPACE, TAB, SINGLE_QUOTE, DOUBLE_QUOTE, BACKTICK } from './shared';
 
 type LineNode = {
   indentLevel: number;
@@ -25,20 +28,14 @@ function parseLineByLine(formattedText: string, indentUnit: string): LineNode[] 
   });
 }
 
-function getExtraIndentLevel(type: ClassNameType) {
-  if (type === ClassNameType.ASL) {
-    return 2;
+function getExtraIndentLevel(node: ClassNameNode) {
+  if (node.type === 'attribute') {
+    return 1;
   }
 
   if (
-    [
-      ClassNameType.AOL,
-      ClassNameType.SLSL,
-      ClassNameType.SLTO,
-      ClassNameType.TLSL,
-      ClassNameType.TLTO,
-      ClassNameType.TLPQTO,
-    ].includes(type)
+    node.type === 'expression' &&
+    (node.isTheFirstLineOnTheSameLineAsTheAttributeName || node.isItAnOperandOfTernaryOperator)
   ) {
     return 1;
   }
@@ -46,50 +43,65 @@ function getExtraIndentLevel(type: ClassNameType) {
   return 0;
 }
 
-function getSomeKindOfQuotes(
-  type: ClassNameType,
+function getDelimiters(
+  node: ClassNameNode,
   isMultiLineClassName: boolean,
-  parser: string,
+  singleQuote: boolean,
 ): [string, string] {
-  // prettier-ignore
-  const baseQuote =
-    // eslint-disable-next-line no-nested-ternary
-    type === ClassNameType.TLPQ || type === ClassNameType.TLPQTO
-      ? '`'
-      : (
-        parser === 'vue' &&
-        [
-          ClassNameType.FA,
-          ClassNameType.CSL,
-          ClassNameType.SLSL,
-          ClassNameType.SLOP,
-          ClassNameType.SLTO,
-          ClassNameType.CTL,
-          ClassNameType.TLSL,
-          ClassNameType.TLOP,
-          ClassNameType.TLTO,
-          ClassNameType.TLPQTO,
-        ].includes(type)
-          ? "'"
-          : '"'
-      );
+  let baseDelimiter = DOUBLE_QUOTE;
 
-  const opener = `${isMultiLineClassName && type === ClassNameType.SLOP ? '[' : ''}${
-    !isMultiLineClassName || type === ClassNameType.ASL || type === ClassNameType.AOL
-      ? baseQuote
-      : '`'
+  if (node.type === 'expression') {
+    if (node.shouldKeepDelimiter) {
+      if (node.delimiterType === 'backtick') {
+        baseDelimiter = BACKTICK;
+      } else if (node.delimiterType === 'single-quote') {
+        baseDelimiter = SINGLE_QUOTE;
+      } else {
+        // baseDelimiter = DOUBLE_QUOTE;
+      }
+    } else if (node.isItInVueTemplate) {
+      baseDelimiter = SINGLE_QUOTE;
+    } else if (singleQuote) {
+      if (node.hasSingleQuote) {
+        // baseDelimiter = DOUBLE_QUOTE;
+      } else {
+        baseDelimiter = SINGLE_QUOTE;
+      }
+    } else if (!singleQuote) {
+      if (node.hasDoubleQuote) {
+        baseDelimiter = SINGLE_QUOTE;
+      } else {
+        // baseDelimiter = DOUBLE_QUOTE;
+      }
+    }
+  }
+
+  if (node.type === 'expression' && node.isItAngularExpression) {
+    return [SINGLE_QUOTE, SINGLE_QUOTE];
+  }
+
+  const opener = `${
+    isMultiLineClassName &&
+    node.type === 'expression' &&
+    node.delimiterType !== 'backtick' &&
+    node.isItAnObjectProperty
+      ? '['
+      : ''
+  }${!isMultiLineClassName || node.type === 'attribute' ? baseDelimiter : BACKTICK}`;
+  const closer = `${!isMultiLineClassName || node.type === 'attribute' ? baseDelimiter : BACKTICK}${
+    isMultiLineClassName &&
+    node.type === 'expression' &&
+    node.delimiterType !== 'backtick' &&
+    node.isItAnObjectProperty
+      ? ']'
+      : ''
   }`;
-  const closer = `${
-    !isMultiLineClassName || type === ClassNameType.ASL || type === ClassNameType.AOL
-      ? baseQuote
-      : '`'
-  }${isMultiLineClassName && type === ClassNameType.SLOP ? ']' : ''}`;
 
   return [opener, closer];
 }
 
 function replaceSpacesAtBothEnds(className: string): [string, string, string] {
-  const matchArray = className.match(/^(\s*)[^\s](?:.*[^\s])?(\s*)$/);
+  const matchArray = className.match(/^(\s*)[^\s](?:[\s\w\W]*[^\s])?(\s*)$/);
   const leadingSpace = matchArray?.[1] ?? '';
   const trailingSpace = matchArray?.[2] ?? '';
 
@@ -139,9 +151,6 @@ function freezeClassName(input: string): string {
   return `${prefix}${rest}`;
 }
 
-const frozenAttributeName = freezeNonClassName('attribute');
-const doubleFrozenAttributeName = freezeNonClassName(frozenAttributeName);
-
 function replaceClassName({
   formattedText,
   indentUnit,
@@ -149,42 +158,85 @@ function replaceClassName({
   lineNodes,
   options,
   format,
-  targetClassNameTypes,
 }: {
   formattedText: string;
   indentUnit: string;
   targetClassNameNodes: ClassNameNode[];
   lineNodes: LineNode[];
-  options: NarrowedParserOptions;
+  options: ResolvedOptions;
   format: (source: string, options?: any) => string;
-  targetClassNameTypes?: ClassNameType[];
 }): string {
-  const freezer: { type: 'string' | 'indent'; from: string; to: string }[] = [];
+  const freezer: { from: string[]; to: string[] }[] = [];
   const rangeCorrectionValues = [...Array(targetClassNameNodes.length)].map(() => 0);
 
   const icedFormattedText = targetClassNameNodes.reduce(
-    (
-      formattedPrevText,
-      { type, range: [rangeStart, rangeEnd], startLineIndex, elementName },
-      classNameNodeIndex,
-    ) => {
-      if (targetClassNameTypes && !targetClassNameTypes.includes(type)) {
-        return formattedPrevText;
-      }
+    (formattedPrevText, classNameNode, classNameNodeIndex) => {
+      const [classNameNodeRangeStart, classNameNodeRangeEnd] = classNameNode.range;
 
-      const correctedRangeEnd = rangeEnd - rangeCorrectionValues[classNameNodeIndex];
+      const correctedRangeEnd = classNameNodeRangeEnd - rangeCorrectionValues[classNameNodeIndex];
 
       const isStartingPositionRelative = options.endingPosition !== 'absolute';
       const isEndingPositionAbsolute = options.endingPosition !== 'relative';
       const isOutputIdeal = isStartingPositionRelative && isEndingPositionAbsolute;
 
-      const { indentLevel: baseIndentLevel } = lineNodes[startLineIndex];
-      const extraIndentLevel = getExtraIndentLevel(type);
+      const { indentLevel: baseIndentLevel } = lineNodes[classNameNode.startLineIndex];
+      const extraIndentLevel = getExtraIndentLevel(classNameNode);
       const multiLineIndentLevel = isStartingPositionRelative
         ? baseIndentLevel + extraIndentLevel
         : 0;
 
-      const classNameBase = formattedPrevText.slice(rangeStart + 1, correctedRangeEnd - 1);
+      if (classNameNode.type === 'ternary') {
+        const ternaryExpression = formattedPrevText.slice(
+          classNameNodeRangeStart,
+          correctedRangeEnd,
+        );
+        const frozenTernaryExpression = freezeNonClassName(ternaryExpression);
+
+        freezer.push({
+          from: [frozenTernaryExpression],
+          to: [ternaryExpression],
+        });
+
+        const ternarySubstitutedText = `${formattedPrevText.slice(
+          0,
+          classNameNodeRangeStart,
+        )}${frozenTernaryExpression}${formattedPrevText.slice(correctedRangeEnd)}`;
+
+        rangeCorrectionValues.forEach((_, rangeCorrectionIndex, array) => {
+          if (rangeCorrectionIndex <= classNameNodeIndex) {
+            return;
+          }
+
+          const [nthNodeRangeStart, nthNodeRangeEnd] =
+            targetClassNameNodes[rangeCorrectionIndex].range;
+
+          if (
+            nthNodeRangeStart < classNameNodeRangeStart &&
+            classNameNodeRangeEnd < nthNodeRangeEnd
+          ) {
+            // eslint-disable-next-line no-param-reassign
+            array[rangeCorrectionIndex] +=
+              correctedRangeEnd - classNameNodeRangeStart - frozenTernaryExpression.length;
+          }
+        });
+
+        return ternarySubstitutedText;
+      }
+
+      let classNameBase = formattedPrevText.slice(
+        classNameNodeRangeStart + 1,
+        correctedRangeEnd - 1,
+      );
+      if (classNameNode.type === 'attribute') {
+        classNameBase = classNameBase.trim();
+      } else if (classNameNode.type === 'expression') {
+        const hasLeadingSpace = classNameBase !== classNameBase.trimStart();
+        const hasTrailingSpace = classNameBase !== classNameBase.trimEnd();
+
+        classNameBase = `${hasLeadingSpace ? SPACE : ''}${classNameBase
+          .trim()
+          .replace(/\\\n/g, '')}${hasTrailingSpace ? SPACE : ''}`;
+      }
 
       // preprocess (first)
       const [leadingSpace, classNameWithoutSpacesAtBothEnds, trailingSpace] =
@@ -192,15 +244,15 @@ function replaceClassName({
 
       const totalTextLengthUptoPrevLine = formattedPrevText
         .split(EOL)
-        .slice(0, startLineIndex)
+        .slice(0, classNameNode.startLineIndex)
         .reduce((textLength, line) => textLength + line.length + EOL.length, 0);
       const firstLineIndentLength = indentUnit.length * baseIndentLevel;
       const firstLinePadLength =
-        rangeStart +
+        classNameNodeRangeStart +
         1 -
         totalTextLengthUptoPrevLine -
         firstLineIndentLength +
-        (indentUnit === TAB ? TAB_SIZE : indentUnit.length) * baseIndentLevel;
+        options.tabWidth * baseIndentLevel;
 
       // preprocess (first+1)
       const classNameWithFirstLinePadding = `${PH.repeat(
@@ -227,8 +279,7 @@ function replaceClassName({
           return firstLine;
         }
 
-        const multiLinePadLength =
-          (indentUnit === TAB ? TAB_SIZE : indentUnit.length) * multiLineIndentLevel;
+        const multiLinePadLength = options.tabWidth * multiLineIndentLevel;
 
         const formattedRest = format(rest.join(EOL), {
           ...options,
@@ -255,75 +306,69 @@ function replaceClassName({
       )}${trailingSpace}`;
 
       const isMultiLineClassName = classNameWithOriginalSpaces.split(EOL).length > 1;
-      const [quoteStart, quoteEnd] = getSomeKindOfQuotes(
-        type,
+      const [delimiterStart, delimiterEnd] = getDelimiters(
+        classNameNode,
         isMultiLineClassName,
-        options.parser,
+        options.singleQuote,
       );
 
-      const elementOpener = '<';
-      const spaceAfterElementName = ' ';
-      const conditionForSameLineAttribute =
-        isEndingPositionAbsolute &&
-        type === ClassNameType.ASL &&
-        isMultiLineClassName &&
-        formattedClassName.length +
-          options.tabWidth -
-          (elementName ? `${elementOpener}${elementName}${spaceAfterElementName}`.length : 0) <=
-          options.printWidth;
-      const conditionForOwnLineAttribute =
-        isEndingPositionAbsolute &&
-        type === ClassNameType.AOL &&
-        !isMultiLineClassName &&
-        classNameWithOriginalSpaces !== classNameBase &&
-        formattedClassName.length -
-          options.tabWidth +
-          (elementName ? `${elementOpener}${elementName}${spaceAfterElementName}`.length : 0) >
-          options.printWidth;
+      let substituteBase = classNameWithOriginalSpaces;
+      if (classNameNode.type === 'expression') {
+        if (delimiterStart === SINGLE_QUOTE) {
+          if (classNameNode.delimiterType !== 'single-quote' && classNameNode.hasSingleQuote) {
+            substituteBase = substituteBase.replace(/'/g, `\\${SINGLE_QUOTE}`);
+          }
+        } else if (delimiterStart === DOUBLE_QUOTE) {
+          if (classNameNode.delimiterType !== 'double-quote' && classNameNode.hasDoubleQuote) {
+            substituteBase = substituteBase.replace(/"/g, `\\${DOUBLE_QUOTE}`);
+          }
+        } else {
+          // eslint-disable-next-line no-lonely-if
+          if (classNameNode.delimiterType !== 'backtick' && classNameNode.hasBacktick) {
+            substituteBase = substituteBase.replace(/`/g, `\\${BACKTICK}`);
+          }
+        }
+
+        substituteBase = `${delimiterStart}${substituteBase}${delimiterEnd}`;
+      }
 
       const rawIndent = indentUnit.repeat(multiLineIndentLevel);
-      const frozenIndent = freezeNonClassName(rawIndent);
 
-      const isAttributeType = type === ClassNameType.ASL || type === ClassNameType.AOL;
-      const substitute = `${isAttributeType ? '' : quoteStart}${classNameWithOriginalSpaces}${
-        isAttributeType ? '' : quoteEnd
-      }`
+      const classNamePieces: string[] = [];
+      const frozenClassNamePieces: string[] = [];
+      const substitute = substituteBase
         .split(EOL)
         .map((raw) => {
           const frozen = freezeClassName(raw);
 
-          freezer.push({
-            type: 'string',
-            from: frozen,
-            to: raw,
-          });
+          classNamePieces.push(raw);
+          frozenClassNamePieces.push(frozen);
 
           return frozen;
         })
-        .join(`${EOL}${frozenIndent}`);
+        .join(`${EOL}${rawIndent}`);
+      freezer.push({
+        from: frozenClassNamePieces,
+        to: classNamePieces,
+      });
 
-      if (isStartingPositionRelative && isMultiLineClassName) {
-        freezer.push({
-          type: 'indent',
-          from: frozenIndent,
-          to: rawIndent,
-        });
-      }
-
-      const sliceOffset = !isMultiLineClassName && type === ClassNameType.TLOP ? 1 : 0;
+      const isAttributeType = classNameNode.type === 'attribute';
+      const sliceOffset =
+        !isMultiLineClassName &&
+        classNameNode.type === 'expression' &&
+        classNameNode.delimiterType === 'backtick' &&
+        classNameNode.isItAnObjectProperty
+          ? 1
+          : 0;
       const classNamePartialWrappedText = `${formattedPrevText.slice(
         0,
-        rangeStart - sliceOffset + (isAttributeType ? 1 : 0),
+        classNameNodeRangeStart - sliceOffset + (isAttributeType ? 1 : 0),
       )}${substitute}${
         isAttributeType
           ? formattedPrevText.slice(
               correctedRangeEnd + sliceOffset - 1,
               correctedRangeEnd + sliceOffset,
             )
-          : ''
-      }${
-        conditionForSameLineAttribute || conditionForOwnLineAttribute
-          ? `${EOL}${frozenAttributeName}${EOL}`
           : ''
       }${formattedPrevText.slice(correctedRangeEnd + sliceOffset)}`;
 
@@ -335,9 +380,13 @@ function replaceClassName({
         const [nthNodeRangeStart, nthNodeRangeEnd] =
           targetClassNameNodes[rangeCorrectionIndex].range;
 
-        if (nthNodeRangeStart < rangeStart && rangeEnd < nthNodeRangeEnd) {
+        if (
+          nthNodeRangeStart < classNameNodeRangeStart &&
+          classNameNodeRangeEnd < nthNodeRangeEnd
+        ) {
           // eslint-disable-next-line no-param-reassign
-          array[rangeCorrectionIndex] += correctedRangeEnd - rangeStart - substitute.length;
+          array[rangeCorrectionIndex] +=
+            correctedRangeEnd - classNameNodeRangeStart - substitute.length;
         }
       });
 
@@ -346,16 +395,25 @@ function replaceClassName({
     formattedText,
   );
 
-  return freezer
-    .reduceRight(
-      (prevText, { type, from, to }) =>
-        type === 'indent'
-          ? prevText.replace(new RegExp(`^\\s*${from}`, 'gm'), to)
-          : prevText.replace(from, to),
-      icedFormattedText,
-    )
-    .replace(new RegExp(`^\\s*${doubleFrozenAttributeName}${EOL}`, 'gm'), '')
-    .replace(new RegExp(`${frozenAttributeName}`, 'gm'), doubleFrozenAttributeName);
+  return freezer.reduceRight((prevText, { from, to }) => {
+    const regExp = new RegExp(from.join('(\\s*)'));
+    const matchResult = prevText.match(regExp);
+
+    if (!matchResult) {
+      return prevText;
+    }
+
+    return prevText.replace(regExp, (_, ...rest) => {
+      const capturedGroups = rest.slice(0, matchResult.length - 1);
+
+      return to
+        .map(
+          (raw, index) =>
+            `${raw}${capturedGroups[index] === undefined ? '' : capturedGroups[index]}`,
+        )
+        .join('');
+    });
+  }, icedFormattedText);
 }
 
 export function parseLineByLineAndReplace({
@@ -364,14 +422,12 @@ export function parseLineByLineAndReplace({
   options,
   format,
   addon,
-  targetClassNameTypes,
 }: {
   formattedText: string;
   ast: any;
-  options: NarrowedParserOptions;
+  options: ResolvedOptions;
   format: (source: string, options?: any) => string;
   addon: Dict<(text: string, options: any) => any>;
-  targetClassNameTypes?: ClassNameType[];
 }): string {
   if (formattedText === '') {
     return formattedText;
@@ -383,6 +439,18 @@ export function parseLineByLineAndReplace({
   switch (options.parser) {
     case 'astro': {
       targetClassNameNodes = findTargetClassNameNodesForAstro(formattedText, ast, options, addon);
+      break;
+    }
+    case 'svelte': {
+      targetClassNameNodes = findTargetClassNameNodesForSvelte(formattedText, ast, options);
+      break;
+    }
+    case 'angular': {
+      targetClassNameNodes = findTargetClassNameNodesForAngular(ast, options, addon);
+      break;
+    }
+    case 'html': {
+      targetClassNameNodes = findTargetClassNameNodesForHtml(ast, options, addon);
       break;
     }
     case 'vue': {
@@ -404,14 +472,9 @@ export function parseLineByLineAndReplace({
     lineNodes,
     options,
     format,
-    targetClassNameTypes,
   });
-  // Note: This is a temporary use condition. I plan to improve it in the next minor update.
-  const conditionForSecondFormat = targetClassNameTypes !== undefined;
 
-  return conditionForSecondFormat
-    ? classNameWrappedText.replace(new RegExp(`^\\s*${doubleFrozenAttributeName}${EOL}`, 'gm'), '')
-    : classNameWrappedText;
+  return classNameWrappedText;
 }
 
 async function replaceClassNameAsync({
@@ -421,44 +484,87 @@ async function replaceClassNameAsync({
   lineNodes,
   options,
   format,
-  targetClassNameTypes,
 }: {
   formattedText: string;
   indentUnit: string;
   targetClassNameNodes: ClassNameNode[];
   lineNodes: LineNode[];
-  options: NarrowedParserOptions;
+  options: ResolvedOptions;
   format: (source: string, options?: any) => Promise<string>;
-  targetClassNameTypes?: ClassNameType[];
 }): Promise<string> {
-  const freezer: { type: 'string' | 'indent'; from: string; to: string }[] = [];
+  const freezer: { from: string[]; to: string[] }[] = [];
   const rangeCorrectionValues = [...Array(targetClassNameNodes.length)].map(() => 0);
 
   const icedFormattedText = await targetClassNameNodes.reduce(
-    async (
-      formattedPrevTextPromise,
-      { type, range: [rangeStart, rangeEnd], startLineIndex, elementName },
-      classNameNodeIndex,
-    ) => {
-      if (targetClassNameTypes && !targetClassNameTypes.includes(type)) {
-        return formattedPrevTextPromise;
-      }
+    async (formattedPrevTextPromise, classNameNode, classNameNodeIndex) => {
+      const [classNameNodeRangeStart, classNameNodeRangeEnd] = classNameNode.range;
 
       const formattedPrevText = await formattedPrevTextPromise;
 
-      const correctedRangeEnd = rangeEnd - rangeCorrectionValues[classNameNodeIndex];
+      const correctedRangeEnd = classNameNodeRangeEnd - rangeCorrectionValues[classNameNodeIndex];
 
       const isStartingPositionRelative = options.endingPosition !== 'absolute';
       const isEndingPositionAbsolute = options.endingPosition !== 'relative';
       const isOutputIdeal = isStartingPositionRelative && isEndingPositionAbsolute;
 
-      const { indentLevel: baseIndentLevel } = lineNodes[startLineIndex];
-      const extraIndentLevel = getExtraIndentLevel(type);
+      const { indentLevel: baseIndentLevel } = lineNodes[classNameNode.startLineIndex];
+      const extraIndentLevel = getExtraIndentLevel(classNameNode);
       const multiLineIndentLevel = isStartingPositionRelative
         ? baseIndentLevel + extraIndentLevel
         : 0;
 
-      const classNameBase = formattedPrevText.slice(rangeStart + 1, correctedRangeEnd - 1);
+      if (classNameNode.type === 'ternary') {
+        const ternaryExpression = formattedPrevText.slice(
+          classNameNodeRangeStart,
+          correctedRangeEnd,
+        );
+        const frozenTernaryExpression = freezeNonClassName(ternaryExpression);
+
+        freezer.push({
+          from: [frozenTernaryExpression],
+          to: [ternaryExpression],
+        });
+
+        const ternarySubstitutedText = `${formattedPrevText.slice(
+          0,
+          classNameNodeRangeStart,
+        )}${frozenTernaryExpression}${formattedPrevText.slice(correctedRangeEnd)}`;
+
+        rangeCorrectionValues.forEach((_, rangeCorrectionIndex, array) => {
+          if (rangeCorrectionIndex <= classNameNodeIndex) {
+            return;
+          }
+
+          const [nthNodeRangeStart, nthNodeRangeEnd] =
+            targetClassNameNodes[rangeCorrectionIndex].range;
+
+          if (
+            nthNodeRangeStart < classNameNodeRangeStart &&
+            classNameNodeRangeEnd < nthNodeRangeEnd
+          ) {
+            // eslint-disable-next-line no-param-reassign
+            array[rangeCorrectionIndex] +=
+              correctedRangeEnd - classNameNodeRangeStart - frozenTernaryExpression.length;
+          }
+        });
+
+        return ternarySubstitutedText;
+      }
+
+      let classNameBase = formattedPrevText.slice(
+        classNameNodeRangeStart + 1,
+        correctedRangeEnd - 1,
+      );
+      if (classNameNode.type === 'attribute') {
+        classNameBase = classNameBase.trim();
+      } else if (classNameNode.type === 'expression') {
+        const hasLeadingSpace = classNameBase !== classNameBase.trimStart();
+        const hasTrailingSpace = classNameBase !== classNameBase.trimEnd();
+
+        classNameBase = `${hasLeadingSpace ? SPACE : ''}${classNameBase
+          .trim()
+          .replace(/\\\n/g, '')}${hasTrailingSpace ? SPACE : ''}`;
+      }
 
       // preprocess (first)
       const [leadingSpace, classNameWithoutSpacesAtBothEnds, trailingSpace] =
@@ -466,15 +572,15 @@ async function replaceClassNameAsync({
 
       const totalTextLengthUptoPrevLine = formattedPrevText
         .split(EOL)
-        .slice(0, startLineIndex)
+        .slice(0, classNameNode.startLineIndex)
         .reduce((textLength, line) => textLength + line.length + EOL.length, 0);
       const firstLineIndentLength = indentUnit.length * baseIndentLevel;
       const firstLinePadLength =
-        rangeStart +
+        classNameNodeRangeStart +
         1 -
         totalTextLengthUptoPrevLine -
         firstLineIndentLength +
-        (indentUnit === TAB ? TAB_SIZE : indentUnit.length) * baseIndentLevel;
+        options.tabWidth * baseIndentLevel;
 
       // preprocess (first+1)
       const classNameWithFirstLinePadding = `${PH.repeat(
@@ -503,8 +609,7 @@ async function replaceClassNameAsync({
           return firstLine;
         }
 
-        const multiLinePadLength =
-          (indentUnit === TAB ? TAB_SIZE : indentUnit.length) * multiLineIndentLevel;
+        const multiLinePadLength = options.tabWidth * multiLineIndentLevel;
 
         const formattedRest = (
           await format(rest.join(EOL), {
@@ -533,75 +638,69 @@ async function replaceClassNameAsync({
       )}${trailingSpace}`;
 
       const isMultiLineClassName = classNameWithOriginalSpaces.split(EOL).length > 1;
-      const [quoteStart, quoteEnd] = getSomeKindOfQuotes(
-        type,
+      const [delimiterStart, delimiterEnd] = getDelimiters(
+        classNameNode,
         isMultiLineClassName,
-        options.parser,
+        options.singleQuote,
       );
 
-      const elementOpener = '<';
-      const spaceAfterElementName = ' ';
-      const conditionForSameLineAttribute =
-        isEndingPositionAbsolute &&
-        type === ClassNameType.ASL &&
-        isMultiLineClassName &&
-        formattedClassName.length +
-          options.tabWidth -
-          (elementName ? `${elementOpener}${elementName}${spaceAfterElementName}`.length : 0) <=
-          options.printWidth;
-      const conditionForOwnLineAttribute =
-        isEndingPositionAbsolute &&
-        type === ClassNameType.AOL &&
-        !isMultiLineClassName &&
-        classNameWithOriginalSpaces !== classNameBase &&
-        formattedClassName.length -
-          options.tabWidth +
-          (elementName ? `${elementOpener}${elementName}${spaceAfterElementName}`.length : 0) >
-          options.printWidth;
+      let substituteBase = classNameWithOriginalSpaces;
+      if (classNameNode.type === 'expression') {
+        if (delimiterStart === SINGLE_QUOTE) {
+          if (classNameNode.delimiterType !== 'single-quote' && classNameNode.hasSingleQuote) {
+            substituteBase = substituteBase.replace(/'/g, `\\${SINGLE_QUOTE}`);
+          }
+        } else if (delimiterStart === DOUBLE_QUOTE) {
+          if (classNameNode.delimiterType !== 'double-quote' && classNameNode.hasDoubleQuote) {
+            substituteBase = substituteBase.replace(/"/g, `\\${DOUBLE_QUOTE}`);
+          }
+        } else {
+          // eslint-disable-next-line no-lonely-if
+          if (classNameNode.delimiterType !== 'backtick' && classNameNode.hasBacktick) {
+            substituteBase = substituteBase.replace(/`/g, `\\${BACKTICK}`);
+          }
+        }
+
+        substituteBase = `${delimiterStart}${substituteBase}${delimiterEnd}`;
+      }
 
       const rawIndent = indentUnit.repeat(multiLineIndentLevel);
-      const frozenIndent = freezeNonClassName(rawIndent);
 
-      const isAttributeType = type === ClassNameType.ASL || type === ClassNameType.AOL;
-      const substitute = `${isAttributeType ? '' : quoteStart}${classNameWithOriginalSpaces}${
-        isAttributeType ? '' : quoteEnd
-      }`
+      const classNamePieces: string[] = [];
+      const frozenClassNamePieces: string[] = [];
+      const substitute = substituteBase
         .split(EOL)
         .map((raw) => {
           const frozen = freezeClassName(raw);
 
-          freezer.push({
-            type: 'string',
-            from: frozen,
-            to: raw,
-          });
+          classNamePieces.push(raw);
+          frozenClassNamePieces.push(frozen);
 
           return frozen;
         })
-        .join(`${EOL}${frozenIndent}`);
+        .join(`${EOL}${rawIndent}`);
+      freezer.push({
+        from: frozenClassNamePieces,
+        to: classNamePieces,
+      });
 
-      if (isStartingPositionRelative && isMultiLineClassName) {
-        freezer.push({
-          type: 'indent',
-          from: frozenIndent,
-          to: rawIndent,
-        });
-      }
-
-      const sliceOffset = !isMultiLineClassName && type === ClassNameType.TLOP ? 1 : 0;
+      const isAttributeType = classNameNode.type === 'attribute';
+      const sliceOffset =
+        !isMultiLineClassName &&
+        classNameNode.type === 'expression' &&
+        classNameNode.delimiterType === 'backtick' &&
+        classNameNode.isItAnObjectProperty
+          ? 1
+          : 0;
       const classNamePartialWrappedText = `${formattedPrevText.slice(
         0,
-        rangeStart - sliceOffset + (isAttributeType ? 1 : 0),
+        classNameNodeRangeStart - sliceOffset + (isAttributeType ? 1 : 0),
       )}${substitute}${
         isAttributeType
           ? formattedPrevText.slice(
               correctedRangeEnd + sliceOffset - 1,
               correctedRangeEnd + sliceOffset,
             )
-          : ''
-      }${
-        conditionForSameLineAttribute || conditionForOwnLineAttribute
-          ? `${EOL}${frozenAttributeName}${EOL}`
           : ''
       }${formattedPrevText.slice(correctedRangeEnd + sliceOffset)}`;
 
@@ -613,9 +712,13 @@ async function replaceClassNameAsync({
         const [nthNodeRangeStart, nthNodeRangeEnd] =
           targetClassNameNodes[rangeCorrectionIndex].range;
 
-        if (nthNodeRangeStart < rangeStart && rangeEnd < nthNodeRangeEnd) {
+        if (
+          nthNodeRangeStart < classNameNodeRangeStart &&
+          classNameNodeRangeEnd < nthNodeRangeEnd
+        ) {
           // eslint-disable-next-line no-param-reassign
-          array[rangeCorrectionIndex] += correctedRangeEnd - rangeStart - substitute.length;
+          array[rangeCorrectionIndex] +=
+            correctedRangeEnd - classNameNodeRangeStart - substitute.length;
         }
       });
 
@@ -624,16 +727,25 @@ async function replaceClassNameAsync({
     Promise.resolve(formattedText),
   );
 
-  return freezer
-    .reduceRight(
-      (prevText, { type, from, to }) =>
-        type === 'indent'
-          ? prevText.replace(new RegExp(`^\\s*${from}`, 'gm'), to)
-          : prevText.replace(from, to),
-      icedFormattedText,
-    )
-    .replace(new RegExp(`^\\s*${doubleFrozenAttributeName}${EOL}`, 'gm'), '')
-    .replace(new RegExp(`${frozenAttributeName}`, 'gm'), doubleFrozenAttributeName);
+  return freezer.reduceRight((prevText, { from, to }) => {
+    const regExp = new RegExp(from.join('(\\s*)'));
+    const matchResult = prevText.match(regExp);
+
+    if (!matchResult) {
+      return prevText;
+    }
+
+    return prevText.replace(regExp, (_, ...rest) => {
+      const capturedGroups = rest.slice(0, matchResult.length - 1);
+
+      return to
+        .map(
+          (raw, index) =>
+            `${raw}${capturedGroups[index] === undefined ? '' : capturedGroups[index]}`,
+        )
+        .join('');
+    });
+  }, icedFormattedText);
 }
 
 export async function parseLineByLineAndReplaceAsync({
@@ -642,14 +754,12 @@ export async function parseLineByLineAndReplaceAsync({
   options,
   format,
   addon,
-  targetClassNameTypes,
 }: {
   formattedText: string;
   ast: any;
-  options: NarrowedParserOptions;
+  options: ResolvedOptions;
   format: (source: string, options?: any) => Promise<string>;
   addon: Dict<(text: string, options: any) => any>;
-  targetClassNameTypes?: ClassNameType[];
 }): Promise<string> {
   if (formattedText === '') {
     return formattedText;
@@ -661,6 +771,18 @@ export async function parseLineByLineAndReplaceAsync({
   switch (options.parser) {
     case 'astro': {
       targetClassNameNodes = findTargetClassNameNodesForAstro(formattedText, ast, options, addon);
+      break;
+    }
+    case 'svelte': {
+      targetClassNameNodes = findTargetClassNameNodesForSvelte(formattedText, ast, options);
+      break;
+    }
+    case 'angular': {
+      targetClassNameNodes = findTargetClassNameNodesForAngular(ast, options, addon);
+      break;
+    }
+    case 'html': {
+      targetClassNameNodes = findTargetClassNameNodesForHtml(ast, options, addon);
       break;
     }
     case 'vue': {
@@ -682,12 +804,7 @@ export async function parseLineByLineAndReplaceAsync({
     lineNodes,
     options,
     format,
-    targetClassNameTypes,
   });
-  // Note: This is a temporary use condition. I plan to improve it in the next minor update.
-  const conditionForSecondFormat = targetClassNameTypes !== undefined;
 
-  return conditionForSecondFormat
-    ? classNameWrappedText.replace(new RegExp(`^\\s*${doubleFrozenAttributeName}${EOL}`, 'gm'), '')
-    : classNameWrappedText;
+  return classNameWrappedText;
 }
