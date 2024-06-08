@@ -2,7 +2,9 @@ import { createHash } from 'node:crypto';
 
 import {
   findTargetClassNameNodes,
+  findTargetClassNameNodesForHtml,
   findTargetClassNameNodesForVue,
+  findTargetClassNameNodesForAngular,
   findTargetClassNameNodesForAstro,
   findTargetClassNameNodesForSvelte,
 } from './finder';
@@ -72,6 +74,10 @@ function getDelimiters(
         // baseDelimiter = DOUBLE_QUOTE;
       }
     }
+  }
+
+  if (node.type === 'expression' && node.isItAngularExpression) {
+    return [SINGLE_QUOTE, SINGLE_QUOTE];
   }
 
   const opener = `${
@@ -439,6 +445,14 @@ export function parseLineByLineAndReplace({
       targetClassNameNodes = findTargetClassNameNodesForSvelte(formattedText, ast, options);
       break;
     }
+    case 'angular': {
+      targetClassNameNodes = findTargetClassNameNodesForAngular(ast, options, addon);
+      break;
+    }
+    case 'html': {
+      targetClassNameNodes = findTargetClassNameNodesForHtml(ast, options, addon);
+      break;
+    }
     case 'vue': {
       targetClassNameNodes = findTargetClassNameNodesForVue(ast, options, addon);
       break;
@@ -761,6 +775,14 @@ export async function parseLineByLineAndReplaceAsync({
     }
     case 'svelte': {
       targetClassNameNodes = findTargetClassNameNodesForSvelte(formattedText, ast, options);
+      break;
+    }
+    case 'angular': {
+      targetClassNameNodes = findTargetClassNameNodesForAngular(ast, options, addon);
+      break;
+    }
+    case 'html': {
+      targetClassNameNodes = findTargetClassNameNodesForHtml(ast, options, addon);
       break;
     }
     case 'vue': {

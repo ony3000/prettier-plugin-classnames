@@ -227,7 +227,7 @@ When a line wrapping occurs in a class name, it generally follows the indentatio
 
 ## Delimiter Conversion
 
-For class names written as expressions, the delimiters at both ends can be converted depending on the formatting result.
+For class names written as expressions, the delimiters at both ends can be converted depending on the formatting result. However, if the parser is specified as `angular`, it is fixed with single quotes.
 
 1. Class name long enough to be split across multiple lines
 

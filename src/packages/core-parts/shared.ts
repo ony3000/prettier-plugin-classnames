@@ -78,6 +78,7 @@ export type ExpressionNode = ClassNameNodeBase & {
    */
   isItFunctionArgument: boolean;
   isItInVueTemplate: boolean;
+  isItAngularExpression: boolean;
   hasSingleQuote: boolean;
   hasDoubleQuote: boolean;
   hasBacktick: boolean;
