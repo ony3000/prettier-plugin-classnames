@@ -49,8 +49,10 @@ const fixtures: Fixture[] = [
     output: `<template>
   <div>
     <div
-      [class]="'lorem ipsum do\`or sit amet consectetur
-        adipiscing elit proin ex massa hendrerit eu posuere'"
+      [class]="
+        'lorem ipsum do\`or sit amet consectetur adipiscing
+        elit proin ex massa hendrerit eu posuere'
+      "
     >
       <slot></slot>
     </div>

@@ -131,9 +131,12 @@ proin ex massa hendrerit eu posuere\`,
 <template>
   <div>
     <div
-      [class]="classNames('lorem ipsum dolor sit amet
-consectetur adipiscing elit proin ex massa hendrerit eu
-posuere')"
+      [class]="
+        classNames(
+          'lorem ipsum dolor sit amet consectetur adipiscing
+elit proin ex massa hendrerit eu posuere'
+        )
+      "
     >
       <slot></slot>
     </div>
@@ -157,9 +160,12 @@ posuere')"
 <template>
   <div>
     <div
-      [class]="classNames('lorem ipsum dolor sit amet
-consectetur adipiscing elit proin ex massa hendrerit eu
-posuere')"
+      [class]="
+        classNames(
+          'lorem ipsum dolor sit amet consectetur adipiscing
+elit proin ex massa hendrerit eu posuere'
+        )
+      "
     >
       <slot></slot>
     </div>

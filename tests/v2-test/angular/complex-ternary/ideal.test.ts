@@ -31,13 +31,15 @@ const fixtures: Fixture[] = [
   <div>
     <div
       [class]="
-      condition
-        ? 'lorem ipsum dolor sit amet'
-        : (condition ? 'lorem ipsum dolor sit amet
-          consectetur adipiscing elit proin' : 'lorem ipsum
-          dolor sit amet consectetur adipiscing elit proin
-          ex massa hendrerit eu posuere')
-    "
+        condition
+          ? 'lorem ipsum dolor sit amet'
+          : condition
+          ? 'lorem ipsum dolor sit amet consectetur
+            adipiscing elit proin'
+          : 'lorem ipsum dolor sit amet consectetur
+            adipiscing elit proin ex massa hendrerit eu
+            posuere'
+      "
     >
       <slot></slot>
     </div>
@@ -66,16 +68,18 @@ const fixtures: Fixture[] = [
   <div>
     <div
       [class]="
-      condition
-        ? 'lorem ipsum dolor sit amet'
-        : (condition
-            ? 'lorem ipsum dolor sit amet consectetur
-              adipiscing elit proin'
-            : (condition ? 'lorem ipsum dolor sit amet
-              consectetur adipiscing elit proin' : 'lorem
-              ipsum dolor sit amet consectetur adipiscing
-              elit proin ex massa hendrerit eu posuere'))
-    "
+        condition
+          ? 'lorem ipsum dolor sit amet'
+          : condition
+          ? 'lorem ipsum dolor sit amet consectetur
+            adipiscing elit proin'
+          : condition
+          ? 'lorem ipsum dolor sit amet consectetur
+            adipiscing elit proin'
+          : 'lorem ipsum dolor sit amet consectetur
+            adipiscing elit proin ex massa hendrerit eu
+            posuere'
+      "
     >
       <slot></slot>
     </div>

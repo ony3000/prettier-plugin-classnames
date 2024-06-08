@@ -68,11 +68,7 @@ const fixtures: Fixture[] = [
 `,
     output: `<template>
   <div>
-    <div
-      [class]="
-      'lorem ipsum dolor sit amet'
-    "
-    >
+    <div [class]="'lorem ipsum dolor sit amet'">
       <slot></slot>
     </div>
   </div>
@@ -93,8 +89,10 @@ const fixtures: Fixture[] = [
     output: `<template>
   <div>
     <div
-      [class]="'lorem ipsum dolor sit amet consectetur
-adipiscing elit proin'"
+      [class]="
+        'lorem ipsum dolor sit amet consectetur adipiscing
+elit proin'
+      "
     >
       <slot></slot>
     </div>
@@ -116,8 +114,10 @@ adipiscing elit proin'"
     output: `<template>
   <div>
     <div
-      [class]="' lorem ipsum dolor sit amet consectetur
-adipiscing elit proin '"
+      [class]="
+        ' lorem ipsum dolor sit amet consectetur adipiscing
+elit proin '
+      "
     >
       <slot></slot>
     </div>
@@ -145,9 +145,9 @@ adipiscing elit proin '"
   <div>
     <div
       [class]="
-      'lorem ipsum dolor sit amet consectetur adipiscing
+        'lorem ipsum dolor sit amet consectetur adipiscing
 elit proin'
-    "
+      "
     >
       <slot></slot>
     </div>
@@ -169,9 +169,11 @@ elit proin'
     output: `<template>
   <div>
     <div
-      [class]="'lorem ipsum dolor sit amet consectetur
-adipiscing elit proin ex massa hendrerit eu posuere eu
-volutpat id neque pellentesque'"
+      [class]="
+        'lorem ipsum dolor sit amet consectetur adipiscing
+elit proin ex massa hendrerit eu posuere eu volutpat id
+neque pellentesque'
+      "
     >
       <slot></slot>
     </div>
@@ -193,9 +195,11 @@ volutpat id neque pellentesque'"
     output: `<template>
   <div>
     <div
-      [class]="' lorem ipsum dolor sit amet consectetur
-adipiscing elit proin ex massa hendrerit eu posuere eu
-volutpat id neque pellentesque '"
+      [class]="
+        ' lorem ipsum dolor sit amet consectetur adipiscing
+elit proin ex massa hendrerit eu posuere eu volutpat id
+neque pellentesque '
+      "
     >
       <slot></slot>
     </div>
@@ -223,10 +227,10 @@ volutpat id neque pellentesque '"
   <div>
     <div
       [class]="
-      'lorem ipsum dolor sit amet consectetur adipiscing
+        'lorem ipsum dolor sit amet consectetur adipiscing
 elit proin ex massa hendrerit eu posuere eu volutpat id
 neque pellentesque'
-    "
+      "
     >
       <slot></slot>
     </div>
@@ -248,8 +252,10 @@ neque pellentesque'
     output: `<template>
   <div>
     <Box
-      [class]="'lorem ipsum dolor sit amet consectetur
-adipiscing elit proin ex massa hendrerit eu posuere'"
+      [class]="
+        'lorem ipsum dolor sit amet consectetur adipiscing
+elit proin ex massa hendrerit eu posuere'
+      "
     >
       <slot></slot>
     </Box>
@@ -271,8 +277,10 @@ adipiscing elit proin ex massa hendrerit eu posuere'"
     output: `<template>
   <div>
     <div
-      [className]="'lorem ipsum dolor sit amet consectetur
-adipiscing elit proin ex massa hendrerit eu posuere'"
+      [className]="
+        'lorem ipsum dolor sit amet consectetur adipiscing
+elit proin ex massa hendrerit eu posuere'
+      "
     >
       <slot></slot>
     </div>
@@ -294,8 +302,10 @@ adipiscing elit proin ex massa hendrerit eu posuere'"
     output: `<template>
   <div>
     <div
-      [attr.class]="'lorem ipsum dolor sit amet consectetur
-adipiscing elit proin ex massa hendrerit eu posuere'"
+      [attr.class]="
+        'lorem ipsum dolor sit amet consectetur adipiscing
+elit proin ex massa hendrerit eu posuere'
+      "
     >
       <slot></slot>
     </div>
@@ -317,8 +327,10 @@ adipiscing elit proin ex massa hendrerit eu posuere'"
     output: `<template>
   <div>
     <div
-      [ngClass]="'lorem ipsum dolor sit amet consectetur
-adipiscing elit proin ex massa hendrerit eu posuere'"
+      [ngClass]="
+        'lorem ipsum dolor sit amet consectetur adipiscing
+elit proin ex massa hendrerit eu posuere'
+      "
     >
       <slot></slot>
     </div>

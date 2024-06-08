@@ -70,11 +70,7 @@ const fixtures: Fixture[] = [
 `,
     output: `<template>
   <div>
-    <div
-      [class]="classNames(
-      'lorem ipsum dolor sit amet'
-    )"
-    >
+    <div [class]="classNames('lorem ipsum dolor sit amet')">
       <slot></slot>
     </div>
   </div>
@@ -95,7 +91,11 @@ const fixtures: Fixture[] = [
     output: `<template>
   <div>
     <div
-      [class]="classNames('lorem ipsum dolor sit amet consectetur adipiscing elit proin')"
+      [class]="
+        classNames(
+          'lorem ipsum dolor sit amet consectetur adipiscing elit proin'
+        )
+      "
     >
       <slot></slot>
     </div>
@@ -117,8 +117,12 @@ const fixtures: Fixture[] = [
     output: `<template>
   <div>
     <div
-      [class]="classNames(' lorem ipsum dolor sit amet consectetur adipiscing elit
-        proin ')"
+      [class]="
+        classNames(
+          ' lorem ipsum dolor sit amet consectetur adipiscing elit
+          proin '
+        )
+      "
     >
       <slot></slot>
     </div>
@@ -145,9 +149,11 @@ const fixtures: Fixture[] = [
     output: `<template>
   <div>
     <div
-      [class]="classNames(
-      'lorem ipsum dolor sit amet consectetur adipiscing elit proin'
-    )"
+      [class]="
+        classNames(
+          'lorem ipsum dolor sit amet consectetur adipiscing elit proin'
+        )
+      "
     >
       <slot></slot>
     </div>
@@ -169,9 +175,13 @@ const fixtures: Fixture[] = [
     output: `<template>
   <div>
     <div
-      [class]="classNames('lorem ipsum dolor sit amet consectetur adipiscing elit proin
-        ex massa hendrerit eu posuere eu volutpat id neque
-        pellentesque')"
+      [class]="
+        classNames(
+          'lorem ipsum dolor sit amet consectetur adipiscing elit proin
+          ex massa hendrerit eu posuere eu volutpat id neque
+          pellentesque'
+        )
+      "
     >
       <slot></slot>
     </div>
@@ -193,9 +203,13 @@ const fixtures: Fixture[] = [
     output: `<template>
   <div>
     <div
-      [class]="classNames(' lorem ipsum dolor sit amet consectetur adipiscing elit
-        proin ex massa hendrerit eu posuere eu volutpat id neque
-        pellentesque ')"
+      [class]="
+        classNames(
+          ' lorem ipsum dolor sit amet consectetur adipiscing elit
+          proin ex massa hendrerit eu posuere eu volutpat id neque
+          pellentesque '
+        )
+      "
     >
       <slot></slot>
     </div>
@@ -222,11 +236,13 @@ const fixtures: Fixture[] = [
     output: `<template>
   <div>
     <div
-      [class]="classNames(
-      'lorem ipsum dolor sit amet consectetur adipiscing elit proin
-      ex massa hendrerit eu posuere eu volutpat id neque
-      pellentesque'
-    )"
+      [class]="
+        classNames(
+          'lorem ipsum dolor sit amet consectetur adipiscing elit proin
+          ex massa hendrerit eu posuere eu volutpat id neque
+          pellentesque'
+        )
+      "
     >
       <slot></slot>
     </div>
@@ -248,8 +264,12 @@ const fixtures: Fixture[] = [
     output: `<template>
   <div>
     <Box
-      [class]="classNames('lorem ipsum dolor sit amet consectetur adipiscing elit proin
-        ex massa hendrerit eu posuere')"
+      [class]="
+        classNames(
+          'lorem ipsum dolor sit amet consectetur adipiscing elit proin
+          ex massa hendrerit eu posuere'
+        )
+      "
     >
       <slot></slot>
     </Box>
@@ -271,8 +291,12 @@ const fixtures: Fixture[] = [
     output: `<template>
   <div>
     <div
-      [className]="classNames('lorem ipsum dolor sit amet consectetur adipiscing elit proin
-        ex massa hendrerit eu posuere')"
+      [className]="
+        classNames(
+          'lorem ipsum dolor sit amet consectetur adipiscing elit proin
+          ex massa hendrerit eu posuere'
+        )
+      "
     >
       <slot></slot>
     </div>
@@ -294,8 +318,12 @@ const fixtures: Fixture[] = [
     output: `<template>
   <div>
     <div
-      [attr.class]="classNames('lorem ipsum dolor sit amet consectetur adipiscing elit proin
-        ex massa hendrerit eu posuere')"
+      [attr.class]="
+        classNames(
+          'lorem ipsum dolor sit amet consectetur adipiscing elit proin
+          ex massa hendrerit eu posuere'
+        )
+      "
     >
       <slot></slot>
     </div>
@@ -317,8 +345,12 @@ const fixtures: Fixture[] = [
     output: `<template>
   <div>
     <div
-      [ngClass]="classNames('lorem ipsum dolor sit amet consectetur adipiscing elit proin
-        ex massa hendrerit eu posuere')"
+      [ngClass]="
+        classNames(
+          'lorem ipsum dolor sit amet consectetur adipiscing elit proin
+          ex massa hendrerit eu posuere'
+        )
+      "
     >
       <slot></slot>
     </div>

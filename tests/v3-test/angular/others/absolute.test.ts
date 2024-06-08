@@ -200,8 +200,12 @@ adipiscing elit proin ex massa hendrerit eu posuere"
     output: `<template>
   <div>
     <div
-      [class]="clsx('lorem ipsum dolor sit amet consectetur
-adipiscing elit proin ex massa hendrerit eu posuere')"
+      [class]="
+        clsx(
+          'lorem ipsum dolor sit amet consectetur adipiscing
+elit proin ex massa hendrerit eu posuere'
+        )
+      "
     >
       <slot></slot>
     </div>
