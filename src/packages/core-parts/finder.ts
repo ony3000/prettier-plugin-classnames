@@ -676,6 +676,7 @@ export function findTargetClassNameNodesForHtml(
   addon: Dict<(text: string, options: any) => any>,
 ): ClassNameNode[] {
   const supportedAttributes: string[] = ['class', 'className', ...options.customAttributes];
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const supportedFunctions: string[] = ['classNames', ...options.customFunctions];
   /**
    * Most nodes
@@ -1187,6 +1188,7 @@ export function findTargetClassNameNodesForAngular(
     'ngClass',
     ...options.customAttributes,
   ];
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const supportedFunctions: string[] = ['classNames', ...options.customFunctions];
   /**
    * Most nodes
@@ -1299,7 +1301,6 @@ export function findTargetClassNameNodesForAngular(
 
             if (addon.parseBabel) {
               const backslashIndexes: number[] = [];
-              let backslashCount = 0;
               let mutableAttributeValue = node.value;
               let errorLineIndex: number | null = null;
 
