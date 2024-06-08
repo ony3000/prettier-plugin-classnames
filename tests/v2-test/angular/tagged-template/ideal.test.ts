@@ -21,7 +21,7 @@ const classes = tw\`lorem ipsum dolor sit amet\`;
 </script>
 `,
     output: `<script setup lang="ts">
-const classes = tw\`lorem ipsum dolor sit amet\`;
+  const classes = tw\`lorem ipsum dolor sit amet\`;
 </script>
 `,
   },
@@ -33,7 +33,7 @@ const Bar = tw.foo\`lorem ipsum dolor sit amet\`;
 </script>
 `,
     output: `<script setup lang="ts">
-const Bar = tw.foo\`lorem ipsum dolor sit amet\`;
+  const Bar = tw.foo\`lorem ipsum dolor sit amet\`;
 </script>
 `,
   },
@@ -45,7 +45,7 @@ const Bar = tw(Foo)\`lorem ipsum dolor sit amet\`;
 </script>
 `,
     output: `<script setup lang="ts">
-const Bar = tw(Foo)\`lorem ipsum dolor sit amet\`;
+  const Bar = tw(Foo)\`lorem ipsum dolor sit amet\`;
 </script>
 `,
   },
@@ -57,8 +57,8 @@ const classes = tw\`lorem ipsum dolor sit amet consectetur adipiscing elit proin
 </script>
 `,
     output: `<script setup lang="ts">
-const classes = tw\`lorem ipsum dolor sit amet consectetur
-adipiscing elit proin\`;
+  const classes = tw\`lorem ipsum dolor sit amet consectetur
+  adipiscing elit proin\`;
 </script>
 `,
   },
@@ -70,8 +70,8 @@ const Bar = tw.foo\`lorem ipsum dolor sit amet consectetur adipiscing elit proin
 </script>
 `,
     output: `<script setup lang="ts">
-const Bar = tw.foo\`lorem ipsum dolor sit amet consectetur
-adipiscing elit proin\`;
+  const Bar = tw.foo\`lorem ipsum dolor sit amet consectetur
+  adipiscing elit proin\`;
 </script>
 `,
   },
@@ -83,10 +83,10 @@ const Bar = tw(Foo)\`lorem ipsum dolor sit amet consectetur adipiscing elit proi
 </script>
 `,
     output: `<script setup lang="ts">
-const Bar = tw(
-  Foo,
-)\`lorem ipsum dolor sit amet consectetur adipiscing elit
-proin\`;
+  const Bar = tw(
+    Foo,
+  )\`lorem ipsum dolor sit amet consectetur adipiscing elit
+  proin\`;
 </script>
 `,
   },
@@ -98,9 +98,9 @@ const classes = tw\`lorem ipsum dolor sit amet consectetur adipiscing elit proin
 </script>
 `,
     output: `<script setup lang="ts">
-const classes = tw\`lorem ipsum dolor sit amet consectetur
-adipiscing elit proin ex massa hendrerit eu posuere eu
-volutpat id neque pellentesque\`;
+  const classes = tw\`lorem ipsum dolor sit amet consectetur
+  adipiscing elit proin ex massa hendrerit eu posuere eu
+  volutpat id neque pellentesque\`;
 </script>
 `,
   },
@@ -112,9 +112,9 @@ const Bar = tw.foo\`lorem ipsum dolor sit amet consectetur adipiscing elit proin
 </script>
 `,
     output: `<script setup lang="ts">
-const Bar = tw.foo\`lorem ipsum dolor sit amet consectetur
-adipiscing elit proin ex massa hendrerit eu posuere eu
-volutpat id neque pellentesque\`;
+  const Bar = tw.foo\`lorem ipsum dolor sit amet consectetur
+  adipiscing elit proin ex massa hendrerit eu posuere eu
+  volutpat id neque pellentesque\`;
 </script>
 `,
   },
@@ -126,11 +126,11 @@ const Bar = tw(Foo)\`lorem ipsum dolor sit amet consectetur adipiscing elit proi
 </script>
 `,
     output: `<script setup lang="ts">
-const Bar = tw(
-  Foo,
-)\`lorem ipsum dolor sit amet consectetur adipiscing elit
-proin ex massa hendrerit eu posuere eu volutpat id neque
-pellentesque\`;
+  const Bar = tw(
+    Foo,
+  )\`lorem ipsum dolor sit amet consectetur adipiscing elit
+  proin ex massa hendrerit eu posuere eu volutpat id neque
+  pellentesque\`;
 </script>
 `,
   },
