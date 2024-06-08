@@ -45,6 +45,7 @@ function createExpressionNode(
     isItAnOperandOfTernaryOperator: false,
     isItFunctionArgument: false,
     isItInVueTemplate: false,
+    isItAngularExpression: false,
     hasSingleQuote: false,
     hasDoubleQuote: false,
     hasBacktick: false,
@@ -1057,6 +1058,360 @@ export function findTargetClassNameNodesForVue(
               } catch (error) {
                 // no action
               }
+            }
+          } else {
+            // eslint-disable-next-line no-lonely-if
+            if (supportedAttributes.includes(node.name)) {
+              keywordStartingNodes.push(currentASTNode);
+
+              const classNameNodeRangeStart = node.valueSpan.start.offset;
+              const classNameNodeRangeEnd = node.valueSpan.end.offset;
+
+              nonCommentNodes.push({
+                type: 'StringLiteral',
+                range: [classNameNodeRangeStart, classNameNodeRangeEnd],
+              });
+
+              const parentNodeStartLineIndex = parentNode.sourceSpan.start.line;
+              const nodeStartLineIndex = node.sourceSpan.start.line;
+
+              classNameNodes.push({
+                type: 'attribute',
+                isTheFirstLineOnTheSameLineAsTheOpeningTag:
+                  parentNodeStartLineIndex === nodeStartLineIndex,
+                elementName: parentNode.name,
+                range: [classNameNodeRangeStart, classNameNodeRangeEnd],
+                startLineIndex: nodeStartLineIndex,
+              });
+            }
+          }
+        }
+        break;
+      }
+      case 'element': {
+        nonCommentNodes.push(currentASTNode);
+
+        if (
+          isTypeof(
+            node,
+            z.object({
+              startSourceSpan: z.object({
+                end: z.object({
+                  line: z.number(),
+                  offset: z.number(),
+                }),
+              }),
+              name: z.string(),
+              children: z.array(
+                z.object({
+                  value: z.string(),
+                }),
+              ),
+            }),
+          ) &&
+          node.name === 'script'
+        ) {
+          // Note: In fact, the script element is not a `keywordStartingNode`, but it is considered a kind of safe list to maintain the `classNameNode`s obtained from the code inside the element.
+          keywordStartingNodes.push(currentASTNode);
+
+          const textNodeInScript = node.children.at(0);
+
+          if (addon.parseTypescript && textNodeInScript) {
+            const openingTagEndingLineIndex = node.startSourceSpan.end.line;
+            const openingTagEndingOffset = node.startSourceSpan.end.offset;
+
+            const typescriptAst = addon.parseTypescript(textNodeInScript.value, {
+              ...options,
+              parser: 'typescript',
+            });
+            const targetClassNameNodesInScript = findTargetClassNameNodes(
+              typescriptAst,
+              options,
+            ).map<ClassNameNode>((classNameNode) => {
+              const [classNameNodeRangeStart, classNameNodeRangeEnd] = classNameNode.range;
+
+              return {
+                ...classNameNode,
+                range: [
+                  classNameNodeRangeStart + openingTagEndingOffset,
+                  classNameNodeRangeEnd + openingTagEndingOffset,
+                ],
+                startLineIndex: classNameNode.startLineIndex + openingTagEndingLineIndex,
+              };
+            });
+
+            classNameNodes.push(...targetClassNameNodesInScript);
+          }
+        }
+        break;
+      }
+      case 'comment': {
+        if (
+          isTypeof(
+            node,
+            z.object({
+              value: z.string(),
+            }),
+          ) &&
+          node.value.trim() === 'prettier-ignore'
+        ) {
+          prettierIgnoreNodes.push(currentASTNode);
+        }
+        break;
+      }
+      default: {
+        nonCommentNodes.push(currentASTNode);
+        break;
+      }
+    }
+  }
+
+  recursion(ast);
+
+  return filterAndSortClassNameNodes(
+    nonCommentNodes,
+    prettierIgnoreNodes,
+    keywordStartingNodes,
+    classNameNodes,
+  );
+}
+
+export function findTargetClassNameNodesForAngular(
+  ast: any,
+  options: ResolvedOptions,
+  addon: Dict<(text: string, options: any) => any>,
+): ClassNameNode[] {
+  const supportedAttributes: string[] = [
+    'class',
+    'className',
+    'ngClass',
+    ...options.customAttributes,
+  ];
+  const supportedFunctions: string[] = ['classNames', ...options.customFunctions];
+  /**
+   * Most nodes
+   */
+  const nonCommentNodes: ASTNode[] = [];
+  /**
+   * Nodes with a valid 'prettier-ignore' syntax
+   */
+  const prettierIgnoreNodes: ASTNode[] = [];
+  /**
+   * Nodes starting with supported attribute names or supported function names
+   */
+  const keywordStartingNodes: ASTNode[] = [];
+  /**
+   * Class names enclosed in delimiters
+   */
+  const classNameNodes: ClassNameNode[] = [];
+
+  function recursion(node: unknown, parentNode?: { type?: unknown }): void {
+    if (!isTypeof(node, z.object({ type: z.string() }))) {
+      return;
+    }
+
+    Object.entries(node).forEach(([key, value]) => {
+      if (key === 'type') {
+        return;
+      }
+
+      if (Array.isArray(value)) {
+        value.forEach((childNode: unknown) => {
+          recursion(childNode, node);
+        });
+        return;
+      }
+
+      recursion(value, node);
+    });
+
+    if (
+      !isTypeof(
+        node,
+        z.object({
+          sourceSpan: z.object({
+            start: z.object({
+              offset: z.number(),
+            }),
+            end: z.object({
+              offset: z.number(),
+            }),
+          }),
+        }),
+      )
+    ) {
+      return;
+    }
+
+    const [currentNodeRangeStart, currentNodeRangeEnd] = [
+      node.sourceSpan.start.offset,
+      node.sourceSpan.end.offset,
+    ];
+    const currentASTNode: ASTNode = {
+      type: node.type,
+      range: [currentNodeRangeStart, currentNodeRangeEnd],
+    };
+
+    switch (node.type) {
+      case 'attribute': {
+        nonCommentNodes.push(currentASTNode);
+
+        const boundAttributeRegExp = /^\[(?:.+)\]$/;
+
+        if (
+          isTypeof(
+            parentNode,
+            z.object({
+              sourceSpan: z.object({
+                start: z.object({
+                  line: z.number(),
+                }),
+              }),
+              name: z.string(),
+            }),
+          ) &&
+          parentNode.type === 'element' &&
+          isTypeof(
+            node,
+            z.object({
+              sourceSpan: z.object({
+                start: z.object({
+                  line: z.number(),
+                }),
+              }),
+              name: z.string(),
+              value: z.string(),
+              valueSpan: z.object({
+                start: z.object({
+                  offset: z.number(),
+                }),
+                end: z.object({
+                  offset: z.number(),
+                }),
+              }),
+            }),
+          )
+        ) {
+          const isBoundAttribute = node.name.match(boundAttributeRegExp) !== null;
+
+          if (isBoundAttribute) {
+            keywordStartingNodes.push(currentASTNode);
+
+            if (addon.parseBabel) {
+              const backslashIndexes: number[] = [];
+              let backslashCount = 0;
+              let mutableAttributeValue = node.value;
+              let errorLineIndex: number | null = null;
+
+              do {
+                errorLineIndex = null;
+
+                try {
+                  const plainAttributeName = node.name.replace(/^\[(?:attr\.)?(.+)\]$/, '$1');
+                  const isSupportedAttribute = supportedAttributes.includes(plainAttributeName);
+
+                  const jsxStart = `<div ${
+                    isSupportedAttribute ? 'className' : plainAttributeName
+                  }={`;
+                  const jsxEnd = '}></div>';
+
+                  const babelAst = addon.parseBabel(
+                    `${jsxStart}${mutableAttributeValue}${jsxEnd}`,
+                    {
+                      ...options,
+                      parser: 'babel',
+                    },
+                  );
+                  const targetClassNameNodesInAttribute = findTargetClassNameNodes(
+                    babelAst,
+                    options,
+                  ).map<ClassNameNode>((classNameNode) => {
+                    const [classNameNodeRangeStart, classNameNodeRangeEnd] = classNameNode.range;
+
+                    if (classNameNode.type === 'expression') {
+                      // eslint-disable-next-line no-param-reassign
+                      classNameNode.isItAngularExpression = true;
+
+                      if (
+                        classNameNode.delimiterType !== 'backtick' &&
+                        classNameNode.startLineIndex === 0
+                      ) {
+                        // eslint-disable-next-line no-param-reassign
+                        classNameNode.isTheFirstLineOnTheSameLineAsTheAttributeName = true;
+                      }
+                    }
+
+                    const attributeOffset = -jsxStart.length + node.valueSpan.start.offset + 1;
+
+                    const rangeStartWithoutJsx = classNameNodeRangeStart - jsxStart.length;
+                    const backslashCountBeforeThisNode = backslashIndexes.filter(
+                      (backslashIndex) => backslashIndex < rangeStartWithoutJsx,
+                    ).length;
+                    const rangeEndWithoutJsx = classNameNodeRangeEnd - jsxStart.length;
+                    const backslashCountUptoThisNode = backslashIndexes.filter(
+                      (backslashIndex) => backslashIndex < rangeEndWithoutJsx,
+                    ).length;
+
+                    return {
+                      ...classNameNode,
+                      range: [
+                        classNameNodeRangeStart + attributeOffset - backslashCountBeforeThisNode,
+                        classNameNodeRangeEnd + attributeOffset - backslashCountUptoThisNode,
+                      ],
+                      startLineIndex: classNameNode.startLineIndex + node.sourceSpan.start.line,
+                    };
+                  });
+
+                  classNameNodes.push(...targetClassNameNodesInAttribute);
+                } catch (error) {
+                  if (
+                    isTypeof(
+                      error,
+                      z.object({
+                        message: z.string(),
+                        loc: z.object({
+                          start: z.object({
+                            line: z.number(),
+                          }),
+                        }),
+                      }),
+                    )
+                  ) {
+                    if (error.message.match(/^Unterminated string constant./) === null) {
+                      break;
+                    }
+
+                    errorLineIndex = error.loc.start.line - 1;
+                  }
+                }
+
+                if (errorLineIndex !== null) {
+                  const mutableAttributeLines = mutableAttributeValue.split(EOL);
+                  let isBackslashAdded = false;
+
+                  mutableAttributeValue = mutableAttributeLines
+                    .map((line, index) => {
+                      if (
+                        !isBackslashAdded &&
+                        index >= errorLineIndex! &&
+                        line[line.length - 1] !== '\\'
+                      ) {
+                        isBackslashAdded = true;
+
+                        const totalTextLengthUptoPrevLine = mutableAttributeLines
+                          .slice(0, index)
+                          .reduce((textLength, _line) => textLength + _line.length + EOL.length, 0);
+
+                        backslashIndexes.push(totalTextLengthUptoPrevLine + line.length);
+
+                        return `${line}\\`;
+                      }
+
+                      return line;
+                    })
+                    .join(EOL);
+                }
+              } while (errorLineIndex !== null);
             }
           } else {
             // eslint-disable-next-line no-lonely-if

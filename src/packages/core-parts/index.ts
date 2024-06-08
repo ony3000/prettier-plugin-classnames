@@ -4,6 +4,7 @@ import {
   findTargetClassNameNodes,
   findTargetClassNameNodesForHtml,
   findTargetClassNameNodesForVue,
+  findTargetClassNameNodesForAngular,
   findTargetClassNameNodesForAstro,
   findTargetClassNameNodesForSvelte,
 } from './finder';
@@ -73,6 +74,10 @@ function getDelimiters(
         // baseDelimiter = DOUBLE_QUOTE;
       }
     }
+  }
+
+  if (node.type === 'expression' && node.isItAngularExpression) {
+    return [SINGLE_QUOTE, SINGLE_QUOTE];
   }
 
   const opener = `${
@@ -424,7 +429,7 @@ export function parseLineByLineAndReplace({
   format: (source: string, options?: any) => string;
   addon: Dict<(text: string, options: any) => any>;
 }): string {
-  if (formattedText === '' || options.parser === 'angular') {
+  if (formattedText === '') {
     return formattedText;
   }
 
@@ -438,6 +443,10 @@ export function parseLineByLineAndReplace({
     }
     case 'svelte': {
       targetClassNameNodes = findTargetClassNameNodesForSvelte(formattedText, ast, options);
+      break;
+    }
+    case 'angular': {
+      targetClassNameNodes = findTargetClassNameNodesForAngular(ast, options, addon);
       break;
     }
     case 'html': {
@@ -752,7 +761,7 @@ export async function parseLineByLineAndReplaceAsync({
   format: (source: string, options?: any) => Promise<string>;
   addon: Dict<(text: string, options: any) => any>;
 }): Promise<string> {
-  if (formattedText === '' || options.parser === 'angular') {
+  if (formattedText === '') {
     return formattedText;
   }
 
@@ -766,6 +775,10 @@ export async function parseLineByLineAndReplaceAsync({
     }
     case 'svelte': {
       targetClassNameNodes = findTargetClassNameNodesForSvelte(formattedText, ast, options);
+      break;
+    }
+    case 'angular': {
+      targetClassNameNodes = findTargetClassNameNodesForAngular(ast, options, addon);
       break;
     }
     case 'html': {
