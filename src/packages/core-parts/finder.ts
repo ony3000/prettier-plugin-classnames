@@ -350,27 +350,45 @@ export function findTargetClassNameNodes(ast: any, options: ResolvedOptions): Cl
       case 'Property': {
         nonCommentNodes.push(currentASTNode);
 
-        classNameNodes.forEach((classNameNode, index, array) => {
-          const [classNameNodeRangeStart, classNameNodeRangeEnd] = classNameNode.range;
+        if (
+          isTypeof(
+            node,
+            z.object({
+              key: z.object({
+                range: z.custom<NodeRange>((value) =>
+                  isTypeof(value, z.tuple([z.number(), z.number()])),
+                ),
+              }),
+            }),
+          )
+        ) {
+          const [objectKeyRangeStart, objectKeyRangeEnd] = node.key.range;
 
-          if (
-            currentNodeRangeStart <= classNameNodeRangeStart &&
-            classNameNodeRangeEnd <= currentNodeRangeEnd
-          ) {
-            if (classNameNode.type === 'unknown') {
-              // eslint-disable-next-line no-param-reassign
-              array[index] = createExpressionNode({
-                delimiterType: classNameNode.delimiterType,
-                isItAnObjectProperty: true,
-                range: classNameNode.range,
-                startLineIndex: classNameNode.startLineIndex,
-              });
-            } else if (classNameNode.type === 'expression') {
-              // eslint-disable-next-line no-param-reassign
-              classNameNode.isItAnObjectProperty = true;
+          classNameNodes.forEach((classNameNode, index, array) => {
+            const [classNameNodeRangeStart, classNameNodeRangeEnd] = classNameNode.range;
+            const isItAnObjectProperty =
+              objectKeyRangeStart <= classNameNodeRangeStart &&
+              classNameNodeRangeEnd <= objectKeyRangeEnd;
+
+            if (
+              currentNodeRangeStart <= classNameNodeRangeStart &&
+              classNameNodeRangeEnd <= currentNodeRangeEnd
+            ) {
+              if (classNameNode.type === 'unknown') {
+                // eslint-disable-next-line no-param-reassign
+                array[index] = createExpressionNode({
+                  delimiterType: classNameNode.delimiterType,
+                  isItAnObjectProperty,
+                  range: classNameNode.range,
+                  startLineIndex: classNameNode.startLineIndex,
+                });
+              } else if (classNameNode.type === 'expression') {
+                // eslint-disable-next-line no-param-reassign
+                classNameNode.isItAnObjectProperty = isItAnObjectProperty;
+              }
             }
-          }
-        });
+          });
+        }
         break;
       }
       case 'ConditionalExpression': {
@@ -2056,27 +2074,44 @@ export function findTargetClassNameNodesForSvelte(
       case 'Property': {
         nonCommentNodes.push(currentASTNode);
 
-        classNameNodes.forEach((classNameNode, index, array) => {
-          const [classNameNodeRangeStart, classNameNodeRangeEnd] = classNameNode.range;
+        if (
+          isTypeof(
+            node,
+            z.object({
+              key: z.object({
+                start: z.number(),
+                end: z.number(),
+              }),
+            }),
+          )
+        ) {
+          const [objectKeyRangeStart, objectKeyRangeEnd] = [node.key.start, node.key.end];
 
-          if (
-            currentNodeRangeStart <= classNameNodeRangeStart &&
-            classNameNodeRangeEnd <= currentNodeRangeEnd
-          ) {
-            if (classNameNode.type === 'unknown') {
-              // eslint-disable-next-line no-param-reassign
-              array[index] = createExpressionNode({
-                delimiterType: classNameNode.delimiterType,
-                isItAnObjectProperty: true,
-                range: classNameNode.range,
-                startLineIndex: classNameNode.startLineIndex,
-              });
-            } else if (classNameNode.type === 'expression') {
-              // eslint-disable-next-line no-param-reassign
-              classNameNode.isItAnObjectProperty = true;
+          classNameNodes.forEach((classNameNode, index, array) => {
+            const [classNameNodeRangeStart, classNameNodeRangeEnd] = classNameNode.range;
+            const isItAnObjectProperty =
+              objectKeyRangeStart <= classNameNodeRangeStart &&
+              classNameNodeRangeEnd <= objectKeyRangeEnd;
+
+            if (
+              currentNodeRangeStart <= classNameNodeRangeStart &&
+              classNameNodeRangeEnd <= currentNodeRangeEnd
+            ) {
+              if (classNameNode.type === 'unknown') {
+                // eslint-disable-next-line no-param-reassign
+                array[index] = createExpressionNode({
+                  delimiterType: classNameNode.delimiterType,
+                  isItAnObjectProperty,
+                  range: classNameNode.range,
+                  startLineIndex: classNameNode.startLineIndex,
+                });
+              } else if (classNameNode.type === 'expression') {
+                // eslint-disable-next-line no-param-reassign
+                classNameNode.isItAnObjectProperty = isItAnObjectProperty;
+              }
             }
-          }
-        });
+          });
+        }
         break;
       }
       case 'ConditionalExpression': {

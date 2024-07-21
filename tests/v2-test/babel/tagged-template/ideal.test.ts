@@ -98,6 +98,25 @@ proin ex massa hendrerit eu posuere eu volutpat id neque
 pellentesque\`;
 `,
   },
+  {
+    name: 'syntax variants - written as an object value',
+    input: `
+const classes = {
+  short: tw\`lorem ipsum dolor sit amet\`,
+  near: tw\`lorem ipsum dolor sit amet consectetur adipiscing elit proin\`,
+  long: tw\`lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere eu volutpat id neque pellentesque\`,
+};
+`,
+    output: `const classes = {
+  short: tw\`lorem ipsum dolor sit amet\`,
+  near: tw\`lorem ipsum dolor sit amet consectetur adipiscing
+  elit proin\`,
+  long: tw\`lorem ipsum dolor sit amet consectetur adipiscing
+  elit proin ex massa hendrerit eu posuere eu volutpat id
+  neque pellentesque\`,
+};
+`,
+  },
 ];
 
 testEach(fixtures, options);

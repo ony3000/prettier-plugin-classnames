@@ -237,6 +237,39 @@ export function Foo({ children }) {
       customFunctions: ['clsx'],
     },
   },
+  {
+    name: 'template literal - written as an object value',
+    input: `
+export function Foo({ children }) {
+  return (
+    <div className={classNames({
+      short: \`lorem ipsum dolor sit amet\`,
+      near: \`lorem ipsum dolor sit amet consectetur adipiscing elit proin\`,
+      long: \`lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere eu volutpat id neque pellentesque\`,
+    })}>
+      {children}
+    </div>
+  );
+}
+`,
+    output: `export function Foo({ children }) {
+  return (
+    <div
+      className={classNames({
+        short: "lorem ipsum dolor sit amet",
+        near: \`lorem ipsum dolor sit amet consectetur
+        adipiscing elit proin\`,
+        long: \`lorem ipsum dolor sit amet consectetur
+        adipiscing elit proin ex massa hendrerit eu posuere
+        eu volutpat id neque pellentesque\`,
+      })}
+    >
+      {children}
+    </div>
+  );
+}
+`,
+  },
 ];
 
 testEach(fixtures, options);
