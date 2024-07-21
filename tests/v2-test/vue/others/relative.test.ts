@@ -215,6 +215,40 @@ const fixtures: Fixture[] = [
       customFunctions: ['clsx'],
     },
   },
+  {
+    name: 'template literal - written as an object value',
+    input: `
+<template>
+  <div>
+    <div v-bind:class="classNames({
+      short: \`lorem ipsum dolor sit amet\`,
+      near: \`lorem ipsum dolor sit amet consectetur adipiscing elit proin\`,
+      long: \`lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere eu volutpat id neque pellentesque\`,
+    })">
+      <slot></slot>
+    </div>
+  </div>
+</template>
+`,
+    output: `<template>
+  <div>
+    <div
+      v-bind:class="
+        classNames({
+          short: 'lorem ipsum dolor sit amet',
+          near: 'lorem ipsum dolor sit amet consectetur adipiscing elit proin',
+          long: \`lorem ipsum dolor sit amet consectetur adipiscing elit proin
+          ex massa hendrerit eu posuere eu volutpat id neque
+          pellentesque\`,
+        })
+      "
+    >
+      <slot></slot>
+    </div>
+  </div>
+</template>
+`,
+  },
 ];
 
 testEach(fixtures, options);
