@@ -131,6 +131,28 @@ const Bar = tw(Foo)\`lorem ipsum dolor sit amet consectetur adipiscing elit proi
 </script>
 `,
   },
+  {
+    name: 'syntax variants - written as an object value',
+    input: `
+<script>
+const classes = {
+  short: tw\`lorem ipsum dolor sit amet\`,
+  near: tw\`lorem ipsum dolor sit amet consectetur adipiscing elit proin\`,
+  long: tw\`lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere eu volutpat id neque pellentesque\`,
+};
+</script>
+`,
+    output: `<script>
+  const classes = {
+    short: tw\`lorem ipsum dolor sit amet\`,
+    near: tw\`lorem ipsum dolor sit amet consectetur adipiscing elit proin\`,
+    long: tw\`lorem ipsum dolor sit amet consectetur adipiscing elit proin
+    ex massa hendrerit eu posuere eu volutpat id neque
+    pellentesque\`,
+  };
+</script>
+`,
+  },
 ];
 
 testEach(fixtures, options);
