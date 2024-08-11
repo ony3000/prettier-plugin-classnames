@@ -52,6 +52,16 @@ export const options: SupportOptions = {
     type: 'boolean',
     category: 'Format',
     default: false,
-    description: 'A flag for branching in the development environment.',
+    description:
+      'A flag for branching in the development environment. It has no effect in production.',
+  },
+  experimentalOptimization: {
+    // @ts-ignore
+    since: '0.7.2',
+    type: 'boolean',
+    category: 'Format',
+    default: false,
+    description:
+      'Find target class names more efficiently. However, some syntax may not be recognized as a target.',
   },
 };

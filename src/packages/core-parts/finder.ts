@@ -129,7 +129,7 @@ export function findTargetClassNameNodes(ast: any, options: ResolvedOptions): Cl
       return;
     }
 
-    if (options.debugFlag) {
+    if (options.experimentalOptimization) {
       let recursiveProps: string[] = [];
 
       switch (node.type) {
