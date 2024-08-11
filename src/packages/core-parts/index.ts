@@ -462,8 +462,14 @@ export function parseLineByLineAndReplace({
       break;
     }
   }
+  if (options.debugFlag) {
+    console.timeLog('v2 plugin');
+  }
 
   const lineNodes = parseLineByLine(formattedText, indentUnit);
+  if (options.debugFlag) {
+    console.timeLog('v2 plugin');
+  }
 
   const classNameWrappedText = replaceClassName({
     formattedText,
@@ -473,6 +479,9 @@ export function parseLineByLineAndReplace({
     options,
     format,
   });
+  if (options.debugFlag) {
+    console.timeLog('v2 plugin');
+  }
 
   return classNameWrappedText;
 }
