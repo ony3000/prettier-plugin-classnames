@@ -43,4 +43,11 @@ export const options: SupportOptions = {
       },
     ],
   },
+  debugFlag: {
+    since: '0.7.2',
+    type: 'boolean',
+    category: 'Format',
+    default: false,
+    description: 'A flag for branching in the development environment.',
+  },
 };

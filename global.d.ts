@@ -28,6 +28,7 @@ declare global {
     customAttributes: string[];
     customFunctions: string[];
     endingPosition: 'relative' | 'absolute' | 'absolute-with-indent';
+    debugFlag: boolean;
   };
 
   type ResolvedOptions = PrettierBaseOptions & { parser: unknown } & ThisPluginOptions;
