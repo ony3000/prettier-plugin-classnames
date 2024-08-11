@@ -133,6 +133,10 @@ export function findTargetClassNameNodes(ast: any, options: ResolvedOptions): Cl
       let recursiveProps: string[] = [];
 
       switch (node.type) {
+        case 'ArrayExpression': {
+          recursiveProps = ['elements'];
+          break;
+        }
         case 'ArrowFunctionExpression':
         case 'BlockStatement':
         case 'FunctionDeclaration': {
@@ -145,6 +149,11 @@ export function findTargetClassNameNodes(ast: any, options: ResolvedOptions): Cl
         }
         case 'ConditionalExpression': {
           recursiveProps = ['consequent', 'alternate'];
+          break;
+        }
+        case 'ExpressionStatement':
+        case 'JSXExpressionContainer': {
+          recursiveProps = ['expression'];
           break;
         }
         case 'ExportDefaultDeclaration':
@@ -162,10 +171,6 @@ export function findTargetClassNameNodes(ast: any, options: ResolvedOptions): Cl
         }
         case 'JSXElement': {
           recursiveProps = ['openingElement', 'children'];
-          break;
-        }
-        case 'JSXExpressionContainer': {
-          recursiveProps = ['expression'];
           break;
         }
         case 'JSXOpeningElement': {
@@ -1071,20 +1076,53 @@ export function findTargetClassNameNodesForVue(
       return;
     }
 
-    Object.entries(node).forEach(([key, value]) => {
-      if (key === 'type') {
-        return;
+    if (options.experimentalOptimization) {
+      let recursiveProps: string[] = [];
+
+      switch (node.type) {
+        case 'element': {
+          recursiveProps = ['attrs', 'children'];
+          break;
+        }
+        case 'root': {
+          recursiveProps = ['children'];
+          break;
+        }
+        default: {
+          break;
+        }
       }
 
-      if (Array.isArray(value)) {
-        value.forEach((childNode: unknown) => {
-          recursion(childNode, node);
-        });
-        return;
-      }
+      Object.entries(node).forEach(([key, value]) => {
+        if (!recursiveProps.includes(key)) {
+          return;
+        }
 
-      recursion(value, node);
-    });
+        if (Array.isArray(value)) {
+          value.forEach((childNode: unknown) => {
+            recursion(childNode, node);
+          });
+          return;
+        }
+
+        recursion(value, node);
+      });
+    } else {
+      Object.entries(node).forEach(([key, value]) => {
+        if (key === 'type') {
+          return;
+        }
+
+        if (Array.isArray(value)) {
+          value.forEach((childNode: unknown) => {
+            recursion(childNode, node);
+          });
+          return;
+        }
+
+        recursion(value, node);
+      });
+    }
 
     if (
       !isTypeof(
@@ -1360,20 +1398,53 @@ export function findTargetClassNameNodesForAngular(
       return;
     }
 
-    Object.entries(node).forEach(([key, value]) => {
-      if (key === 'type') {
-        return;
+    if (options.experimentalOptimization) {
+      let recursiveProps: string[] = [];
+
+      switch (node.type) {
+        case 'element': {
+          recursiveProps = ['attrs', 'children'];
+          break;
+        }
+        case 'root': {
+          recursiveProps = ['children'];
+          break;
+        }
+        default: {
+          break;
+        }
       }
 
-      if (Array.isArray(value)) {
-        value.forEach((childNode: unknown) => {
-          recursion(childNode, node);
-        });
-        return;
-      }
+      Object.entries(node).forEach(([key, value]) => {
+        if (!recursiveProps.includes(key)) {
+          return;
+        }
 
-      recursion(value, node);
-    });
+        if (Array.isArray(value)) {
+          value.forEach((childNode: unknown) => {
+            recursion(childNode, node);
+          });
+          return;
+        }
+
+        recursion(value, node);
+      });
+    } else {
+      Object.entries(node).forEach(([key, value]) => {
+        if (key === 'type') {
+          return;
+        }
+
+        if (Array.isArray(value)) {
+          value.forEach((childNode: unknown) => {
+            recursion(childNode, node);
+          });
+          return;
+        }
+
+        recursion(value, node);
+      });
+    }
 
     if (
       !isTypeof(
@@ -1725,20 +1796,54 @@ export function findTargetClassNameNodesForAstro(
       return;
     }
 
-    Object.entries(node).forEach(([key, value]) => {
-      if (key === 'type') {
-        return;
+    if (options.experimentalOptimization) {
+      let recursiveProps: string[] = [];
+
+      switch (node.type) {
+        case 'component':
+        case 'element': {
+          recursiveProps = ['attributes', 'children'];
+          break;
+        }
+        case 'root': {
+          recursiveProps = ['children'];
+          break;
+        }
+        default: {
+          break;
+        }
       }
 
-      if (Array.isArray(value)) {
-        value.forEach((childNode: unknown) => {
-          recursion(childNode, node);
-        });
-        return;
-      }
+      Object.entries(node).forEach(([key, value]) => {
+        if (!recursiveProps.includes(key)) {
+          return;
+        }
 
-      recursion(value, node);
-    });
+        if (Array.isArray(value)) {
+          value.forEach((childNode: unknown) => {
+            recursion(childNode, node);
+          });
+          return;
+        }
+
+        recursion(value, node);
+      });
+    } else {
+      Object.entries(node).forEach(([key, value]) => {
+        if (key === 'type') {
+          return;
+        }
+
+        if (Array.isArray(value)) {
+          value.forEach((childNode: unknown) => {
+            recursion(childNode, node);
+          });
+          return;
+        }
+
+        recursion(value, node);
+      });
+    }
 
     if (
       !isTypeof(
