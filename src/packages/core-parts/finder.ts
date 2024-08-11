@@ -129,20 +129,117 @@ export function findTargetClassNameNodes(ast: any, options: ResolvedOptions): Cl
       return;
     }
 
-    Object.entries(node).forEach(([key, value]) => {
-      if (key === 'type') {
-        return;
+    if (options.debugFlag) {
+      let recursiveProps: string[] = [];
+
+      switch (node.type) {
+        case 'ArrowFunctionExpression':
+        case 'BlockStatement':
+        case 'FunctionDeclaration': {
+          recursiveProps = ['body'];
+          break;
+        }
+        case 'CallExpression': {
+          recursiveProps = ['arguments'];
+          break;
+        }
+        case 'ConditionalExpression': {
+          recursiveProps = ['consequent', 'alternate'];
+          break;
+        }
+        case 'ExportDefaultDeclaration':
+        case 'ExportNamedDeclaration': {
+          recursiveProps = ['declaration'];
+          break;
+        }
+        case 'File': {
+          recursiveProps = ['program'];
+          break;
+        }
+        case 'JSXAttribute': {
+          recursiveProps = ['value'];
+          break;
+        }
+        case 'JSXElement': {
+          recursiveProps = ['openingElement', 'children'];
+          break;
+        }
+        case 'JSXExpressionContainer': {
+          recursiveProps = ['expression'];
+          break;
+        }
+        case 'JSXOpeningElement': {
+          recursiveProps = ['attributes'];
+          break;
+        }
+        case 'ObjectExpression': {
+          recursiveProps = ['properties'];
+          break;
+        }
+        case 'ObjectProperty':
+        case 'Property': {
+          recursiveProps = ['key', 'value'];
+          break;
+        }
+        case 'Program': {
+          recursiveProps = ['body', 'comments'];
+          break;
+        }
+        case 'ReturnStatement': {
+          recursiveProps = ['argument'];
+          break;
+        }
+        case 'TaggedTemplateExpression': {
+          recursiveProps = ['quasi'];
+          break;
+        }
+        case 'TemplateLiteral': {
+          recursiveProps = ['expressions', 'quasis'];
+          break;
+        }
+        case 'VariableDeclaration': {
+          recursiveProps = ['declarations'];
+          break;
+        }
+        case 'VariableDeclarator': {
+          recursiveProps = ['init'];
+          break;
+        }
+        default: {
+          break;
+        }
       }
 
-      if (Array.isArray(value)) {
-        value.forEach((childNode: unknown) => {
-          recursion(childNode, node);
-        });
-        return;
-      }
+      Object.entries(node).forEach(([key, value]) => {
+        if (!recursiveProps.includes(key)) {
+          return;
+        }
 
-      recursion(value, node);
-    });
+        if (Array.isArray(value)) {
+          value.forEach((childNode: unknown) => {
+            recursion(childNode, node);
+          });
+          return;
+        }
+
+        recursion(value, node);
+      });
+    } else {
+      Object.entries(node).forEach(([key, value]) => {
+        if (key === 'type') {
+          return;
+        }
+
+        if (Array.isArray(value)) {
+          value.forEach((childNode: unknown) => {
+            recursion(childNode, node);
+          });
+          return;
+        }
+
+        recursion(value, node);
+      });
+    }
 
     if (
       !isTypeof(
