@@ -25,9 +25,6 @@ function transformParser(
       parsers: { [parserName: string]: Parser },
       options: ParserOptions & ThisPluginOptions,
     ): FormattedTextAST => {
-      if (options.debugFlag) {
-        console.time('v2 plugin');
-      }
       const plugins = options.plugins.filter((plugin) => typeof plugin !== 'string') as Plugin[];
 
       let languageImplementedPlugin: Plugin | undefined;
@@ -57,14 +54,8 @@ function transformParser(
         plugins: customLanguageSupportedPlugins,
         endOfLine: 'lf',
       });
-      if (options.debugFlag) {
-        console.timeLog('v2 plugin');
-      }
 
       const ast = defaultParser.parse(firstFormattedText, { [parserName]: defaultParser }, options);
-      if (options.debugFlag) {
-        console.timeLog('v2 plugin');
-      }
       const classNameWrappedText = parseLineByLineAndReplace({
         formattedText: firstFormattedText,
         ast,
@@ -74,18 +65,10 @@ function transformParser(
       });
 
       if (classNameWrappedText === firstFormattedText) {
-        if (options.debugFlag) {
-          console.log('breakpoint #1');
-          console.timeEnd('v2 plugin');
-        }
         return {
           type: 'FormattedText',
           body: classNameWrappedText,
         };
-      }
-
-      if (options.debugFlag) {
-        console.log("============ From now on, it's second formatting. ============");
       }
 
       let secondFormattedText: string;
@@ -96,9 +79,6 @@ function transformParser(
           endOfLine: 'lf',
           rangeEnd: Infinity,
         });
-        if (options.debugFlag) {
-          console.timeLog('v2 plugin');
-        }
       } catch (error) {
         throw new Error(
           'The second format failed. This is likely a bug in this plugin. Please file an issue.',
@@ -106,10 +86,6 @@ function transformParser(
       }
 
       if (secondFormattedText === firstFormattedText) {
-        if (options.debugFlag) {
-          console.log('breakpoint #2');
-          console.timeEnd('v2 plugin');
-        }
         return {
           type: 'FormattedText',
           body: classNameWrappedText,
@@ -121,9 +97,6 @@ function transformParser(
         { [parserName]: defaultParser },
         options,
       );
-      if (options.debugFlag) {
-        console.timeLog('v2 plugin');
-      }
       const classNameSecondWrappedText = parseLineByLineAndReplace({
         formattedText: secondFormattedText,
         ast: secondAst,
@@ -132,10 +105,6 @@ function transformParser(
         addon,
       });
 
-      if (options.debugFlag) {
-        console.log('breakpoint #3');
-        console.timeEnd('v2 plugin');
-      }
       return {
         type: 'FormattedText',
         body: classNameSecondWrappedText,
