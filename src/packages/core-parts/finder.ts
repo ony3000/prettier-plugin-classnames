@@ -815,20 +815,53 @@ export function findTargetClassNameNodesForHtml(
       return;
     }
 
-    Object.entries(node).forEach(([key, value]) => {
-      if (key === 'type') {
-        return;
+    if (options.experimentalOptimization) {
+      let recursiveProps: string[] = [];
+
+      switch (node.type) {
+        case 'element': {
+          recursiveProps = ['attrs', 'children'];
+          break;
+        }
+        case 'root': {
+          recursiveProps = ['children'];
+          break;
+        }
+        default: {
+          break;
+        }
       }
 
-      if (Array.isArray(value)) {
-        value.forEach((childNode: unknown) => {
-          recursion(childNode, node);
-        });
-        return;
-      }
+      Object.entries(node).forEach(([key, value]) => {
+        if (!recursiveProps.includes(key)) {
+          return;
+        }
 
-      recursion(value, node);
-    });
+        if (Array.isArray(value)) {
+          value.forEach((childNode: unknown) => {
+            recursion(childNode, node);
+          });
+          return;
+        }
+
+        recursion(value, node);
+      });
+    } else {
+      Object.entries(node).forEach(([key, value]) => {
+        if (key === 'type') {
+          return;
+        }
+
+        if (Array.isArray(value)) {
+          value.forEach((childNode: unknown) => {
+            recursion(childNode, node);
+          });
+          return;
+        }
+
+        recursion(value, node);
+      });
+    }
 
     if (
       !isTypeof(
