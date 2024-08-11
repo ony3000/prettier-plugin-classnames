@@ -2143,20 +2143,114 @@ export function findTargetClassNameNodesForSvelte(
       return;
     }
 
-    Object.entries(node).forEach(([key, value]) => {
-      if (key === 'type') {
-        return;
+    if (options.experimentalOptimization) {
+      let recursiveProps: string[] = [];
+
+      switch (node.type) {
+        case 'ArrayExpression': {
+          recursiveProps = ['elements'];
+          break;
+        }
+        case 'Attribute': {
+          recursiveProps = ['value'];
+          break;
+        }
+        case 'CallExpression': {
+          recursiveProps = ['arguments'];
+          break;
+        }
+        case 'ConditionalExpression': {
+          recursiveProps = ['consequent', 'alternate'];
+          break;
+        }
+        case 'Element':
+        case 'InlineComponent': {
+          recursiveProps = ['attributes', 'children'];
+          break;
+        }
+        case 'Fragment': {
+          recursiveProps = ['children'];
+          break;
+        }
+        case 'Literal': {
+          recursiveProps = ['leadingComments'];
+          break;
+        }
+        case 'MustacheTag': {
+          recursiveProps = ['expression'];
+          break;
+        }
+        case 'ObjectExpression': {
+          recursiveProps = ['properties'];
+          break;
+        }
+        case 'Program': {
+          recursiveProps = ['body'];
+          break;
+        }
+        case 'Property': {
+          recursiveProps = ['key', 'value'];
+          break;
+        }
+        case 'Root': {
+          recursiveProps = ['html', 'instance'];
+          break;
+        }
+        case 'Script': {
+          recursiveProps = ['content'];
+          break;
+        }
+        case 'TaggedTemplateExpression': {
+          recursiveProps = ['quasi'];
+          break;
+        }
+        case 'TemplateLiteral': {
+          recursiveProps = ['expressions', 'quasis'];
+          break;
+        }
+        case 'VariableDeclaration': {
+          recursiveProps = ['declarations'];
+          break;
+        }
+        case 'VariableDeclarator': {
+          recursiveProps = ['init'];
+          break;
+        }
+        default: {
+          break;
+        }
       }
 
-      if (Array.isArray(value)) {
-        value.forEach((childNode: unknown) => {
-          recursion(childNode, node);
-        });
-        return;
-      }
+      Object.entries(node).forEach(([key, value]) => {
+        if (!recursiveProps.includes(key)) {
+          return;
+        }
 
-      recursion(value, node);
-    });
+        if (Array.isArray(value)) {
+          value.forEach((childNode: unknown) => {
+            recursion(childNode, node);
+          });
+          return;
+        }
+
+        recursion(value, node);
+      });
+    } else {
+      Object.entries(node).forEach(([key, value]) => {
+        if (key === 'type') {
+          return;
+        }
+
+        if (Array.isArray(value)) {
+          value.forEach((childNode: unknown) => {
+            recursion(childNode, node);
+          });
+          return;
+        }
+
+        recursion(value, node);
+      });
+    }
 
     if (
       !isTypeof(
