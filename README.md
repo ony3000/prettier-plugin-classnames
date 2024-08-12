@@ -136,6 +136,17 @@ Default | CLI&nbsp;Override | API&nbsp;Override
 --- | --- | ---
 `"relative"` | `--ending-position <relative\|absolute\|absolute-with-indent>` | `endingPosition: "<relative\|absolute\|absolute-with-indent>"`
 
+### Experimental Optimization
+
+First available in v0.7.2.
+
+Find target class names more efficiently. However, some syntax may not be recognized as a target.
+
+<!-- prettier-ignore -->
+Default | CLI&nbsp;Override | API&nbsp;Override
+--- | --- | ---
+`false` | `--experimental-optimization` | `experimentalOptimization: <boolean>`
+
 ## Version correlation with sibling plugins
 
 Starting with `0.6.0`, when there is a minor release on one side, I plan to reflect that change on the other side as well if possible.
