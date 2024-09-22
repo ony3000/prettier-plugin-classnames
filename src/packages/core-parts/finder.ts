@@ -658,6 +658,31 @@ export function findTargetClassNameNodes(ast: any, options: ResolvedOptions): Cl
         nonCommentNodes.push(currentASTNode);
 
         if (
+          isTypeof(
+            node,
+            z.object({
+              tag: z.object({
+                type: z.literal('Identifier'),
+                name: z.string(),
+                range: z.custom<NodeRange>((value) =>
+                  isTypeof(value, z.tuple([z.number(), z.number()])),
+                ),
+              }),
+            }),
+          ) &&
+          node.tag.name === 'css'
+        ) {
+          const [tagRangeStart, tagRangeEnd] = node.tag.range;
+
+          // Note: In fact, the tag name is not `prettierIgnoreNode`, but it is considered a kind of ignore comment to ignore the template literal that immediately follows it.
+          prettierIgnoreNodes.push({
+            type: node.tag.type,
+            range: [tagRangeStart, tagRangeEnd - 1],
+          });
+          break;
+        }
+
+        if (
           (isTypeof(
             node,
             z.object({
@@ -2609,6 +2634,31 @@ export function findTargetClassNameNodesForSvelte(
       }
       case 'TaggedTemplateExpression': {
         nonCommentNodes.push(currentASTNode);
+
+        if (
+          isTypeof(
+            node,
+            z.object({
+              tag: z.object({
+                type: z.literal('Identifier'),
+                name: z.string(),
+                start: z.number(),
+                end: z.number(),
+              }),
+            }),
+          ) &&
+          node.tag.name === 'css'
+        ) {
+          const tagRangeStart = node.tag.start;
+          const tagRangeEnd = node.tag.end;
+
+          // Note: In fact, the tag name is not `prettierIgnoreNode`, but it is considered a kind of ignore comment to ignore the template literal that immediately follows it.
+          prettierIgnoreNodes.push({
+            type: node.tag.type,
+            range: [tagRangeStart, tagRangeEnd - 1],
+          });
+          break;
+        }
 
         if (
           (isTypeof(
