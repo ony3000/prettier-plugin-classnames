@@ -1,5 +1,5 @@
 import type { ClassNameNode } from './shared';
-import { EOL, SPACE } from './shared';
+import { EOL, PH, SPACE } from './shared';
 
 type LinePart = {
   type: string;
@@ -100,12 +100,12 @@ function parseLineByLine(
   return parsedLineNodes;
 }
 
-function formatClassName(source: string, options: ResolvedOptions): string {
+function formatClassName(source: string, printWidth: number): string {
   const lines: string[] = [];
   let remainder = `${source}${SPACE}`.replace(/[\s]+/g, SPACE);
 
   while (remainder.length) {
-    const chunk = remainder.slice(0, options.printWidth + 1);
+    const chunk = remainder.slice(0, Math.max(0, printWidth) + 1);
     const lastSpaceIndexInChunk = chunk.lastIndexOf(SPACE);
     let lineCandidate = remainder.slice(0, lastSpaceIndexInChunk);
 
@@ -127,15 +127,14 @@ function formatClassName(source: string, options: ResolvedOptions): string {
     lines.push(lineCandidate);
   }
 
-  if (options.debugFlag) {
-    // eslint-disable-next-line no-console
-    console.dir(lines, inspectOptions);
-  }
-
   return lines.join(EOL);
 }
 
 function transformClassNameIfNecessary(lineNodes: LineNode[], options: ResolvedOptions): void {
+  const isStartingPositionRelative = options.endingPosition !== 'absolute';
+  const isEndingPositionAbsolute = options.endingPosition !== 'relative';
+  const isOutputIdeal = isStartingPositionRelative && isEndingPositionAbsolute;
+
   for (let lineIndex = lineNodes.length - 1; lineIndex >= 0; lineIndex -= 1) {
     const { indentLevel, parts } = lineNodes[lineIndex];
     const temporaryLineNodes: LineNode[] = [];
@@ -147,15 +146,36 @@ function transformClassNameIfNecessary(lineNodes: LineNode[], options: ResolvedO
 
       if (currentPart.type === 'attribute') {
         const slicedLineNodes: LineNode[] = [];
-        const classNameBase = currentPart.body.trim();
-        const formattedClassName = formatClassName(classNameBase, options);
+        const leadingText = isEndingPositionAbsolute
+          ? `${SPACE.repeat(options.tabWidth * indentLevel)}${parts
+              .slice(0, partIndex)
+              .map(({ body }) => body)
+              .join('')}`
+          : '';
+        const classNameBase = `${PH.repeat(leadingText.length)}${currentPart.body.trim()}`;
+        let formattedClassName = formatClassName(classNameBase, options.printWidth).slice(
+          leadingText.length,
+        );
         if (options.debugFlag) {
           // eslint-disable-next-line no-console
           console.dir(formattedClassName, inspectOptions);
         }
-        const isMultiLineClassName = formattedClassName.split(EOL).length > 1;
+        const lines = formattedClassName.split(EOL);
+        const isMultiLineClassName = lines.length > 1;
 
         if (isMultiLineClassName) {
+          if (isOutputIdeal) {
+            const multiLineIndentLevel = indentLevel + 1;
+
+            formattedClassName = [
+              lines[0],
+              formatClassName(
+                lines.slice(1).join(EOL),
+                options.printWidth - options.tabWidth * multiLineIndentLevel,
+              ),
+            ].join(EOL);
+          }
+
           slicedLineNodes.push(
             ...formattedClassName.split(EOL).map((line) => ({
               indentLevel,
@@ -175,8 +195,13 @@ function transformClassNameIfNecessary(lineNodes: LineNode[], options: ResolvedO
           parts.splice(partIndex, 1, ...slicedLineNodes.splice(0, 1)[0].parts);
 
           slicedLineNodes.forEach((lineNode) => {
-            // eslint-disable-next-line no-param-reassign
-            lineNode.indentLevel += 1;
+            if (isStartingPositionRelative) {
+              // eslint-disable-next-line no-param-reassign
+              lineNode.indentLevel += 1;
+            } else {
+              // eslint-disable-next-line no-param-reassign
+              lineNode.indentLevel = 0;
+            }
           });
 
           slicedLineNodes.reverse();
