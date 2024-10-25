@@ -1,5 +1,5 @@
 import type { ClassNameNode } from './shared';
-import { EOL, PH, SPACE } from './shared';
+import { EOL, PH, SPACE, BACKTICK } from './shared';
 
 type LinePart = {
   type: string;
@@ -49,24 +49,38 @@ function parseLineByLine(
         const classNameNode = classNameNodesStartingFromCurrentLine[index];
         const [rangeStartOfClassName, rangeEndOfClassName] = classNameNode.range;
 
+        const classNameLiteralOrExpression = formattedText.slice(
+          rangeStartOfClassName + 1,
+          rangeEndOfClassName - 1,
+        );
+        const numberOfLinesOfClassName = classNameLiteralOrExpression.split(EOL).length;
+        const rangeEndOfLineWhereClassNameEnds = formattedLines
+          .slice(0, currentLineIndex + numberOfLinesOfClassName)
+          .reduce(
+            (totalTextLength, text, textIndex) =>
+              totalTextLength + (textIndex > 0 ? EOL.length : 0) + text.length,
+            0,
+          );
+
         parts.push({
           type: 'Text',
-          body: formattedText.slice(rangeEndOfClassName, temporaryRangeEnd),
+          body: formattedText.slice(
+            rangeEndOfClassName,
+            rangeEndOfClassName < rangeEndOfLineWhereClassNameEnds
+              ? rangeEndOfLineWhereClassNameEnds
+              : temporaryRangeEnd,
+          ),
         });
         parts.push({
           type: 'ClosingDelimiter',
           body: formattedText.slice(rangeEndOfClassName - 1, rangeEndOfClassName),
         });
 
-        const classNameLiteralOrExpression = formattedText.slice(
-          rangeStartOfClassName + 1,
-          rangeEndOfClassName - 1,
-        );
         parts.push({
           type: classNameNode.type,
           body: classNameLiteralOrExpression,
         });
-        numberOfLinesToSkip += classNameLiteralOrExpression.split(EOL).length - 1;
+        numberOfLinesToSkip += numberOfLinesOfClassName - 1;
 
         parts.push({
           type: 'OpeningDelimiter',
@@ -153,6 +167,7 @@ function transformClassNameIfNecessary(lineNodes: LineNode[], options: ResolvedO
               .join('')}`
           : '';
         const classNameBase = `${PH.repeat(leadingText.length)}${currentPart.body.trim()}`;
+
         let formattedClassName = formatClassName(classNameBase, options.printWidth).slice(
           leadingText.length,
         );
@@ -198,6 +213,87 @@ function transformClassNameIfNecessary(lineNodes: LineNode[], options: ResolvedO
             if (isStartingPositionRelative) {
               // eslint-disable-next-line no-param-reassign
               lineNode.indentLevel += 1;
+            } else {
+              // eslint-disable-next-line no-param-reassign
+              lineNode.indentLevel = 0;
+            }
+          });
+
+          slicedLineNodes.reverse();
+
+          temporaryLineNodes.push(...slicedLineNodes);
+          temporaryPartIndex = partIndex + 1;
+        } else {
+          currentPart.type = 'Text';
+          currentPart.body = formattedClassName;
+        }
+      } else if (currentPart.type === 'expression') {
+        const slicedLineNodes: LineNode[] = [];
+        const leadingText = isEndingPositionAbsolute
+          ? `${SPACE.repeat(options.tabWidth * indentLevel)}${parts
+              .slice(0, partIndex)
+              .map(({ body }) => body)
+              .join('')}`
+          : '';
+        const hasLeadingSpace = currentPart.body !== currentPart.body.trimStart();
+        const hasTrailingSpace = currentPart.body !== currentPart.body.trimEnd();
+        const classNameBase = `${PH.repeat(leadingText.length)}${
+          hasLeadingSpace ? SPACE : ''
+        }${currentPart.body.trim().replace(/\\\n/g, '')}`;
+
+        let formattedClassName = `${formatClassName(classNameBase, options.printWidth).slice(
+          leadingText.length,
+        )}${hasTrailingSpace ? SPACE : ''}`;
+        if (options.debugFlag) {
+          // eslint-disable-next-line no-console
+          console.dir(formattedClassName, inspectOptions);
+        }
+        const lines = formattedClassName.split(EOL);
+        const isMultiLineClassName = lines.length > 1;
+
+        if (isMultiLineClassName) {
+          if (isOutputIdeal) {
+            const multiLineIndentLevel = indentLevel + 1;
+
+            formattedClassName = [
+              lines[0],
+              `${formatClassName(
+                lines.slice(1).join(EOL),
+                options.printWidth - options.tabWidth * multiLineIndentLevel,
+              )}${hasTrailingSpace ? SPACE : ''}`,
+            ].join(EOL);
+          }
+
+          slicedLineNodes.push(
+            ...formattedClassName.split(EOL).map((line) => ({
+              indentLevel,
+              parts: [
+                {
+                  type: 'Text',
+                  body: line,
+                },
+              ],
+            })),
+          );
+
+          const isTheFirstLineOnTheSameLineAsTheAttributeName =
+            parts.slice(0, Math.max(0, partIndex - 1)).length > 0;
+
+          parts[partIndex - 1].body = BACKTICK;
+          parts[partIndex + 1].body = BACKTICK;
+
+          slicedLineNodes[slicedLineNodes.length - 1].parts.push(
+            ...parts.splice(partIndex + 1, parts.length - (partIndex + 1)),
+          );
+
+          parts.splice(partIndex, 1, ...slicedLineNodes.splice(0, 1)[0].parts);
+
+          slicedLineNodes.forEach((lineNode) => {
+            if (isStartingPositionRelative) {
+              if (isTheFirstLineOnTheSameLineAsTheAttributeName) {
+                // eslint-disable-next-line no-param-reassign
+                lineNode.indentLevel += 1;
+              }
             } else {
               // eslint-disable-next-line no-param-reassign
               lineNode.indentLevel = 0;
