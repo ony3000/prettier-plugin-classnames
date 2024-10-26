@@ -1,9 +1,10 @@
-import type { ClassNameNode } from './shared';
+import type { ExpressionNode, ClassNameNode } from './shared';
 import { EOL, PH, SPACE, BACKTICK } from './shared';
 
 type LinePart = {
   type: string;
   body: string;
+  props?: Omit<ClassNameNode, 'type' | 'range' | 'startLineIndex'>;
 };
 
 type LineNode = {
@@ -47,7 +48,13 @@ function parseLineByLine(
 
       for (let index = 0; index < classNameNodesStartingFromCurrentLine.length; index += 1) {
         const classNameNode = classNameNodesStartingFromCurrentLine[index];
-        const [rangeStartOfClassName, rangeEndOfClassName] = classNameNode.range;
+        const {
+          range,
+          startLineIndex, // not in use
+          ...restWithType
+        } = classNameNode;
+        const { type, ...restWithoutType } = restWithType;
+        const [rangeStartOfClassName, rangeEndOfClassName] = range;
 
         const classNameLiteralOrExpression = formattedText.slice(
           rangeStartOfClassName + 1,
@@ -62,32 +69,43 @@ function parseLineByLine(
             0,
           );
 
+        const delimiterOffset =
+          restWithType.type === 'expression' &&
+          restWithType.isItAnObjectProperty &&
+          restWithType.delimiterType === 'backtick'
+            ? 1
+            : 0;
+
         parts.push({
           type: 'Text',
           body: formattedText.slice(
-            rangeEndOfClassName,
-            rangeEndOfClassName < rangeEndOfLineWhereClassNameEnds
+            rangeEndOfClassName + delimiterOffset,
+            rangeEndOfClassName + delimiterOffset < rangeEndOfLineWhereClassNameEnds
               ? rangeEndOfLineWhereClassNameEnds
               : temporaryRangeEnd,
           ),
         });
         parts.push({
           type: 'ClosingDelimiter',
-          body: formattedText.slice(rangeEndOfClassName - 1, rangeEndOfClassName),
+          body: formattedText.slice(rangeEndOfClassName - 1, rangeEndOfClassName + delimiterOffset),
         });
 
         parts.push({
-          type: classNameNode.type,
+          type,
           body: classNameLiteralOrExpression,
+          props: restWithoutType,
         });
         numberOfLinesToSkip += numberOfLinesOfClassName - 1;
 
         parts.push({
           type: 'OpeningDelimiter',
-          body: formattedText.slice(rangeStartOfClassName, rangeStartOfClassName + 1),
+          body: formattedText.slice(
+            rangeStartOfClassName - delimiterOffset,
+            rangeStartOfClassName + 1,
+          ),
         });
 
-        temporaryRangeEnd = rangeStartOfClassName;
+        temporaryRangeEnd = rangeStartOfClassName - delimiterOffset;
       }
       parts.push({
         type: 'Text',
@@ -252,8 +270,17 @@ function transformClassNameIfNecessary(lineNodes: LineNode[], options: ResolvedO
         const isMultiLineClassName = lines.length > 1;
 
         if (isMultiLineClassName) {
+          const props = currentPart.props as Omit<
+            ExpressionNode,
+            'type' | 'range' | 'startLineIndex'
+          >;
+
           if (isOutputIdeal) {
-            const multiLineIndentLevel = indentLevel + 1;
+            const multiLineIndentLevel =
+              props.isTheFirstLineOnTheSameLineAsTheAttributeName ||
+              props.isItAnOperandOfTernaryOperator
+                ? indentLevel + 1
+                : indentLevel;
 
             formattedClassName = [
               lines[0],
@@ -276,11 +303,10 @@ function transformClassNameIfNecessary(lineNodes: LineNode[], options: ResolvedO
             })),
           );
 
-          const isTheFirstLineOnTheSameLineAsTheAttributeName =
-            parts.slice(0, Math.max(0, partIndex - 1)).length > 0;
+          const areNeededBrackets = isMultiLineClassName && props.isItAnObjectProperty;
 
-          parts[partIndex - 1].body = BACKTICK;
-          parts[partIndex + 1].body = BACKTICK;
+          parts[partIndex - 1].body = `${areNeededBrackets ? '[' : ''}${BACKTICK}`;
+          parts[partIndex + 1].body = `${BACKTICK}${areNeededBrackets ? ']' : ''}`;
 
           slicedLineNodes[slicedLineNodes.length - 1].parts.push(
             ...parts.splice(partIndex + 1, parts.length - (partIndex + 1)),
@@ -290,7 +316,7 @@ function transformClassNameIfNecessary(lineNodes: LineNode[], options: ResolvedO
 
           slicedLineNodes.forEach((lineNode) => {
             if (isStartingPositionRelative) {
-              if (isTheFirstLineOnTheSameLineAsTheAttributeName) {
+              if (props.isTheFirstLineOnTheSameLineAsTheAttributeName) {
                 // eslint-disable-next-line no-param-reassign
                 lineNode.indentLevel += 1;
               }
