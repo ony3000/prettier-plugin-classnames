@@ -1,5 +1,5 @@
 import type { Dict, NodeRange, ExpressionNode, ClassNameNode } from './shared';
-import { EOL, PH, SPACE, BACKTICK } from './shared';
+import { EOL, PH, SPACE, SINGLE_QUOTE, DOUBLE_QUOTE, BACKTICK } from './shared';
 
 type LinePart = {
   type: string;
@@ -253,6 +253,11 @@ function transformClassNameIfNecessary(lineNodes: LineNode[], options: ResolvedO
           currentPart.body = formattedClassName;
         }
       } else if (currentPart.type === 'expression') {
+        const props = currentPart.props as Omit<
+          ExpressionNode,
+          'type' | 'range' | 'startLineIndex'
+        >;
+
         const slicedLineNodes: LineNode[] = [];
         const leadingText = isEndingPositionAbsolute
           ? `${SPACE.repeat(options.tabWidth * indentLevel)}${parts
@@ -277,11 +282,6 @@ function transformClassNameIfNecessary(lineNodes: LineNode[], options: ResolvedO
         const isMultiLineClassName = lines.length > 1;
 
         if (isMultiLineClassName) {
-          const props = currentPart.props as Omit<
-            ExpressionNode,
-            'type' | 'range' | 'startLineIndex'
-          >;
-
           if (isOutputIdeal) {
             const multiLineIndentLevel =
               props.isTheFirstLineOnTheSameLineAsTheAttributeName ||
@@ -298,6 +298,10 @@ function transformClassNameIfNecessary(lineNodes: LineNode[], options: ResolvedO
             ].join(EOL);
           }
 
+          if (props.delimiterType !== 'backtick' && props.hasBacktick) {
+            formattedClassName = formattedClassName.replace(/`/g, `\\${BACKTICK}`);
+          }
+
           slicedLineNodes.push(
             ...formattedClassName.split(EOL).map((line) => ({
               indentLevel,
@@ -310,7 +314,7 @@ function transformClassNameIfNecessary(lineNodes: LineNode[], options: ResolvedO
             })),
           );
 
-          const areNeededBrackets = isMultiLineClassName && props.isItAnObjectProperty;
+          const areNeededBrackets = props.isItAnObjectProperty;
 
           parts[partIndex - 1].body = `${areNeededBrackets ? '[' : ''}${BACKTICK}`;
           parts[partIndex + 1].body = `${BACKTICK}${areNeededBrackets ? ']' : ''}`;
@@ -343,6 +347,50 @@ function transformClassNameIfNecessary(lineNodes: LineNode[], options: ResolvedO
         } else {
           currentPart.type = 'Text';
           currentPart.body = formattedClassName;
+
+          let baseDelimiter = DOUBLE_QUOTE;
+
+          if (props.shouldKeepDelimiter) {
+            if (props.delimiterType === 'backtick') {
+              baseDelimiter = BACKTICK;
+            } else if (props.delimiterType === 'single-quote') {
+              baseDelimiter = SINGLE_QUOTE;
+            } else {
+              // baseDelimiter = DOUBLE_QUOTE;
+            }
+          } else if (props.isItInVueTemplate) {
+            baseDelimiter = SINGLE_QUOTE;
+          } else if (options.singleQuote) {
+            if (props.hasSingleQuote) {
+              // baseDelimiter = DOUBLE_QUOTE;
+            } else {
+              baseDelimiter = SINGLE_QUOTE;
+            }
+          } else if (!options.singleQuote) {
+            if (props.hasDoubleQuote) {
+              baseDelimiter = SINGLE_QUOTE;
+            } else {
+              // baseDelimiter = DOUBLE_QUOTE;
+            }
+          }
+
+          parts[partIndex - 1].body = baseDelimiter;
+          parts[partIndex + 1].body = baseDelimiter;
+
+          if (baseDelimiter === SINGLE_QUOTE) {
+            if (props.delimiterType !== 'single-quote' && props.hasSingleQuote) {
+              currentPart.body = formattedClassName.replace(/'/g, `\\${SINGLE_QUOTE}`);
+            }
+          } else if (baseDelimiter === DOUBLE_QUOTE) {
+            if (props.delimiterType !== 'double-quote' && props.hasDoubleQuote) {
+              currentPart.body = formattedClassName.replace(/"/g, `\\${DOUBLE_QUOTE}`);
+            }
+          } else {
+            // eslint-disable-next-line no-lonely-if
+            if (props.delimiterType !== 'backtick' && props.hasBacktick) {
+              currentPart.body = formattedClassName.replace(/`/g, `\\${BACKTICK}`);
+            }
+          }
         }
       }
     }
