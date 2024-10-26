@@ -1,4 +1,4 @@
-import type { ExpressionNode, ClassNameNode } from './shared';
+import type { Dict, NodeRange, ExpressionNode, ClassNameNode } from './shared';
 import { EOL, PH, SPACE, BACKTICK } from './shared';
 
 type LinePart = {
@@ -14,60 +14,63 @@ type LineNode = {
 
 const inspectOptions: any = { depth: null };
 
-function parseLineByLine(
+function parseLineByLineFromBottomToTop(
   formattedText: string,
   indentUnit: string,
   targetClassNameNodes: ClassNameNode[],
 ): LineNode[] {
   const formattedLines = formattedText.split(EOL);
-  let rangeStartOfLine = 0;
-  let rangeEndOfLine: number;
+  let rangeStartOfLine: number;
+  let rangeEndOfLine = formattedText.length;
+  const rangePerLine: Dict<NodeRange> = {};
 
   const parsedLineNodes: LineNode[] = [];
-  let numberOfLinesToSkip = 0;
 
-  for (let currentLineIndex = 0; currentLineIndex < formattedLines.length; currentLineIndex += 1) {
+  for (
+    let currentLineIndex = formattedLines.length - 1;
+    currentLineIndex >= 0;
+    currentLineIndex -= 1
+  ) {
     const line = formattedLines[currentLineIndex];
 
     const indentMatchResult = line.match(new RegExp(`^(${indentUnit})*`));
     const indentLevel = indentMatchResult![0].length / indentUnit.length;
-    const offset = indentUnit.length * indentLevel;
+    const indentOffset = indentUnit.length * indentLevel;
     const parts: LinePart[] = [];
 
-    rangeEndOfLine = rangeStartOfLine + line.length;
+    rangeStartOfLine = rangeEndOfLine - line.length;
+    rangePerLine[currentLineIndex] = [rangeStartOfLine, rangeEndOfLine];
 
-    if (numberOfLinesToSkip > 0) {
-      // nothing to do
-      numberOfLinesToSkip -= 1;
-    } else {
-      const classNameNodesStartingFromCurrentLine = targetClassNameNodes.filter(
-        ({ startLineIndex }) => startLineIndex === currentLineIndex,
+    const classNameNodesStartingFromCurrentLine = targetClassNameNodes.filter(
+      ({ startLineIndex }) => startLineIndex === currentLineIndex,
+    );
+
+    let rangeEndOfPart = rangeEndOfLine;
+
+    for (
+      let nodeIndex = 0;
+      nodeIndex < classNameNodesStartingFromCurrentLine.length;
+      nodeIndex += 1
+    ) {
+      const classNameNode = classNameNodesStartingFromCurrentLine[nodeIndex];
+      const {
+        range,
+        startLineIndex, // not in use
+        ...restWithType
+      } = classNameNode;
+      const { type, ...restWithoutType } = restWithType;
+      const [rangeStartOfClassName, rangeEndOfClassName] = range;
+
+      const classNameWithoutDelimiter = formattedText.slice(
+        rangeStartOfClassName + 1,
+        rangeEndOfClassName - 1,
       );
+      const numberOfLinesOfClassName = classNameWithoutDelimiter.split(EOL).length;
+      const numberOfLinesToSkip = numberOfLinesOfClassName - 1;
+      const rangeOfLineWhereClassNameEnds = rangePerLine[currentLineIndex + numberOfLinesToSkip];
 
-      let temporaryRangeEnd = rangeEndOfLine;
-
-      for (let index = 0; index < classNameNodesStartingFromCurrentLine.length; index += 1) {
-        const classNameNode = classNameNodesStartingFromCurrentLine[index];
-        const {
-          range,
-          startLineIndex, // not in use
-          ...restWithType
-        } = classNameNode;
-        const { type, ...restWithoutType } = restWithType;
-        const [rangeStartOfClassName, rangeEndOfClassName] = range;
-
-        const classNameLiteralOrExpression = formattedText.slice(
-          rangeStartOfClassName + 1,
-          rangeEndOfClassName - 1,
-        );
-        const numberOfLinesOfClassName = classNameLiteralOrExpression.split(EOL).length;
-        const rangeEndOfLineWhereClassNameEnds = formattedLines
-          .slice(0, currentLineIndex + numberOfLinesOfClassName)
-          .reduce(
-            (totalTextLength, text, textIndex) =>
-              totalTextLength + (textIndex > 0 ? EOL.length : 0) + text.length,
-            0,
-          );
+      if (rangeOfLineWhereClassNameEnds) {
+        const [, rangeEndOfLineWhereClassNameEnds] = rangeOfLineWhereClassNameEnds;
 
         const delimiterOffset =
           restWithType.type === 'expression' &&
@@ -82,21 +85,18 @@ function parseLineByLine(
             rangeEndOfClassName + delimiterOffset,
             rangeEndOfClassName + delimiterOffset < rangeEndOfLineWhereClassNameEnds
               ? rangeEndOfLineWhereClassNameEnds
-              : temporaryRangeEnd,
+              : rangeEndOfPart,
           ),
         });
         parts.push({
           type: 'ClosingDelimiter',
           body: formattedText.slice(rangeEndOfClassName - 1, rangeEndOfClassName + delimiterOffset),
         });
-
         parts.push({
           type,
-          body: classNameLiteralOrExpression,
+          body: classNameWithoutDelimiter,
           props: restWithoutType,
         });
-        numberOfLinesToSkip += numberOfLinesOfClassName - 1;
-
         parts.push({
           type: 'OpeningDelimiter',
           body: formattedText.slice(
@@ -105,29 +105,36 @@ function parseLineByLine(
           ),
         });
 
-        temporaryRangeEnd = rangeStartOfClassName - delimiterOffset;
-      }
-      parts.push({
-        type: 'Text',
-        body: formattedText.slice(rangeStartOfLine, temporaryRangeEnd).slice(offset),
-      });
-      parts.reverse();
-
-      if (parts.length > 1 && parts[0].body === '') {
-        parts.shift();
-      }
-      if (parts.length > 1 && parts[parts.length - 1].body === '') {
-        parts.pop();
+        rangeEndOfPart = rangeStartOfClassName - delimiterOffset;
       }
 
-      parsedLineNodes.push({
-        indentLevel,
-        parts,
-      });
+      if (numberOfLinesToSkip) {
+        parsedLineNodes.splice(parsedLineNodes.length - numberOfLinesToSkip, numberOfLinesToSkip);
+      }
     }
 
-    rangeStartOfLine = rangeEndOfLine + EOL.length;
+    parts.push({
+      type: 'Text',
+      body: formattedText.slice(rangeStartOfLine, rangeEndOfPart).slice(indentOffset),
+    });
+    parts.reverse();
+
+    if (parts.length > 1 && parts[0].body === '') {
+      parts.shift();
+    }
+    if (parts.length > 1 && parts[parts.length - 1].body === '') {
+      parts.pop();
+    }
+
+    parsedLineNodes.push({
+      indentLevel,
+      parts,
+    });
+
+    rangeEndOfLine = rangeStartOfLine - EOL.length;
   }
+
+  parsedLineNodes.reverse();
 
   return parsedLineNodes;
 }
@@ -316,7 +323,10 @@ function transformClassNameIfNecessary(lineNodes: LineNode[], options: ResolvedO
 
           slicedLineNodes.forEach((lineNode) => {
             if (isStartingPositionRelative) {
-              if (props.isTheFirstLineOnTheSameLineAsTheAttributeName) {
+              if (
+                props.isTheFirstLineOnTheSameLineAsTheAttributeName ||
+                props.isItAnOperandOfTernaryOperator
+              ) {
                 // eslint-disable-next-line no-param-reassign
                 lineNode.indentLevel += 1;
               }
@@ -376,7 +386,11 @@ export function parseAndAssembleLikePpbs(
     console.dir(targetClassNameNodes, inspectOptions);
   }
 
-  const lineNodes = parseLineByLine(formattedText, indentUnit, targetClassNameNodes);
+  const lineNodes = parseLineByLineFromBottomToTop(
+    formattedText,
+    indentUnit,
+    targetClassNameNodes.filter(({ type }) => type !== 'ternary'),
+  );
 
   if (options.debugFlag) {
     // eslint-disable-next-line no-console
