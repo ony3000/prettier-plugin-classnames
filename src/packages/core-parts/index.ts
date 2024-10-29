@@ -1,6 +1,6 @@
 import { createHash } from 'node:crypto';
 
-import { parseAndAssembleLikePpbs } from './experimental';
+import { parseAndAssemble } from './experimental';
 import {
   findTargetClassNameNodes,
   findTargetClassNameNodesForHtml,
@@ -465,7 +465,7 @@ export function parseLineByLineAndReplace({
   }
 
   if (options.experimentalOptimization && options.parser === 'babel') {
-    return parseAndAssembleLikePpbs(formattedText, indentUnit, targetClassNameNodes, options);
+    return parseAndAssemble(formattedText, indentUnit, targetClassNameNodes, options);
   }
 
   const lineNodes = parseLineByLine(formattedText, indentUnit);
@@ -801,7 +801,7 @@ export async function parseLineByLineAndReplaceAsync({
   }
 
   if (options.experimentalOptimization && options.parser === 'babel') {
-    return parseAndAssembleLikePpbs(formattedText, indentUnit, targetClassNameNodes, options);
+    return parseAndAssemble(formattedText, indentUnit, targetClassNameNodes, options);
   }
 
   const lineNodes = parseLineByLine(formattedText, indentUnit);

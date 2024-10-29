@@ -1,4 +1,12 @@
-import type { Dict, NodeRange, ExpressionNode, ClassNameNode } from './shared';
+import { createHash } from 'node:crypto';
+
+import type {
+  Dict,
+  NodeRange,
+  ExpressionNode,
+  TernaryExpressionNode,
+  ClassNameNode,
+} from './shared';
 import { EOL, PH, SPACE, SINGLE_QUOTE, DOUBLE_QUOTE, BACKTICK } from './shared';
 
 type LinePart = {
@@ -13,6 +21,27 @@ type LineNode = {
 };
 
 const inspectOptions: any = { depth: null };
+
+function sha1(input: string): string {
+  return createHash('sha1').update(input).digest('hex');
+}
+
+function freezeClassName(input: string): string {
+  const charCodeForLowerCaseAlpha = 945;
+  const greekPlaceholder = [...Array(16)].map((_, index) =>
+    String.fromCharCode(charCodeForLowerCaseAlpha + index),
+  );
+
+  const hash = sha1(input);
+  const prefix = hash
+    .slice(0, Math.min(input.length, hash.length))
+    .split('')
+    .map((hex) => greekPlaceholder[Number.parseInt(hex, 16)])
+    .join('');
+  const rest = PH.repeat(Math.max(0, input.length - hash.length));
+
+  return `${prefix}${rest}`;
+}
 
 function parseLineByLineFromBottomToTop(
   formattedText: string,
@@ -420,6 +449,8 @@ function assembleLine(lineNodes: LineNode[], indentUnit: string): string {
 
 /**
  * Parse and assemble like `prettier-plugin-brace-style`
+ *
+ * @deprecated
  */
 export function parseAndAssembleLikePpbs(
   formattedText: string,
@@ -453,4 +484,230 @@ export function parseAndAssembleLikePpbs(
   }
 
   return assembleLine(lineNodes, indentUnit);
+}
+
+// ----------------------------------------------------------------
+
+type NonTernaryNode = Exclude<ClassNameNode, TernaryExpressionNode>;
+
+type StructuredClassNameNode = NonTernaryNode & {
+  parent?: StructuredClassNameNode;
+  children: StructuredClassNameNode[];
+};
+
+type TextToken = {
+  type: string;
+  range: NodeRange;
+  body: string;
+  frozenClassName?: string;
+  children?: TextToken[];
+  props?: Omit<NonTernaryNode, 'type' | 'range'>;
+};
+
+function structuringClassNameNodes(
+  targetClassNameNodes: NonTernaryNode[],
+): StructuredClassNameNode[] {
+  const sortedStructuredClassNameNodes: StructuredClassNameNode[] = targetClassNameNodes
+    .map((classNameNode) => ({
+      ...classNameNode,
+      children: [],
+    }))
+    .sort((former, latter) => {
+      const [rangeStartOfFormer, rangeEndOfFormer] = former.range; // [a1, a2]
+      const [rangeStartOfLatter, rangeEndOfLatter] = latter.range; // [b1, b2]
+
+      // a1 < a2 < b1 < b2
+      if (rangeStartOfFormer < rangeStartOfLatter && rangeEndOfFormer < rangeEndOfLatter) {
+        return -1;
+      }
+
+      // b1 < b2 < a1 < a2
+      if (rangeStartOfFormer > rangeStartOfLatter && rangeEndOfFormer > rangeEndOfLatter) {
+        return 1;
+      }
+
+      // a1 < b1 < b2 < a2
+      if (rangeStartOfFormer < rangeStartOfLatter && rangeEndOfFormer > rangeEndOfLatter) {
+        return -1;
+      }
+
+      // b1 < a1 < a2 < b2
+      if (rangeStartOfFormer > rangeStartOfLatter && rangeEndOfFormer < rangeEndOfLatter) {
+        return 1;
+      }
+
+      return 0;
+    });
+
+  sortedStructuredClassNameNodes.forEach((classNameNode, index) => {
+    if (index === 0) {
+      return;
+    }
+
+    const [rangeStartOfClassName, rangeEndOfClassName] = classNameNode.range;
+    const parentNodeCandidateIndex = sortedStructuredClassNameNodes
+      .slice(0, index)
+      .findLastIndex((parentCandidate) => {
+        const [rangeStartOfParentCandidate, rangeEndOfParentCandidate] = parentCandidate.range;
+
+        return (
+          rangeStartOfParentCandidate < rangeStartOfClassName &&
+          rangeEndOfClassName < rangeEndOfParentCandidate
+        );
+      });
+
+    if (parentNodeCandidateIndex !== -1) {
+      const parentNode = sortedStructuredClassNameNodes[parentNodeCandidateIndex];
+
+      // eslint-disable-next-line no-param-reassign
+      classNameNode.parent = parentNode;
+      parentNode.children.push(classNameNode);
+    }
+  });
+
+  return sortedStructuredClassNameNodes.filter((classNameNode) => !classNameNode.parent);
+}
+
+function linearParse(
+  formattedText: string,
+  indentUnit: string,
+  structuredClassNameNodes: StructuredClassNameNode[],
+): TextToken[] {
+  const sortedStructuredClassNameNodes = structuredClassNameNodes.slice().sort((former, latter) => {
+    const [rangeStartOfFormer] = former.range;
+    const [rangeStartOfLatter] = latter.range;
+
+    return rangeStartOfLatter - rangeStartOfFormer;
+  });
+  const textTokens: TextToken[] = [];
+  let temporaryRangeEnd = formattedText.length;
+  let rangeStartOfParent = 0;
+  let rangeEndOfParent = formattedText.length;
+
+  for (let nodeIndex = 0; nodeIndex < sortedStructuredClassNameNodes.length; nodeIndex += 1) {
+    const structuredClassNameNode = sortedStructuredClassNameNodes[nodeIndex];
+    const { type, range, parent, children, ...rest } = structuredClassNameNode;
+    const [rangeStartOfClassName, rangeEndOfClassName] = range;
+
+    const delimiterOffset =
+      type === 'expression' &&
+      structuredClassNameNode.isItAnObjectProperty &&
+      structuredClassNameNode.delimiterType === 'backtick'
+        ? 1
+        : 0;
+
+    if (parent) {
+      [rangeStartOfParent, rangeEndOfParent] = parent.range;
+
+      textTokens.push({
+        type: 'Placeholder',
+        range: [rangeEndOfParent - 1, temporaryRangeEnd],
+        body: formattedText.slice(rangeEndOfParent - 1, temporaryRangeEnd),
+      });
+      temporaryRangeEnd = rangeEndOfParent - 1;
+    }
+
+    textTokens.push({
+      type: 'Text',
+      range: [rangeEndOfClassName + delimiterOffset, temporaryRangeEnd],
+      body: formattedText.slice(rangeEndOfClassName + delimiterOffset, temporaryRangeEnd),
+    });
+    textTokens.push({
+      type: 'ClosingDelimiter',
+      range: [rangeEndOfClassName - 1, rangeEndOfClassName + delimiterOffset],
+      body: formattedText.slice(rangeEndOfClassName - 1, rangeEndOfClassName + delimiterOffset),
+    });
+
+    // ----------------------------------------------------------------
+
+    const classNameWithoutDelimiter = formattedText.slice(
+      rangeStartOfClassName + 1,
+      rangeEndOfClassName - 1,
+    );
+    const classNameToken: TextToken = {
+      type,
+      range: [rangeStartOfClassName + 1, rangeEndOfClassName - 1],
+      body: classNameWithoutDelimiter,
+    };
+
+    if (children.length) {
+      const textTokensOfChildren = linearParse(formattedText, indentUnit, children);
+
+      classNameToken.children = textTokensOfChildren;
+      classNameToken.body = textTokensOfChildren
+        .map((token) => (token.type === 'expression' ? token.frozenClassName : token.body))
+        .join('');
+    }
+
+    classNameToken.props = rest;
+
+    if (parent) {
+      const frozenClassName = freezeClassName(classNameWithoutDelimiter);
+
+      classNameToken.frozenClassName = frozenClassName;
+    }
+
+    textTokens.push(classNameToken);
+
+    // ----------------------------------------------------------------
+
+    textTokens.push({
+      type: 'OpeningDelimiter',
+      range: [rangeStartOfClassName - delimiterOffset, rangeStartOfClassName + 1],
+      body: formattedText.slice(rangeStartOfClassName - delimiterOffset, rangeStartOfClassName + 1),
+    });
+
+    temporaryRangeEnd = rangeStartOfClassName - delimiterOffset;
+  }
+
+  if (rangeStartOfParent) {
+    textTokens.push({
+      type: 'Text',
+      range: [rangeStartOfParent + 1, temporaryRangeEnd],
+      body: formattedText.slice(rangeStartOfParent + 1, temporaryRangeEnd),
+    });
+    textTokens.push({
+      type: 'Placeholder',
+      range: [0, rangeStartOfParent + 1],
+      body: formattedText.slice(0, rangeStartOfParent + 1),
+    });
+  } else {
+    textTokens.push({
+      type: 'Text',
+      range: [0, temporaryRangeEnd],
+      body: formattedText.slice(0, temporaryRangeEnd),
+    });
+  }
+
+  textTokens.reverse();
+
+  return textTokens.filter((token) => token.type !== 'Placeholder');
+}
+
+export function parseAndAssemble(
+  formattedText: string,
+  indentUnit: string,
+  targetClassNameNodes: ClassNameNode[],
+  options: ResolvedOptions,
+): string {
+  if (options.debugFlag) {
+    console.dir(formattedText, inspectOptions);
+    console.dir(targetClassNameNodes, inspectOptions);
+  }
+
+  const structuredClassNameNodes = structuringClassNameNodes(
+    targetClassNameNodes.filter(({ type }) => type !== 'ternary') as NonTernaryNode[],
+  );
+
+  if (options.debugFlag) {
+    console.dir(structuredClassNameNodes, inspectOptions);
+  }
+
+  const textTokens = linearParse(formattedText, indentUnit, structuredClassNameNodes);
+
+  if (options.debugFlag) {
+    console.dir(textTokens, inspectOptions);
+  }
+
+  return formattedText;
 }

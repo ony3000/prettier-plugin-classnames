@@ -88,7 +88,7 @@ export type ExpressionNode = ClassNameNodeBase & {
 /**
  * In fact, the ternary operator itself is not a class name node, but it defines a type as an exception because it needs to be frozen when processing complex expressions.
  */
-type TernaryExpressionNode = ClassNameNodeBase & {
+export type TernaryExpressionNode = ClassNameNodeBase & {
   type: 'ternary';
 };
 
