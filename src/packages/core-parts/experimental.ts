@@ -599,12 +599,14 @@ function linearParse(
     if (parent) {
       [rangeStartOfParent, rangeEndOfParent] = parent.range;
 
-      textTokens.push({
-        type: 'Placeholder',
-        range: [rangeEndOfParent - 1, temporaryRangeEnd],
-        body: formattedText.slice(rangeEndOfParent - 1, temporaryRangeEnd),
-      });
-      temporaryRangeEnd = rangeEndOfParent - 1;
+      if (rangeEndOfParent < temporaryRangeEnd) {
+        textTokens.push({
+          type: 'Placeholder',
+          range: [rangeEndOfParent - 1, temporaryRangeEnd],
+          body: formattedText.slice(rangeEndOfParent - 1, temporaryRangeEnd),
+        });
+        temporaryRangeEnd = rangeEndOfParent - 1;
+      }
     }
 
     textTokens.push({
