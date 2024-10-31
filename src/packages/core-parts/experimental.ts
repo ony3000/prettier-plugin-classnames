@@ -501,7 +501,7 @@ type TextToken = {
   body: string;
   frozenClassName?: string;
   children?: TextToken[];
-  props?: Omit<NonTernaryNode, 'type' | 'range'>;
+  props?: Omit<NonTernaryNode, 'type' | 'range'> & { indentLevel: number };
 };
 
 function structuringClassNameNodes(
@@ -573,6 +573,7 @@ function linearParse(
   indentUnit: string,
   structuredClassNameNodes: StructuredClassNameNode[],
 ): TextToken[] {
+  const formattedLines = formattedText.split(EOL);
   const sortedStructuredClassNameNodes = structuredClassNameNodes.slice().sort((former, latter) => {
     const [rangeStartOfFormer] = former.range;
     const [rangeStartOfLatter] = latter.range;
@@ -586,8 +587,11 @@ function linearParse(
 
   for (let nodeIndex = 0; nodeIndex < sortedStructuredClassNameNodes.length; nodeIndex += 1) {
     const structuredClassNameNode = sortedStructuredClassNameNodes[nodeIndex];
-    const { type, range, parent, children, ...rest } = structuredClassNameNode;
+    const { type, range, parent, children, startLineIndex, ...rest } = structuredClassNameNode;
     const [rangeStartOfClassName, rangeEndOfClassName] = range;
+
+    const indentMatchResult = formattedLines[startLineIndex].match(new RegExp(`^(${indentUnit})*`));
+    const indentLevel = indentMatchResult![0].length / indentUnit.length;
 
     const delimiterOffset =
       type === 'expression' &&
@@ -641,7 +645,11 @@ function linearParse(
         .join('');
     }
 
-    classNameToken.props = rest;
+    classNameToken.props = {
+      ...rest,
+      startLineIndex,
+      indentLevel,
+    };
 
     if (parent) {
       const frozenClassName = freezeClassName(classNameWithoutDelimiter);
