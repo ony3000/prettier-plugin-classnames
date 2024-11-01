@@ -504,6 +504,12 @@ type TextToken = {
   props?: Omit<NonTernaryNode, 'type' | 'range'> & { indentLevel: number };
 };
 
+function assembleTokens(textTokens: TextToken[]): string {
+  return textTokens
+    .map((token) => (token.type === 'expression' ? token.frozenClassName : token.body))
+    .join('');
+}
+
 function structuringClassNameNodes(
   targetClassNameNodes: NonTernaryNode[],
 ): StructuredClassNameNode[] {
@@ -640,9 +646,7 @@ function linearParse(
       const textTokensOfChildren = linearParse(formattedText, indentUnit, children);
 
       classNameToken.children = textTokensOfChildren;
-      classNameToken.body = textTokensOfChildren
-        .map((token) => (token.type === 'expression' ? token.frozenClassName : token.body))
-        .join('');
+      classNameToken.body = assembleTokens(textTokensOfChildren);
     }
 
     classNameToken.props = {
@@ -694,6 +698,54 @@ function linearParse(
   return textTokens.filter((token) => token.type !== 'Placeholder');
 }
 
+function formatTokens(
+  textTokens: TextToken[],
+  indentUnit: string,
+  options: ResolvedOptions,
+): TextToken[] {
+  const formattedTokens = structuredClone(textTokens);
+  const isStartingPositionRelative = options.endingPosition !== 'absolute';
+  const isEndingPositionAbsolute = options.endingPosition !== 'relative';
+  const isOutputIdeal = isStartingPositionRelative && isEndingPositionAbsolute;
+
+  for (let tokenIndex = formattedTokens.length - 1; tokenIndex >= 0; tokenIndex -= 1) {
+    const token = formattedTokens[tokenIndex];
+
+    if (token.type === 'attribute') {
+      const props = token.props!;
+      const leadingText = isEndingPositionAbsolute
+        ? assembleTokens(formattedTokens.slice(0, tokenIndex)).split(EOL).slice(-1).join('')
+        : '';
+      const classNameBase = `${PH.repeat(leadingText.length)}${token.body.trim()}`;
+
+      let formattedClassName = formatClassName(classNameBase, options.printWidth).slice(
+        leadingText.length,
+      );
+      const formattedLines = formattedClassName.split(EOL);
+      const isMultiLineClassName = formattedLines.length > 1;
+
+      if (isMultiLineClassName) {
+        const multiLineIndentLevel = isStartingPositionRelative ? props.indentLevel + 1 : 0;
+
+        formattedClassName = [
+          formattedLines[0],
+          ...(isOutputIdeal
+            ? formatClassName(
+                formattedLines.slice(1).join(EOL),
+                options.printWidth - options.tabWidth * multiLineIndentLevel,
+              ).split(EOL)
+            : formattedLines.slice(1)),
+        ].join(`${EOL}${indentUnit.repeat(multiLineIndentLevel)}`);
+      }
+
+      token.type = 'Text';
+      token.body = formattedClassName;
+    }
+  }
+
+  return formattedTokens;
+}
+
 export function parseAndAssemble(
   formattedText: string,
   indentUnit: string,
@@ -719,5 +771,11 @@ export function parseAndAssemble(
     console.dir(textTokens, inspectOptions);
   }
 
-  return formattedText;
+  const formattedTokens = formatTokens(textTokens, indentUnit, options);
+
+  if (options.debugFlag) {
+    console.dir(formattedTokens, inspectOptions);
+  }
+
+  return assembleTokens(formattedTokens);
 }
