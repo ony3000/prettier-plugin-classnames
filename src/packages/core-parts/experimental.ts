@@ -857,7 +857,7 @@ function unfreezeToken(token: TextToken): string {
     for (let index = token.children.length - 1; index >= 0; index -= 1) {
       const tokenOfChildren = token.children[index];
 
-      if (tokenOfChildren.type === 'expression' && tokenOfChildren.frozenClassName) {
+      if (tokenOfChildren.type === 'expression' && tokenOfChildren.frozenClassName !== undefined) {
         const props = tokenOfChildren.props as Omit<ExpressionNode, 'range' | 'type'> & {
           indentLevel: number;
         };
