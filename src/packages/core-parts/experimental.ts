@@ -506,7 +506,9 @@ type TextToken = {
 
 function assembleTokens(textTokens: TextToken[]): string {
   return textTokens
-    .map((token) => (token.type === 'expression' ? token.frozenClassName : token.body))
+    .map((token) =>
+      token.type === 'expression' ? token.frozenClassName ?? token.body : token.body,
+    )
     .join('');
 }
 
@@ -738,12 +740,139 @@ function formatTokens(
         ].join(`${EOL}${indentUnit.repeat(multiLineIndentLevel)}`);
       }
 
-      token.type = 'Text';
+      token.body = formattedClassName;
+    } else if (token.type === 'expression') {
+      const props = token.props as Omit<ExpressionNode, 'range' | 'type'> & {
+        indentLevel: number;
+      };
+      const leadingText = isEndingPositionAbsolute
+        ? assembleTokens(formattedTokens.slice(0, tokenIndex)).split(EOL).slice(-1).join('')
+        : '';
+      const hasLeadingSpace = token.body !== token.body.trimStart();
+      const hasTrailingSpace = token.body !== token.body.trimEnd();
+      const classNameBase = `${PH.repeat(leadingText.length)}${
+        hasLeadingSpace ? SPACE : ''
+      }${token.body.trim().replace(/\\\n/g, '')}`;
+
+      let formattedClassName = `${formatClassName(classNameBase, options.printWidth).slice(
+        leadingText.length,
+      )}${hasTrailingSpace ? SPACE : ''}`;
+      const formattedLines = formattedClassName.split(EOL);
+      const isMultiLineClassName = formattedLines.length > 1;
+
+      if (isMultiLineClassName) {
+        // eslint-disable-next-line no-nested-ternary
+        const multiLineIndentLevel = isStartingPositionRelative
+          ? props.isTheFirstLineOnTheSameLineAsTheAttributeName ||
+            props.isItAnOperandOfTernaryOperator
+            ? props.indentLevel + 1
+            : props.indentLevel
+          : 0;
+
+        formattedClassName = [
+          formattedLines[0],
+          ...(isOutputIdeal
+            ? `${formatClassName(
+                formattedLines.slice(1).join(EOL),
+                options.printWidth - options.tabWidth * multiLineIndentLevel,
+              )}${hasTrailingSpace ? SPACE : ''}`.split(EOL)
+            : formattedLines.slice(1)),
+        ].join(`${EOL}${indentUnit.repeat(multiLineIndentLevel)}`);
+
+        const areNeededBrackets = props.isItAnObjectProperty;
+
+        formattedTokens[tokenIndex - 1].body = `${areNeededBrackets ? '[' : ''}${BACKTICK}`;
+        formattedTokens[tokenIndex + 1].body = `${BACKTICK}${areNeededBrackets ? ']' : ''}`;
+
+        if (props.delimiterType !== 'backtick' && props.hasBacktick) {
+          formattedClassName = formattedClassName.replace(/`/g, `\\${BACKTICK}`);
+        }
+      } else {
+        let baseDelimiter = DOUBLE_QUOTE;
+
+        if (props.shouldKeepDelimiter) {
+          if (props.delimiterType === 'backtick') {
+            baseDelimiter = BACKTICK;
+          } else if (props.delimiterType === 'single-quote') {
+            baseDelimiter = SINGLE_QUOTE;
+          } else {
+            // baseDelimiter = DOUBLE_QUOTE;
+          }
+        } else if (props.isItInVueTemplate) {
+          baseDelimiter = SINGLE_QUOTE;
+        } else if (options.singleQuote) {
+          if (props.hasSingleQuote) {
+            // baseDelimiter = DOUBLE_QUOTE;
+          } else {
+            baseDelimiter = SINGLE_QUOTE;
+          }
+        } else if (!options.singleQuote) {
+          if (props.hasDoubleQuote) {
+            baseDelimiter = SINGLE_QUOTE;
+          } else {
+            // baseDelimiter = DOUBLE_QUOTE;
+          }
+        }
+
+        formattedTokens[tokenIndex - 1].body = baseDelimiter;
+        formattedTokens[tokenIndex + 1].body = baseDelimiter;
+
+        if (baseDelimiter === SINGLE_QUOTE) {
+          if (props.delimiterType !== 'single-quote' && props.hasSingleQuote) {
+            formattedClassName = formattedClassName.replace(/'/g, `\\${SINGLE_QUOTE}`);
+          }
+        } else if (baseDelimiter === DOUBLE_QUOTE) {
+          if (props.delimiterType !== 'double-quote' && props.hasDoubleQuote) {
+            formattedClassName = formattedClassName.replace(/"/g, `\\${DOUBLE_QUOTE}`);
+          }
+        } else {
+          // eslint-disable-next-line no-lonely-if
+          if (props.delimiterType !== 'backtick' && props.hasBacktick) {
+            formattedClassName = formattedClassName.replace(/`/g, `\\${BACKTICK}`);
+          }
+        }
+      }
+
+      if (token.children?.length) {
+        token.children = formatTokens(token.children, indentUnit, options);
+      }
+
       token.body = formattedClassName;
     }
   }
 
   return formattedTokens;
+}
+
+function unfreezeToken(token: TextToken): string {
+  if (token.children?.length) {
+    for (let index = token.children.length - 1; index >= 0; index -= 1) {
+      const tokenOfChildren = token.children[index];
+
+      if (tokenOfChildren.type === 'expression' && tokenOfChildren.frozenClassName) {
+        const props = tokenOfChildren.props as Omit<ExpressionNode, 'range' | 'type'> & {
+          indentLevel: number;
+        };
+        const originalDelimiter =
+          // eslint-disable-next-line no-nested-ternary
+          props.delimiterType === 'single-quote'
+            ? SINGLE_QUOTE
+            : props.delimiterType === 'double-quote'
+            ? DOUBLE_QUOTE
+            : BACKTICK;
+
+        // eslint-disable-next-line no-param-reassign
+        token.body = token.body.replace(
+          `${originalDelimiter}${tokenOfChildren.frozenClassName}${originalDelimiter}`,
+          `${token.children[index - 1].body}${unfreezeToken(tokenOfChildren)}${
+            token.children[index + 1].body
+          }`,
+        );
+      }
+    }
+  }
+
+  return token.body;
 }
 
 export function parseAndAssemble(
@@ -777,5 +906,5 @@ export function parseAndAssemble(
     console.dir(formattedTokens, inspectOptions);
   }
 
-  return assembleTokens(formattedTokens);
+  return formattedTokens.map(unfreezeToken).join('');
 }
