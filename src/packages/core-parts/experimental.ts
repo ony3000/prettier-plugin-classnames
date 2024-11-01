@@ -353,13 +353,18 @@ function formatTokens(
             : formattedLines.slice(1)),
         ].join(`${EOL}${indentUnit.repeat(multiLineIndentLevel)}`);
 
-        const areNeededBrackets = props.isItAnObjectProperty;
+        if (props.isItAngularExpression) {
+          formattedTokens[tokenIndex - 1].body = SINGLE_QUOTE;
+          formattedTokens[tokenIndex + 1].body = SINGLE_QUOTE;
+        } else {
+          const areNeededBrackets = props.isItAnObjectProperty;
 
-        formattedTokens[tokenIndex - 1].body = `${areNeededBrackets ? '[' : ''}${BACKTICK}`;
-        formattedTokens[tokenIndex + 1].body = `${BACKTICK}${areNeededBrackets ? ']' : ''}`;
+          formattedTokens[tokenIndex - 1].body = `${areNeededBrackets ? '[' : ''}${BACKTICK}`;
+          formattedTokens[tokenIndex + 1].body = `${BACKTICK}${areNeededBrackets ? ']' : ''}`;
 
-        if (props.delimiterType !== 'backtick' && props.hasBacktick) {
-          formattedClassName = formattedClassName.replace(/`/g, `\\${BACKTICK}`);
+          if (props.delimiterType !== 'backtick' && props.hasBacktick) {
+            formattedClassName = formattedClassName.replace(/`/g, `\\${BACKTICK}`);
+          }
         }
       } else {
         let baseDelimiter = DOUBLE_QUOTE;
@@ -386,6 +391,10 @@ function formatTokens(
           } else {
             // baseDelimiter = DOUBLE_QUOTE;
           }
+        }
+
+        if (props.isItAngularExpression) {
+          baseDelimiter = SINGLE_QUOTE;
         }
 
         formattedTokens[tokenIndex - 1].body = baseDelimiter;
