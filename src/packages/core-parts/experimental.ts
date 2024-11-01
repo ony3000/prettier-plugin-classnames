@@ -3,8 +3,6 @@ import { createHash } from 'node:crypto';
 import type { NodeRange, ExpressionNode, TernaryExpressionNode, ClassNameNode } from './shared';
 import { EOL, PH, SPACE, SINGLE_QUOTE, DOUBLE_QUOTE, BACKTICK } from './shared';
 
-const inspectOptions: any = { depth: null };
-
 function sha1(input: string): string {
   return createHash('sha1').update(input).digest('hex');
 }
@@ -457,30 +455,13 @@ export function parseAndAssemble(
   targetClassNameNodes: ClassNameNode[],
   options: ResolvedOptions,
 ): string {
-  if (options.debugFlag) {
-    console.dir(formattedText, inspectOptions);
-    console.dir(targetClassNameNodes, inspectOptions);
-  }
-
   const structuredClassNameNodes = structuringClassNameNodes(
     targetClassNameNodes.filter(({ type }) => type !== 'ternary') as NonTernaryNode[],
   );
 
-  if (options.debugFlag) {
-    console.dir(structuredClassNameNodes, inspectOptions);
-  }
-
   const textTokens = linearParse(formattedText, indentUnit, structuredClassNameNodes);
 
-  if (options.debugFlag) {
-    console.dir(textTokens, inspectOptions);
-  }
-
   const formattedTokens = formatTokens(textTokens, indentUnit, options);
-
-  if (options.debugFlag) {
-    console.dir(formattedTokens, inspectOptions);
-  }
 
   return formattedTokens.map(unfreezeToken).join('');
 }
