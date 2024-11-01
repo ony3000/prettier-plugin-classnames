@@ -464,7 +464,7 @@ export function parseLineByLineAndReplace({
     }
   }
 
-  if (options.experimentalOptimization && options.parser === 'babel') {
+  if (options.experimentalOptimization) {
     return parseAndAssemble(formattedText, indentUnit, targetClassNameNodes, options);
   }
 
@@ -800,7 +800,7 @@ export async function parseLineByLineAndReplaceAsync({
     }
   }
 
-  if (options.experimentalOptimization && options.parser === 'babel') {
+  if (options.experimentalOptimization) {
     return parseAndAssemble(formattedText, indentUnit, targetClassNameNodes, options);
   }
 
