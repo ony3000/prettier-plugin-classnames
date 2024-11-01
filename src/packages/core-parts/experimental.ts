@@ -716,7 +716,11 @@ function formatTokens(
     if (token.type === 'attribute') {
       const props = token.props!;
       const leadingText = isEndingPositionAbsolute
-        ? assembleTokens(formattedTokens.slice(0, tokenIndex)).split(EOL).slice(-1).join('')
+        ? assembleTokens(formattedTokens.slice(0, tokenIndex))
+            .split(EOL)
+            .slice(-1)
+            .join('')
+            .replace(/\t/g, SPACE.repeat(options.tabWidth))
         : '';
       const classNameBase = `${PH.repeat(leadingText.length)}${token.body.trim()}`;
 
@@ -746,7 +750,11 @@ function formatTokens(
         indentLevel: number;
       };
       const leadingText = isEndingPositionAbsolute
-        ? assembleTokens(formattedTokens.slice(0, tokenIndex)).split(EOL).slice(-1).join('')
+        ? assembleTokens(formattedTokens.slice(0, tokenIndex))
+            .split(EOL)
+            .slice(-1)
+            .join('')
+            .replace(/\t/g, SPACE.repeat(options.tabWidth))
         : '';
       const hasLeadingSpace = token.body !== token.body.trimStart();
       const hasTrailingSpace = token.body !== token.body.trimEnd();
