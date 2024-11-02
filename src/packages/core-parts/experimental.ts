@@ -259,7 +259,7 @@ function linearParse(
       };
 
       if (parent) {
-        const frozenClassName = freezeClassName(classNameWithoutDelimiter);
+        const frozenClassName = freezeClassName(classNameWithoutDelimiter.replace(/\s+/g, SPACE));
 
         classNameToken.frozenClassName = frozenClassName;
       }
