@@ -7,7 +7,7 @@ function sha1(input: string): string {
   return createHash('sha1').update(input).digest('hex');
 }
 
-function freezeClassName(input: string): string {
+function freezeText(input: string): string {
   const charCodeForLowerCaseAlpha = 945;
   const greekPlaceholder = [...Array(16)].map((_, index) =>
     String.fromCharCode(charCodeForLowerCaseAlpha + index),
@@ -218,7 +218,7 @@ function linearParse(
       };
 
       if (parent) {
-        const frozenClassName = freezeClassName(ternaryExpression);
+        const frozenClassName = freezeText(ternaryExpression);
 
         ternaryToken.frozenClassName = frozenClassName;
       }
@@ -259,7 +259,7 @@ function linearParse(
       };
 
       if (parent) {
-        const frozenClassName = freezeClassName(classNameWithoutDelimiter.replace(/\s+/g, SPACE));
+        const frozenClassName = freezeText(classNameWithoutDelimiter.replace(/\s+/g, SPACE));
 
         classNameToken.frozenClassName = frozenClassName;
       }
