@@ -1,5 +1,6 @@
 import { createHash } from 'node:crypto';
 
+import { parseAndAssemble } from './experimental';
 import {
   findTargetClassNameNodes,
   findTargetClassNameNodesForHtml,
@@ -463,6 +464,10 @@ export function parseLineByLineAndReplace({
     }
   }
 
+  if (options.experimentalOptimization) {
+    return parseAndAssemble(formattedText, indentUnit, targetClassNameNodes, options);
+  }
+
   const lineNodes = parseLineByLine(formattedText, indentUnit);
 
   const classNameWrappedText = replaceClassName({
@@ -793,6 +798,10 @@ export async function parseLineByLineAndReplaceAsync({
       targetClassNameNodes = findTargetClassNameNodes(ast, options);
       break;
     }
+  }
+
+  if (options.experimentalOptimization) {
+    return parseAndAssemble(formattedText, indentUnit, targetClassNameNodes, options);
   }
 
   const lineNodes = parseLineByLine(formattedText, indentUnit);
