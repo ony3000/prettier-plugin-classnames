@@ -1,6 +1,6 @@
 import { createHash } from 'node:crypto';
 
-import type { NodeRange, ExpressionNode, TernaryExpressionNode, ClassNameNode } from './shared';
+import type { NodeRange, ExpressionNode, ClassNameNode } from './shared';
 import { EOL, PH, SPACE, SINGLE_QUOTE, DOUBLE_QUOTE, BACKTICK } from './shared';
 
 function sha1(input: string): string {
@@ -54,9 +54,7 @@ function formatClassName(source: string, printWidth: number): string {
   return lines.join(EOL);
 }
 
-type NonTernaryNode = Exclude<ClassNameNode, TernaryExpressionNode>;
-
-type StructuredClassNameNode = NonTernaryNode & {
+type StructuredClassNameNode = ClassNameNode & {
   parent?: StructuredClassNameNode;
   children: StructuredClassNameNode[];
 };
@@ -67,19 +65,15 @@ type TextToken = {
   body: string;
   frozenClassName?: string;
   children?: TextToken[];
-  props?: Omit<NonTernaryNode, 'type' | 'range'> & { indentLevel: number };
+  props?: Omit<ClassNameNode, 'type' | 'range'> & { indentLevel: number };
 };
 
 function assembleTokens(textTokens: TextToken[]): string {
-  return textTokens
-    .map((token) =>
-      token.type === 'expression' ? token.frozenClassName ?? token.body : token.body,
-    )
-    .join('');
+  return textTokens.map((token) => token.frozenClassName ?? token.body).join('');
 }
 
 function structuringClassNameNodes(
-  targetClassNameNodes: NonTernaryNode[],
+  targetClassNameNodes: ClassNameNode[],
 ): StructuredClassNameNode[] {
   const sortedStructuredClassNameNodes: StructuredClassNameNode[] = targetClassNameNodes
     .map((classNameNode) => ({
@@ -100,13 +94,13 @@ function structuringClassNameNodes(
         return 1;
       }
 
-      // a1 < b1 < b2 < a2
-      if (rangeStartOfFormer < rangeStartOfLatter && rangeEndOfFormer > rangeEndOfLatter) {
+      // a1 < b1 < b2 <= a2
+      if (rangeStartOfFormer < rangeStartOfLatter && rangeEndOfFormer >= rangeEndOfLatter) {
         return -1;
       }
 
-      // b1 < a1 < a2 < b2
-      if (rangeStartOfFormer > rangeStartOfLatter && rangeEndOfFormer < rangeEndOfLatter) {
+      // b1 < a1 < a2 <= b2
+      if (rangeStartOfFormer > rangeStartOfLatter && rangeEndOfFormer <= rangeEndOfLatter) {
         return 1;
       }
 
@@ -126,7 +120,7 @@ function structuringClassNameNodes(
 
         return (
           rangeStartOfParentCandidate < rangeStartOfClassName &&
-          rangeEndOfClassName < rangeEndOfParentCandidate
+          rangeEndOfClassName <= rangeEndOfParentCandidate
         );
       });
 
@@ -178,12 +172,21 @@ function linearParse(
       [rangeStartOfParent, rangeEndOfParent] = parent.range;
 
       if (rangeEndOfParent < temporaryRangeEnd) {
-        textTokens.push({
-          type: 'Placeholder',
-          range: [rangeEndOfParent - 1, temporaryRangeEnd],
-          body: formattedText.slice(rangeEndOfParent - 1, temporaryRangeEnd),
-        });
-        temporaryRangeEnd = rangeEndOfParent - 1;
+        if (parent.type === 'ternary') {
+          textTokens.push({
+            type: 'Placeholder',
+            range: [rangeEndOfParent, temporaryRangeEnd],
+            body: formattedText.slice(rangeEndOfParent, temporaryRangeEnd),
+          });
+          temporaryRangeEnd = rangeEndOfParent;
+        } else {
+          textTokens.push({
+            type: 'Placeholder',
+            range: [rangeEndOfParent - 1, temporaryRangeEnd],
+            body: formattedText.slice(rangeEndOfParent - 1, temporaryRangeEnd),
+          });
+          temporaryRangeEnd = rangeEndOfParent - 1;
+        }
       }
     }
 
@@ -192,67 +195,119 @@ function linearParse(
       range: [rangeEndOfClassName + delimiterOffset, temporaryRangeEnd],
       body: formattedText.slice(rangeEndOfClassName + delimiterOffset, temporaryRangeEnd),
     });
-    textTokens.push({
-      type: 'ClosingDelimiter',
-      range: [rangeEndOfClassName - 1, rangeEndOfClassName + delimiterOffset],
-      body: formattedText.slice(rangeEndOfClassName - 1, rangeEndOfClassName + delimiterOffset),
-    });
 
-    // ----------------------------------------------------------------
+    if (type === 'ternary') {
+      const ternaryExpression = formattedText.slice(rangeStartOfClassName, rangeEndOfClassName);
+      const ternaryToken: TextToken = {
+        type,
+        range: [rangeStartOfClassName, rangeEndOfClassName],
+        body: ternaryExpression,
+      };
 
-    const classNameWithoutDelimiter = formattedText.slice(
-      rangeStartOfClassName + 1,
-      rangeEndOfClassName - 1,
-    );
-    const classNameToken: TextToken = {
-      type,
-      range: [rangeStartOfClassName + 1, rangeEndOfClassName - 1],
-      body: classNameWithoutDelimiter,
-    };
+      if (children.length) {
+        const textTokensOfChildren = linearParse(formattedText, indentUnit, children);
 
-    if (children.length) {
-      const textTokensOfChildren = linearParse(formattedText, indentUnit, children);
+        ternaryToken.children = textTokensOfChildren;
+        ternaryToken.body = assembleTokens(textTokensOfChildren);
+      }
 
-      classNameToken.children = textTokensOfChildren;
-      classNameToken.body = assembleTokens(textTokensOfChildren);
+      ternaryToken.props = {
+        ...rest,
+        startLineIndex,
+        indentLevel,
+      };
+
+      if (parent) {
+        const frozenClassName = freezeClassName(ternaryExpression);
+
+        ternaryToken.frozenClassName = frozenClassName;
+      }
+
+      textTokens.push(ternaryToken);
+
+      temporaryRangeEnd = rangeStartOfClassName;
+    } else {
+      textTokens.push({
+        type: 'ClosingDelimiter',
+        range: [rangeEndOfClassName - 1, rangeEndOfClassName + delimiterOffset],
+        body: formattedText.slice(rangeEndOfClassName - 1, rangeEndOfClassName + delimiterOffset),
+      });
+
+      // ----------------------------------------------------------------
+
+      const classNameWithoutDelimiter = formattedText.slice(
+        rangeStartOfClassName + 1,
+        rangeEndOfClassName - 1,
+      );
+      const classNameToken: TextToken = {
+        type,
+        range: [rangeStartOfClassName + 1, rangeEndOfClassName - 1],
+        body: classNameWithoutDelimiter,
+      };
+
+      if (children.length) {
+        const textTokensOfChildren = linearParse(formattedText, indentUnit, children);
+
+        classNameToken.children = textTokensOfChildren;
+        classNameToken.body = assembleTokens(textTokensOfChildren);
+      }
+
+      classNameToken.props = {
+        ...rest,
+        startLineIndex,
+        indentLevel,
+      };
+
+      if (parent) {
+        const frozenClassName = freezeClassName(classNameWithoutDelimiter);
+
+        classNameToken.frozenClassName = frozenClassName;
+      }
+
+      textTokens.push(classNameToken);
+
+      // ----------------------------------------------------------------
+
+      textTokens.push({
+        type: 'OpeningDelimiter',
+        range: [rangeStartOfClassName - delimiterOffset, rangeStartOfClassName + 1],
+        body: formattedText.slice(
+          rangeStartOfClassName - delimiterOffset,
+          rangeStartOfClassName + 1,
+        ),
+      });
+
+      temporaryRangeEnd = rangeStartOfClassName - delimiterOffset;
     }
-
-    classNameToken.props = {
-      ...rest,
-      startLineIndex,
-      indentLevel,
-    };
-
-    if (parent) {
-      const frozenClassName = freezeClassName(classNameWithoutDelimiter);
-
-      classNameToken.frozenClassName = frozenClassName;
-    }
-
-    textTokens.push(classNameToken);
-
-    // ----------------------------------------------------------------
-
-    textTokens.push({
-      type: 'OpeningDelimiter',
-      range: [rangeStartOfClassName - delimiterOffset, rangeStartOfClassName + 1],
-      body: formattedText.slice(rangeStartOfClassName - delimiterOffset, rangeStartOfClassName + 1),
-    });
-
-    temporaryRangeEnd = rangeStartOfClassName - delimiterOffset;
   }
 
+  // Note: Since parent cannot be accessed directly outside of the for loop, I check for changes that may occur when parent exists.
+  // if (parent)
   if (rangeStartOfParent) {
-    textTokens.push({
-      type: 'Text',
-      range: [rangeStartOfParent + 1, temporaryRangeEnd],
-      body: formattedText.slice(rangeStartOfParent + 1, temporaryRangeEnd),
-    });
-    textTokens.push({
-      type: 'Placeholder',
-      range: [0, rangeStartOfParent + 1],
-      body: formattedText.slice(0, rangeStartOfParent + 1),
-    });
+    // if (parent.type === 'ternary')
+    if (textTokens.find((token) => token.type === 'Text')!.body === '') {
+      textTokens.push({
+        type: 'Text',
+        range: [rangeStartOfParent, temporaryRangeEnd],
+        body: formattedText.slice(rangeStartOfParent, temporaryRangeEnd),
+      });
+      textTokens.push({
+        type: 'Placeholder',
+        range: [0, rangeStartOfParent],
+        body: formattedText.slice(0, rangeStartOfParent),
+      });
+    } else {
+      textTokens.push({
+        type: 'Text',
+        range: [rangeStartOfParent + 1, temporaryRangeEnd],
+        body: formattedText.slice(rangeStartOfParent + 1, temporaryRangeEnd),
+      });
+      textTokens.push({
+        type: 'Placeholder',
+        range: [0, rangeStartOfParent + 1],
+        body: formattedText.slice(0, rangeStartOfParent + 1),
+      });
+    }
   } else {
     textTokens.push({
       type: 'Text',
@@ -279,7 +334,11 @@ function formatTokens(
   for (let tokenIndex = formattedTokens.length - 1; tokenIndex >= 0; tokenIndex -= 1) {
     const token = formattedTokens[tokenIndex];
 
-    if (token.type === 'attribute') {
+    if (token.type === 'ternary') {
+      if (token.children?.length) {
+        token.children = formatTokens(token.children, indentUnit, options);
+      }
+    } else if (token.type === 'attribute') {
       const props = token.props!;
       const leadingText = isEndingPositionAbsolute
         ? assembleTokens(formattedTokens.slice(0, tokenIndex))
@@ -432,25 +491,33 @@ function unfreezeToken(token: TextToken): string {
     for (let index = token.children.length - 1; index >= 0; index -= 1) {
       const tokenOfChildren = token.children[index];
 
-      if (tokenOfChildren.type === 'expression' && tokenOfChildren.frozenClassName !== undefined) {
-        const props = tokenOfChildren.props as Omit<ExpressionNode, 'range' | 'type'> & {
-          indentLevel: number;
-        };
-        const originalDelimiter =
-          // eslint-disable-next-line no-nested-ternary
-          props.delimiterType === 'single-quote'
-            ? SINGLE_QUOTE
-            : props.delimiterType === 'double-quote'
-            ? DOUBLE_QUOTE
-            : BACKTICK;
+      if (tokenOfChildren.frozenClassName !== undefined) {
+        if (tokenOfChildren.type === 'ternary') {
+          // eslint-disable-next-line no-param-reassign
+          token.body = token.body.replace(
+            tokenOfChildren.frozenClassName,
+            unfreezeToken(tokenOfChildren),
+          );
+        } else if (tokenOfChildren.type === 'expression') {
+          const props = tokenOfChildren.props as Omit<ExpressionNode, 'range' | 'type'> & {
+            indentLevel: number;
+          };
+          const originalDelimiter =
+            // eslint-disable-next-line no-nested-ternary
+            props.delimiterType === 'single-quote'
+              ? SINGLE_QUOTE
+              : props.delimiterType === 'double-quote'
+              ? DOUBLE_QUOTE
+              : BACKTICK;
 
-        // eslint-disable-next-line no-param-reassign
-        token.body = token.body.replace(
-          `${originalDelimiter}${tokenOfChildren.frozenClassName}${originalDelimiter}`,
-          `${token.children[index - 1].body}${unfreezeToken(tokenOfChildren)}${
-            token.children[index + 1].body
-          }`,
-        );
+          // eslint-disable-next-line no-param-reassign
+          token.body = token.body.replace(
+            `${originalDelimiter}${tokenOfChildren.frozenClassName}${originalDelimiter}`,
+            `${token.children[index - 1].body}${unfreezeToken(tokenOfChildren)}${
+              token.children[index + 1].body
+            }`,
+          );
+        }
       }
     }
   }
@@ -464,9 +531,7 @@ export function parseAndAssemble(
   targetClassNameNodes: ClassNameNode[],
   options: ResolvedOptions,
 ): string {
-  const structuredClassNameNodes = structuringClassNameNodes(
-    targetClassNameNodes.filter(({ type }) => type !== 'ternary') as NonTernaryNode[],
-  );
+  const structuredClassNameNodes = structuringClassNameNodes(targetClassNameNodes);
 
   const textTokens = linearParse(formattedText, indentUnit, structuredClassNameNodes);
 
