@@ -35,4 +35,21 @@ export function Foo({ children }) {
       experimentalOptimization: true,
     },
   },
+  {
+    name: '(3) If the end position is absolute, the delimiter following the class name is also included in the line wrapping.',
+    input: `
+//---------------------------------------------------------| printWidth=60 (in snapshot)
+export function Foo({ children }) {
+  return (
+    <div className={' lorem ipsum dolor sit amet consectetur adipiscing '}>
+      {children}
+    </div>
+  );
+}
+`,
+    options: {
+      printWidth: 60,
+      experimentalOptimization: true,
+    },
+  },
 ];

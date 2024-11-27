@@ -28,3 +28,18 @@ adipiscing\`}
 }
 "
 `;
+
+exports[`'(3) If the end position is absolute, the delimiter following the class name is also included in the line wrapping.' > expectation 1`] = `
+"//---------------------------------------------------------| printWidth=60 (in snapshot)
+export function Foo({ children }) {
+  return (
+    <div
+      className={\` lorem ipsum dolor sit amet consectetur
+adipiscing \`}
+    >
+      {children}
+    </div>
+  );
+}
+"
+`;
