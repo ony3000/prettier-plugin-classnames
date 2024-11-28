@@ -15,7 +15,6 @@ export function Foo({ children }) {
 `,
     options: {
       printWidth: 69,
-      experimentalOptimization: true,
     },
   },
   {
@@ -32,7 +31,6 @@ export function Foo({ children }) {
 `,
     options: {
       printWidth: 58,
-      experimentalOptimization: true,
     },
   },
   {
@@ -49,7 +47,6 @@ export function Foo({ children }) {
 `,
     options: {
       printWidth: 60,
-      experimentalOptimization: true,
     },
   },
 ];
