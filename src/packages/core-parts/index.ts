@@ -228,6 +228,9 @@ function replaceClassName({
         classNameNodeRangeStart + 1,
         correctedRangeEnd - 1,
       );
+      let trailingDelimiter = isEndingPositionAbsolute
+        ? formattedPrevText[correctedRangeEnd - 1]
+        : '';
       if (classNameNode.type === 'attribute') {
         classNameBase = classNameBase.trim();
       } else if (classNameNode.type === 'expression') {
@@ -258,7 +261,7 @@ function replaceClassName({
       // preprocess (first+1)
       const classNameWithFirstLinePadding = `${PH.repeat(
         isEndingPositionAbsolute ? firstLinePadLength : 0,
-      )}${classNameWithoutSpacesAtBothEnds}`;
+      )}${classNameWithoutSpacesAtBothEnds}${PH.repeat(trailingDelimiter.length)}`;
 
       const formattedClassName = ((cn: string) => {
         const formatted = format(cn, {
@@ -298,6 +301,7 @@ function replaceClassName({
       // postprocess (last-1)
       const classNameWithoutPadding = formattedClassName.slice(
         isEndingPositionAbsolute ? firstLinePadLength : 0,
+        -trailingDelimiter.length || undefined,
       );
 
       // postprocess (last)
@@ -560,6 +564,9 @@ async function replaceClassNameAsync({
         classNameNodeRangeStart + 1,
         correctedRangeEnd - 1,
       );
+      let trailingDelimiter = isEndingPositionAbsolute
+        ? formattedPrevText[correctedRangeEnd - 1]
+        : '';
       if (classNameNode.type === 'attribute') {
         classNameBase = classNameBase.trim();
       } else if (classNameNode.type === 'expression') {
@@ -590,7 +597,7 @@ async function replaceClassNameAsync({
       // preprocess (first+1)
       const classNameWithFirstLinePadding = `${PH.repeat(
         isEndingPositionAbsolute ? firstLinePadLength : 0,
-      )}${classNameWithoutSpacesAtBothEnds}`;
+      )}${classNameWithoutSpacesAtBothEnds}${PH.repeat(trailingDelimiter.length)}`;
 
       const formattedClassName = await (async (cn: string) => {
         const formatted = (
@@ -634,6 +641,7 @@ async function replaceClassNameAsync({
       // postprocess (last-1)
       const classNameWithoutPadding = formattedClassName.slice(
         isEndingPositionAbsolute ? firstLinePadLength : 0,
+        -trailingDelimiter.length || undefined,
       );
 
       // postprocess (last)
