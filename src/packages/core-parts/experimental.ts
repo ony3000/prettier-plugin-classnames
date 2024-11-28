@@ -347,7 +347,12 @@ function formatTokens(
             .join('')
             .replace(/\t/g, SPACE.repeat(options.tabWidth))
         : '';
-      const classNameBase = `${PH.repeat(leadingText.length)}${token.body.trim()}`;
+      const trailingDelimiter = isEndingPositionAbsolute
+        ? formattedTokens[tokenIndex + 1].body
+        : '';
+      const classNameBase = `${PH.repeat(leadingText.length)}${token.body.trim()}${PH.repeat(
+        trailingDelimiter.length,
+      )}`;
 
       let formattedClassName = formatClassName(classNameBase, options.printWidth).slice(
         leadingText.length,
@@ -368,6 +373,7 @@ function formatTokens(
             : formattedLines.slice(1)),
         ].join(`${EOL}${indentUnit.repeat(multiLineIndentLevel)}`);
       }
+      formattedClassName = formattedClassName.slice(0, -trailingDelimiter.length || undefined);
 
       token.body = formattedClassName;
     } else if (token.type === 'expression') {
@@ -381,15 +387,20 @@ function formatTokens(
             .join('')
             .replace(/\t/g, SPACE.repeat(options.tabWidth))
         : '';
+      const trailingDelimiter = isEndingPositionAbsolute
+        ? formattedTokens[tokenIndex + 1].body
+        : '';
       const hasLeadingSpace = token.body !== token.body.trimStart();
       const hasTrailingSpace = token.body !== token.body.trimEnd();
       const classNameBase = `${PH.repeat(leadingText.length)}${
         hasLeadingSpace ? SPACE : ''
-      }${token.body.trim().replace(/\\\n/g, '')}`;
+      }${token.body.trim().replace(/\\\n/g, '')}${hasTrailingSpace ? SPACE : ''}${PH.repeat(
+        trailingDelimiter.length,
+      )}`;
 
       let formattedClassName = `${formatClassName(classNameBase, options.printWidth).slice(
         leadingText.length,
-      )}${hasTrailingSpace ? SPACE : ''}`;
+      )}${!trailingDelimiter && hasTrailingSpace ? SPACE : ''}`;
       const formattedLines = formattedClassName.split(EOL);
       const isMultiLineClassName = formattedLines.length > 1;
 
@@ -408,9 +419,10 @@ function formatTokens(
             ? `${formatClassName(
                 formattedLines.slice(1).join(EOL),
                 options.printWidth - options.tabWidth * multiLineIndentLevel,
-              )}${hasTrailingSpace ? SPACE : ''}`.split(EOL)
+              )}${!trailingDelimiter && hasTrailingSpace ? SPACE : ''}`.split(EOL)
             : formattedLines.slice(1)),
         ].join(`${EOL}${indentUnit.repeat(multiLineIndentLevel)}`);
+        formattedClassName = formattedClassName.slice(0, -trailingDelimiter.length || undefined);
 
         if (props.isItAngularExpression) {
           formattedTokens[tokenIndex - 1].body = SINGLE_QUOTE;
@@ -426,6 +438,8 @@ function formatTokens(
           }
         }
       } else {
+        formattedClassName = formattedClassName.slice(0, -trailingDelimiter.length || undefined);
+
         let baseDelimiter = DOUBLE_QUOTE;
 
         if (props.shouldKeepDelimiter) {

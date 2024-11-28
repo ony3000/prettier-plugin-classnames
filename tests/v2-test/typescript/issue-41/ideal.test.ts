@@ -25,7 +25,8 @@ export default function MyComponent() {
     output: `export default function MyComponent() {
   return (
     <section
-      className="lorem ipsum dolor sit amet consectetur adipiscing elit aenean p"
+      className="lorem ipsum dolor sit amet consectetur adipiscing elit aenean
+        p"
     >
       content
     </section>
@@ -49,8 +50,10 @@ export default function MyComponent() {
 `,
     output: `export default function MyComponent() {
   return (
-    <section className="lorem ipsum dolor sit amet consectetur adipiscing elit
-      aenean p">
+    <section
+      className="lorem ipsum dolor sit amet consectetur adipiscing elit aenean
+        p"
+    >
       content
     </section>
   );
