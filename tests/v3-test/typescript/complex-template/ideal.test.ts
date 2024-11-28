@@ -83,7 +83,8 @@ export function Foo({ children }) {
       className={\`lorem ipsum dolor sit amet \${\`lorem ipsum
         dolor sit amet
         \${"consectetur adipiscing elit proin"} ex massa
-        hendrerit eu posuere\`} ex massa hendrerit eu posuere\`}
+        hendrerit eu posuere\`} ex massa hendrerit eu
+        posuere\`}
     >
       {children}
     </div>
@@ -110,7 +111,8 @@ export function Foo({ children }) {
       className={\`lorem ipsum dolor sit amet \${\`lorem ipsum
         dolor sit amet
         \${"consectetur adipiscing elit proin"} ex massa
-        hendrerit eu posuere\`} ex massa hendrerit eu posuere\`}
+        hendrerit eu posuere\`} ex massa hendrerit eu
+        posuere\`}
     >
       {children}
     </div>
