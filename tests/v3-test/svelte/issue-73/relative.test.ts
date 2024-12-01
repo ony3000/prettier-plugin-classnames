@@ -7,7 +7,6 @@ const options = {
   ...baseOptions,
   plugins: ['prettier-plugin-svelte', thisPlugin],
   parser: 'svelte',
-  printWidth: 60,
   endingPosition: 'relative',
 };
 

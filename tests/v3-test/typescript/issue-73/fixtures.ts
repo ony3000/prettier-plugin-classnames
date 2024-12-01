@@ -7,6 +7,9 @@ export const fixtures: Omit<Fixture, 'output'>[] = [
 //---------------------------------------------------------| printWidth=60
 const classes = tw\`lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere eu volutpat id neque pellentesque\`;
 `,
+    options: {
+      printWidth: 60,
+    },
   },
   {
     name: '(2) Tagged templates are supported by adding tag function names to the `customFunctions` option.',
@@ -15,6 +18,7 @@ const classes = tw\`lorem ipsum dolor sit amet consectetur adipiscing elit proin
 const classes = tw\`lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere eu volutpat id neque pellentesque\`;
 `,
     options: {
+      printWidth: 60,
       customFunctions: ['tw'],
     },
   },
@@ -30,6 +34,9 @@ export function Foo({ children }) {
   );
 }
 `,
+    options: {
+      printWidth: 60,
+    },
   },
   {
     name: '(4) If the tag function name is `css`, the tagged template is considered special and is not supported even if it is written as an expression for an attribute that supports line wrapping.',
@@ -43,6 +50,9 @@ export function Foo({ children }) {
   );
 }
 `,
+    options: {
+      printWidth: 60,
+    },
   },
   {
     name: '(5) If the tag function name is `css`, the tagged template is considered special and is not supported even if you add the tag function name to the `customFunctions` option.',
@@ -57,6 +67,7 @@ export function Foo({ children }) {
 }
 `,
     options: {
+      printWidth: 60,
       customFunctions: ['css'],
     },
   },

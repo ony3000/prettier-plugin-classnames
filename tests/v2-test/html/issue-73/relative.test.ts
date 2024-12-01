@@ -7,7 +7,6 @@ const options = {
   ...baseOptions,
   plugins: [thisPlugin],
   parser: 'html',
-  printWidth: 60,
   endingPosition: 'relative',
 };
 

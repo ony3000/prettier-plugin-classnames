@@ -7,7 +7,6 @@ const options = {
   ...baseOptions,
   plugins: [thisPlugin],
   parser: 'typescript',
-  printWidth: 60,
   endingPosition: 'absolute-with-indent',
 };
 
