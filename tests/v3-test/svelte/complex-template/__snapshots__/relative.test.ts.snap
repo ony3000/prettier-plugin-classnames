@@ -1,0 +1,275 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`'(1) nested expression - string literal basic' > expectation 1`] = `
+"<div>
+  <div>
+    <div
+      class={\`lorem ipsum dolor sit amet
+        \${"consectetur adipiscing elit proin"} ex massa hendrerit eu
+        posuere\`}
+    >
+      <slot />
+    </div>
+  </div>
+</div>
+"
+`;
+
+exports[`'(2) nested expression - template literal basic' > expectation 1`] = `
+"<div>
+  <div>
+    <div
+      class={\`lorem ipsum dolor sit amet
+        \${"consectetur adipiscing elit proin"} ex massa hendrerit eu
+        posuere\`}
+    >
+      <slot />
+    </div>
+  </div>
+</div>
+"
+`;
+
+exports[`'(3) double nested expression - string literal basic' > expectation 1`] = `
+"<div>
+  <div>
+    <div
+      class={\`lorem ipsum dolor sit amet \${\`lorem ipsum dolor sit amet
+        \${"consectetur adipiscing elit proin"} ex massa hendrerit eu
+        posuere\`} ex massa hendrerit eu posuere\`}
+    >
+      <slot />
+    </div>
+  </div>
+</div>
+"
+`;
+
+exports[`'(4) double nested expression - template literal basic' > expectation 1`] = `
+"<div>
+  <div>
+    <div
+      class={\`lorem ipsum dolor sit amet \${\`lorem ipsum dolor sit amet
+        \${"consectetur adipiscing elit proin"} ex massa hendrerit eu
+        posuere\`} ex massa hendrerit eu posuere\`}
+    >
+      <slot />
+    </div>
+  </div>
+</div>
+"
+`;
+
+exports[`'(5) nested expression - string literal ternary' > expectation 1`] = `
+"<div>
+  <div>
+    <div
+      class={\`lorem ipsum dolor sit amet \${
+        condition
+          ? "consectetur adipiscing elit proin"
+          : \`lorem ipsum dolor sit amet consectetur adipiscing elit proin
+            ex massa hendrerit eu posuere\`
+        } ex massa hendrerit eu posuere\`}
+    >
+      <slot />
+    </div>
+  </div>
+</div>
+"
+`;
+
+exports[`'(6) nested expression - template literal ternary' > expectation 1`] = `
+"<div>
+  <div>
+    <div
+      class={\`lorem ipsum dolor sit amet \${
+        condition
+          ? "consectetur adipiscing elit proin"
+          : \`lorem ipsum dolor sit amet consectetur adipiscing elit proin
+            ex massa hendrerit eu posuere\`
+        } ex massa hendrerit eu posuere\`}
+    >
+      <slot />
+    </div>
+  </div>
+</div>
+"
+`;
+
+exports[`'(7) double nested expression - string literal ternary' > expectation 1`] = `
+"<div>
+  <div>
+    <div
+      class={\`lorem ipsum dolor sit amet \${\`lorem ipsum dolor sit amet \${
+        condition
+          ? "consectetur adipiscing elit proin"
+          : \`lorem ipsum dolor sit amet consectetur adipiscing elit proin
+            ex massa hendrerit eu posuere\`
+        } ex massa hendrerit eu posuere\`} ex massa hendrerit eu
+        posuere\`}
+    >
+      <slot />
+    </div>
+  </div>
+</div>
+"
+`;
+
+exports[`'(8) double nested expression - template literal ternary' > expectation 1`] = `
+"<div>
+  <div>
+    <div
+      class={\`lorem ipsum dolor sit amet \${\`lorem ipsum dolor sit amet \${
+        condition
+          ? "consectetur adipiscing elit proin"
+          : \`lorem ipsum dolor sit amet consectetur adipiscing elit proin
+            ex massa hendrerit eu posuere\`
+        } ex massa hendrerit eu posuere\`} ex massa hendrerit eu
+        posuere\`}
+    >
+      <slot />
+    </div>
+  </div>
+</div>
+"
+`;
+
+exports[`'(exp-1) nested expression - string literal basic' > expectation 1`] = `
+"<div>
+  <div>
+    <div
+      class={\`lorem ipsum dolor sit amet
+        \${"consectetur adipiscing elit proin"} ex massa hendrerit eu
+        posuere\`}
+    >
+      <slot />
+    </div>
+  </div>
+</div>
+"
+`;
+
+exports[`'(exp-2) nested expression - template literal basic' > expectation 1`] = `
+"<div>
+  <div>
+    <div
+      class={\`lorem ipsum dolor sit amet
+        \${"consectetur adipiscing elit proin"} ex massa hendrerit eu
+        posuere\`}
+    >
+      <slot />
+    </div>
+  </div>
+</div>
+"
+`;
+
+exports[`'(exp-3) double nested expression - string literal basic' > expectation 1`] = `
+"<div>
+  <div>
+    <div
+      class={\`lorem ipsum dolor sit amet
+        \${\`lorem ipsum dolor sit amet
+        \${"consectetur adipiscing elit proin"} ex massa hendrerit eu
+        posuere\`}
+        ex massa hendrerit eu posuere\`}
+    >
+      <slot />
+    </div>
+  </div>
+</div>
+"
+`;
+
+exports[`'(exp-4) double nested expression - template literal basic' > expectation 1`] = `
+"<div>
+  <div>
+    <div
+      class={\`lorem ipsum dolor sit amet
+        \${\`lorem ipsum dolor sit amet
+        \${"consectetur adipiscing elit proin"} ex massa hendrerit eu
+        posuere\`}
+        ex massa hendrerit eu posuere\`}
+    >
+      <slot />
+    </div>
+  </div>
+</div>
+"
+`;
+
+exports[`'(exp-5) nested expression - string literal ternary' > expectation 1`] = `
+"<div>
+  <div>
+    <div
+      class={\`lorem ipsum dolor sit amet \${
+        condition
+          ? "consectetur adipiscing elit proin"
+          : \`lorem ipsum dolor sit amet consectetur adipiscing elit proin
+            ex massa hendrerit eu posuere\`
+        } ex massa hendrerit eu posuere\`}
+    >
+      <slot />
+    </div>
+  </div>
+</div>
+"
+`;
+
+exports[`'(exp-6) nested expression - template literal ternary' > expectation 1`] = `
+"<div>
+  <div>
+    <div
+      class={\`lorem ipsum dolor sit amet \${
+        condition
+          ? "consectetur adipiscing elit proin"
+          : \`lorem ipsum dolor sit amet consectetur adipiscing elit proin
+            ex massa hendrerit eu posuere\`
+        } ex massa hendrerit eu posuere\`}
+    >
+      <slot />
+    </div>
+  </div>
+</div>
+"
+`;
+
+exports[`'(exp-7) double nested expression - string literal ternary' > expectation 1`] = `
+"<div>
+  <div>
+    <div
+      class={\`lorem ipsum dolor sit amet
+        \${\`lorem ipsum dolor sit amet \${
+        condition
+            ? "consectetur adipiscing elit proin"
+            : \`lorem ipsum dolor sit amet consectetur adipiscing elit proin
+              ex massa hendrerit eu posuere\`
+        } ex massa hendrerit eu posuere\`}
+        ex massa hendrerit eu posuere\`}
+    >
+      <slot />
+    </div>
+  </div>
+</div>
+"
+`;
+
+exports[`'(exp-8) double nested expression - template literal ternary' > expectation 1`] = `
+"<div>
+  <div>
+    <div
+      class={\`lorem ipsum dolor sit amet
+        \${\`lorem ipsum dolor sit amet \${
+        condition
+            ? "consectetur adipiscing elit proin"
+            : \`lorem ipsum dolor sit amet consectetur adipiscing elit proin
+              ex massa hendrerit eu posuere\`
+        } ex massa hendrerit eu posuere\`}
+        ex massa hendrerit eu posuere\`}
+    >
+      <slot />
+    </div>
+  </div>
+</div>
+"
+`;
