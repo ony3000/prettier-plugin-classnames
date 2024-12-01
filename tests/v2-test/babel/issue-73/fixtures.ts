@@ -4,7 +4,7 @@ export const fixtures: Omit<Fixture, 'output'>[] = [
   {
     name: '(1) Tagged templates are not supported by default.',
     input: `
-//---------------------------------------------------------| printWidth=60
+//---------------------------------------------------------| printWidth=60 (in snapshot)
 const classes = tw\`lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere eu volutpat id neque pellentesque\`;
 `,
     options: {
@@ -14,7 +14,7 @@ const classes = tw\`lorem ipsum dolor sit amet consectetur adipiscing elit proin
   {
     name: '(2) Tagged templates are supported by adding tag function names to the `customFunctions` option.',
     input: `
-//---------------------------------------------------------| printWidth=60
+//---------------------------------------------------------| printWidth=60 (in snapshot)
 const classes = tw\`lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere eu volutpat id neque pellentesque\`;
 `,
     options: {
@@ -25,7 +25,7 @@ const classes = tw\`lorem ipsum dolor sit amet consectetur adipiscing elit proin
   {
     name: '(3) If a tagged template is written as an expression for an attribute that supports line wrapping, it will appear to be supported even if the `customFunctions` option does not include the tagged function name, but in fact it is supported as a template literal.',
     input: `
-//---------------------------------------------------------| printWidth=60
+//---------------------------------------------------------| printWidth=60 (in snapshot)
 export function Foo({ children }) {
   return (
     <div className={tw\`lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere eu volutpat id neque pellentesque\`}>
@@ -41,7 +41,7 @@ export function Foo({ children }) {
   {
     name: '(4) If the tag function name is `css`, the tagged template is considered special and is not supported even if it is written as an expression for an attribute that supports line wrapping.',
     input: `
-//---------------------------------------------------------| printWidth=60
+//---------------------------------------------------------| printWidth=60 (in snapshot)
 export function Foo({ children }) {
   return (
     <div className={css\`lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere eu volutpat id neque pellentesque\`}>
@@ -57,7 +57,7 @@ export function Foo({ children }) {
   {
     name: '(5) If the tag function name is `css`, the tagged template is considered special and is not supported even if you add the tag function name to the `customFunctions` option.',
     input: `
-//---------------------------------------------------------| printWidth=60
+//---------------------------------------------------------| printWidth=60 (in snapshot)
 export function Foo({ children }) {
   return (
     <div className={css\`lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere eu volutpat id neque pellentesque\`}>
