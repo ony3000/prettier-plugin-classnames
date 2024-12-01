@@ -1,0 +1,95 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`'(1) nested ternary' > expectation 1`] = `
+"<template>
+  <div>
+    <div
+      [class]="
+        condition
+          ? 'lorem ipsum dolor sit amet'
+          : condition
+          ? 'lorem ipsum dolor sit amet consectetur
+            adipiscing elit proin'
+          : 'lorem ipsum dolor sit amet consectetur
+            adipiscing elit proin ex massa hendrerit eu
+            posuere'
+      "
+    >
+      <slot></slot>
+    </div>
+  </div>
+</template>
+"
+`;
+
+exports[`'(2) double nested ternary' > expectation 1`] = `
+"<template>
+  <div>
+    <div
+      [class]="
+        condition
+          ? 'lorem ipsum dolor sit amet'
+          : condition
+          ? 'lorem ipsum dolor sit amet consectetur
+            adipiscing elit proin'
+          : condition
+          ? 'lorem ipsum dolor sit amet consectetur
+            adipiscing elit proin'
+          : 'lorem ipsum dolor sit amet consectetur
+            adipiscing elit proin ex massa hendrerit eu
+            posuere'
+      "
+    >
+      <slot></slot>
+    </div>
+  </div>
+</template>
+"
+`;
+
+exports[`'(exp-1) nested ternary' > expectation 1`] = `
+"<template>
+  <div>
+    <div
+      [class]="
+        condition
+          ? 'lorem ipsum dolor sit amet'
+          : condition
+          ? 'lorem ipsum dolor sit amet consectetur
+            adipiscing elit proin'
+          : 'lorem ipsum dolor sit amet consectetur
+            adipiscing elit proin ex massa hendrerit eu
+            posuere'
+      "
+    >
+      <slot></slot>
+    </div>
+  </div>
+</template>
+"
+`;
+
+exports[`'(exp-2) double nested ternary' > expectation 1`] = `
+"<template>
+  <div>
+    <div
+      [class]="
+        condition
+          ? 'lorem ipsum dolor sit amet'
+          : condition
+          ? 'lorem ipsum dolor sit amet consectetur
+            adipiscing elit proin'
+          : condition
+          ? 'lorem ipsum dolor sit amet consectetur
+            adipiscing elit proin'
+          : 'lorem ipsum dolor sit amet consectetur
+            adipiscing elit proin ex massa hendrerit eu
+            posuere'
+      "
+    >
+      <slot></slot>
+    </div>
+  </div>
+</template>
+"
+`;
