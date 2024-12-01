@@ -140,7 +140,7 @@ Default | CLI&nbsp;Override | API&nbsp;Override
 
 First available in v0.7.2.
 
-Find target class names more efficiently. However, some syntax may not be recognized as a target.
+Formatting will be up to 67% faster. Note that the output of nested expressions may differ slightly.
 
 <!-- prettier-ignore -->
 Default | CLI&nbsp;Override | API&nbsp;Override
