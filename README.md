@@ -140,7 +140,7 @@ Default | CLI&nbsp;Override | API&nbsp;Override
 
 First available in v0.7.2.
 
-Formatting will be up to 67% faster. Note that the output of nested expressions may differ slightly.
+Formatting will be up to 67% faster. Note that Node.js version must be 17 or higher, and the output of nested expressions may be slightly different.
 
 <!-- prettier-ignore -->
 Default | CLI&nbsp;Override | API&nbsp;Override

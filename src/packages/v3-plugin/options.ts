@@ -62,6 +62,6 @@ export const options: SupportOptions = {
     category: 'Format',
     default: false,
     description:
-      'Find target class names more efficiently. However, some syntax may not be recognized as a target.',
+      'Formatting will be up to 67% faster. Note that Node.js version must be 17 or higher, and the output of nested expressions may be slightly different.',
   },
 };
