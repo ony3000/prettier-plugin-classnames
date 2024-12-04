@@ -1002,40 +1002,84 @@ export function findTargetClassNameNodesForHtml(
                   value: z.string(),
                 }),
               ),
+              attrs: z.array(
+                z.object({
+                  name: z.string(),
+                  value: z.unknown(),
+                }),
+              ),
             }),
           ) &&
           node.name === 'script'
         ) {
-          // Note: In fact, the script element is not a `keywordStartingNode`, but it is considered a kind of safe list to maintain the `classNameNode`s obtained from the code inside the element.
-          keywordStartingNodes.push(currentASTNode);
-
           const textNodeInScript = node.children.at(0);
 
-          if (addon.parseTypescript && textNodeInScript) {
-            const openingTagEndingLineIndex = node.startSourceSpan.end.line;
-            const openingTagEndingOffset = node.startSourceSpan.end.offset;
+          if (node.attrs.find((attr) => attr.name === 'lang' && attr.value === 'ts')) {
+            // Note: In fact, the script element is not a `keywordStartingNode`, but it is considered a kind of safe list to maintain the `classNameNode`s obtained from the code inside the element.
+            keywordStartingNodes.push(currentASTNode);
 
-            const typescriptAst = addon.parseTypescript(textNodeInScript.value, {
-              ...options,
-              parser: 'typescript',
-            });
-            const targetClassNameNodesInScript = findTargetClassNameNodes(
-              typescriptAst,
-              options,
-            ).map<ClassNameNode>((classNameNode) => {
-              const [classNameNodeRangeStart, classNameNodeRangeEnd] = classNameNode.range;
+            if (addon.parseTypescript && textNodeInScript) {
+              const openingTagEndingLineIndex = node.startSourceSpan.end.line;
+              const openingTagEndingOffset = node.startSourceSpan.end.offset;
 
-              return {
-                ...classNameNode,
-                range: [
-                  classNameNodeRangeStart + openingTagEndingOffset,
-                  classNameNodeRangeEnd + openingTagEndingOffset,
-                ],
-                startLineIndex: classNameNode.startLineIndex + openingTagEndingLineIndex,
-              };
-            });
+              const typescriptAst = addon.parseTypescript(textNodeInScript.value, {
+                ...options,
+                parser: 'typescript',
+              });
+              const targetClassNameNodesInScript = findTargetClassNameNodes(
+                typescriptAst,
+                options,
+              ).map<ClassNameNode>((classNameNode) => {
+                const [classNameNodeRangeStart, classNameNodeRangeEnd] = classNameNode.range;
 
-            classNameNodes.push(...targetClassNameNodesInScript);
+                return {
+                  ...classNameNode,
+                  range: [
+                    classNameNodeRangeStart + openingTagEndingOffset,
+                    classNameNodeRangeEnd + openingTagEndingOffset,
+                  ],
+                  startLineIndex: classNameNode.startLineIndex + openingTagEndingLineIndex,
+                };
+              });
+
+              classNameNodes.push(...targetClassNameNodesInScript);
+            }
+          } else if (
+            node.attrs.find(
+              (attr) =>
+                attr.name === 'type' && (attr.value === '' || attr.value === 'text/javascript'),
+            ) ||
+            !node.attrs.find((attr) => attr.name === 'type')
+          ) {
+            // Note: In fact, the script element is not a `keywordStartingNode`, but it is considered a kind of safe list to maintain the `classNameNode`s obtained from the code inside the element.
+            keywordStartingNodes.push(currentASTNode);
+
+            if (addon.parseBabel && textNodeInScript) {
+              const openingTagEndingLineIndex = node.startSourceSpan.end.line;
+              const openingTagEndingOffset = node.startSourceSpan.end.offset;
+
+              const babelAst = addon.parseBabel(textNodeInScript.value, {
+                ...options,
+                parser: 'babel',
+              });
+              const targetClassNameNodesInScript = findTargetClassNameNodes(
+                babelAst,
+                options,
+              ).map<ClassNameNode>((classNameNode) => {
+                const [classNameNodeRangeStart, classNameNodeRangeEnd] = classNameNode.range;
+
+                return {
+                  ...classNameNode,
+                  range: [
+                    classNameNodeRangeStart + openingTagEndingOffset,
+                    classNameNodeRangeEnd + openingTagEndingOffset,
+                  ],
+                  startLineIndex: classNameNode.startLineIndex + openingTagEndingLineIndex,
+                };
+              });
+
+              classNameNodes.push(...targetClassNameNodesInScript);
+            }
           }
         }
         break;
