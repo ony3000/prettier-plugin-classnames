@@ -1,0 +1,48 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`'(1) If a script tag has no type, it is assumed to contain JavaScript code.' > expectation 1`] = `
+"<script>
+  export function Foo({ children }) {
+    return <div className="lorem ipsum dolor sit amet">{children}</div>;
+  }
+</script>
+"
+`;
+
+exports[`'(2) If a script tag has an empty type, it is assumed to contain JavaScript code.' > expectation 1`] = `
+"<script type="">
+  export function Foo({ children }) {
+    return <div className="lorem ipsum dolor sit amet">{children}</div>;
+  }
+</script>
+"
+`;
+
+exports[`'(3) If a script tag has a type of \`text/javascript\`, it is assumed to contain JavaScript code.' > expectation 1`] = `
+"<script type="text/javascript">
+  export function Foo({ children }) {
+    return <div className="lorem ipsum dolor sit amet">{children}</div>;
+  }
+</script>
+"
+`;
+
+exports[`'(4) If a script tag has a \`lang\` attribute whose value is \`ts\`, it is assumed to contain TypeScript code, regardless of type.' > expectation 1`] = `
+"<script lang="ts" type="anything">
+  interface MyInterface {
+    foo(): string;
+    bar: Array<number>;
+  }
+</script>
+"
+`;
+
+exports[`'(5) Otherwise, leave Prettier\\'s output as is.' > expectation 1`] = `
+"<script type="application/json">
+  {
+    "lorem": "ipsum",
+    "dolor": "sit amet"
+  }
+</script>
+"
+`;
