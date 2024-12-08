@@ -5,6 +5,8 @@ import { parsers as babelParsers } from 'prettier/plugins/babel';
 import { parsers as htmlParsers } from 'prettier/plugins/html';
 import { parsers as typescriptParsers } from 'prettier/plugins/typescript';
 
+const EOL = '\n';
+
 const addon = {
   parseBabel: (text: string, options: ParserOptions) => babelParsers.babel.parse(text, options),
   parseTypescript: (text: string, options: ParserOptions) =>
@@ -23,6 +25,37 @@ function transformParser(
       text: string,
       options: ParserOptions & ThisPluginOptions,
     ): Promise<FormattedTextAST> => {
+      if (options.parentParser === 'markdown' || options.parentParser === 'mdx') {
+        let codeblockStart = '```';
+        const codeblockEnd = '```';
+
+        if (options.parser === 'babel') {
+          codeblockStart = '```jsx';
+        } else if (options.parser === 'typescript') {
+          codeblockStart = '```tsx';
+        }
+
+        const formattedCodeblock = await format(
+          `${codeblockStart}${EOL}${text}${EOL}${codeblockEnd}`,
+          {
+            ...options,
+            plugins: [],
+            rangeEnd: Infinity,
+            endOfLine: 'lf',
+            parser: options.parentParser,
+            parentParser: undefined,
+          },
+        );
+        const formattedText = formattedCodeblock
+          .trim()
+          .slice(`${codeblockStart}${EOL}`.length, -`${EOL}${codeblockEnd}`.length);
+
+        return {
+          type: 'FormattedText',
+          body: formattedText,
+        };
+      }
+
       const plugins = options.plugins.filter((plugin) => typeof plugin !== 'string') as Plugin[];
 
       let languageImplementedPlugin: Plugin | undefined;
