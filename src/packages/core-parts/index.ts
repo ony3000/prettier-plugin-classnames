@@ -81,22 +81,26 @@ function getDelimiters(
     return [SINGLE_QUOTE, SINGLE_QUOTE];
   }
 
-  const opener = `${
-    isMultiLineClassName &&
-    node.type === 'expression' &&
-    node.delimiterType !== 'backtick' &&
-    node.isItAnObjectProperty
-      ? '['
-      : ''
-  }${!isMultiLineClassName || node.type === 'attribute' ? baseDelimiter : BACKTICK}`;
-  const closer = `${!isMultiLineClassName || node.type === 'attribute' ? baseDelimiter : BACKTICK}${
-    isMultiLineClassName &&
-    node.type === 'expression' &&
-    node.delimiterType !== 'backtick' &&
-    node.isItAnObjectProperty
-      ? ']'
-      : ''
-  }`;
+  let opener = baseDelimiter;
+  let closer = baseDelimiter;
+
+  if (isMultiLineClassName) {
+    const areNeededBrackets =
+      node.type === 'expression' && node.delimiterType !== 'backtick' && node.isItAnObjectProperty;
+
+    opener = `${areNeededBrackets ? '[' : ''}${
+      node.type === 'attribute' ? baseDelimiter : BACKTICK
+    }`;
+    closer = `${node.type === 'attribute' ? baseDelimiter : BACKTICK}${
+      areNeededBrackets ? ']' : ''
+    }`;
+  } else {
+    const areNeededBrackets =
+      node.type === 'expression' && node.isItAnObjectProperty && baseDelimiter === BACKTICK;
+
+    opener = `${areNeededBrackets ? '[' : ''}${baseDelimiter}`;
+    closer = `${baseDelimiter}${areNeededBrackets ? ']' : ''}`;
+  }
 
   return [opener, closer];
 }

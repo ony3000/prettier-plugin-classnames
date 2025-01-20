@@ -470,8 +470,10 @@ function formatTokens(
           baseDelimiter = SINGLE_QUOTE;
         }
 
-        formattedTokens[tokenIndex - 1].body = baseDelimiter;
-        formattedTokens[tokenIndex + 1].body = baseDelimiter;
+        const areNeededBrackets = props.isItAnObjectProperty && baseDelimiter === BACKTICK;
+
+        formattedTokens[tokenIndex - 1].body = `${areNeededBrackets ? '[' : ''}${baseDelimiter}`;
+        formattedTokens[tokenIndex + 1].body = `${baseDelimiter}${areNeededBrackets ? ']' : ''}`;
 
         if (baseDelimiter === SINGLE_QUOTE) {
           if (props.delimiterType !== 'single-quote' && props.hasSingleQuote) {
