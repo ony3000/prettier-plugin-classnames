@@ -2,7 +2,7 @@ import type { Fixture } from 'test-settings';
 
 export const fixtures: Omit<Fixture, 'output'>[] = [
   {
-    name: '(1) If a template literal contains nested expressions, object keys must still be enclosed in square brackets.',
+    name: '(1) If a template literal contains nested expressions, object properties must still be enclosed in square brackets.',
     input: `
 //---------------------------------------------------------| printWidth=60 (in snapshot)
 <template>

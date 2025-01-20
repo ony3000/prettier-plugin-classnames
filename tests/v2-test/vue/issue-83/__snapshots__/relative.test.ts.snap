@@ -1,6 +1,6 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`'(1) If a template literal contains nested expressions, object keys must still be enclosed in square brackets.' > expectation 1`] = `
+exports[`'(1) If a template literal contains nested expressions, object properties must still be enclosed in square brackets.' > expectation 1`] = `
 "//---------------------------------------------------------|
 printWidth=60 (in snapshot)
 <template>
