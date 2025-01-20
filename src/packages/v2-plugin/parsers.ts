@@ -7,12 +7,21 @@ import { parsers as typescriptParsers } from 'prettier/parser-typescript';
 
 const EOL = '\n';
 
+const SPACE = ' ';
+
 const addon = {
   parseBabel: (text: string, options: ParserOptions) =>
     babelParsers.babel.parse(text, { babel: babelParsers.babel }, options),
   parseTypescript: (text: string, options: ParserOptions) =>
     typescriptParsers.typescript.parse(text, { typescript: typescriptParsers.typescript }, options),
 };
+
+function addIndent(text: string, width = 2) {
+  return text
+    .split(EOL)
+    .map((line) => `${SPACE.repeat(width)}${line}`)
+    .join(EOL);
+}
 
 function transformParser(
   parserName: SupportedParserNames,
@@ -111,7 +120,9 @@ function transformParser(
         });
       } catch (error) {
         throw new Error(
-          'The second format failed. This is likely a bug in this plugin. Please file an issue.',
+          `The second format failed. This is likely a bug in this plugin. Please file an issue.${
+            error instanceof Error ? `${EOL}${addIndent(`Error: ${error.message}`, 4)}` : ''
+          }`,
         );
       }
 
