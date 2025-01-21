@@ -18,7 +18,7 @@ export const fixtures: Omit<Fixture, 'output'>[] = [
     },
   },
   {
-    name: '(1) When expressions are joined by the logical AND operator, line wrapping is supported only in the last operand.',
+    name: '(2) When expressions are joined by the logical AND operator, line wrapping is supported only in the last operand.',
     input: `
 //---------------------------------------------------------| printWidth=60 (in snapshot)
 <template>
@@ -34,7 +34,7 @@ export const fixtures: Omit<Fixture, 'output'>[] = [
     },
   },
   {
-    name: '(1) When expressions are joined by the logical AND operator, line wrapping is supported only in the last operand.',
+    name: '(3) When expressions are joined by the logical AND operator, line wrapping is supported only in the last operand.',
     input: `
 //---------------------------------------------------------| printWidth=60 (in snapshot)
 <template>
@@ -50,7 +50,7 @@ export const fixtures: Omit<Fixture, 'output'>[] = [
     },
   },
   {
-    name: '(2) When expressions are joined by the logical OR operator, line wrapping is supported only in the last operand.',
+    name: '(4) When expressions are joined by the logical OR operator, line wrapping is supported only in the last operand.',
     input: `
 //---------------------------------------------------------| printWidth=60 (in snapshot)
 <template>
@@ -66,7 +66,7 @@ export const fixtures: Omit<Fixture, 'output'>[] = [
     },
   },
   {
-    name: '(2) When expressions are joined by the logical OR operator, line wrapping is supported only in the last operand.',
+    name: '(5) When expressions are joined by the logical OR operator, line wrapping is supported only in the last operand.',
     input: `
 //---------------------------------------------------------| printWidth=60 (in snapshot)
 <template>
@@ -82,7 +82,7 @@ export const fixtures: Omit<Fixture, 'output'>[] = [
     },
   },
   {
-    name: '(2) When expressions are joined by the logical OR operator, line wrapping is supported only in the last operand.',
+    name: '(6) When expressions are joined by the logical OR operator, line wrapping is supported only in the last operand.',
     input: `
 //---------------------------------------------------------| printWidth=60 (in snapshot)
 <template>
@@ -98,7 +98,7 @@ export const fixtures: Omit<Fixture, 'output'>[] = [
     },
   },
   {
-    name: '(3) When expressions are joined by the nullish coalescing operator, line wrapping is supported only in the last operand.',
+    name: '(7) When expressions are joined by the nullish coalescing operator, line wrapping is supported only in the last operand.',
     input: `
 //---------------------------------------------------------| printWidth=60 (in snapshot)
 <template>
@@ -114,7 +114,7 @@ export const fixtures: Omit<Fixture, 'output'>[] = [
     },
   },
   {
-    name: '(3) When expressions are joined by the nullish coalescing operator, line wrapping is supported only in the last operand.',
+    name: '(8) When expressions are joined by the nullish coalescing operator, line wrapping is supported only in the last operand.',
     input: `
 //---------------------------------------------------------| printWidth=60 (in snapshot)
 <template>
@@ -130,7 +130,7 @@ export const fixtures: Omit<Fixture, 'output'>[] = [
     },
   },
   {
-    name: '(3) When expressions are joined by the nullish coalescing operator, line wrapping is supported only in the last operand.',
+    name: '(9) When expressions are joined by the nullish coalescing operator, line wrapping is supported only in the last operand.',
     input: `
 //---------------------------------------------------------| printWidth=60 (in snapshot)
 <template>

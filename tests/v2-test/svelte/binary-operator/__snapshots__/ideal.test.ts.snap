@@ -17,7 +17,7 @@ printWidth=60 (in snapshot)
 "
 `;
 
-exports[`'(1) When expressions are joined by the logical AND operator, line wrapping is supported only in the last operand.' > expectation 2`] = `
+exports[`'(2) When expressions are joined by the logical AND operator, line wrapping is supported only in the last operand.' > expectation 1`] = `
 "//---------------------------------------------------------|
 printWidth=60 (in snapshot)
 <div>
@@ -36,7 +36,7 @@ printWidth=60 (in snapshot)
 "
 `;
 
-exports[`'(1) When expressions are joined by the logical AND operator, line wrapping is supported only in the last operand.' > expectation 3`] = `
+exports[`'(3) When expressions are joined by the logical AND operator, line wrapping is supported only in the last operand.' > expectation 1`] = `
 "//---------------------------------------------------------|
 printWidth=60 (in snapshot)
 <div>
@@ -58,7 +58,7 @@ printWidth=60 (in snapshot)
 "
 `;
 
-exports[`'(2) When expressions are joined by the logical OR operator, line wrapping is supported only in the last operand.' > expectation 1`] = `
+exports[`'(4) When expressions are joined by the logical OR operator, line wrapping is supported only in the last operand.' > expectation 1`] = `
 "//---------------------------------------------------------|
 printWidth=60 (in snapshot)
 <div>
@@ -75,7 +75,7 @@ printWidth=60 (in snapshot)
 "
 `;
 
-exports[`'(2) When expressions are joined by the logical OR operator, line wrapping is supported only in the last operand.' > expectation 2`] = `
+exports[`'(5) When expressions are joined by the logical OR operator, line wrapping is supported only in the last operand.' > expectation 1`] = `
 "//---------------------------------------------------------|
 printWidth=60 (in snapshot)
 <div>
@@ -94,7 +94,7 @@ printWidth=60 (in snapshot)
 "
 `;
 
-exports[`'(2) When expressions are joined by the logical OR operator, line wrapping is supported only in the last operand.' > expectation 3`] = `
+exports[`'(6) When expressions are joined by the logical OR operator, line wrapping is supported only in the last operand.' > expectation 1`] = `
 "//---------------------------------------------------------|
 printWidth=60 (in snapshot)
 <div>
@@ -116,7 +116,7 @@ printWidth=60 (in snapshot)
 "
 `;
 
-exports[`'(3) When expressions are joined by the nullish coalescing operator, line wrapping is supported only in the last operand.' > expectation 1`] = `
+exports[`'(7) When expressions are joined by the nullish coalescing operator, line wrapping is supported only in the last operand.' > expectation 1`] = `
 "//---------------------------------------------------------|
 printWidth=60 (in snapshot)
 <div>
@@ -133,7 +133,7 @@ printWidth=60 (in snapshot)
 "
 `;
 
-exports[`'(3) When expressions are joined by the nullish coalescing operator, line wrapping is supported only in the last operand.' > expectation 2`] = `
+exports[`'(8) When expressions are joined by the nullish coalescing operator, line wrapping is supported only in the last operand.' > expectation 1`] = `
 "//---------------------------------------------------------|
 printWidth=60 (in snapshot)
 <div>
@@ -151,7 +151,7 @@ printWidth=60 (in snapshot)
 "
 `;
 
-exports[`'(3) When expressions are joined by the nullish coalescing operator, line wrapping is supported only in the last operand.' > expectation 3`] = `
+exports[`'(9) When expressions are joined by the nullish coalescing operator, line wrapping is supported only in the last operand.' > expectation 1`] = `
 "//---------------------------------------------------------|
 printWidth=60 (in snapshot)
 <div>

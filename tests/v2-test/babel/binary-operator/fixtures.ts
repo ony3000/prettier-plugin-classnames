@@ -18,7 +18,7 @@ export function Foo({ children }) {
     },
   },
   {
-    name: '(1) When expressions are joined by the logical AND operator, line wrapping is supported only in the last operand.',
+    name: '(2) When expressions are joined by the logical AND operator, line wrapping is supported only in the last operand.',
     input: `
 //---------------------------------------------------------| printWidth=60 (in snapshot)
 export function Foo({ children }) {
@@ -34,7 +34,7 @@ export function Foo({ children }) {
     },
   },
   {
-    name: '(1) When expressions are joined by the logical AND operator, line wrapping is supported only in the last operand.',
+    name: '(3) When expressions are joined by the logical AND operator, line wrapping is supported only in the last operand.',
     input: `
 //---------------------------------------------------------| printWidth=60 (in snapshot)
 export function Foo({ children }) {
@@ -50,7 +50,7 @@ export function Foo({ children }) {
     },
   },
   {
-    name: '(2) When expressions are joined by the logical OR operator, line wrapping is supported only in the last operand.',
+    name: '(4) When expressions are joined by the logical OR operator, line wrapping is supported only in the last operand.',
     input: `
 //---------------------------------------------------------| printWidth=60 (in snapshot)
 export function Foo({ children }) {
@@ -66,7 +66,7 @@ export function Foo({ children }) {
     },
   },
   {
-    name: '(2) When expressions are joined by the logical OR operator, line wrapping is supported only in the last operand.',
+    name: '(5) When expressions are joined by the logical OR operator, line wrapping is supported only in the last operand.',
     input: `
 //---------------------------------------------------------| printWidth=60 (in snapshot)
 export function Foo({ children }) {
@@ -82,7 +82,7 @@ export function Foo({ children }) {
     },
   },
   {
-    name: '(2) When expressions are joined by the logical OR operator, line wrapping is supported only in the last operand.',
+    name: '(6) When expressions are joined by the logical OR operator, line wrapping is supported only in the last operand.',
     input: `
 //---------------------------------------------------------| printWidth=60 (in snapshot)
 export function Foo({ children }) {
@@ -98,7 +98,7 @@ export function Foo({ children }) {
     },
   },
   {
-    name: '(3) When expressions are joined by the nullish coalescing operator, line wrapping is supported only in the last operand.',
+    name: '(7) When expressions are joined by the nullish coalescing operator, line wrapping is supported only in the last operand.',
     input: `
 //---------------------------------------------------------| printWidth=60 (in snapshot)
 export function Foo({ children }) {
@@ -114,7 +114,7 @@ export function Foo({ children }) {
     },
   },
   {
-    name: '(3) When expressions are joined by the nullish coalescing operator, line wrapping is supported only in the last operand.',
+    name: '(8) When expressions are joined by the nullish coalescing operator, line wrapping is supported only in the last operand.',
     input: `
 //---------------------------------------------------------| printWidth=60 (in snapshot)
 export function Foo({ children }) {
@@ -130,7 +130,7 @@ export function Foo({ children }) {
     },
   },
   {
-    name: '(3) When expressions are joined by the nullish coalescing operator, line wrapping is supported only in the last operand.',
+    name: '(9) When expressions are joined by the nullish coalescing operator, line wrapping is supported only in the last operand.',
     input: `
 //---------------------------------------------------------| printWidth=60 (in snapshot)
 export function Foo({ children }) {
