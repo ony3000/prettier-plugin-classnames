@@ -1,0 +1,183 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`'(1) When expressions are joined by the logical AND operator, line wrapping is supported only in the last operand.' > expectation 1`] = `
+"//---------------------------------------------------------| printWidth=60 (in snapshot)
+export function Foo({ children }) {
+  return (
+    <div
+      className={
+        truthyExpression &&
+        \`lorem ipsum dolor sit amet consectetur adipiscing
+        elit proin ex massa hendrerit eu posuere\`
+      }
+    >
+      {children}
+    </div>
+  );
+}
+"
+`;
+
+exports[`'(2) When expressions are joined by the logical AND operator, line wrapping is supported only in the last operand.' > expectation 1`] = `
+"//---------------------------------------------------------| printWidth=60 (in snapshot)
+export function Foo({ children }) {
+  return (
+    <div
+      className={
+        truthyExpression &&
+        "lorem ipsum dolor sit amet" !==
+          "consectetur adipiscing elit proin ex massa hendrerit eu posuere" &&
+        \`lorem ipsum dolor sit amet consectetur adipiscing
+        elit proin ex massa hendrerit eu posuere\`
+      }
+    >
+      {children}
+    </div>
+  );
+}
+"
+`;
+
+exports[`'(3) When expressions are joined by the logical AND operator, line wrapping is supported only in the last operand.' > expectation 1`] = `
+"//---------------------------------------------------------| printWidth=60 (in snapshot)
+export function Foo({ children }) {
+  return (
+    <div
+      className={
+        truthyExpression &&
+        (condition
+          ? \`lorem ipsum dolor sit amet consectetur
+            adipiscing elit proin ex massa hendrerit eu
+            posuere\`
+          : \`lorem ipsum dolor sit amet consectetur
+            adipiscing elit proin ex massa hendrerit eu
+            posuere\`)
+      }
+    >
+      {children}
+    </div>
+  );
+}
+"
+`;
+
+exports[`'(4) When expressions are joined by the logical OR operator, line wrapping is supported only in the last operand.' > expectation 1`] = `
+"//---------------------------------------------------------| printWidth=60 (in snapshot)
+export function Foo({ children }) {
+  return (
+    <div
+      className={
+        falsyExpression ||
+        \`lorem ipsum dolor sit amet consectetur adipiscing
+        elit proin ex massa hendrerit eu posuere\`
+      }
+    >
+      {children}
+    </div>
+  );
+}
+"
+`;
+
+exports[`'(5) When expressions are joined by the logical OR operator, line wrapping is supported only in the last operand.' > expectation 1`] = `
+"//---------------------------------------------------------| printWidth=60 (in snapshot)
+export function Foo({ children }) {
+  return (
+    <div
+      className={
+        falsyExpression ||
+        "lorem ipsum dolor sit amet" ===
+          "consectetur adipiscing elit proin ex massa hendrerit eu posuere" ||
+        \`lorem ipsum dolor sit amet consectetur adipiscing
+        elit proin ex massa hendrerit eu posuere\`
+      }
+    >
+      {children}
+    </div>
+  );
+}
+"
+`;
+
+exports[`'(6) When expressions are joined by the logical OR operator, line wrapping is supported only in the last operand.' > expectation 1`] = `
+"//---------------------------------------------------------| printWidth=60 (in snapshot)
+export function Foo({ children }) {
+  return (
+    <div
+      className={
+        falsyExpression ||
+        (condition
+          ? \`lorem ipsum dolor sit amet consectetur
+            adipiscing elit proin ex massa hendrerit eu
+            posuere\`
+          : \`lorem ipsum dolor sit amet consectetur
+            adipiscing elit proin ex massa hendrerit eu
+            posuere\`)
+      }
+    >
+      {children}
+    </div>
+  );
+}
+"
+`;
+
+exports[`'(7) When expressions are joined by the nullish coalescing operator, line wrapping is supported only in the last operand.' > expectation 1`] = `
+"//---------------------------------------------------------| printWidth=60 (in snapshot)
+export function Foo({ children }) {
+  return (
+    <div
+      className={
+        null ??
+        \`lorem ipsum dolor sit amet consectetur adipiscing
+        elit proin ex massa hendrerit eu posuere\`
+      }
+    >
+      {children}
+    </div>
+  );
+}
+"
+`;
+
+exports[`'(8) When expressions are joined by the nullish coalescing operator, line wrapping is supported only in the last operand.' > expectation 1`] = `
+"//---------------------------------------------------------| printWidth=60 (in snapshot)
+export function Foo({ children }) {
+  return (
+    <div
+      className={
+        null ??
+        void "lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere" ??
+        \`lorem ipsum dolor sit amet consectetur adipiscing
+        elit proin ex massa hendrerit eu posuere\`
+      }
+    >
+      {children}
+    </div>
+  );
+}
+"
+`;
+
+exports[`'(9) When expressions are joined by the nullish coalescing operator, line wrapping is supported only in the last operand.' > expectation 1`] = `
+"//---------------------------------------------------------| printWidth=60 (in snapshot)
+export function Foo({ children }) {
+  return (
+    <div
+      className={
+        null ??
+        (condition
+          ? \`lorem ipsum dolor sit amet consectetur
+            adipiscing elit proin ex massa hendrerit eu
+            posuere\`
+          : \`lorem ipsum dolor sit amet consectetur
+            adipiscing elit proin ex massa hendrerit eu
+            posuere\`)
+      }
+    >
+      {children}
+    </div>
+  );
+}
+"
+`;

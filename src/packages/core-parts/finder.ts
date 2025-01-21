@@ -177,6 +177,10 @@ export function findTargetClassNameNodes(ast: any, options: ResolvedOptions): Cl
           recursiveProps = ['attributes'];
           break;
         }
+        case 'LogicalExpression': {
+          recursiveProps = ['right'];
+          break;
+        }
         case 'ObjectExpression': {
           recursiveProps = ['properties'];
           break;
@@ -749,6 +753,40 @@ export function findTargetClassNameNodes(ast: any, options: ResolvedOptions): Cl
               }
             }
           });
+        }
+        break;
+      }
+      case 'LogicalExpression': {
+        nonCommentNodes.push(currentASTNode);
+
+        if (!options.experimentalOptimization) {
+          if (
+            isTypeof(
+              node,
+              z.object({
+                left: z.object({
+                  range: z.custom<NodeRange>((value) =>
+                    isTypeof(value, z.tuple([z.number(), z.number()])),
+                  ),
+                }),
+              }),
+            )
+          ) {
+            const [leftOperandRangeStart, leftOperandRangeEnd] = node.left.range;
+
+            classNameNodes.forEach((classNameNode) => {
+              const [classNameNodeRangeStart, classNameNodeRangeEnd] = classNameNode.range;
+
+              if (
+                leftOperandRangeStart <= classNameNodeRangeStart &&
+                classNameNodeRangeEnd <= leftOperandRangeEnd
+              ) {
+                // Note: Specifies a range that will not be included in `keywordStartingNode`, so that it will be filtered out in the final stage of the traversal.
+                // eslint-disable-next-line no-param-reassign
+                classNameNode.range = [0, Infinity];
+              }
+            });
+          }
         }
         break;
       }
@@ -2245,6 +2283,10 @@ export function findTargetClassNameNodesForSvelte(
           recursiveProps = ['leadingComments'];
           break;
         }
+        case 'LogicalExpression': {
+          recursiveProps = ['right'];
+          break;
+        }
         case 'MustacheTag': {
           recursiveProps = ['expression'];
           break;
@@ -2771,6 +2813,40 @@ export function findTargetClassNameNodesForSvelte(
               }
             }
           });
+        }
+        break;
+      }
+      case 'LogicalExpression': {
+        nonCommentNodes.push(currentASTNode);
+
+        if (!options.experimentalOptimization) {
+          if (
+            isTypeof(
+              node,
+              z.object({
+                left: z.object({
+                  start: z.number(),
+                  end: z.number(),
+                }),
+              }),
+            )
+          ) {
+            const leftOperandRangeStart = node.left.start;
+            const leftOperandRangeEnd = node.left.end;
+
+            classNameNodes.forEach((classNameNode) => {
+              const [classNameNodeRangeStart, classNameNodeRangeEnd] = classNameNode.range;
+
+              if (
+                leftOperandRangeStart <= classNameNodeRangeStart &&
+                classNameNodeRangeEnd <= leftOperandRangeEnd
+              ) {
+                // Note: Specifies a range that will not be included in `keywordStartingNode`, so that it will be filtered out in the final stage of the traversal.
+                // eslint-disable-next-line no-param-reassign
+                classNameNode.range = [0, Infinity];
+              }
+            });
+          }
         }
         break;
       }
