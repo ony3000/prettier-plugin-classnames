@@ -177,6 +177,10 @@ export function findTargetClassNameNodes(ast: any, options: ResolvedOptions): Cl
           recursiveProps = ['attributes'];
           break;
         }
+        case 'LogicalExpression': {
+          recursiveProps = ['right'];
+          break;
+        }
         case 'ObjectExpression': {
           recursiveProps = ['properties'];
           break;
@@ -2243,6 +2247,10 @@ export function findTargetClassNameNodesForSvelte(
         }
         case 'Literal': {
           recursiveProps = ['leadingComments'];
+          break;
+        }
+        case 'LogicalExpression': {
+          recursiveProps = ['right'];
           break;
         }
         case 'MustacheTag': {
