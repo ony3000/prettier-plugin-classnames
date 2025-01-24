@@ -1,7 +1,7 @@
 import { createHash } from 'node:crypto';
 
 import type { NodeRange, ExpressionNode, ClassNameNode } from './shared';
-import { EOL, PH, SPACE, SINGLE_QUOTE, DOUBLE_QUOTE, BACKTICK } from './shared';
+import { EOL, PH, SPACE, TAB, SINGLE_QUOTE, DOUBLE_QUOTE, BACKTICK } from './shared';
 
 function sha1(input: string): string {
   return createHash('sha1').update(input).digest('hex');
@@ -511,8 +511,10 @@ function unfreezeToken(token: TextToken): string {
         if (tokenOfChildren.type === 'ternary') {
           // eslint-disable-next-line no-param-reassign
           token.body = token.body.replace(
-            tokenOfChildren.frozenClassName,
-            unfreezeToken(tokenOfChildren),
+            new RegExp(`[${SPACE}${TAB}]*${tokenOfChildren.frozenClassName}`),
+            `${
+              token.children[index - 1].body.match(new RegExp(`[${SPACE}${TAB}]*$`))![0]
+            }${unfreezeToken(tokenOfChildren)}`,
           );
         } else if (tokenOfChildren.type === 'expression') {
           const props = tokenOfChildren.props as Omit<ExpressionNode, 'range' | 'type'> & {
