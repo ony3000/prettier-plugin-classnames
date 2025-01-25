@@ -502,20 +502,37 @@ function formatTokens(
   return formattedTokens;
 }
 
-function unfreezeToken(token: TextToken): string {
+function unfreezeToken(token: TextToken, options: ResolvedOptions): string {
   if (token.children?.length) {
     for (let index = token.children.length - 1; index >= 0; index -= 1) {
       const tokenOfChildren = token.children[index];
 
       if (tokenOfChildren.frozenClassName !== undefined) {
         if (tokenOfChildren.type === 'ternary') {
-          // eslint-disable-next-line no-param-reassign
-          token.body = token.body.replace(
-            new RegExp(`[${SPACE}${TAB}]*${tokenOfChildren.frozenClassName}`),
-            `${
+          const plainText = unfreezeToken(tokenOfChildren, options);
+          let replaceTarget: string | RegExp = tokenOfChildren.frozenClassName;
+          let replaceValue = plainText;
+
+          const isMultiLineBody =
+            token.body.match(
+              new RegExp(`${EOL}[${SPACE}${TAB}]*${tokenOfChildren.frozenClassName}`),
+            ) !== null;
+
+          if (isMultiLineBody) {
+            replaceTarget = new RegExp(
+              `[${SPACE}${TAB}]*${tokenOfChildren.frozenClassName}${EOL}?[${SPACE}${TAB}]*`,
+            );
+            replaceValue = `${
               token.children[index - 1].body.match(new RegExp(`[${SPACE}${TAB}]*$`))![0]
-            }${unfreezeToken(tokenOfChildren)}`,
-          );
+            }${plainText}${
+              options.endingPosition === 'absolute'
+                ? EOL
+                : token.children[index + 1].body.match(new RegExp(`^${EOL}[${SPACE}${TAB}]*`))![0]
+            }`;
+          }
+
+          // eslint-disable-next-line no-param-reassign
+          token.body = token.body.replace(replaceTarget, replaceValue);
         } else if (tokenOfChildren.type === 'expression') {
           const props = tokenOfChildren.props as Omit<ExpressionNode, 'range' | 'type'> & {
             indentLevel: number;
@@ -531,7 +548,7 @@ function unfreezeToken(token: TextToken): string {
           // eslint-disable-next-line no-param-reassign
           token.body = token.body.replace(
             `${originalDelimiter}${tokenOfChildren.frozenClassName}${originalDelimiter}`,
-            `${token.children[index - 1].body}${unfreezeToken(tokenOfChildren)}${
+            `${token.children[index - 1].body}${unfreezeToken(tokenOfChildren, options)}${
               token.children[index + 1].body
             }`,
           );
@@ -555,5 +572,5 @@ export function parseAndAssemble(
 
   const formattedTokens = formatTokens(textTokens, indentUnit, options);
 
-  return formattedTokens.map(unfreezeToken).join('');
+  return formattedTokens.map((token) => unfreezeToken(token, options)).join('');
 }
