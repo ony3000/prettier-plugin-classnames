@@ -519,13 +519,21 @@ function unfreezeToken(token: TextToken, options: ResolvedOptions): string {
             ) !== null;
 
           if (isMultiLineBody) {
+            const isNestedExpressionClosedOnTheNextLine =
+              token.body.match(new RegExp(`${tokenOfChildren.frozenClassName}${EOL}`)) !== null;
+
             replaceTarget = new RegExp(
-              `[${SPACE}${TAB}]*${tokenOfChildren.frozenClassName}${EOL}?[${SPACE}${TAB}]*`,
+              `[${SPACE}${TAB}]*${tokenOfChildren.frozenClassName}${
+                isNestedExpressionClosedOnTheNextLine ? '' : `[${SPACE}${TAB}]*`
+              }`,
             );
             replaceValue = `${
               token.children[index - 1].body.match(new RegExp(`[${SPACE}${TAB}]*$`))![0]
             }${plainText}${
-              options.endingPosition === 'absolute'
+              // eslint-disable-next-line no-nested-ternary
+              isNestedExpressionClosedOnTheNextLine
+                ? ''
+                : options.endingPosition === 'absolute'
                 ? EOL
                 : token.children[index + 1].body.match(new RegExp(`^${EOL}[${SPACE}${TAB}]*`))![0]
             }`;
