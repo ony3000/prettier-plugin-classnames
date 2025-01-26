@@ -86,10 +86,10 @@ export type ExpressionNode = ClassNameNodeBase & {
 };
 
 /**
- * In fact, the ternary operator itself is not a class name node, but it defines a type as an exception because it needs to be frozen when processing complex expressions.
+ * In fact, these expressions themselves are not class name nodes, but it defines their type as exceptions because it needs to be frozen when processing complex expressions.
  */
-type TernaryExpressionNode = ClassNameNodeBase & {
-  type: 'ternary';
+type PreservingExpressionNode = ClassNameNodeBase & {
+  type: 'ternary' | 'logical';
 };
 
-export type ClassNameNode = UnknownNode | AttributeNode | ExpressionNode | TernaryExpressionNode;
+export type ClassNameNode = UnknownNode | AttributeNode | ExpressionNode | PreservingExpressionNode;

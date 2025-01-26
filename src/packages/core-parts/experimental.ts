@@ -172,7 +172,7 @@ function linearParse(
       [rangeStartOfParent, rangeEndOfParent] = parent.range;
 
       if (rangeEndOfParent < temporaryRangeEnd) {
-        if (parent.type === 'ternary') {
+        if (parent.type === 'ternary' || parent.type === 'logical') {
           textTokens.push({
             type: 'Placeholder',
             range: [rangeEndOfParent, temporaryRangeEnd],
@@ -196,7 +196,7 @@ function linearParse(
       body: formattedText.slice(rangeEndOfClassName + delimiterOffset, temporaryRangeEnd),
     });
 
-    if (type === 'ternary') {
+    if (type === 'ternary' || type === 'logical') {
       const ternaryExpression = formattedText.slice(rangeStartOfClassName, rangeEndOfClassName);
       const ternaryToken: TextToken = {
         type,
@@ -284,7 +284,7 @@ function linearParse(
   // Note: Since parent cannot be accessed directly outside of the for loop, I check for changes that may occur when parent exists.
   // if (parent)
   if (rangeStartOfParent) {
-    // if (parent.type === 'ternary')
+    // if (parent.type === 'ternary' || parent.type === 'logical')
     if (textTokens.find((token) => token.type === 'Text')!.body === '') {
       textTokens.push({
         type: 'Text',
@@ -334,7 +334,7 @@ function formatTokens(
   for (let tokenIndex = formattedTokens.length - 1; tokenIndex >= 0; tokenIndex -= 1) {
     const token = formattedTokens[tokenIndex];
 
-    if (token.type === 'ternary') {
+    if (token.type === 'ternary' || token.type === 'logical') {
       if (token.children?.length) {
         token.children = formatTokens(token.children, indentUnit, options);
       }
@@ -508,7 +508,7 @@ function unfreezeToken(token: TextToken, options: ResolvedOptions): string {
       const tokenOfChildren = token.children[index];
 
       if (tokenOfChildren.frozenClassName !== undefined) {
-        if (tokenOfChildren.type === 'ternary') {
+        if (tokenOfChildren.type === 'ternary' || tokenOfChildren.type === 'logical') {
           const plainText = unfreezeToken(tokenOfChildren, options);
           let replaceTarget: string | RegExp = tokenOfChildren.frozenClassName;
           let replaceValue = plainText;
