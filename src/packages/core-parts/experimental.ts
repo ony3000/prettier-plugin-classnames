@@ -150,6 +150,7 @@ function linearParse(
   });
   const textTokens: TextToken[] = [];
   let temporaryRangeEnd = formattedText.length;
+  let typeOfParent: string | null = null;
   let rangeStartOfParent = 0;
   let rangeEndOfParent = formattedText.length;
 
@@ -169,6 +170,7 @@ function linearParse(
         : 0;
 
     if (parent) {
+      typeOfParent = parent.type;
       [rangeStartOfParent, rangeEndOfParent] = parent.range;
 
       if (rangeEndOfParent < temporaryRangeEnd) {
@@ -282,10 +284,8 @@ function linearParse(
   }
 
   // Note: Since parent cannot be accessed directly outside of the for loop, I check for changes that may occur when parent exists.
-  // if (parent)
-  if (rangeStartOfParent) {
-    // if (parent.type === 'ternary' || parent.type === 'logical')
-    if (textTokens.find((token) => token.type === 'Text')!.body === '') {
+  if (typeOfParent) {
+    if (typeOfParent === 'ternary' || typeOfParent === 'logical') {
       textTokens.push({
         type: 'Text',
         range: [rangeStartOfParent, temporaryRangeEnd],
