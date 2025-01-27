@@ -513,21 +513,24 @@ function unfreezeToken(token: TextToken, options: ResolvedOptions): string {
           let replaceTarget: string | RegExp = tokenOfChildren.frozenClassName;
           let replaceValue = plainText;
 
-          const isMultiLineBody =
+          const isNestedExpressionOpenedOnThePreviousLine =
             token.body.match(
-              new RegExp(`${EOL}[${SPACE}${TAB}]*${tokenOfChildren.frozenClassName}`),
+              new RegExp(`\\$\\{${EOL}[${SPACE}${TAB}]*${tokenOfChildren.frozenClassName}`),
             ) !== null;
+          const isNestedExpressionClosedOnTheNextLine =
+            token.body.match(
+              new RegExp(`${tokenOfChildren.frozenClassName}${EOL}[${SPACE}${TAB}]*\\}`),
+            ) !== null;
+          const isMultiLineBody =
+            isNestedExpressionOpenedOnThePreviousLine || isNestedExpressionClosedOnTheNextLine;
 
           if (isMultiLineBody) {
-            const isNestedExpressionClosedOnTheNextLine =
-              token.body.match(new RegExp(`${tokenOfChildren.frozenClassName}${EOL}`)) !== null;
-
             replaceTarget = new RegExp(
               `[${SPACE}${TAB}]*${tokenOfChildren.frozenClassName}${
                 isNestedExpressionClosedOnTheNextLine ? '' : `[${SPACE}${TAB}]*`
               }`,
             );
-            replaceValue = `${
+            replaceValue = `${isNestedExpressionOpenedOnThePreviousLine ? '' : EOL}${
               token.children[index - 1].body.match(new RegExp(`[${SPACE}${TAB}]*$`))![0]
             }${plainText}${
               // eslint-disable-next-line no-nested-ternary
