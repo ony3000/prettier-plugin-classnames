@@ -250,7 +250,7 @@ exports[`'(exp-7) double nested expression - string literal ternary' > expectati
     <div
       v-bind:class="\`lorem ipsum dolor sit amet
         \${\`lorem ipsum dolor sit amet \${
-        condition
+          condition
             ? 'consectetur adipiscing elit proin'
             : \`lorem ipsum dolor sit amet consectetur
               adipiscing elit proin ex massa hendrerit eu
@@ -271,7 +271,7 @@ exports[`'(exp-8) double nested expression - template literal ternary' > expecta
     <div
       v-bind:class="\`lorem ipsum dolor sit amet
         \${\`lorem ipsum dolor sit amet \${
-        condition
+          condition
             ? 'consectetur adipiscing elit proin'
             : \`lorem ipsum dolor sit amet consectetur
               adipiscing elit proin ex massa hendrerit eu

@@ -1,7 +1,7 @@
 import { createHash } from 'node:crypto';
 
 import type { NodeRange, ExpressionNode, ClassNameNode } from './shared';
-import { EOL, PH, SPACE, SINGLE_QUOTE, DOUBLE_QUOTE, BACKTICK } from './shared';
+import { EOL, PH, SPACE, TAB, SINGLE_QUOTE, DOUBLE_QUOTE, BACKTICK } from './shared';
 
 function sha1(input: string): string {
   return createHash('sha1').update(input).digest('hex');
@@ -150,6 +150,7 @@ function linearParse(
   });
   const textTokens: TextToken[] = [];
   let temporaryRangeEnd = formattedText.length;
+  let typeOfParent: string | null = null;
   let rangeStartOfParent = 0;
   let rangeEndOfParent = formattedText.length;
 
@@ -169,10 +170,11 @@ function linearParse(
         : 0;
 
     if (parent) {
+      typeOfParent = parent.type;
       [rangeStartOfParent, rangeEndOfParent] = parent.range;
 
       if (rangeEndOfParent < temporaryRangeEnd) {
-        if (parent.type === 'ternary') {
+        if (parent.type === 'ternary' || parent.type === 'logical') {
           textTokens.push({
             type: 'Placeholder',
             range: [rangeEndOfParent, temporaryRangeEnd],
@@ -196,7 +198,7 @@ function linearParse(
       body: formattedText.slice(rangeEndOfClassName + delimiterOffset, temporaryRangeEnd),
     });
 
-    if (type === 'ternary') {
+    if (type === 'ternary' || type === 'logical') {
       const ternaryExpression = formattedText.slice(rangeStartOfClassName, rangeEndOfClassName);
       const ternaryToken: TextToken = {
         type,
@@ -282,10 +284,8 @@ function linearParse(
   }
 
   // Note: Since parent cannot be accessed directly outside of the for loop, I check for changes that may occur when parent exists.
-  // if (parent)
-  if (rangeStartOfParent) {
-    // if (parent.type === 'ternary')
-    if (textTokens.find((token) => token.type === 'Text')!.body === '') {
+  if (typeOfParent) {
+    if (typeOfParent === 'ternary' || typeOfParent === 'logical') {
       textTokens.push({
         type: 'Text',
         range: [rangeStartOfParent, temporaryRangeEnd],
@@ -334,7 +334,7 @@ function formatTokens(
   for (let tokenIndex = formattedTokens.length - 1; tokenIndex >= 0; tokenIndex -= 1) {
     const token = formattedTokens[tokenIndex];
 
-    if (token.type === 'ternary') {
+    if (token.type === 'ternary' || token.type === 'logical') {
       if (token.children?.length) {
         token.children = formatTokens(token.children, indentUnit, options);
       }
@@ -502,18 +502,48 @@ function formatTokens(
   return formattedTokens;
 }
 
-function unfreezeToken(token: TextToken): string {
+function unfreezeToken(token: TextToken, options: ResolvedOptions): string {
   if (token.children?.length) {
     for (let index = token.children.length - 1; index >= 0; index -= 1) {
       const tokenOfChildren = token.children[index];
 
       if (tokenOfChildren.frozenClassName !== undefined) {
-        if (tokenOfChildren.type === 'ternary') {
+        if (tokenOfChildren.type === 'ternary' || tokenOfChildren.type === 'logical') {
+          const plainText = unfreezeToken(tokenOfChildren, options);
+          let replaceTarget: string | RegExp = tokenOfChildren.frozenClassName;
+          let replaceValue = plainText;
+
+          const isNestedExpressionOpenedOnThePreviousLine =
+            token.body.match(
+              new RegExp(`\\$\\{${EOL}[${SPACE}${TAB}]*${tokenOfChildren.frozenClassName}`),
+            ) !== null;
+          const isNestedExpressionClosedOnTheNextLine =
+            token.body.match(
+              new RegExp(`${tokenOfChildren.frozenClassName}${EOL}[${SPACE}${TAB}]*\\}`),
+            ) !== null;
+          const isMultiLineBody =
+            isNestedExpressionOpenedOnThePreviousLine || isNestedExpressionClosedOnTheNextLine;
+
+          if (isMultiLineBody) {
+            replaceTarget = new RegExp(
+              `[${SPACE}${TAB}]*${tokenOfChildren.frozenClassName}${
+                isNestedExpressionClosedOnTheNextLine ? '' : `[${SPACE}${TAB}]*`
+              }`,
+            );
+            replaceValue = `${isNestedExpressionOpenedOnThePreviousLine ? '' : EOL}${
+              token.children[index - 1].body.match(new RegExp(`[${SPACE}${TAB}]*$`))![0]
+            }${plainText}${
+              // eslint-disable-next-line no-nested-ternary
+              isNestedExpressionClosedOnTheNextLine
+                ? ''
+                : options.endingPosition === 'absolute'
+                ? EOL
+                : token.children[index + 1].body.match(new RegExp(`^${EOL}[${SPACE}${TAB}]*`))![0]
+            }`;
+          }
+
           // eslint-disable-next-line no-param-reassign
-          token.body = token.body.replace(
-            tokenOfChildren.frozenClassName,
-            unfreezeToken(tokenOfChildren),
-          );
+          token.body = token.body.replace(replaceTarget, replaceValue);
         } else if (tokenOfChildren.type === 'expression') {
           const props = tokenOfChildren.props as Omit<ExpressionNode, 'range' | 'type'> & {
             indentLevel: number;
@@ -529,7 +559,7 @@ function unfreezeToken(token: TextToken): string {
           // eslint-disable-next-line no-param-reassign
           token.body = token.body.replace(
             `${originalDelimiter}${tokenOfChildren.frozenClassName}${originalDelimiter}`,
-            `${token.children[index - 1].body}${unfreezeToken(tokenOfChildren)}${
+            `${token.children[index - 1].body}${unfreezeToken(tokenOfChildren, options)}${
               token.children[index + 1].body
             }`,
           );
@@ -553,5 +583,5 @@ export function parseAndAssemble(
 
   const formattedTokens = formatTokens(textTokens, indentUnit, options);
 
-  return formattedTokens.map(unfreezeToken).join('');
+  return formattedTokens.map((token) => unfreezeToken(token, options)).join('');
 }

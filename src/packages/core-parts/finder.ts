@@ -788,6 +788,27 @@ export function findTargetClassNameNodes(ast: any, options: ResolvedOptions): Cl
             });
           }
         }
+
+        if (options.experimentalOptimization) {
+          if (
+            isTypeof(
+              node,
+              z.object({
+                loc: z.object({
+                  start: z.object({
+                    line: z.number(),
+                  }),
+                }),
+              }),
+            )
+          ) {
+            classNameNodes.push({
+              type: 'logical',
+              range: [currentNodeRangeStart, currentNodeRangeEnd],
+              startLineIndex: node.loc.start.line - 1,
+            });
+          }
+        }
         break;
       }
       case 'Block':
@@ -2845,6 +2866,27 @@ export function findTargetClassNameNodesForSvelte(
                 // eslint-disable-next-line no-param-reassign
                 classNameNode.range = [0, Infinity];
               }
+            });
+          }
+        }
+
+        if (options.experimentalOptimization) {
+          if (
+            isTypeof(
+              node,
+              z.object({
+                loc: z.object({
+                  start: z.object({
+                    line: z.number(),
+                  }),
+                }),
+              }),
+            )
+          ) {
+            classNameNodes.push({
+              type: 'logical',
+              range: [currentNodeRangeStart, currentNodeRangeEnd],
+              startLineIndex: node.loc.start.line - 1,
             });
           }
         }

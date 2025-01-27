@@ -203,7 +203,7 @@ exports[`'(exp-5) nested expression - string literal ternary' > expectation 1`] 
   return (
     <div
       className={\`lorem ipsum dolor sit amet \${
-condition
+        condition
           ? "consectetur adipiscing elit proin"
           : \`lorem ipsum dolor sit amet consectetur
 adipiscing elit proin ex massa hendrerit eu posuere\`
@@ -221,7 +221,7 @@ exports[`'(exp-6) nested expression - template literal ternary' > expectation 1`
   return (
     <div
       className={\`lorem ipsum dolor sit amet \${
-condition
+        condition
           ? "consectetur adipiscing elit proin"
           : \`lorem ipsum dolor sit amet consectetur
 adipiscing elit proin ex massa hendrerit eu posuere\`
@@ -240,7 +240,7 @@ exports[`'(exp-7) double nested expression - string literal ternary' > expectati
     <div
       className={\`lorem ipsum dolor sit amet
 \${\`lorem ipsum dolor sit amet \${
-condition
+  condition
     ? "consectetur adipiscing elit proin"
     : \`lorem ipsum dolor sit amet consectetur adipiscing
 elit proin ex massa hendrerit eu posuere\`
@@ -260,7 +260,7 @@ exports[`'(exp-8) double nested expression - template literal ternary' > expecta
     <div
       className={\`lorem ipsum dolor sit amet
 \${\`lorem ipsum dolor sit amet \${
-condition
+  condition
     ? "consectetur adipiscing elit proin"
     : \`lorem ipsum dolor sit amet consectetur adipiscing
 elit proin ex massa hendrerit eu posuere\`
