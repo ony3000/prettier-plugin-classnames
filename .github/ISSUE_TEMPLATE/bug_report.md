@@ -8,6 +8,8 @@ assignees: ''
 
 ## Dependency information
 
+## Prettier configuration
+
 ## Steps to reproduce
 
 ## The current behavior
