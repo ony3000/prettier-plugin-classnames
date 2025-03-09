@@ -173,6 +173,10 @@ export function findTargetClassNameNodes(ast: any, options: ResolvedOptions): Cl
           recursiveProps = ['openingElement', 'children'];
           break;
         }
+        case 'JSXFragment': {
+          recursiveProps = ['children'];
+          break;
+        }
         case 'JSXOpeningElement': {
           recursiveProps = ['attributes'];
           break;
@@ -1933,6 +1937,7 @@ export function findTargetClassNameNodesForAstro(
           recursiveProps = ['attributes', 'children'];
           break;
         }
+        case 'fragment':
         case 'root': {
           recursiveProps = ['children'];
           break;
