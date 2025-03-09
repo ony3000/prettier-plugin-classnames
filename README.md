@@ -147,6 +147,17 @@ Default | CLI&nbsp;Override | API&nbsp;Override
 --- | --- | ---
 `false` | `--experimental-optimization` | `experimentalOptimization: <boolean>`
 
+### Syntax Transformation
+
+First available in v0.7.7.
+
+If a line wrapping occurs in a class name written in non-expression syntax, it is transformed into expression syntax. This transformation does not support reversible formatting.
+
+<!-- prettier-ignore -->
+Default | CLI&nbsp;Override | API&nbsp;Override
+--- | --- | ---
+`false` | `--syntax-transformation` | `syntaxTransformation: <boolean>`
+
 ## Version correlation with sibling plugins
 
 Starting with `0.6.0`, when there is a minor release on one side, I plan to reflect that change on the other side as well if possible.

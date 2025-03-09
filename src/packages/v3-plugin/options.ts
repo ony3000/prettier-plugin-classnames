@@ -64,4 +64,13 @@ export const options: SupportOptions = {
     description:
       'Formatting will be up to 67% faster. Note that Node.js version must be 17 or higher, and the output of nested expressions may be slightly different.',
   },
+  syntaxTransformation: {
+    // @ts-ignore
+    since: '0.7.7',
+    type: 'boolean',
+    category: 'Format',
+    default: false,
+    description:
+      'If a line wrapping occurs in a class name written in non-expression syntax, it is transformed into expression syntax. This transformation does not support reversible formatting.',
+  },
 };

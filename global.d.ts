@@ -30,6 +30,7 @@ declare global {
     endingPosition: 'relative' | 'absolute' | 'absolute-with-indent';
     debugFlag: boolean;
     experimentalOptimization: boolean;
+    syntaxTransformation: boolean;
   };
 
   type ResolvedOptions = PrettierBaseOptions & { parser: unknown } & ThisPluginOptions;
