@@ -375,6 +375,35 @@ function formatTokens(
       }
       formattedClassName = formattedClassName.slice(0, -trailingDelimiter.length || undefined);
 
+      if (isMultiLineClassName && options.syntaxTransformation) {
+        switch (options.parser) {
+          case 'babel':
+          case 'typescript':
+          case 'astro':
+          case 'svelte': {
+            formattedTokens[tokenIndex - 1].body = `{${BACKTICK}`;
+            formattedTokens[tokenIndex + 1].body = `${BACKTICK}}`;
+
+            formattedClassName = formattedClassName.replace(/`/g, `\\${BACKTICK}`);
+            break;
+          }
+          case 'vue': {
+            formattedTokens[tokenIndex - 2].body = formattedTokens[tokenIndex - 2].body.replace(
+              /([^ :=]+=)$/,
+              ':$1',
+            );
+            formattedTokens[tokenIndex - 1].body = `${DOUBLE_QUOTE}${BACKTICK}`;
+            formattedTokens[tokenIndex + 1].body = `${BACKTICK}${DOUBLE_QUOTE}`;
+
+            formattedClassName = formattedClassName.replace(/`/g, `\\${BACKTICK}`);
+            break;
+          }
+          default: {
+            break;
+          }
+        }
+      }
+
       token.body = formattedClassName;
     } else if (token.type === 'expression') {
       const props = token.props as Omit<ExpressionNode, 'range' | 'type'> & {

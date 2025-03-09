@@ -369,15 +369,37 @@ function replaceClassName({
         classNameNode.isItAnObjectProperty
           ? 1
           : 0;
-      const classNamePartialWrappedText = `${formattedPrevText.slice(
-        0,
-        classNameNodeRangeStart - sliceOffset + (isAttributeType ? 1 : 0),
-      )}${substitute}${
-        isAttributeType
-          ? formattedPrevText.slice(
-              correctedRangeEnd + sliceOffset - 1,
-              correctedRangeEnd + sliceOffset,
+      const conditionForSyntaxTransformation =
+        isMultiLineClassName &&
+        options.syntaxTransformation &&
+        ['babel', 'typescript', 'astro', 'svelte', 'vue'].includes(options.parser as string);
+      const classNamePartialWrappedText = `${
+        isAttributeType && conditionForSyntaxTransformation && options.parser === 'vue'
+          ? formattedPrevText
+              .slice(0, classNameNodeRangeStart - sliceOffset)
+              .replace(/([^ :=]+=)$/, ':$1')
+          : formattedPrevText.slice(
+              0,
+              classNameNodeRangeStart -
+                sliceOffset +
+                (isAttributeType && !conditionForSyntaxTransformation ? 1 : 0),
             )
+      }${
+        isAttributeType && conditionForSyntaxTransformation
+          ? options.parser === 'vue'
+            ? `${DOUBLE_QUOTE}${BACKTICK}`
+            : `{${BACKTICK}`
+          : ''
+      }${substitute}${
+        isAttributeType
+          ? conditionForSyntaxTransformation
+            ? options.parser === 'vue'
+              ? `${BACKTICK}${DOUBLE_QUOTE}`
+              : `${BACKTICK}}`
+            : formattedPrevText.slice(
+                correctedRangeEnd + sliceOffset - 1,
+                correctedRangeEnd + sliceOffset,
+              )
           : ''
       }${formattedPrevText.slice(correctedRangeEnd + sliceOffset)}`;
 
@@ -709,15 +731,37 @@ async function replaceClassNameAsync({
         classNameNode.isItAnObjectProperty
           ? 1
           : 0;
-      const classNamePartialWrappedText = `${formattedPrevText.slice(
-        0,
-        classNameNodeRangeStart - sliceOffset + (isAttributeType ? 1 : 0),
-      )}${substitute}${
-        isAttributeType
-          ? formattedPrevText.slice(
-              correctedRangeEnd + sliceOffset - 1,
-              correctedRangeEnd + sliceOffset,
+      const conditionForSyntaxTransformation =
+        isMultiLineClassName &&
+        options.syntaxTransformation &&
+        ['babel', 'typescript', 'astro', 'svelte', 'vue'].includes(options.parser as string);
+      const classNamePartialWrappedText = `${
+        isAttributeType && conditionForSyntaxTransformation && options.parser === 'vue'
+          ? formattedPrevText
+              .slice(0, classNameNodeRangeStart - sliceOffset)
+              .replace(/([^ :=]+=)$/, ':$1')
+          : formattedPrevText.slice(
+              0,
+              classNameNodeRangeStart -
+                sliceOffset +
+                (isAttributeType && !conditionForSyntaxTransformation ? 1 : 0),
             )
+      }${
+        isAttributeType && conditionForSyntaxTransformation
+          ? options.parser === 'vue'
+            ? `${DOUBLE_QUOTE}${BACKTICK}`
+            : `{${BACKTICK}`
+          : ''
+      }${substitute}${
+        isAttributeType
+          ? conditionForSyntaxTransformation
+            ? options.parser === 'vue'
+              ? `${BACKTICK}${DOUBLE_QUOTE}`
+              : `${BACKTICK}}`
+            : formattedPrevText.slice(
+                correctedRangeEnd + sliceOffset - 1,
+                correctedRangeEnd + sliceOffset,
+              )
           : ''
       }${formattedPrevText.slice(correctedRangeEnd + sliceOffset)}`;
 
