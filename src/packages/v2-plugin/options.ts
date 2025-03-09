@@ -59,7 +59,7 @@ export const options: SupportOptions = {
     description:
       'Formatting will be up to 67% faster. Note that Node.js version must be 17 or higher, and the output of nested expressions may be slightly different.',
   },
-  delimiterTransformation: {
+  syntaxTransformation: {
     since: '0.7.7',
     type: 'boolean',
     category: 'Format',
