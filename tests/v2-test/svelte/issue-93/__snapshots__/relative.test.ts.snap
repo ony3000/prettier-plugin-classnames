@@ -1,0 +1,13 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`'(1) Attributes in Svelte can contain expressions.' > expectation 1`] = `
+"<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
+<div
+  class="lorem ipsum dolor sit amet
+    {"consectetur adipiscing elit proin"} ex massa hendrerit eu
+    posuere"
+>
+  <slot />
+</div>
+"
+`;

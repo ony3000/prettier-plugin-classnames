@@ -11,6 +11,7 @@ export const fixtures: Omit<Fixture, 'output'>[] = [
 `,
     options: {
       printWidth: 60,
+      experimentalOptimization: true,
     },
   },
 ];
