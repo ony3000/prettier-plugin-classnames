@@ -2471,25 +2471,74 @@ export function findTargetClassNameNodesForSvelte(
         ) {
           keywordStartingNodes.push(currentASTNode);
 
-          classNameNodes.forEach((classNameNode, index, array) => {
-            const [classNameNodeRangeStart, classNameNodeRangeEnd] = classNameNode.range;
+          const hasExpression = node.value.some((childNode) => childNode.type === 'MustacheTag');
 
-            if (
-              currentNodeRangeStart <= classNameNodeRangeStart &&
-              classNameNodeRangeEnd <= currentNodeRangeEnd
-            ) {
-              if (classNameNode.type === 'unknown' && classNameNode.delimiterType !== 'backtick') {
-                // eslint-disable-next-line no-param-reassign
-                array[index] = {
-                  type: 'attribute',
-                  isTheFirstLineOnTheSameLineAsTheOpeningTag: false,
-                  elementName: '',
-                  range: classNameNode.range,
-                  startLineIndex: classNameNode.startLineIndex,
-                };
+          if (hasExpression) {
+            let minRangeStart = Infinity;
+            let maxRangeEnd = 0;
+            let startLineIndex: number | undefined = undefined;
+            const removeTargetNodeIndexes: number[] = [];
+
+            classNameNodes.forEach((classNameNode, index) => {
+              const [classNameNodeRangeStart, classNameNodeRangeEnd] = classNameNode.range;
+
+              if (
+                currentNodeRangeStart <= classNameNodeRangeStart &&
+                classNameNodeRangeEnd <= currentNodeRangeEnd
+              ) {
+                if (classNameNode.type === 'unknown') {
+                  removeTargetNodeIndexes.push(index);
+
+                  if (maxRangeEnd < classNameNodeRangeEnd) {
+                    maxRangeEnd = classNameNodeRangeEnd;
+                  }
+
+                  if (minRangeStart > classNameNodeRangeStart) {
+                    minRangeStart = classNameNodeRangeStart;
+                    startLineIndex = classNameNode.startLineIndex;
+                  }
+                }
               }
+            });
+
+            if (startLineIndex !== undefined) {
+              removeTargetNodeIndexes.sort((former, latter) => latter - former);
+              removeTargetNodeIndexes.forEach((targetNodeIndex) => {
+                classNameNodes.splice(targetNodeIndex, 1);
+              });
+
+              classNameNodes.push({
+                type: 'attribute',
+                isTheFirstLineOnTheSameLineAsTheOpeningTag: false,
+                elementName: '',
+                range: [minRangeStart, maxRangeEnd],
+                startLineIndex,
+              });
             }
-          });
+          } else {
+            classNameNodes.forEach((classNameNode, index, array) => {
+              const [classNameNodeRangeStart, classNameNodeRangeEnd] = classNameNode.range;
+
+              if (
+                currentNodeRangeStart <= classNameNodeRangeStart &&
+                classNameNodeRangeEnd <= currentNodeRangeEnd
+              ) {
+                if (
+                  classNameNode.type === 'unknown' &&
+                  classNameNode.delimiterType !== 'backtick'
+                ) {
+                  // eslint-disable-next-line no-param-reassign
+                  array[index] = {
+                    type: 'attribute',
+                    isTheFirstLineOnTheSameLineAsTheOpeningTag: false,
+                    elementName: '',
+                    range: classNameNode.range,
+                    startLineIndex: classNameNode.startLineIndex,
+                  };
+                }
+              }
+            });
+          }
         }
         break;
       }
