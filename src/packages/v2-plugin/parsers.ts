@@ -23,6 +23,20 @@ function addIndent(text: string, width = 2) {
     .join(EOL);
 }
 
+function advancedParse(
+  text: string,
+  parserName: SupportedParserNames,
+  defaultParser: Parser,
+  options: ParserOptions & ThisPluginOptions,
+): any {
+  const preprocessedText = defaultParser.preprocess
+    ? defaultParser.preprocess(text, options)
+    : text;
+  const ast = defaultParser.parse(preprocessedText, { [parserName]: defaultParser }, options);
+
+  return ast;
+}
+
 function transformParser(
   parserName: SupportedParserNames,
   defaultParser: Parser,
@@ -94,7 +108,7 @@ function transformParser(
         endOfLine: 'lf',
       });
 
-      const ast = defaultParser.parse(firstFormattedText, { [parserName]: defaultParser }, options);
+      const ast = advancedParse(firstFormattedText, parserName, defaultParser, options);
       const classNameWrappedText = parseLineByLineAndReplace({
         formattedText: firstFormattedText,
         ast,
@@ -133,11 +147,7 @@ function transformParser(
         };
       }
 
-      const secondAst = defaultParser.parse(
-        secondFormattedText,
-        { [parserName]: defaultParser },
-        options,
-      );
+      const secondAst = advancedParse(secondFormattedText, parserName, defaultParser, options);
       const classNameSecondWrappedText = parseLineByLineAndReplace({
         formattedText: secondFormattedText,
         ast: secondAst,
