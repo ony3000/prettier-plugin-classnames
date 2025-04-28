@@ -1,4 +1,4 @@
-import { parseLineByLineAndReplace } from 'core-parts';
+import { parseLineByLineAndReplace, refineSvelteAst } from 'core-parts';
 import type { Parser, ParserOptions, Plugin } from 'prettier';
 import { format } from 'prettier';
 import { parsers as babelParsers } from 'prettier/parser-babel';
@@ -21,6 +21,24 @@ function addIndent(text: string, width = 2) {
     .split(EOL)
     .map((line) => `${SPACE.repeat(width)}${line}`)
     .join(EOL);
+}
+
+function advancedParse(
+  text: string,
+  parserName: SupportedParserNames,
+  defaultParser: Parser,
+  options: ParserOptions & ThisPluginOptions,
+): any {
+  const preprocessedText = defaultParser.preprocess
+    ? defaultParser.preprocess(text, options)
+    : text;
+  let ast = defaultParser.parse(preprocessedText, { [parserName]: defaultParser }, options);
+
+  if (parserName === 'svelte') {
+    ast = refineSvelteAst(preprocessedText, ast);
+  }
+
+  return ast;
 }
 
 function transformParser(
@@ -94,7 +112,7 @@ function transformParser(
         endOfLine: 'lf',
       });
 
-      const ast = defaultParser.parse(firstFormattedText, { [parserName]: defaultParser }, options);
+      const ast = advancedParse(firstFormattedText, parserName, defaultParser, options);
       const classNameWrappedText = parseLineByLineAndReplace({
         formattedText: firstFormattedText,
         ast,
@@ -133,11 +151,7 @@ function transformParser(
         };
       }
 
-      const secondAst = defaultParser.parse(
-        secondFormattedText,
-        { [parserName]: defaultParser },
-        options,
-      );
+      const secondAst = advancedParse(secondFormattedText, parserName, defaultParser, options);
       const classNameSecondWrappedText = parseLineByLineAndReplace({
         formattedText: secondFormattedText,
         ast: secondAst,
