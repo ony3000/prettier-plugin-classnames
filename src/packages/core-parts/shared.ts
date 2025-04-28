@@ -1,3 +1,5 @@
+import type { ZodTypeAny, infer as ZodInfer } from 'zod';
+
 /**
  * end of line
  */
@@ -93,3 +95,10 @@ type PreservingExpressionNode = ClassNameNodeBase & {
 };
 
 export type ClassNameNode = UnknownNode | AttributeNode | ExpressionNode | PreservingExpressionNode;
+
+export function isTypeof<T extends ZodTypeAny>(
+  arg: unknown,
+  expectedSchema: T,
+): arg is ZodInfer<T> {
+  return expectedSchema.safeParse(arg).success;
+}

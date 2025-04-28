@@ -1,8 +1,7 @@
-import type { ZodTypeAny, infer as ZodInfer } from 'zod';
 import { z } from 'zod';
 
 import type { Dict, NodeRange, ExpressionNode, ClassNameNode } from './shared';
-import { EOL, SINGLE_QUOTE, DOUBLE_QUOTE, BACKTICK, UNKNOWN_DELIMITER } from './shared';
+import { EOL, SINGLE_QUOTE, DOUBLE_QUOTE, BACKTICK, UNKNOWN_DELIMITER, isTypeof } from './shared';
 
 type ASTNode = {
   type: string;
@@ -19,10 +18,6 @@ type JSXOpeningElementNameAsObject = {
   object: JSXOpeningElementNameAsString | JSXOpeningElementNameAsObject;
   property: JSXOpeningElementNameAsString;
 };
-
-function isTypeof<T extends ZodTypeAny>(arg: unknown, expectedSchema: T): arg is ZodInfer<T> {
-  return expectedSchema.safeParse(arg).success;
-}
 
 function getElementName(
   param: JSXOpeningElementNameAsString | JSXOpeningElementNameAsObject,
