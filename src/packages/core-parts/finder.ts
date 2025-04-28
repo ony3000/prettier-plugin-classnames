@@ -2412,10 +2412,14 @@ export function findTargetClassNameNodesForSvelte(
           isTypeof(
             node,
             z.object({
-              lineIndex: z.number(),
               content: z.object({
                 start: z.number(),
                 end: z.number(),
+                loc: z.object({
+                  start: z.object({
+                    line: z.number(),
+                  }),
+                }),
                 value: z.string(),
               }),
             }),
@@ -2445,7 +2449,7 @@ export function findTargetClassNameNodesForSvelte(
                   classNameNodeRangeStart + openingTagEndingOffset,
                   classNameNodeRangeEnd + openingTagEndingOffset,
                 ],
-                startLineIndex: classNameNode.startLineIndex + node.lineIndex,
+                startLineIndex: classNameNode.startLineIndex + node.content.loc.start.line - 1,
               };
             });
 
