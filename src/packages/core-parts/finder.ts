@@ -2525,7 +2525,7 @@ export function findTargetClassNameNodesForSvelte(
           if (hasExpression) {
             let minRangeStart = Infinity;
             let maxRangeEnd = 0;
-            let startLineIndex: number | undefined = undefined;
+            let startLineIndex: number | undefined;
             const removeTargetNodeIndexes: number[] = [];
 
             classNameNodes.forEach((classNameNode, index) => {

@@ -237,7 +237,7 @@ function replaceClassName({
         classNameNodeRangeStart + 1,
         correctedRangeEnd - 1,
       );
-      let trailingDelimiter = isEndingPositionAbsolute
+      const trailingDelimiter = isEndingPositionAbsolute
         ? formattedPrevText[correctedRangeEnd - 1]
         : '';
       if (classNameNode.type === 'attribute') {
@@ -390,14 +390,17 @@ function replaceClassName({
                 (isAttributeType && !conditionForSyntaxTransformation ? 1 : 0),
             )
       }${
+        // eslint-disable-next-line no-nested-ternary
         isAttributeType && conditionForSyntaxTransformation
           ? options.parser === 'vue'
             ? `${DOUBLE_QUOTE}${BACKTICK}`
             : `{${BACKTICK}`
           : ''
       }${substitute}${
+        // eslint-disable-next-line no-nested-ternary
         isAttributeType
-          ? conditionForSyntaxTransformation
+          ? // eslint-disable-next-line no-nested-ternary
+            conditionForSyntaxTransformation
             ? options.parser === 'vue'
               ? `${BACKTICK}${DOUBLE_QUOTE}`
               : `${BACKTICK}}`
@@ -595,7 +598,7 @@ async function replaceClassNameAsync({
         classNameNodeRangeStart + 1,
         correctedRangeEnd - 1,
       );
-      let trailingDelimiter = isEndingPositionAbsolute
+      const trailingDelimiter = isEndingPositionAbsolute
         ? formattedPrevText[correctedRangeEnd - 1]
         : '';
       if (classNameNode.type === 'attribute') {
@@ -752,14 +755,17 @@ async function replaceClassNameAsync({
                 (isAttributeType && !conditionForSyntaxTransformation ? 1 : 0),
             )
       }${
+        // eslint-disable-next-line no-nested-ternary
         isAttributeType && conditionForSyntaxTransformation
           ? options.parser === 'vue'
             ? `${DOUBLE_QUOTE}${BACKTICK}`
             : `{${BACKTICK}`
           : ''
       }${substitute}${
+        // eslint-disable-next-line no-nested-ternary
         isAttributeType
-          ? conditionForSyntaxTransformation
+          ? // eslint-disable-next-line no-nested-ternary
+            conditionForSyntaxTransformation
             ? options.parser === 'vue'
               ? `${BACKTICK}${DOUBLE_QUOTE}`
               : `${BACKTICK}}`
@@ -930,15 +936,18 @@ export function refineSvelteAst(preprocessedText: string, ast: any) {
     }
 
     if (ast.instance.end <= node.start) {
+      // eslint-disable-next-line no-param-reassign
       node.start += restoreOffset;
     }
     if (ast.instance.end <= node.end) {
+      // eslint-disable-next-line no-param-reassign
       node.end += restoreOffset;
     }
   }
 
   recursion(ast.html);
 
+  // eslint-disable-next-line no-param-reassign
   ast.instance = {
     type: 'RefinedScript',
     start: ast.instance.start,
