@@ -478,7 +478,7 @@ export function parseLineByLineAndReplace({
       break;
     }
     case 'svelte': {
-      targetClassNameNodes = findTargetClassNameNodesForSvelte(formattedText, ast, options);
+      targetClassNameNodes = findTargetClassNameNodesForSvelte(formattedText, ast, options, addon);
       break;
     }
     case 'angular': {
@@ -840,7 +840,7 @@ export async function parseLineByLineAndReplaceAsync({
       break;
     }
     case 'svelte': {
-      targetClassNameNodes = findTargetClassNameNodesForSvelte(formattedText, ast, options);
+      targetClassNameNodes = findTargetClassNameNodesForSvelte(formattedText, ast, options, addon);
       break;
     }
     case 'angular': {
@@ -896,6 +896,7 @@ export function refineSvelteAst(preprocessedText: string, ast: any) {
 
   const restoreOffset =
     plainContent.length - (temporaryAttributeWithLeadingSpace.length + '{}'.length);
+  const startLineIndex = preprocessedText.slice(0, ast.instance.start).split(EOL).length - 1;
 
   function recursion(node: unknown): void {
     if (!isTypeof(node, z.object({ type: z.string() }))) {
@@ -943,6 +944,7 @@ export function refineSvelteAst(preprocessedText: string, ast: any) {
     type: 'RefinedScript',
     start: ast.instance.start,
     end: ast.instance.end + restoreOffset,
+    lineIndex: startLineIndex,
     content: {
       type: 'RefinedScriptSource',
       start: ast.instance.end + restoreOffset - ('</script>'.length + plainContent.length),

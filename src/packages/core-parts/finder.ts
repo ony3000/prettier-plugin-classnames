@@ -2246,6 +2246,7 @@ export function findTargetClassNameNodesForSvelte(
   formattedText: string,
   ast: any,
   options: ResolvedOptions,
+  addon: Dict<(text: string, options: any) => any>,
 ): ClassNameNode[] {
   const supportedAttributes: string[] = ['class', 'className', ...options.customAttributes];
   const supportedFunctions: string[] = ['classNames', ...options.customFunctions];
@@ -2404,6 +2405,55 @@ export function findTargetClassNameNodesForSvelte(
     };
 
     switch (node.type) {
+      case 'RefinedScript': {
+        nonCommentNodes.push(currentASTNode);
+
+        if (
+          isTypeof(
+            node,
+            z.object({
+              lineIndex: z.number(),
+              content: z.object({
+                start: z.number(),
+                end: z.number(),
+                value: z.string(),
+              }),
+            }),
+          )
+        ) {
+          // Note: In fact, the script element is not a `keywordStartingNode`, but it is considered a kind of safe list to maintain the `classNameNode`s obtained from the code inside the element.
+          keywordStartingNodes.push(currentASTNode);
+
+          const textNodeInScript = node.content;
+
+          if (addon.parseTypescript && textNodeInScript) {
+            const openingTagEndingOffset = node.content.start;
+
+            const typescriptAst = addon.parseTypescript(textNodeInScript.value, {
+              ...options,
+              parser: 'typescript',
+            });
+            const targetClassNameNodesInScript = findTargetClassNameNodes(
+              typescriptAst,
+              options,
+            ).map<ClassNameNode>((classNameNode) => {
+              const [classNameNodeRangeStart, classNameNodeRangeEnd] = classNameNode.range;
+
+              return {
+                ...classNameNode,
+                range: [
+                  classNameNodeRangeStart + openingTagEndingOffset,
+                  classNameNodeRangeEnd + openingTagEndingOffset,
+                ],
+                startLineIndex: classNameNode.startLineIndex + node.lineIndex,
+              };
+            });
+
+            classNameNodes.push(...targetClassNameNodesInScript);
+          }
+        }
+        break;
+      }
       case 'CallExpression': {
         nonCommentNodes.push(currentASTNode);
 
