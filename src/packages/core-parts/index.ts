@@ -896,7 +896,7 @@ export function refineSvelteAst(preprocessedText: string, ast: any) {
 
   const restoreOffset =
     plainContent.length - (temporaryAttributeWithLeadingSpace.length + '{}'.length);
-  const startLineIndex = preprocessedText.slice(0, ast.instance.start).split(EOL).length - 1;
+  const startLineIndex = ast.instance.content.body[0].loc.start.line - 1;
 
   function recursion(node: unknown): void {
     if (!isTypeof(node, z.object({ type: z.string() }))) {
