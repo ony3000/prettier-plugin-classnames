@@ -1,3 +1,5 @@
 packages:
-  - 'src/packages/*'
-  - 'tests/*'
+  - src/packages/*
+  - tests/*
+onlyBuiltDependencies:
+  - esbuild
