@@ -27,7 +27,7 @@
     "clean": "pnpm run clean:bundle && pnpm -r exec rimraf node_modules/ && rimraf package.merged.json",
     "clean:bundle": "rimraf dist/",
     "lint": "eslint src/ tests/",
-    "merge-deps": "rimraf package.merged.json && merge-packages ./ src/packages/core-parts/ src/packages/v2-plugin/ src/packages/v3-plugin/",
+    "merge-deps": "rimraf package.merged.json && merge-packages ./ src/packages/core-parts/ src/packages/v3-plugin/",
     "prepare-release": "pnpm run build:plain && npm version prerelease --preid=alpha --git-tag-version=false && pnpm run merge-deps && npm pack"
   },
   "devDependencies": {
@@ -53,7 +53,7 @@
     "zod": "3.22.4"
   },
   "peerDependencies": {
-    "prettier": "^2 || ^3",
+    "prettier": "^3",
     "prettier-plugin-astro": "*",
     "prettier-plugin-svelte": "*"
   },
