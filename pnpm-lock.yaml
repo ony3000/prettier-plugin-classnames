@@ -75,19 +75,6 @@ importers:
         specifier: 3.22.4
         version: 3.22.4
 
-  src/packages/v2-plugin:
-    dependencies:
-      core-parts:
-        specifier: workspace:*
-        version: link:../core-parts
-      prettier:
-        specifier: 2.8.4
-        version: 2.8.4
-    devDependencies:
-      '@types/prettier':
-        specifier: 2.7.3
-        version: 2.7.3
-
   src/packages/v3-plugin:
     dependencies:
       core-parts:
