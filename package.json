@@ -27,13 +27,12 @@
     "clean": "pnpm run clean:bundle && pnpm -r exec rimraf node_modules/ && rimraf package.merged.json",
     "clean:bundle": "rimraf dist/",
     "lint": "eslint src/ tests/",
-    "merge-deps": "rimraf package.merged.json && merge-packages ./ src/packages/core-parts/ src/packages/v2-plugin/ src/packages/v3-plugin/",
+    "merge-deps": "rimraf package.merged.json && merge-packages ./ src/packages/core-parts/ src/packages/v3-plugin/",
     "prepare-release": "pnpm run build:plain && npm version prerelease --preid=alpha --git-tag-version=false && pnpm run merge-deps && npm pack"
   },
   "devDependencies": {
     "@trivago/prettier-plugin-sort-imports": "4.2.1",
     "@types/node": "20.17.46",
-    "@types/prettier": "2.7.3",
     "@typescript-eslint/eslint-plugin": "5.54.0",
     "@typescript-eslint/parser": "5.54.0",
     "esbuild": "0.19.11",
@@ -45,15 +44,15 @@
     "eslint-import-resolver-typescript": "3.5.3",
     "eslint-plugin-import": "2.27.5",
     "merge-packages": "0.1.6",
-    "prettier": "2.8.4",
-    "prettier-plugin-astro": "0.10.0",
-    "prettier-plugin-svelte": "2.10.1",
+    "prettier": "3.0.3",
+    "prettier-plugin-astro": "0.11.0",
+    "prettier-plugin-svelte": "3.0.0",
     "rimraf": "5.0.1",
     "typescript": "5.8.3",
     "zod": "3.22.4"
   },
   "peerDependencies": {
-    "prettier": "^2 || ^3",
+    "prettier": "^3",
     "prettier-plugin-astro": "*",
     "prettier-plugin-svelte": "*"
   },

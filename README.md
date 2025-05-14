@@ -4,15 +4,7 @@ A Prettier plugin that wraps verbose class name based on the `printWidth` option
 
 ![A use case for this plugin.](.github/banner.png)
 
-## Installation
-
-For Prettier v2:
-
-```sh
-npm install -D prettier@^2 prettier-plugin-classnames
-```
-
-For Prettier v3:[^1]
+## Installation[^1]
 
 ```sh
 npm install -D prettier prettier-plugin-classnames
