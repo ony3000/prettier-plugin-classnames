@@ -10,7 +10,7 @@ importers:
     devDependencies:
       '@trivago/prettier-plugin-sort-imports':
         specifier: 4.2.1
-        version: 4.2.1(prettier@3.0.3)
+        version: 4.2.1(prettier@3.1.0)
       '@types/node':
         specifier: 20.17.46
         version: 20.17.46
@@ -48,14 +48,14 @@ importers:
         specifier: 0.1.6
         version: 0.1.6
       prettier:
-        specifier: 3.0.3
-        version: 3.0.3
+        specifier: 3.1.0
+        version: 3.1.0
       prettier-plugin-astro:
         specifier: 0.11.0
         version: 0.11.0
       prettier-plugin-svelte:
         specifier: 3.0.0
-        version: 3.0.0(prettier@3.0.3)(svelte@4.2.19)
+        version: 3.0.0(prettier@3.1.0)(svelte@4.2.19)
       rimraf:
         specifier: 5.0.1
         version: 5.0.1
@@ -78,22 +78,22 @@ importers:
         specifier: workspace:*
         version: link:../core-parts
       prettier:
-        specifier: 3.0.3
-        version: 3.0.3
+        specifier: 3.1.0
+        version: 3.1.0
 
   tests/test-settings: {}
 
   tests/v3-test:
     devDependencies:
       prettier:
-        specifier: 3.0.3
-        version: 3.0.3
+        specifier: 3.1.0
+        version: 3.1.0
       prettier-plugin-astro:
         specifier: 0.11.0
         version: 0.11.0
       prettier-plugin-svelte:
         specifier: 3.0.0
-        version: 3.0.0(prettier@3.0.3)(svelte@4.2.19)
+        version: 3.0.0(prettier@3.1.0)(svelte@4.2.19)
       test-settings:
         specifier: workspace:*
         version: link:../test-settings
@@ -1720,8 +1720,8 @@ packages:
       prettier: ^3.0.0
       svelte: ^3.2.0 || ^4.0.0-next.0
 
-  prettier@3.0.3:
-    resolution: {integrity: sha512-L/4pUDMxcNa8R/EthV08Zt42WBO4h1rarVtK0K+QJG0X187OLo7l699jWw0GKuwzkPQ//jMFA/8Xm6Fh3J/DAg==}
+  prettier@3.1.0:
+    resolution: {integrity: sha512-TQLvXjq5IAibjh8EpBIkNKxO749UEWABoiIZehEPiY4GNpVdhaFKqSTu+QrlU6D2dPAfubRmtJTi4K4YkQ5eXw==}
     engines: {node: '>=14'}
     hasBin: true
 
@@ -2531,7 +2531,7 @@ snapshots:
 
   '@sinclair/typebox@0.27.8': {}
 
-  '@trivago/prettier-plugin-sort-imports@4.2.1(prettier@3.0.3)':
+  '@trivago/prettier-plugin-sort-imports@4.2.1(prettier@3.1.0)':
     dependencies:
       '@babel/generator': 7.17.7
       '@babel/parser': 7.27.2
@@ -2539,7 +2539,7 @@ snapshots:
       '@babel/types': 7.17.0
       javascript-natural-sort: 0.7.1
       lodash: 4.17.21
-      prettier: 3.0.3
+      prettier: 3.1.0
     transitivePeerDependencies:
       - supports-color
 
@@ -3841,15 +3841,15 @@ snapshots:
   prettier-plugin-astro@0.11.0:
     dependencies:
       '@astrojs/compiler': 1.8.2
-      prettier: 3.0.3
+      prettier: 3.1.0
       sass-formatter: 0.7.9
 
-  prettier-plugin-svelte@3.0.0(prettier@3.0.3)(svelte@4.2.19):
+  prettier-plugin-svelte@3.0.0(prettier@3.1.0)(svelte@4.2.19):
     dependencies:
-      prettier: 3.0.3
+      prettier: 3.1.0
       svelte: 4.2.19
 
-  prettier@3.0.3: {}
+  prettier@3.1.0: {}
 
   pretty-format@29.7.0:
     dependencies:
