@@ -8,9 +8,9 @@ exports[`'(1) nested ternary' > expectation 1`] = `
         condition
           ? 'lorem ipsum dolor sit amet'
           : condition
-          ? 'lorem ipsum dolor sit amet consectetur
+            ? 'lorem ipsum dolor sit amet consectetur
 adipiscing elit proin'
-          : 'lorem ipsum dolor sit amet consectetur
+            : 'lorem ipsum dolor sit amet consectetur
 adipiscing elit proin ex massa hendrerit eu posuere'
       "
     >
@@ -29,12 +29,12 @@ exports[`'(2) double nested ternary' > expectation 1`] = `
         condition
           ? 'lorem ipsum dolor sit amet'
           : condition
-          ? 'lorem ipsum dolor sit amet consectetur
+            ? 'lorem ipsum dolor sit amet consectetur
 adipiscing elit proin'
-          : condition
-          ? 'lorem ipsum dolor sit amet consectetur
+            : condition
+              ? 'lorem ipsum dolor sit amet consectetur
 adipiscing elit proin'
-          : 'lorem ipsum dolor sit amet consectetur
+              : 'lorem ipsum dolor sit amet consectetur
 adipiscing elit proin ex massa hendrerit eu posuere'
       "
     >
@@ -53,9 +53,9 @@ exports[`'(exp-1) nested ternary' > expectation 1`] = `
         condition
           ? 'lorem ipsum dolor sit amet'
           : condition
-          ? 'lorem ipsum dolor sit amet consectetur
+            ? 'lorem ipsum dolor sit amet consectetur
 adipiscing elit proin'
-          : 'lorem ipsum dolor sit amet consectetur
+            : 'lorem ipsum dolor sit amet consectetur
 adipiscing elit proin ex massa hendrerit eu posuere'
       "
     >
@@ -74,12 +74,12 @@ exports[`'(exp-2) double nested ternary' > expectation 1`] = `
         condition
           ? 'lorem ipsum dolor sit amet'
           : condition
-          ? 'lorem ipsum dolor sit amet consectetur
+            ? 'lorem ipsum dolor sit amet consectetur
 adipiscing elit proin'
-          : condition
-          ? 'lorem ipsum dolor sit amet consectetur
+            : condition
+              ? 'lorem ipsum dolor sit amet consectetur
 adipiscing elit proin'
-          : 'lorem ipsum dolor sit amet consectetur
+              : 'lorem ipsum dolor sit amet consectetur
 adipiscing elit proin ex massa hendrerit eu posuere'
       "
     >

@@ -8,9 +8,9 @@ exports[`'(1) nested ternary - string literal ternary' > expectation 1`] = `
         condition
           ? 'lorem ipsum dolor sit amet'
           : condition
-          ? \`lorem ipsum dolor sit amet consectetur
+            ? \`lorem ipsum dolor sit amet consectetur
 adipiscing elit proin\`
-          : \`lorem ipsum dolor sit amet consectetur
+            : \`lorem ipsum dolor sit amet consectetur
 adipiscing elit proin ex massa hendrerit eu posuere\`
       "
     >
@@ -29,9 +29,9 @@ exports[`'(2) nested ternary - template literal ternary' > expectation 1`] = `
         condition
           ? 'lorem ipsum dolor sit amet'
           : condition
-          ? \`lorem ipsum dolor sit amet consectetur
+            ? \`lorem ipsum dolor sit amet consectetur
 adipiscing elit proin\`
-          : \`lorem ipsum dolor sit amet consectetur
+            : \`lorem ipsum dolor sit amet consectetur
 adipiscing elit proin ex massa hendrerit eu posuere\`
       "
     >
@@ -50,9 +50,9 @@ exports[`'(3) nested ternary - nested expression in falsy part' > expectation 1`
         condition
           ? 'lorem ipsum dolor sit amet'
           : condition
-          ? \`lorem ipsum dolor sit amet \${\`consectetur
+            ? \`lorem ipsum dolor sit amet \${\`consectetur
 adipiscing elit proin\`} ex massa hendrerit eu posuere\`
-          : \`lorem ipsum dolor sit amet \${\`consectetur
+            : \`lorem ipsum dolor sit amet \${\`consectetur
 adipiscing elit proin\`} ex massa hendrerit eu posuere\`
       "
     >
@@ -92,12 +92,12 @@ exports[`'(5) double nested ternary - string literal ternary' > expectation 1`] 
         condition
           ? 'lorem ipsum dolor sit amet'
           : condition
-          ? \`lorem ipsum dolor sit amet consectetur
+            ? \`lorem ipsum dolor sit amet consectetur
 adipiscing elit proin\`
-          : condition
-          ? \`lorem ipsum dolor sit amet consectetur
+            : condition
+              ? \`lorem ipsum dolor sit amet consectetur
 adipiscing elit proin\`
-          : \`lorem ipsum dolor sit amet consectetur
+              : \`lorem ipsum dolor sit amet consectetur
 adipiscing elit proin ex massa hendrerit eu posuere\`
       "
     >
@@ -116,12 +116,12 @@ exports[`'(6) double nested ternary - template literal ternary' > expectation 1`
         condition
           ? 'lorem ipsum dolor sit amet'
           : condition
-          ? \`lorem ipsum dolor sit amet consectetur
+            ? \`lorem ipsum dolor sit amet consectetur
 adipiscing elit proin\`
-          : condition
-          ? \`lorem ipsum dolor sit amet consectetur
+            : condition
+              ? \`lorem ipsum dolor sit amet consectetur
 adipiscing elit proin\`
-          : \`lorem ipsum dolor sit amet consectetur
+              : \`lorem ipsum dolor sit amet consectetur
 adipiscing elit proin ex massa hendrerit eu posuere\`
       "
     >
@@ -140,12 +140,12 @@ exports[`'(7) double nested ternary - nested expression in falsy part' > expecta
         condition
           ? 'lorem ipsum dolor sit amet'
           : condition
-          ? \`lorem ipsum dolor sit amet consectetur
+            ? \`lorem ipsum dolor sit amet consectetur
 adipiscing elit proin\`
-          : condition
-          ? \`lorem ipsum dolor sit amet \${\`consectetur
+            : condition
+              ? \`lorem ipsum dolor sit amet \${\`consectetur
 adipiscing elit proin\`} ex massa hendrerit eu posuere\`
-          : \`lorem ipsum dolor sit amet \${\`consectetur
+              : \`lorem ipsum dolor sit amet \${\`consectetur
 adipiscing elit proin\`} ex massa hendrerit eu posuere\`
       "
     >
@@ -188,9 +188,9 @@ exports[`'(exp-1) nested ternary - string literal ternary' > expectation 1`] = `
         condition
           ? 'lorem ipsum dolor sit amet'
           : condition
-          ? \`lorem ipsum dolor sit amet consectetur
+            ? \`lorem ipsum dolor sit amet consectetur
 adipiscing elit proin\`
-          : \`lorem ipsum dolor sit amet consectetur
+            : \`lorem ipsum dolor sit amet consectetur
 adipiscing elit proin ex massa hendrerit eu posuere\`
       "
     >
@@ -209,9 +209,9 @@ exports[`'(exp-2) nested ternary - template literal ternary' > expectation 1`] =
         condition
           ? 'lorem ipsum dolor sit amet'
           : condition
-          ? \`lorem ipsum dolor sit amet consectetur
+            ? \`lorem ipsum dolor sit amet consectetur
 adipiscing elit proin\`
-          : \`lorem ipsum dolor sit amet consectetur
+            : \`lorem ipsum dolor sit amet consectetur
 adipiscing elit proin ex massa hendrerit eu posuere\`
       "
     >
@@ -230,10 +230,10 @@ exports[`'(exp-3) nested ternary - nested expression in falsy part' > expectatio
         condition
           ? 'lorem ipsum dolor sit amet'
           : condition
-          ? \`lorem ipsum dolor sit amet
+            ? \`lorem ipsum dolor sit amet
 \${'consectetur adipiscing elit proin'} ex massa hendrerit eu
 posuere\`
-          : \`lorem ipsum dolor sit amet
+            : \`lorem ipsum dolor sit amet
 \${'consectetur adipiscing elit proin'} ex massa hendrerit eu
 posuere\`
       "
@@ -276,12 +276,12 @@ exports[`'(exp-5) double nested ternary - string literal ternary' > expectation 
         condition
           ? 'lorem ipsum dolor sit amet'
           : condition
-          ? \`lorem ipsum dolor sit amet consectetur
+            ? \`lorem ipsum dolor sit amet consectetur
 adipiscing elit proin\`
-          : condition
-          ? \`lorem ipsum dolor sit amet consectetur
+            : condition
+              ? \`lorem ipsum dolor sit amet consectetur
 adipiscing elit proin\`
-          : \`lorem ipsum dolor sit amet consectetur
+              : \`lorem ipsum dolor sit amet consectetur
 adipiscing elit proin ex massa hendrerit eu posuere\`
       "
     >
@@ -300,12 +300,12 @@ exports[`'(exp-6) double nested ternary - template literal ternary' > expectatio
         condition
           ? 'lorem ipsum dolor sit amet'
           : condition
-          ? \`lorem ipsum dolor sit amet consectetur
+            ? \`lorem ipsum dolor sit amet consectetur
 adipiscing elit proin\`
-          : condition
-          ? \`lorem ipsum dolor sit amet consectetur
+            : condition
+              ? \`lorem ipsum dolor sit amet consectetur
 adipiscing elit proin\`
-          : \`lorem ipsum dolor sit amet consectetur
+              : \`lorem ipsum dolor sit amet consectetur
 adipiscing elit proin ex massa hendrerit eu posuere\`
       "
     >
@@ -324,13 +324,13 @@ exports[`'(exp-7) double nested ternary - nested expression in falsy part' > exp
         condition
           ? 'lorem ipsum dolor sit amet'
           : condition
-          ? \`lorem ipsum dolor sit amet consectetur
+            ? \`lorem ipsum dolor sit amet consectetur
 adipiscing elit proin\`
-          : condition
-          ? \`lorem ipsum dolor sit amet
+            : condition
+              ? \`lorem ipsum dolor sit amet
 \${'consectetur adipiscing elit proin'} ex massa hendrerit eu
 posuere\`
-          : \`lorem ipsum dolor sit amet
+              : \`lorem ipsum dolor sit amet
 \${'consectetur adipiscing elit proin'} ex massa hendrerit eu
 posuere\`
       "
