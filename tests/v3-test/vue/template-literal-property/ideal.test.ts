@@ -223,7 +223,8 @@ const fixtures: Fixture[] = [
         classNames({
           [\` lorem ipsum dolor sit amet consectetur
           adipiscing elit proin ex massa hendrerit eu
-          posuere eu volutpat id neque pellentesque \`]: true,
+          posuere eu volutpat id neque pellentesque \`]:
+            true,
         })
       "
     >
