@@ -15,8 +15,5 @@ function Foo() {
   );
 }
 `,
-    options: {
-      experimentalOptimization: true,
-    },
   },
 ];
