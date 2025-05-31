@@ -2,7 +2,7 @@ import type { Fixture } from 'test-settings';
 
 export const fixtures: Omit<Fixture, 'output'>[] = [
   {
-    name: "(1) 🟠 Even when nested expressions contain logical expressions, the opening and closing braces and nested indentation of the expressions should be preserved in Prettier's output as much as possible.",
+    name: "(1) Even when nested expressions contain logical expressions, the opening and closing braces and nested indentation of the expressions should be preserved in Prettier's output as much as possible.",
     input: `
 //-----------------------------------------------------------------------------| printWidth=80 (in snapshot)
 <div>

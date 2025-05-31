@@ -77,7 +77,7 @@ const fixtures: Fixture[] = [
 `,
   },
   {
-    name: '🟠 valid ignore comment (3) - class name combination',
+    name: 'valid ignore comment (3) - class name combination',
     input: `
 <div>
   <div>
