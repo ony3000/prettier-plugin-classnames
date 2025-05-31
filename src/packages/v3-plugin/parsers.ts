@@ -121,7 +121,6 @@ function transformParser(
           ...options,
           useTabs: options.useTabs ?? false,
         },
-        format,
         addon,
       });
 
@@ -168,7 +167,6 @@ function transformParser(
           ...options,
           useTabs: options.useTabs ?? false,
         },
-        format,
         addon,
       });
 

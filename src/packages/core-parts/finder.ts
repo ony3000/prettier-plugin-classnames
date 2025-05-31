@@ -124,130 +124,113 @@ export function findTargetClassNameNodes(ast: any, options: ResolvedOptions): Cl
       return;
     }
 
-    if (options.experimentalOptimization) {
-      let recursiveProps: string[] = [];
+    let recursiveProps: string[] = [];
 
-      switch (node.type) {
-        case 'ArrayExpression': {
-          recursiveProps = ['elements'];
-          break;
-        }
-        case 'ArrowFunctionExpression':
-        case 'BlockStatement':
-        case 'FunctionDeclaration': {
-          recursiveProps = ['body'];
-          break;
-        }
-        case 'CallExpression': {
-          recursiveProps = ['arguments'];
-          break;
-        }
-        case 'ConditionalExpression': {
-          recursiveProps = ['consequent', 'alternate'];
-          break;
-        }
-        case 'ExpressionStatement':
-        case 'JSXExpressionContainer': {
-          recursiveProps = ['expression'];
-          break;
-        }
-        case 'ExportDefaultDeclaration':
-        case 'ExportNamedDeclaration': {
-          recursiveProps = ['declaration'];
-          break;
-        }
-        case 'File': {
-          recursiveProps = ['program'];
-          break;
-        }
-        case 'JSXAttribute': {
-          recursiveProps = ['value'];
-          break;
-        }
-        case 'JSXElement': {
-          recursiveProps = ['openingElement', 'children'];
-          break;
-        }
-        case 'JSXFragment': {
-          recursiveProps = ['children'];
-          break;
-        }
-        case 'JSXOpeningElement': {
-          recursiveProps = ['attributes'];
-          break;
-        }
-        case 'LogicalExpression': {
-          recursiveProps = ['right'];
-          break;
-        }
-        case 'ObjectExpression': {
-          recursiveProps = ['properties'];
-          break;
-        }
-        case 'ObjectProperty':
-        case 'Property': {
-          recursiveProps = ['key', 'value'];
-          break;
-        }
-        case 'Program': {
-          recursiveProps = ['body', 'comments'];
-          break;
-        }
-        case 'ReturnStatement': {
-          recursiveProps = ['argument'];
-          break;
-        }
-        case 'TaggedTemplateExpression': {
-          recursiveProps = ['quasi'];
-          break;
-        }
-        case 'TemplateLiteral': {
-          recursiveProps = ['expressions', 'quasis'];
-          break;
-        }
-        case 'VariableDeclaration': {
-          recursiveProps = ['declarations'];
-          break;
-        }
-        case 'VariableDeclarator': {
-          recursiveProps = ['init'];
-          break;
-        }
-        default: {
-          break;
-        }
+    switch (node.type) {
+      case 'ArrayExpression': {
+        recursiveProps = ['elements'];
+        break;
+      }
+      case 'ArrowFunctionExpression':
+      case 'BlockStatement':
+      case 'FunctionDeclaration': {
+        recursiveProps = ['body'];
+        break;
+      }
+      case 'CallExpression': {
+        recursiveProps = ['arguments'];
+        break;
+      }
+      case 'ConditionalExpression': {
+        recursiveProps = ['consequent', 'alternate'];
+        break;
+      }
+      case 'ExpressionStatement':
+      case 'JSXExpressionContainer': {
+        recursiveProps = ['expression'];
+        break;
+      }
+      case 'ExportDefaultDeclaration':
+      case 'ExportNamedDeclaration': {
+        recursiveProps = ['declaration'];
+        break;
+      }
+      case 'File': {
+        recursiveProps = ['program'];
+        break;
+      }
+      case 'JSXAttribute': {
+        recursiveProps = ['value'];
+        break;
+      }
+      case 'JSXElement': {
+        recursiveProps = ['openingElement', 'children'];
+        break;
+      }
+      case 'JSXFragment': {
+        recursiveProps = ['children'];
+        break;
+      }
+      case 'JSXOpeningElement': {
+        recursiveProps = ['attributes'];
+        break;
+      }
+      case 'LogicalExpression': {
+        recursiveProps = ['right'];
+        break;
+      }
+      case 'ObjectExpression': {
+        recursiveProps = ['properties'];
+        break;
+      }
+      case 'ObjectProperty':
+      case 'Property': {
+        recursiveProps = ['key', 'value'];
+        break;
+      }
+      case 'Program': {
+        recursiveProps = ['body', 'comments'];
+        break;
+      }
+      case 'ReturnStatement': {
+        recursiveProps = ['argument'];
+        break;
+      }
+      case 'TaggedTemplateExpression': {
+        recursiveProps = ['quasi'];
+        break;
+      }
+      case 'TemplateLiteral': {
+        recursiveProps = ['expressions', 'quasis'];
+        break;
+      }
+      case 'VariableDeclaration': {
+        recursiveProps = ['declarations'];
+        break;
+      }
+      case 'VariableDeclarator': {
+        recursiveProps = ['init'];
+        break;
+      }
+      default: {
+        break;
+      }
+    }
+
+    Object.entries(node).forEach(([key, value]) => {
+      if (!recursiveProps.includes(key)) {
+        return;
       }
 
-      Object.entries(node).forEach(([key, value]) => {
-        if (!recursiveProps.includes(key)) {
-          return;
-        }
+      if (Array.isArray(value)) {
+        value.forEach((childNode: unknown) => {
+          recursion(childNode, node);
+        });
+        return;
+      }
 
-        if (Array.isArray(value)) {
-          value.forEach((childNode: unknown) => {
-            recursion(childNode, node);
-          });
-          return;
-        }
-
-        recursion(value, node);
-      });
-    } else {
-      Object.entries(node).forEach(([key, value]) => {
-        if (key === 'type') {
-          return;
-        }
-
-        if (Array.isArray(value)) {
-          value.forEach((childNode: unknown) => {
-            recursion(childNode, node);
-          });
-          return;
-        }
-
-        recursion(value, node);
-      });
-    }
+      recursion(value, node);
+    });
 
     if (
       !isTypeof(
@@ -758,55 +741,23 @@ export function findTargetClassNameNodes(ast: any, options: ResolvedOptions): Cl
       case 'LogicalExpression': {
         nonCommentNodes.push(currentASTNode);
 
-        if (!options.experimentalOptimization) {
-          if (
-            isTypeof(
-              node,
-              z.object({
-                left: z.object({
-                  range: z.custom<NodeRange>((value) =>
-                    isTypeof(value, z.tuple([z.number(), z.number()])),
-                  ),
+        if (
+          isTypeof(
+            node,
+            z.object({
+              loc: z.object({
+                start: z.object({
+                  line: z.number(),
                 }),
               }),
-            )
-          ) {
-            const [leftOperandRangeStart, leftOperandRangeEnd] = node.left.range;
-
-            classNameNodes.forEach((classNameNode) => {
-              const [classNameNodeRangeStart, classNameNodeRangeEnd] = classNameNode.range;
-
-              if (
-                leftOperandRangeStart <= classNameNodeRangeStart &&
-                classNameNodeRangeEnd <= leftOperandRangeEnd
-              ) {
-                // Note: Specifies a range that will not be included in `keywordStartingNode`, so that it will be filtered out in the final stage of the traversal.
-                // eslint-disable-next-line no-param-reassign
-                classNameNode.range = [0, Infinity];
-              }
-            });
-          }
-        }
-
-        if (options.experimentalOptimization) {
-          if (
-            isTypeof(
-              node,
-              z.object({
-                loc: z.object({
-                  start: z.object({
-                    line: z.number(),
-                  }),
-                }),
-              }),
-            )
-          ) {
-            classNameNodes.push({
-              type: 'logical',
-              range: [currentNodeRangeStart, currentNodeRangeEnd],
-              startLineIndex: node.loc.start.line - 1,
-            });
-          }
+            }),
+          )
+        ) {
+          classNameNodes.push({
+            type: 'logical',
+            range: [currentNodeRangeStart, currentNodeRangeEnd],
+            startLineIndex: node.loc.start.line - 1,
+          });
         }
         break;
       }
@@ -903,53 +854,36 @@ export function findTargetClassNameNodesForHtml(
       return;
     }
 
-    if (options.experimentalOptimization) {
-      let recursiveProps: string[] = [];
+    let recursiveProps: string[] = [];
 
-      switch (node.type) {
-        case 'element': {
-          recursiveProps = ['attrs', 'children'];
-          break;
-        }
-        case 'root': {
-          recursiveProps = ['children'];
-          break;
-        }
-        default: {
-          break;
-        }
+    switch (node.type) {
+      case 'element': {
+        recursiveProps = ['attrs', 'children'];
+        break;
+      }
+      case 'root': {
+        recursiveProps = ['children'];
+        break;
+      }
+      default: {
+        break;
+      }
+    }
+
+    Object.entries(node).forEach(([key, value]) => {
+      if (!recursiveProps.includes(key)) {
+        return;
       }
 
-      Object.entries(node).forEach(([key, value]) => {
-        if (!recursiveProps.includes(key)) {
-          return;
-        }
+      if (Array.isArray(value)) {
+        value.forEach((childNode: unknown) => {
+          recursion(childNode, node);
+        });
+        return;
+      }
 
-        if (Array.isArray(value)) {
-          value.forEach((childNode: unknown) => {
-            recursion(childNode, node);
-          });
-          return;
-        }
-
-        recursion(value, node);
-      });
-    } else {
-      Object.entries(node).forEach(([key, value]) => {
-        if (key === 'type') {
-          return;
-        }
-
-        if (Array.isArray(value)) {
-          value.forEach((childNode: unknown) => {
-            recursion(childNode, node);
-          });
-          return;
-        }
-
-        recursion(value, node);
-      });
-    }
+      recursion(value, node);
+    });
 
     if (
       !isTypeof(
@@ -1203,53 +1137,36 @@ export function findTargetClassNameNodesForVue(
       return;
     }
 
-    if (options.experimentalOptimization) {
-      let recursiveProps: string[] = [];
+    let recursiveProps: string[] = [];
 
-      switch (node.type) {
-        case 'element': {
-          recursiveProps = ['attrs', 'children'];
-          break;
-        }
-        case 'root': {
-          recursiveProps = ['children'];
-          break;
-        }
-        default: {
-          break;
-        }
+    switch (node.type) {
+      case 'element': {
+        recursiveProps = ['attrs', 'children'];
+        break;
+      }
+      case 'root': {
+        recursiveProps = ['children'];
+        break;
+      }
+      default: {
+        break;
+      }
+    }
+
+    Object.entries(node).forEach(([key, value]) => {
+      if (!recursiveProps.includes(key)) {
+        return;
       }
 
-      Object.entries(node).forEach(([key, value]) => {
-        if (!recursiveProps.includes(key)) {
-          return;
-        }
+      if (Array.isArray(value)) {
+        value.forEach((childNode: unknown) => {
+          recursion(childNode, node);
+        });
+        return;
+      }
 
-        if (Array.isArray(value)) {
-          value.forEach((childNode: unknown) => {
-            recursion(childNode, node);
-          });
-          return;
-        }
-
-        recursion(value, node);
-      });
-    } else {
-      Object.entries(node).forEach(([key, value]) => {
-        if (key === 'type') {
-          return;
-        }
-
-        if (Array.isArray(value)) {
-          value.forEach((childNode: unknown) => {
-            recursion(childNode, node);
-          });
-          return;
-        }
-
-        recursion(value, node);
-      });
-    }
+      recursion(value, node);
+    });
 
     if (
       !isTypeof(
@@ -1525,53 +1442,36 @@ export function findTargetClassNameNodesForAngular(
       return;
     }
 
-    if (options.experimentalOptimization) {
-      let recursiveProps: string[] = [];
+    let recursiveProps: string[] = [];
 
-      switch (node.type) {
-        case 'element': {
-          recursiveProps = ['attrs', 'children'];
-          break;
-        }
-        case 'root': {
-          recursiveProps = ['children'];
-          break;
-        }
-        default: {
-          break;
-        }
+    switch (node.type) {
+      case 'element': {
+        recursiveProps = ['attrs', 'children'];
+        break;
+      }
+      case 'root': {
+        recursiveProps = ['children'];
+        break;
+      }
+      default: {
+        break;
+      }
+    }
+
+    Object.entries(node).forEach(([key, value]) => {
+      if (!recursiveProps.includes(key)) {
+        return;
       }
 
-      Object.entries(node).forEach(([key, value]) => {
-        if (!recursiveProps.includes(key)) {
-          return;
-        }
+      if (Array.isArray(value)) {
+        value.forEach((childNode: unknown) => {
+          recursion(childNode, node);
+        });
+        return;
+      }
 
-        if (Array.isArray(value)) {
-          value.forEach((childNode: unknown) => {
-            recursion(childNode, node);
-          });
-          return;
-        }
-
-        recursion(value, node);
-      });
-    } else {
-      Object.entries(node).forEach(([key, value]) => {
-        if (key === 'type') {
-          return;
-        }
-
-        if (Array.isArray(value)) {
-          value.forEach((childNode: unknown) => {
-            recursion(childNode, node);
-          });
-          return;
-        }
-
-        recursion(value, node);
-      });
-    }
+      recursion(value, node);
+    });
 
     if (
       !isTypeof(
@@ -1923,55 +1823,38 @@ export function findTargetClassNameNodesForAstro(
       return;
     }
 
-    if (options.experimentalOptimization) {
-      let recursiveProps: string[] = [];
+    let recursiveProps: string[] = [];
 
-      switch (node.type) {
-        case 'component':
-        case 'element': {
-          recursiveProps = ['attributes', 'children'];
-          break;
-        }
-        case 'fragment':
-        case 'root': {
-          recursiveProps = ['children'];
-          break;
-        }
-        default: {
-          break;
-        }
+    switch (node.type) {
+      case 'component':
+      case 'element': {
+        recursiveProps = ['attributes', 'children'];
+        break;
+      }
+      case 'fragment':
+      case 'root': {
+        recursiveProps = ['children'];
+        break;
+      }
+      default: {
+        break;
+      }
+    }
+
+    Object.entries(node).forEach(([key, value]) => {
+      if (!recursiveProps.includes(key)) {
+        return;
       }
 
-      Object.entries(node).forEach(([key, value]) => {
-        if (!recursiveProps.includes(key)) {
-          return;
-        }
+      if (Array.isArray(value)) {
+        value.forEach((childNode: unknown) => {
+          recursion(childNode, node);
+        });
+        return;
+      }
 
-        if (Array.isArray(value)) {
-          value.forEach((childNode: unknown) => {
-            recursion(childNode, node);
-          });
-          return;
-        }
-
-        recursion(value, node);
-      });
-    } else {
-      Object.entries(node).forEach(([key, value]) => {
-        if (key === 'type') {
-          return;
-        }
-
-        if (Array.isArray(value)) {
-          value.forEach((childNode: unknown) => {
-            recursion(childNode, node);
-          });
-          return;
-        }
-
-        recursion(value, node);
-      });
-    }
+      recursion(value, node);
+    });
 
     if (
       !isTypeof(
@@ -2272,118 +2155,101 @@ export function findTargetClassNameNodesForSvelte(
       return;
     }
 
-    if (options.experimentalOptimization) {
-      let recursiveProps: string[] = [];
+    let recursiveProps: string[] = [];
 
-      switch (node.type) {
-        case 'ArrayExpression': {
-          recursiveProps = ['elements'];
-          break;
-        }
-        case 'Attribute': {
-          recursiveProps = ['value'];
-          break;
-        }
-        case 'CallExpression': {
-          recursiveProps = ['arguments'];
-          break;
-        }
-        case 'ConditionalExpression': {
-          recursiveProps = ['consequent', 'alternate'];
-          break;
-        }
-        case 'Element':
-        case 'InlineComponent': {
-          recursiveProps = ['attributes', 'children'];
-          break;
-        }
-        case 'Fragment': {
-          recursiveProps = ['children'];
-          break;
-        }
-        case 'Literal': {
-          recursiveProps = ['leadingComments'];
-          break;
-        }
-        case 'LogicalExpression': {
-          recursiveProps = ['right'];
-          break;
-        }
-        case 'MustacheTag': {
-          recursiveProps = ['expression'];
-          break;
-        }
-        case 'ObjectExpression': {
-          recursiveProps = ['properties'];
-          break;
-        }
-        case 'Program': {
-          recursiveProps = ['body'];
-          break;
-        }
-        case 'Property': {
-          recursiveProps = ['key', 'value'];
-          break;
-        }
-        case 'Root': {
-          recursiveProps = ['html', 'instance'];
-          break;
-        }
-        case 'Script': {
-          recursiveProps = ['content'];
-          break;
-        }
-        case 'TaggedTemplateExpression': {
-          recursiveProps = ['quasi'];
-          break;
-        }
-        case 'TemplateLiteral': {
-          recursiveProps = ['expressions', 'quasis'];
-          break;
-        }
-        case 'VariableDeclaration': {
-          recursiveProps = ['declarations'];
-          break;
-        }
-        case 'VariableDeclarator': {
-          recursiveProps = ['init'];
-          break;
-        }
-        default: {
-          break;
-        }
+    switch (node.type) {
+      case 'ArrayExpression': {
+        recursiveProps = ['elements'];
+        break;
+      }
+      case 'Attribute': {
+        recursiveProps = ['value'];
+        break;
+      }
+      case 'CallExpression': {
+        recursiveProps = ['arguments'];
+        break;
+      }
+      case 'ConditionalExpression': {
+        recursiveProps = ['consequent', 'alternate'];
+        break;
+      }
+      case 'Element':
+      case 'InlineComponent': {
+        recursiveProps = ['attributes', 'children'];
+        break;
+      }
+      case 'Fragment': {
+        recursiveProps = ['children'];
+        break;
+      }
+      case 'Literal': {
+        recursiveProps = ['leadingComments'];
+        break;
+      }
+      case 'LogicalExpression': {
+        recursiveProps = ['right'];
+        break;
+      }
+      case 'MustacheTag': {
+        recursiveProps = ['expression'];
+        break;
+      }
+      case 'ObjectExpression': {
+        recursiveProps = ['properties'];
+        break;
+      }
+      case 'Program': {
+        recursiveProps = ['body'];
+        break;
+      }
+      case 'Property': {
+        recursiveProps = ['key', 'value'];
+        break;
+      }
+      case 'Root': {
+        recursiveProps = ['html', 'instance'];
+        break;
+      }
+      case 'Script': {
+        recursiveProps = ['content'];
+        break;
+      }
+      case 'TaggedTemplateExpression': {
+        recursiveProps = ['quasi'];
+        break;
+      }
+      case 'TemplateLiteral': {
+        recursiveProps = ['expressions', 'quasis'];
+        break;
+      }
+      case 'VariableDeclaration': {
+        recursiveProps = ['declarations'];
+        break;
+      }
+      case 'VariableDeclarator': {
+        recursiveProps = ['init'];
+        break;
+      }
+      default: {
+        break;
+      }
+    }
+
+    Object.entries(node).forEach(([key, value]) => {
+      if (!recursiveProps.includes(key)) {
+        return;
       }
 
-      Object.entries(node).forEach(([key, value]) => {
-        if (!recursiveProps.includes(key)) {
-          return;
-        }
+      if (Array.isArray(value)) {
+        value.forEach((childNode: unknown) => {
+          recursion(childNode, node);
+        });
+        return;
+      }
 
-        if (Array.isArray(value)) {
-          value.forEach((childNode: unknown) => {
-            recursion(childNode, node);
-          });
-          return;
-        }
-
-        recursion(value, node);
-      });
-    } else {
-      Object.entries(node).forEach(([key, value]) => {
-        if (key === 'type') {
-          return;
-        }
-
-        if (Array.isArray(value)) {
-          value.forEach((childNode: unknown) => {
-            recursion(childNode, node);
-          });
-          return;
-        }
-
-        recursion(value, node);
-      });
-    }
+      recursion(value, node);
+    });
 
     if (
       !isTypeof(
@@ -2943,55 +2809,23 @@ export function findTargetClassNameNodesForSvelte(
       case 'LogicalExpression': {
         nonCommentNodes.push(currentASTNode);
 
-        if (!options.experimentalOptimization) {
-          if (
-            isTypeof(
-              node,
-              z.object({
-                left: z.object({
-                  start: z.number(),
-                  end: z.number(),
+        if (
+          isTypeof(
+            node,
+            z.object({
+              loc: z.object({
+                start: z.object({
+                  line: z.number(),
                 }),
               }),
-            )
-          ) {
-            const leftOperandRangeStart = node.left.start;
-            const leftOperandRangeEnd = node.left.end;
-
-            classNameNodes.forEach((classNameNode) => {
-              const [classNameNodeRangeStart, classNameNodeRangeEnd] = classNameNode.range;
-
-              if (
-                leftOperandRangeStart <= classNameNodeRangeStart &&
-                classNameNodeRangeEnd <= leftOperandRangeEnd
-              ) {
-                // Note: Specifies a range that will not be included in `keywordStartingNode`, so that it will be filtered out in the final stage of the traversal.
-                // eslint-disable-next-line no-param-reassign
-                classNameNode.range = [0, Infinity];
-              }
-            });
-          }
-        }
-
-        if (options.experimentalOptimization) {
-          if (
-            isTypeof(
-              node,
-              z.object({
-                loc: z.object({
-                  start: z.object({
-                    line: z.number(),
-                  }),
-                }),
-              }),
-            )
-          ) {
-            classNameNodes.push({
-              type: 'logical',
-              range: [currentNodeRangeStart, currentNodeRangeEnd],
-              startLineIndex: node.loc.start.line - 1,
-            });
-          }
+            }),
+          )
+        ) {
+          classNameNodes.push({
+            type: 'logical',
+            range: [currentNodeRangeStart, currentNodeRangeEnd],
+            startLineIndex: node.loc.start.line - 1,
+          });
         }
         break;
       }
