@@ -50,10 +50,12 @@ exports[`'(3) nested ternary - nested expression in falsy part' > expectation 1`
         condition
           ? 'lorem ipsum dolor sit amet'
           : condition
-            ? \`lorem ipsum dolor sit amet \${\`consectetur
-adipiscing elit proin\`} ex massa hendrerit eu posuere\`
-            : \`lorem ipsum dolor sit amet \${\`consectetur
-adipiscing elit proin\`} ex massa hendrerit eu posuere\`
+            ? \`lorem ipsum dolor sit amet
+\${'consectetur adipiscing elit proin'} ex massa hendrerit eu
+posuere\`
+            : \`lorem ipsum dolor sit amet
+\${'consectetur adipiscing elit proin'} ex massa hendrerit eu
+posuere\`
       "
     >
       <slot></slot>
@@ -70,10 +72,12 @@ exports[`'(4) nested ternary - nested expression in truthy part' > expectation 1
       v-bind:class="
         condition
           ? condition
-            ? \`lorem ipsum dolor sit amet \${\`consectetur
-adipiscing elit proin\`} ex massa hendrerit eu posuere\`
-            : \`lorem ipsum dolor sit amet \${\`consectetur
-adipiscing elit proin\`} ex massa hendrerit eu posuere\`
+            ? \`lorem ipsum dolor sit amet
+\${'consectetur adipiscing elit proin'} ex massa hendrerit eu
+posuere\`
+            : \`lorem ipsum dolor sit amet
+\${'consectetur adipiscing elit proin'} ex massa hendrerit eu
+posuere\`
           : 'lorem ipsum dolor sit amet'
       "
     >
@@ -143,190 +147,6 @@ exports[`'(7) double nested ternary - nested expression in falsy part' > expecta
             ? \`lorem ipsum dolor sit amet consectetur
 adipiscing elit proin\`
             : condition
-              ? \`lorem ipsum dolor sit amet \${\`consectetur
-adipiscing elit proin\`} ex massa hendrerit eu posuere\`
-              : \`lorem ipsum dolor sit amet \${\`consectetur
-adipiscing elit proin\`} ex massa hendrerit eu posuere\`
-      "
-    >
-      <slot></slot>
-    </div>
-  </div>
-</template>
-"
-`;
-
-exports[`'(8) double nested ternary - nested expression in truthy part' > expectation 1`] = `
-"<template>
-  <div>
-    <div
-      v-bind:class="
-        condition
-          ? condition
-            ? condition
-              ? \`lorem ipsum dolor sit amet \${\`consectetur
-adipiscing elit proin\`} ex massa hendrerit eu posuere\`
-              : \`lorem ipsum dolor sit amet \${\`consectetur
-adipiscing elit proin\`} ex massa hendrerit eu posuere\`
-            : \`lorem ipsum dolor sit amet consectetur
-adipiscing elit proin\`
-          : 'lorem ipsum dolor sit amet'
-      "
-    >
-      <slot></slot>
-    </div>
-  </div>
-</template>
-"
-`;
-
-exports[`'(exp-1) nested ternary - string literal ternary' > expectation 1`] = `
-"<template>
-  <div>
-    <div
-      v-bind:class="
-        condition
-          ? 'lorem ipsum dolor sit amet'
-          : condition
-            ? \`lorem ipsum dolor sit amet consectetur
-adipiscing elit proin\`
-            : \`lorem ipsum dolor sit amet consectetur
-adipiscing elit proin ex massa hendrerit eu posuere\`
-      "
-    >
-      <slot></slot>
-    </div>
-  </div>
-</template>
-"
-`;
-
-exports[`'(exp-2) nested ternary - template literal ternary' > expectation 1`] = `
-"<template>
-  <div>
-    <div
-      v-bind:class="
-        condition
-          ? 'lorem ipsum dolor sit amet'
-          : condition
-            ? \`lorem ipsum dolor sit amet consectetur
-adipiscing elit proin\`
-            : \`lorem ipsum dolor sit amet consectetur
-adipiscing elit proin ex massa hendrerit eu posuere\`
-      "
-    >
-      <slot></slot>
-    </div>
-  </div>
-</template>
-"
-`;
-
-exports[`'(exp-3) nested ternary - nested expression in falsy part' > expectation 1`] = `
-"<template>
-  <div>
-    <div
-      v-bind:class="
-        condition
-          ? 'lorem ipsum dolor sit amet'
-          : condition
-            ? \`lorem ipsum dolor sit amet
-\${'consectetur adipiscing elit proin'} ex massa hendrerit eu
-posuere\`
-            : \`lorem ipsum dolor sit amet
-\${'consectetur adipiscing elit proin'} ex massa hendrerit eu
-posuere\`
-      "
-    >
-      <slot></slot>
-    </div>
-  </div>
-</template>
-"
-`;
-
-exports[`'(exp-4) nested ternary - nested expression in truthy part' > expectation 1`] = `
-"<template>
-  <div>
-    <div
-      v-bind:class="
-        condition
-          ? condition
-            ? \`lorem ipsum dolor sit amet
-\${'consectetur adipiscing elit proin'} ex massa hendrerit eu
-posuere\`
-            : \`lorem ipsum dolor sit amet
-\${'consectetur adipiscing elit proin'} ex massa hendrerit eu
-posuere\`
-          : 'lorem ipsum dolor sit amet'
-      "
-    >
-      <slot></slot>
-    </div>
-  </div>
-</template>
-"
-`;
-
-exports[`'(exp-5) double nested ternary - string literal ternary' > expectation 1`] = `
-"<template>
-  <div>
-    <div
-      v-bind:class="
-        condition
-          ? 'lorem ipsum dolor sit amet'
-          : condition
-            ? \`lorem ipsum dolor sit amet consectetur
-adipiscing elit proin\`
-            : condition
-              ? \`lorem ipsum dolor sit amet consectetur
-adipiscing elit proin\`
-              : \`lorem ipsum dolor sit amet consectetur
-adipiscing elit proin ex massa hendrerit eu posuere\`
-      "
-    >
-      <slot></slot>
-    </div>
-  </div>
-</template>
-"
-`;
-
-exports[`'(exp-6) double nested ternary - template literal ternary' > expectation 1`] = `
-"<template>
-  <div>
-    <div
-      v-bind:class="
-        condition
-          ? 'lorem ipsum dolor sit amet'
-          : condition
-            ? \`lorem ipsum dolor sit amet consectetur
-adipiscing elit proin\`
-            : condition
-              ? \`lorem ipsum dolor sit amet consectetur
-adipiscing elit proin\`
-              : \`lorem ipsum dolor sit amet consectetur
-adipiscing elit proin ex massa hendrerit eu posuere\`
-      "
-    >
-      <slot></slot>
-    </div>
-  </div>
-</template>
-"
-`;
-
-exports[`'(exp-7) double nested ternary - nested expression in falsy part' > expectation 1`] = `
-"<template>
-  <div>
-    <div
-      v-bind:class="
-        condition
-          ? 'lorem ipsum dolor sit amet'
-          : condition
-            ? \`lorem ipsum dolor sit amet consectetur
-adipiscing elit proin\`
-            : condition
               ? \`lorem ipsum dolor sit amet
 \${'consectetur adipiscing elit proin'} ex massa hendrerit eu
 posuere\`
@@ -342,7 +162,7 @@ posuere\`
 "
 `;
 
-exports[`'(exp-8) double nested ternary - nested expression in truthy part' > expectation 1`] = `
+exports[`'(8) double nested ternary - nested expression in truthy part' > expectation 1`] = `
 "<template>
   <div>
     <div

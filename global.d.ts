@@ -29,7 +29,6 @@ declare global {
     customFunctions: string[];
     endingPosition: 'relative' | 'absolute' | 'absolute-with-indent';
     debugFlag: boolean;
-    experimentalOptimization: boolean;
     syntaxTransformation: boolean;
   };
 

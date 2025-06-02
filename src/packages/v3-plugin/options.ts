@@ -55,15 +55,6 @@ export const options: SupportOptions = {
     description:
       'A flag for branching in the development environment. It has no effect in production.',
   },
-  experimentalOptimization: {
-    // @ts-ignore
-    since: '0.7.2',
-    type: 'boolean',
-    category: 'Format',
-    default: false,
-    description:
-      'Formatting will be up to 67% faster. Note that Node.js version must be 17 or higher, and the output of nested expressions may be slightly different.',
-  },
   syntaxTransformation: {
     // @ts-ignore
     since: '0.7.7',

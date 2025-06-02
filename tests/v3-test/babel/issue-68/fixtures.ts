@@ -23,8 +23,5 @@ export function Foo() {
   );
 }
 `,
-    options: {
-      experimentalOptimization: true,
-    },
   },
 ];

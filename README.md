@@ -128,17 +128,6 @@ Default | CLI&nbsp;Override | API&nbsp;Override
 --- | --- | ---
 `"relative"` | `--ending-position <relative\|absolute\|absolute-with-indent>` | `endingPosition: "<relative\|absolute\|absolute-with-indent>"`
 
-### Experimental Optimization
-
-First available in v0.7.2.
-
-Formatting will be up to 67% faster. Note that Node.js version must be 17 or higher, and the output of nested expressions may be slightly different.
-
-<!-- prettier-ignore -->
-Default | CLI&nbsp;Override | API&nbsp;Override
---- | --- | ---
-`false` | `--experimental-optimization` | `experimentalOptimization: <boolean>`
-
 ### Syntax Transformation
 
 First available in v0.7.7.
