@@ -327,9 +327,8 @@ function formatTokens(
   options: ResolvedOptions,
 ): TextToken[] {
   const formattedTokens = structuredClone(textTokens);
-  const isStartingPositionRelative = true;
   const isEndingPositionAbsolute = options.endingPosition !== 'relative';
-  const isOutputIdeal = isStartingPositionRelative && isEndingPositionAbsolute;
+  const isOutputIdeal = isEndingPositionAbsolute;
 
   for (let tokenIndex = formattedTokens.length - 1; tokenIndex >= 0; tokenIndex -= 1) {
     const token = formattedTokens[tokenIndex];
@@ -361,7 +360,7 @@ function formatTokens(
       const isMultiLineClassName = formattedLines.length > 1;
 
       if (isMultiLineClassName) {
-        const multiLineIndentLevel = isStartingPositionRelative ? props.indentLevel + 1 : 0;
+        const multiLineIndentLevel = props.indentLevel + 1;
 
         formattedClassName = [
           formattedLines[0],
@@ -434,13 +433,11 @@ function formatTokens(
       const isMultiLineClassName = formattedLines.length > 1;
 
       if (isMultiLineClassName) {
-        // eslint-disable-next-line no-nested-ternary
-        const multiLineIndentLevel = isStartingPositionRelative
-          ? props.isTheFirstLineOnTheSameLineAsTheAttributeName ||
-            props.isItAnOperandOfTernaryOperator
+        const multiLineIndentLevel =
+          props.isTheFirstLineOnTheSameLineAsTheAttributeName ||
+          props.isItAnOperandOfTernaryOperator
             ? props.indentLevel + 1
-            : props.indentLevel
-          : 0;
+            : props.indentLevel;
 
         formattedClassName = [
           formattedLines[0],
