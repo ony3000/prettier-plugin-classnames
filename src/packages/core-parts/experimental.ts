@@ -328,7 +328,6 @@ function formatTokens(
 ): TextToken[] {
   const formattedTokens = structuredClone(textTokens);
   const isEndingPositionAbsolute = options.endingPosition !== 'relative';
-  const isOutputIdeal = isEndingPositionAbsolute;
 
   for (let tokenIndex = formattedTokens.length - 1; tokenIndex >= 0; tokenIndex -= 1) {
     const token = formattedTokens[tokenIndex];
@@ -364,7 +363,7 @@ function formatTokens(
 
         formattedClassName = [
           formattedLines[0],
-          ...(isOutputIdeal
+          ...(isEndingPositionAbsolute
             ? formatClassName(
                 formattedLines.slice(1).join(EOL),
                 options.printWidth - options.tabWidth * multiLineIndentLevel,
@@ -441,7 +440,7 @@ function formatTokens(
 
         formattedClassName = [
           formattedLines[0],
-          ...(isOutputIdeal
+          ...(isEndingPositionAbsolute
             ? `${formatClassName(
                 formattedLines.slice(1).join(EOL),
                 options.printWidth - options.tabWidth * multiLineIndentLevel,
