@@ -46,15 +46,6 @@ export const options: SupportOptions = {
       },
     ],
   },
-  debugFlag: {
-    // @ts-ignore
-    since: '0.7.2',
-    type: 'boolean',
-    category: 'Format',
-    default: false,
-    description:
-      'A flag for branching in the development environment. It has no effect in production.',
-  },
   syntaxTransformation: {
     // @ts-ignore
     since: '0.7.7',
