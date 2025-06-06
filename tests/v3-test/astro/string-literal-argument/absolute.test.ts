@@ -91,7 +91,7 @@ const fixtures: Fixture[] = [
     <div
       class={classNames(
         \`lorem ipsum dolor sit amet consectetur adipiscing
-elit proin\`,
+        elit proin\`,
       )}
     >
       <slot />
@@ -116,7 +116,7 @@ elit proin\`,
     <div
       class={classNames(
         \` lorem ipsum dolor sit amet consectetur adipiscing
-elit proin \`,
+        elit proin \`,
       )}
     >
       <slot />
@@ -146,7 +146,7 @@ elit proin \`,
     <div
       class={classNames(
         \`lorem ipsum dolor sit amet consectetur adipiscing
-elit proin\`,
+        elit proin\`,
       )}
     >
       <slot />
@@ -171,8 +171,8 @@ elit proin\`,
     <div
       class={classNames(
         \`lorem ipsum dolor sit amet consectetur adipiscing
-elit proin ex massa hendrerit eu posuere eu volutpat id
-neque pellentesque\`,
+        elit proin ex massa hendrerit eu posuere eu volutpat
+        id neque pellentesque\`,
       )}
     >
       <slot />
@@ -197,8 +197,8 @@ neque pellentesque\`,
     <div
       class={classNames(
         \` lorem ipsum dolor sit amet consectetur adipiscing
-elit proin ex massa hendrerit eu posuere eu volutpat id
-neque pellentesque \`,
+        elit proin ex massa hendrerit eu posuere eu volutpat
+        id neque pellentesque \`,
       )}
     >
       <slot />
@@ -228,8 +228,8 @@ neque pellentesque \`,
     <div
       class={classNames(
         \`lorem ipsum dolor sit amet consectetur adipiscing
-elit proin ex massa hendrerit eu posuere eu volutpat id
-neque pellentesque\`,
+        elit proin ex massa hendrerit eu posuere eu volutpat
+        id neque pellentesque\`,
       )}
     >
       <slot />
@@ -254,7 +254,7 @@ neque pellentesque\`,
     <Box
       class={classNames(
         \`lorem ipsum dolor sit amet consectetur adipiscing
-elit proin ex massa hendrerit eu posuere\`,
+        elit proin ex massa hendrerit eu posuere\`,
       )}
     >
       <slot />
@@ -280,11 +280,11 @@ elit proin ex massa hendrerit eu posuere\`,
       class:list={[
         classNames(
           \`lorem ipsum dolor sit amet consectetur adipiscing
-elit proin ex massa hendrerit eu posuere\`,
+          elit proin ex massa hendrerit eu posuere\`,
         ),
         classNames(
           \`lorem ipsum dolor sit amet consectetur adipiscing
-elit proin ex massa hendrerit eu posuere\`,
+          elit proin ex massa hendrerit eu posuere\`,
         ),
       ]}
     >

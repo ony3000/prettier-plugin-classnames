@@ -9,7 +9,7 @@ printWidth=60 (in snapshot)
       :class="
         truthyExpression &&
         \`lorem ipsum dolor sit amet consectetur adipiscing
-elit proin ex massa hendrerit eu posuere\`
+        elit proin ex massa hendrerit eu posuere\`
       "
     >
       <slot></slot>
@@ -30,7 +30,7 @@ printWidth=60 (in snapshot)
         'lorem ipsum dolor sit amet' !==
           'consectetur adipiscing elit proin ex massa hendrerit eu posuere' &&
         \`lorem ipsum dolor sit amet consectetur adipiscing
-elit proin ex massa hendrerit eu posuere\`
+        elit proin ex massa hendrerit eu posuere\`
       "
     >
       <slot></slot>
@@ -50,9 +50,11 @@ printWidth=60 (in snapshot)
         truthyExpression &&
         (condition
           ? \`lorem ipsum dolor sit amet consectetur
-adipiscing elit proin ex massa hendrerit eu posuere\`
+            adipiscing elit proin ex massa hendrerit eu
+            posuere\`
           : \`lorem ipsum dolor sit amet consectetur
-adipiscing elit proin ex massa hendrerit eu posuere\`)
+            adipiscing elit proin ex massa hendrerit eu
+            posuere\`)
       "
     >
       <slot></slot>
@@ -71,7 +73,7 @@ printWidth=60 (in snapshot)
       :class="
         falsyExpression ||
         \`lorem ipsum dolor sit amet consectetur adipiscing
-elit proin ex massa hendrerit eu posuere\`
+        elit proin ex massa hendrerit eu posuere\`
       "
     >
       <slot></slot>
@@ -92,7 +94,7 @@ printWidth=60 (in snapshot)
         'lorem ipsum dolor sit amet' ===
           'consectetur adipiscing elit proin ex massa hendrerit eu posuere' ||
         \`lorem ipsum dolor sit amet consectetur adipiscing
-elit proin ex massa hendrerit eu posuere\`
+        elit proin ex massa hendrerit eu posuere\`
       "
     >
       <slot></slot>
@@ -112,9 +114,11 @@ printWidth=60 (in snapshot)
         falsyExpression ||
         (condition
           ? \`lorem ipsum dolor sit amet consectetur
-adipiscing elit proin ex massa hendrerit eu posuere\`
+            adipiscing elit proin ex massa hendrerit eu
+            posuere\`
           : \`lorem ipsum dolor sit amet consectetur
-adipiscing elit proin ex massa hendrerit eu posuere\`)
+            adipiscing elit proin ex massa hendrerit eu
+            posuere\`)
       "
     >
       <slot></slot>
@@ -133,7 +137,7 @@ printWidth=60 (in snapshot)
       :class="
         null ??
         \`lorem ipsum dolor sit amet consectetur adipiscing
-elit proin ex massa hendrerit eu posuere\`
+        elit proin ex massa hendrerit eu posuere\`
       "
     >
       <slot></slot>
@@ -153,7 +157,7 @@ printWidth=60 (in snapshot)
         null ??
         void 'lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere' ??
         \`lorem ipsum dolor sit amet consectetur adipiscing
-elit proin ex massa hendrerit eu posuere\`
+        elit proin ex massa hendrerit eu posuere\`
       "
     >
       <slot></slot>
@@ -173,9 +177,11 @@ printWidth=60 (in snapshot)
         null ??
         (condition
           ? \`lorem ipsum dolor sit amet consectetur
-adipiscing elit proin ex massa hendrerit eu posuere\`
+            adipiscing elit proin ex massa hendrerit eu
+            posuere\`
           : \`lorem ipsum dolor sit amet consectetur
-adipiscing elit proin ex massa hendrerit eu posuere\`)
+            adipiscing elit proin ex massa hendrerit eu
+            posuere\`)
       "
     >
       <slot></slot>

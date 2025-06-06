@@ -111,9 +111,9 @@ export function Foo({ children }) {
       className={
         condition
           ? \`lorem ipsum dolor sit amet consectetur
-adipiscing elit proin\`
+            adipiscing elit proin\`
           : \`lorem ipsum dolor sit amet consectetur
-adipiscing elit proin\`
+            adipiscing elit proin\`
       }
     >
       {children}
@@ -139,9 +139,9 @@ export function Foo({ children }) {
       className={
         condition
           ? \` lorem ipsum dolor sit amet consectetur
-adipiscing elit proin \`
+            adipiscing elit proin \`
           : \` lorem ipsum dolor sit amet consectetur
-adipiscing elit proin \`
+            adipiscing elit proin \`
       }
     >
       {children}
@@ -175,9 +175,9 @@ export function Foo({ children }) {
       className={
         condition
           ? \`lorem ipsum dolor sit amet consectetur
-adipiscing elit proin\`
+            adipiscing elit proin\`
           : \`lorem ipsum dolor sit amet consectetur
-adipiscing elit proin\`
+            adipiscing elit proin\`
       }
     >
       {children}
@@ -203,11 +203,11 @@ export function Foo({ children }) {
       className={
         condition
           ? \`lorem ipsum dolor sit amet consectetur
-adipiscing elit proin ex massa hendrerit eu posuere eu
-volutpat id neque pellentesque\`
+            adipiscing elit proin ex massa hendrerit eu
+            posuere eu volutpat id neque pellentesque\`
           : \`lorem ipsum dolor sit amet consectetur
-adipiscing elit proin ex massa hendrerit eu posuere eu
-volutpat id neque pellentesque\`
+            adipiscing elit proin ex massa hendrerit eu
+            posuere eu volutpat id neque pellentesque\`
       }
     >
       {children}
@@ -233,11 +233,11 @@ export function Foo({ children }) {
       className={
         condition
           ? \` lorem ipsum dolor sit amet consectetur
-adipiscing elit proin ex massa hendrerit eu posuere eu
-volutpat id neque pellentesque \`
+            adipiscing elit proin ex massa hendrerit eu
+            posuere eu volutpat id neque pellentesque \`
           : \` lorem ipsum dolor sit amet consectetur
-adipiscing elit proin ex massa hendrerit eu posuere eu
-volutpat id neque pellentesque \`
+            adipiscing elit proin ex massa hendrerit eu
+            posuere eu volutpat id neque pellentesque \`
       }
     >
       {children}
@@ -271,11 +271,11 @@ export function Foo({ children }) {
       className={
         condition
           ? \`lorem ipsum dolor sit amet consectetur
-adipiscing elit proin ex massa hendrerit eu posuere eu
-volutpat id neque pellentesque\`
+            adipiscing elit proin ex massa hendrerit eu
+            posuere eu volutpat id neque pellentesque\`
           : \`lorem ipsum dolor sit amet consectetur
-adipiscing elit proin ex massa hendrerit eu posuere eu
-volutpat id neque pellentesque\`
+            adipiscing elit proin ex massa hendrerit eu
+            posuere eu volutpat id neque pellentesque\`
       }
     >
       {children}
@@ -301,9 +301,11 @@ export function Foo({ children }) {
       className={
         condition
           ? \`lorem ipsum dolor sit amet consectetur
-adipiscing elit proin ex massa hendrerit eu posuere\`
+            adipiscing elit proin ex massa hendrerit eu
+            posuere\`
           : \`lorem ipsum dolor sit amet consectetur
-adipiscing elit proin ex massa hendrerit eu posuere\`
+            adipiscing elit proin ex massa hendrerit eu
+            posuere\`
       }
     >
       {children}

@@ -90,7 +90,7 @@ const fixtures: Fixture[] = [
   <div>
     <div
       class="lorem ipsum dolor sit amet consectetur
-adipiscing elit proin"
+        adipiscing elit proin"
     >
       <slot />
     </div>
@@ -113,7 +113,7 @@ adipiscing elit proin"
   <div>
     <div
       class="lorem ipsum dolor sit amet consectetur
-adipiscing elit proin"
+        adipiscing elit proin"
     >
       <slot />
     </div>
@@ -141,7 +141,7 @@ adipiscing elit proin"
   <div>
     <div
       class="lorem ipsum dolor sit amet consectetur
-adipiscing elit proin"
+        adipiscing elit proin"
     >
       <slot />
     </div>
@@ -164,8 +164,8 @@ adipiscing elit proin"
   <div>
     <div
       class="lorem ipsum dolor sit amet consectetur
-adipiscing elit proin ex massa hendrerit eu posuere eu
-volutpat id neque pellentesque"
+        adipiscing elit proin ex massa hendrerit eu posuere
+        eu volutpat id neque pellentesque"
     >
       <slot />
     </div>
@@ -188,8 +188,8 @@ volutpat id neque pellentesque"
   <div>
     <div
       class="lorem ipsum dolor sit amet consectetur
-adipiscing elit proin ex massa hendrerit eu posuere eu
-volutpat id neque pellentesque"
+        adipiscing elit proin ex massa hendrerit eu posuere
+        eu volutpat id neque pellentesque"
     >
       <slot />
     </div>
@@ -217,8 +217,8 @@ volutpat id neque pellentesque"
   <div>
     <div
       class="lorem ipsum dolor sit amet consectetur
-adipiscing elit proin ex massa hendrerit eu posuere eu
-volutpat id neque pellentesque"
+        adipiscing elit proin ex massa hendrerit eu posuere
+        eu volutpat id neque pellentesque"
     >
       <slot />
     </div>
@@ -241,7 +241,7 @@ volutpat id neque pellentesque"
   <div>
     <Box
       class="lorem ipsum dolor sit amet consectetur
-adipiscing elit proin ex massa hendrerit eu posuere"
+        adipiscing elit proin ex massa hendrerit eu posuere"
     >
       <slot />
     </Box>

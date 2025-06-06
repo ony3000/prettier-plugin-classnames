@@ -26,7 +26,7 @@ export default function MyComponent() {
   return (
     <section
       className="lorem ipsum dolor sit amet consectetur adipiscing elit aenean
-p"
+        p"
     >
       content
     </section>
@@ -52,7 +52,7 @@ export default function MyComponent() {
   return (
     <section
       className="lorem ipsum dolor sit amet consectetur adipiscing elit aenean
-p"
+        p"
     >
       content
     </section>

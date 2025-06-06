@@ -94,7 +94,7 @@ const fixtures: Fixture[] = [
       [class]="
         classNames(
           'lorem ipsum dolor sit amet consectetur adipiscing
-elit proin'
+          elit proin'
         )
       "
     >
@@ -121,7 +121,7 @@ elit proin'
       [class]="
         classNames(
           ' lorem ipsum dolor sit amet consectetur
-adipiscing elit proin '
+          adipiscing elit proin '
         )
       "
     >
@@ -153,7 +153,7 @@ adipiscing elit proin '
       [class]="
         classNames(
           'lorem ipsum dolor sit amet consectetur adipiscing
-elit proin'
+          elit proin'
         )
       "
     >
@@ -180,8 +180,8 @@ elit proin'
       [class]="
         classNames(
           'lorem ipsum dolor sit amet consectetur adipiscing
-elit proin ex massa hendrerit eu posuere eu volutpat id
-neque pellentesque'
+          elit proin ex massa hendrerit eu posuere eu
+          volutpat id neque pellentesque'
         )
       "
     >
@@ -208,8 +208,8 @@ neque pellentesque'
       [class]="
         classNames(
           ' lorem ipsum dolor sit amet consectetur
-adipiscing elit proin ex massa hendrerit eu posuere eu
-volutpat id neque pellentesque '
+          adipiscing elit proin ex massa hendrerit eu
+          posuere eu volutpat id neque pellentesque '
         )
       "
     >
@@ -241,8 +241,8 @@ volutpat id neque pellentesque '
       [class]="
         classNames(
           'lorem ipsum dolor sit amet consectetur adipiscing
-elit proin ex massa hendrerit eu posuere eu volutpat id
-neque pellentesque'
+          elit proin ex massa hendrerit eu posuere eu
+          volutpat id neque pellentesque'
         )
       "
     >
@@ -269,7 +269,7 @@ neque pellentesque'
       [class]="
         classNames(
           'lorem ipsum dolor sit amet consectetur adipiscing
-elit proin ex massa hendrerit eu posuere'
+          elit proin ex massa hendrerit eu posuere'
         )
       "
     >
@@ -296,7 +296,7 @@ elit proin ex massa hendrerit eu posuere'
       [className]="
         classNames(
           'lorem ipsum dolor sit amet consectetur adipiscing
-elit proin ex massa hendrerit eu posuere'
+          elit proin ex massa hendrerit eu posuere'
         )
       "
     >
@@ -323,7 +323,7 @@ elit proin ex massa hendrerit eu posuere'
       [attr.class]="
         classNames(
           'lorem ipsum dolor sit amet consectetur adipiscing
-elit proin ex massa hendrerit eu posuere'
+          elit proin ex massa hendrerit eu posuere'
         )
       "
     >
@@ -350,7 +350,7 @@ elit proin ex massa hendrerit eu posuere'
       [ngClass]="
         classNames(
           'lorem ipsum dolor sit amet consectetur adipiscing
-elit proin ex massa hendrerit eu posuere'
+          elit proin ex massa hendrerit eu posuere'
         )
       "
     >

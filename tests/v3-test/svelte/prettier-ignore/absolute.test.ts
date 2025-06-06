@@ -100,7 +100,7 @@ const fixtures: Fixture[] = [
         // prettier-ignore
         'lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere',
         \`lorem ipsum dolor sit amet consectetur adipiscing
-elit proin ex massa hendrerit eu posuere\`,
+        elit proin ex massa hendrerit eu posuere\`,
       )}
     >
       <slot />
@@ -133,7 +133,7 @@ elit proin ex massa hendrerit eu posuere\`,
         // prettier-ignore
         'lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere',
         \`lorem ipsum dolor sit amet consectetur adipiscing
-elit proin ex massa hendrerit eu posuere\`,
+        elit proin ex massa hendrerit eu posuere\`,
       ])}
     >
       <slot />
@@ -158,7 +158,7 @@ const combination = classNames(
     /* prettier-ignore */
     'lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere',
     \`lorem ipsum dolor sit amet consectetur adipiscing elit
-proin ex massa hendrerit eu posuere\`,
+    proin ex massa hendrerit eu posuere\`,
   );
 </script>
 `,
@@ -179,7 +179,7 @@ const combination = classNames(
     // prettier-ignore
     'lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere',
     \`lorem ipsum dolor sit amet consectetur adipiscing elit
-proin ex massa hendrerit eu posuere\`,
+    proin ex massa hendrerit eu posuere\`,
   );
 </script>
 `,
@@ -202,7 +202,7 @@ const combination = classNames(
     // prettier-ignore
     'lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere',
     \`lorem ipsum dolor sit amet consectetur adipiscing elit
-proin ex massa hendrerit eu posuere\`,
+    proin ex massa hendrerit eu posuere\`,
   );
 </script>
 `,
@@ -229,7 +229,7 @@ proin ex massa hendrerit eu posuere\`,
     <div
       class={classNames(
         \`lorem ipsum dolor sit amet consectetur adipiscing
-elit proin ex massa hendrerit eu posuere\`,
+        elit proin ex massa hendrerit eu posuere\`,
       )}
     >
       <slot />
@@ -256,7 +256,7 @@ elit proin ex massa hendrerit eu posuere\`,
     <div
       class={classNames(
         \`lorem ipsum dolor sit amet consectetur adipiscing
-elit proin ex massa hendrerit eu posuere\`,
+        elit proin ex massa hendrerit eu posuere\`,
       )}
     >
       <slot />

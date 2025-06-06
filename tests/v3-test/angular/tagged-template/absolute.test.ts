@@ -58,7 +58,7 @@ const classes = tw\`lorem ipsum dolor sit amet consectetur adipiscing elit proin
 `,
     output: `<script setup lang="ts">
   const classes = tw\`lorem ipsum dolor sit amet consectetur
-adipiscing elit proin\`;
+  adipiscing elit proin\`;
 </script>
 `,
   },
@@ -71,7 +71,7 @@ const Bar = tw.foo\`lorem ipsum dolor sit amet consectetur adipiscing elit proin
 `,
     output: `<script setup lang="ts">
   const Bar = tw.foo\`lorem ipsum dolor sit amet consectetur
-adipiscing elit proin\`;
+  adipiscing elit proin\`;
 </script>
 `,
   },
@@ -86,7 +86,7 @@ const Bar = tw(Foo)\`lorem ipsum dolor sit amet consectetur adipiscing elit proi
   const Bar = tw(
     Foo,
   )\`lorem ipsum dolor sit amet consectetur adipiscing elit
-proin\`;
+  proin\`;
 </script>
 `,
   },
@@ -99,8 +99,8 @@ const classes = tw\`lorem ipsum dolor sit amet consectetur adipiscing elit proin
 `,
     output: `<script setup lang="ts">
   const classes = tw\`lorem ipsum dolor sit amet consectetur
-adipiscing elit proin ex massa hendrerit eu posuere eu
-volutpat id neque pellentesque\`;
+  adipiscing elit proin ex massa hendrerit eu posuere eu
+  volutpat id neque pellentesque\`;
 </script>
 `,
   },
@@ -113,8 +113,8 @@ const Bar = tw.foo\`lorem ipsum dolor sit amet consectetur adipiscing elit proin
 `,
     output: `<script setup lang="ts">
   const Bar = tw.foo\`lorem ipsum dolor sit amet consectetur
-adipiscing elit proin ex massa hendrerit eu posuere eu
-volutpat id neque pellentesque\`;
+  adipiscing elit proin ex massa hendrerit eu posuere eu
+  volutpat id neque pellentesque\`;
 </script>
 `,
   },
@@ -129,8 +129,8 @@ const Bar = tw(Foo)\`lorem ipsum dolor sit amet consectetur adipiscing elit proi
   const Bar = tw(
     Foo,
   )\`lorem ipsum dolor sit amet consectetur adipiscing elit
-proin ex massa hendrerit eu posuere eu volutpat id neque
-pellentesque\`;
+  proin ex massa hendrerit eu posuere eu volutpat id neque
+  pellentesque\`;
 </script>
 `,
   },
@@ -149,10 +149,10 @@ const classes = {
   const classes = {
     short: tw\`lorem ipsum dolor sit amet\`,
     near: tw\`lorem ipsum dolor sit amet consectetur
-adipiscing elit proin\`,
+    adipiscing elit proin\`,
     long: tw\`lorem ipsum dolor sit amet consectetur
-adipiscing elit proin ex massa hendrerit eu posuere eu
-volutpat id neque pellentesque\`,
+    adipiscing elit proin ex massa hendrerit eu posuere eu
+    volutpat id neque pellentesque\`,
   };
 </script>
 `,

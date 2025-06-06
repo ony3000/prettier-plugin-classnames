@@ -60,7 +60,7 @@ const combination = classNames(
     /* prettier-ignore */
     'lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere',
     \`lorem ipsum dolor sit amet consectetur adipiscing elit
-proin ex massa hendrerit eu posuere\`,
+    proin ex massa hendrerit eu posuere\`,
   );
 </script>
 `,
@@ -81,7 +81,7 @@ const combination = classNames(
     // prettier-ignore
     'lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere',
     \`lorem ipsum dolor sit amet consectetur adipiscing elit
-proin ex massa hendrerit eu posuere\`,
+    proin ex massa hendrerit eu posuere\`,
   );
 </script>
 `,
@@ -106,7 +106,7 @@ const combination = classNames(
     // prettier-ignore
     'lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere',
     \`lorem ipsum dolor sit amet consectetur adipiscing elit
-proin ex massa hendrerit eu posuere\`,
+    proin ex massa hendrerit eu posuere\`,
   );
 </script>
 `,
@@ -134,7 +134,7 @@ proin ex massa hendrerit eu posuere\`,
       [class]="
         classNames(
           'lorem ipsum dolor sit amet consectetur adipiscing
-elit proin ex massa hendrerit eu posuere'
+          elit proin ex massa hendrerit eu posuere'
         )
       "
     >
@@ -163,7 +163,7 @@ elit proin ex massa hendrerit eu posuere'
       [class]="
         classNames(
           'lorem ipsum dolor sit amet consectetur adipiscing
-elit proin ex massa hendrerit eu posuere'
+          elit proin ex massa hendrerit eu posuere'
         )
       "
     >

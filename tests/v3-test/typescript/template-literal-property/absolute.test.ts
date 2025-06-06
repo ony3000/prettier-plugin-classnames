@@ -103,7 +103,7 @@ export function Foo({ children }) {
     <div
       className={classNames({
         [\`lorem ipsum dolor sit amet consectetur adipiscing
-elit proin\`]: true,
+        elit proin\`]: true,
       })}
     >
       {children}
@@ -128,7 +128,7 @@ export function Foo({ children }) {
     <div
       className={classNames({
         [\` lorem ipsum dolor sit amet consectetur adipiscing
-elit proin \`]: true,
+        elit proin \`]: true,
       })}
     >
       {children}
@@ -158,7 +158,7 @@ export function Foo({ children }) {
     <div
       className={classNames({
         [\`lorem ipsum dolor sit amet consectetur adipiscing
-elit proin\`]: true,
+        elit proin\`]: true,
       })}
     >
       {children}
@@ -183,8 +183,8 @@ export function Foo({ children }) {
     <div
       className={classNames({
         [\`lorem ipsum dolor sit amet consectetur adipiscing
-elit proin ex massa hendrerit eu posuere eu volutpat id
-neque pellentesque\`]: true,
+        elit proin ex massa hendrerit eu posuere eu volutpat
+        id neque pellentesque\`]: true,
       })}
     >
       {children}
@@ -209,8 +209,8 @@ export function Foo({ children }) {
     <div
       className={classNames({
         [\` lorem ipsum dolor sit amet consectetur adipiscing
-elit proin ex massa hendrerit eu posuere eu volutpat id
-neque pellentesque \`]: true,
+        elit proin ex massa hendrerit eu posuere eu volutpat
+        id neque pellentesque \`]: true,
       })}
     >
       {children}
@@ -240,8 +240,8 @@ export function Foo({ children }) {
     <div
       className={classNames({
         [\`lorem ipsum dolor sit amet consectetur adipiscing
-elit proin ex massa hendrerit eu posuere eu volutpat id
-neque pellentesque\`]: true,
+        elit proin ex massa hendrerit eu posuere eu volutpat
+        id neque pellentesque\`]: true,
       })}
     >
       {children}
@@ -266,7 +266,7 @@ export function Foo({ children }) {
     <Box
       className={classNames({
         [\`lorem ipsum dolor sit amet consectetur adipiscing
-elit proin ex massa hendrerit eu posuere\`]: true,
+        elit proin ex massa hendrerit eu posuere\`]: true,
       })}
     >
       {children}

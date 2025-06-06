@@ -8,7 +8,7 @@ printWidth=60 (in snapshot)
     <div
       class={truthyExpression &&
         \`lorem ipsum dolor sit amet consectetur adipiscing
-elit proin ex massa hendrerit eu posuere\`}
+        elit proin ex massa hendrerit eu posuere\`}
     >
       <slot />
     </div>
@@ -27,7 +27,7 @@ printWidth=60 (in snapshot)
         "lorem ipsum dolor sit amet" !==
           "consectetur adipiscing elit proin ex massa hendrerit eu posuere" &&
         \`lorem ipsum dolor sit amet consectetur adipiscing
-elit proin ex massa hendrerit eu posuere\`}
+        elit proin ex massa hendrerit eu posuere\`}
     >
       <slot />
     </div>
@@ -45,9 +45,11 @@ printWidth=60 (in snapshot)
       class={truthyExpression &&
         (condition
           ? \`lorem ipsum dolor sit amet consectetur
-adipiscing elit proin ex massa hendrerit eu posuere\`
+            adipiscing elit proin ex massa hendrerit eu
+            posuere\`
           : \`lorem ipsum dolor sit amet consectetur
-adipiscing elit proin ex massa hendrerit eu posuere\`)}
+            adipiscing elit proin ex massa hendrerit eu
+            posuere\`)}
     >
       <slot />
     </div>
@@ -64,7 +66,7 @@ printWidth=60 (in snapshot)
     <div
       class={falsyExpression ||
         \`lorem ipsum dolor sit amet consectetur adipiscing
-elit proin ex massa hendrerit eu posuere\`}
+        elit proin ex massa hendrerit eu posuere\`}
     >
       <slot />
     </div>
@@ -83,7 +85,7 @@ printWidth=60 (in snapshot)
         "lorem ipsum dolor sit amet" ===
           "consectetur adipiscing elit proin ex massa hendrerit eu posuere" ||
         \`lorem ipsum dolor sit amet consectetur adipiscing
-elit proin ex massa hendrerit eu posuere\`}
+        elit proin ex massa hendrerit eu posuere\`}
     >
       <slot />
     </div>
@@ -101,9 +103,11 @@ printWidth=60 (in snapshot)
       class={falsyExpression ||
         (condition
           ? \`lorem ipsum dolor sit amet consectetur
-adipiscing elit proin ex massa hendrerit eu posuere\`
+            adipiscing elit proin ex massa hendrerit eu
+            posuere\`
           : \`lorem ipsum dolor sit amet consectetur
-adipiscing elit proin ex massa hendrerit eu posuere\`)}
+            adipiscing elit proin ex massa hendrerit eu
+            posuere\`)}
     >
       <slot />
     </div>
@@ -120,7 +124,7 @@ printWidth=60 (in snapshot)
     <div
       class={null ??
         \`lorem ipsum dolor sit amet consectetur adipiscing
-elit proin ex massa hendrerit eu posuere\`}
+        elit proin ex massa hendrerit eu posuere\`}
     >
       <slot />
     </div>
@@ -138,7 +142,7 @@ printWidth=60 (in snapshot)
       class={null ??
         void "lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere" ??
         \`lorem ipsum dolor sit amet consectetur adipiscing
-elit proin ex massa hendrerit eu posuere\`}
+        elit proin ex massa hendrerit eu posuere\`}
     >
       <slot />
     </div>
@@ -156,9 +160,11 @@ printWidth=60 (in snapshot)
       class={null ??
         (condition
           ? \`lorem ipsum dolor sit amet consectetur
-adipiscing elit proin ex massa hendrerit eu posuere\`
+            adipiscing elit proin ex massa hendrerit eu
+            posuere\`
           : \`lorem ipsum dolor sit amet consectetur
-adipiscing elit proin ex massa hendrerit eu posuere\`)}
+            adipiscing elit proin ex massa hendrerit eu
+            posuere\`)}
     >
       <slot />
     </div>
