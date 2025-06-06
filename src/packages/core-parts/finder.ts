@@ -548,8 +548,8 @@ export function findTargetClassNameNodes(ast: any, options: ResolvedOptions): Cl
               node.raw[0] === SINGLE_QUOTE
                 ? 'single-quote'
                 : node.raw[0] === DOUBLE_QUOTE
-                ? 'double-quote'
-                : 'backtick',
+                  ? 'double-quote'
+                  : 'backtick',
             hasSingleQuote: node.value.indexOf(SINGLE_QUOTE) !== -1,
             hasDoubleQuote: node.value.indexOf(DOUBLE_QUOTE) !== -1,
             hasBacktick: node.value.indexOf(BACKTICK) !== -1,
@@ -585,8 +585,8 @@ export function findTargetClassNameNodes(ast: any, options: ResolvedOptions): Cl
               node.extra.raw[0] === SINGLE_QUOTE
                 ? 'single-quote'
                 : node.extra.raw[0] === DOUBLE_QUOTE
-                ? 'double-quote'
-                : 'backtick',
+                  ? 'double-quote'
+                  : 'backtick',
             hasSingleQuote: node.value.indexOf(SINGLE_QUOTE) !== -1,
             hasDoubleQuote: node.value.indexOf(DOUBLE_QUOTE) !== -1,
             hasBacktick: node.value.indexOf(BACKTICK) !== -1,
@@ -2618,8 +2618,8 @@ export function findTargetClassNameNodesForSvelte(
               delimiter === SINGLE_QUOTE
                 ? 'single-quote'
                 : delimiter === DOUBLE_QUOTE
-                ? 'double-quote'
-                : 'backtick',
+                  ? 'double-quote'
+                  : 'backtick',
             hasSingleQuote: node.data.indexOf(SINGLE_QUOTE) !== -1,
             hasDoubleQuote: node.data.indexOf(DOUBLE_QUOTE) !== -1,
             hasBacktick: node.data.indexOf(BACKTICK) !== -1,
@@ -2653,8 +2653,8 @@ export function findTargetClassNameNodesForSvelte(
               node.raw[0] === SINGLE_QUOTE
                 ? 'single-quote'
                 : node.raw[0] === DOUBLE_QUOTE
-                ? 'double-quote'
-                : 'backtick',
+                  ? 'double-quote'
+                  : 'backtick',
             hasSingleQuote: node.value.indexOf(SINGLE_QUOTE) !== -1,
             hasDoubleQuote: node.value.indexOf(DOUBLE_QUOTE) !== -1,
             hasBacktick: node.value.indexOf(BACKTICK) !== -1,

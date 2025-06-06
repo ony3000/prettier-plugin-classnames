@@ -566,8 +566,8 @@ function unfreezeToken(token: TextToken, options: ResolvedOptions): string {
               isNestedExpressionClosedOnTheNextLine
                 ? ''
                 : options.endingPosition === 'absolute'
-                ? EOL
-                : token.children[index + 1].body.match(new RegExp(`^${EOL}[${SPACE}${TAB}]*`))![0]
+                  ? EOL
+                  : token.children[index + 1].body.match(new RegExp(`^${EOL}[${SPACE}${TAB}]*`))![0]
             }`;
           }
 
@@ -582,8 +582,8 @@ function unfreezeToken(token: TextToken, options: ResolvedOptions): string {
             props.delimiterType === 'single-quote'
               ? SINGLE_QUOTE
               : props.delimiterType === 'double-quote'
-              ? DOUBLE_QUOTE
-              : BACKTICK;
+                ? DOUBLE_QUOTE
+                : BACKTICK;
 
           // eslint-disable-next-line no-param-reassign
           token.body = token.body.replace(
