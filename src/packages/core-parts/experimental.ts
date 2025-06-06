@@ -327,7 +327,7 @@ function formatTokens(
   options: ResolvedOptions,
 ): TextToken[] {
   const formattedTokens = structuredClone(textTokens);
-  const isStartingPositionRelative = options.endingPosition !== 'absolute';
+  const isStartingPositionRelative = true;
   const isEndingPositionAbsolute = options.endingPosition !== 'relative';
   const isOutputIdeal = isStartingPositionRelative && isEndingPositionAbsolute;
 
@@ -565,9 +565,7 @@ function unfreezeToken(token: TextToken, options: ResolvedOptions): string {
               // eslint-disable-next-line no-nested-ternary
               isNestedExpressionClosedOnTheNextLine
                 ? ''
-                : options.endingPosition === 'absolute'
-                  ? EOL
-                  : token.children[index + 1].body.match(new RegExp(`^${EOL}[${SPACE}${TAB}]*`))![0]
+                : token.children[index + 1].body.match(new RegExp(`^${EOL}[${SPACE}${TAB}]*`))![0]
             }`;
           }
 
