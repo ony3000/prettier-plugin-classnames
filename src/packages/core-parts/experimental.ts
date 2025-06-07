@@ -327,9 +327,7 @@ function formatTokens(
   options: ResolvedOptions,
 ): TextToken[] {
   const formattedTokens = structuredClone(textTokens);
-  const isStartingPositionRelative = options.endingPosition !== 'absolute';
   const isEndingPositionAbsolute = options.endingPosition !== 'relative';
-  const isOutputIdeal = isStartingPositionRelative && isEndingPositionAbsolute;
 
   for (let tokenIndex = formattedTokens.length - 1; tokenIndex >= 0; tokenIndex -= 1) {
     const token = formattedTokens[tokenIndex];
@@ -361,11 +359,11 @@ function formatTokens(
       const isMultiLineClassName = formattedLines.length > 1;
 
       if (isMultiLineClassName) {
-        const multiLineIndentLevel = isStartingPositionRelative ? props.indentLevel + 1 : 0;
+        const multiLineIndentLevel = props.indentLevel + 1;
 
         formattedClassName = [
           formattedLines[0],
-          ...(isOutputIdeal
+          ...(isEndingPositionAbsolute
             ? formatClassName(
                 formattedLines.slice(1).join(EOL),
                 options.printWidth - options.tabWidth * multiLineIndentLevel,
@@ -434,17 +432,15 @@ function formatTokens(
       const isMultiLineClassName = formattedLines.length > 1;
 
       if (isMultiLineClassName) {
-        // eslint-disable-next-line no-nested-ternary
-        const multiLineIndentLevel = isStartingPositionRelative
-          ? props.isTheFirstLineOnTheSameLineAsTheAttributeName ||
-            props.isItAnOperandOfTernaryOperator
+        const multiLineIndentLevel =
+          props.isTheFirstLineOnTheSameLineAsTheAttributeName ||
+          props.isItAnOperandOfTernaryOperator
             ? props.indentLevel + 1
-            : props.indentLevel
-          : 0;
+            : props.indentLevel;
 
         formattedClassName = [
           formattedLines[0],
-          ...(isOutputIdeal
+          ...(isEndingPositionAbsolute
             ? `${formatClassName(
                 formattedLines.slice(1).join(EOL),
                 options.printWidth - options.tabWidth * multiLineIndentLevel,
@@ -565,9 +561,7 @@ function unfreezeToken(token: TextToken, options: ResolvedOptions): string {
               // eslint-disable-next-line no-nested-ternary
               isNestedExpressionClosedOnTheNextLine
                 ? ''
-                : options.endingPosition === 'absolute'
-                  ? EOL
-                  : token.children[index + 1].body.match(new RegExp(`^${EOL}[${SPACE}${TAB}]*`))![0]
+                : token.children[index + 1].body.match(new RegExp(`^${EOL}[${SPACE}${TAB}]*`))![0]
             }`;
           }
 

@@ -12,8 +12,8 @@ exports[`'(2) Tagged templates are supported by adding tag function names to the
 "<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
 <script>
   const classes = tw\`lorem ipsum dolor sit amet consectetur
-adipiscing elit proin ex massa hendrerit eu posuere eu
-volutpat id neque pellentesque\`;
+  adipiscing elit proin ex massa hendrerit eu posuere eu
+  volutpat id neque pellentesque\`;
 </script>
 "
 `;
@@ -24,8 +24,8 @@ exports[`'(3) If a tagged template is written as an expression for an attribute 
   <div>
     <div
       class={tw\`lorem ipsum dolor sit amet consectetur
-adipiscing elit proin ex massa hendrerit eu posuere eu
-volutpat id neque pellentesque\`}
+        adipiscing elit proin ex massa hendrerit eu posuere
+        eu volutpat id neque pellentesque\`}
     >
       <slot />
     </div>

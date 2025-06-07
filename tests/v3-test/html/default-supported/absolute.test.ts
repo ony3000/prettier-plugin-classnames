@@ -33,13 +33,15 @@ const fixtures: Fixture[] = [
     <div>
       <div
         class="lorem ipsum dolor sit amet consectetur
-adipiscing elit proin ex massa hendrerit eu posuere"
+          adipiscing elit proin ex massa hendrerit eu
+          posuere"
       >
         <span>lorem ipsum</span>
       </div>
       <div
         className="lorem ipsum dolor sit amet consectetur
-adipiscing elit proin ex massa hendrerit eu posuere"
+          adipiscing elit proin ex massa hendrerit eu
+          posuere"
       >
         <span>lorem ipsum</span>
       </div>

@@ -20,7 +20,7 @@ export function Foo({ children }) {
   return (
     <div
       className={\`lorem ipsum dolor sit amet consectetur
-adipiscing\`}
+        adipiscing\`}
     >
       {children}
     </div>
@@ -35,7 +35,7 @@ export function Foo({ children }) {
   return (
     <div
       className={\` lorem ipsum dolor sit amet consectetur
-adipiscing \`}
+        adipiscing \`}
     >
       {children}
     </div>

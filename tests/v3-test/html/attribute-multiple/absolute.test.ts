@@ -108,7 +108,7 @@ const fixtures: Fixture[] = [
       id="lorem-ipsum"
       title="lorem ipsum"
       class="lorem ipsum dolor sit amet consectetur
-adipiscing elit proin"
+        adipiscing elit proin"
     >
       <slot></slot>
     </div>
@@ -134,7 +134,7 @@ adipiscing elit proin"
       id="lorem-ipsum"
       title="lorem ipsum"
       class="lorem ipsum dolor sit amet consectetur
-adipiscing elit proin"
+        adipiscing elit proin"
     >
       <slot></slot>
     </div>
@@ -165,7 +165,7 @@ adipiscing elit proin"
       id="lorem-ipsum"
       title="lorem ipsum"
       class="lorem ipsum dolor sit amet consectetur
-adipiscing elit proin"
+        adipiscing elit proin"
     >
       <slot></slot>
     </div>
@@ -191,8 +191,8 @@ adipiscing elit proin"
       id="lorem-ipsum"
       title="lorem ipsum"
       class="lorem ipsum dolor sit amet consectetur
-adipiscing elit proin ex massa hendrerit eu posuere eu
-volutpat id neque pellentesque"
+        adipiscing elit proin ex massa hendrerit eu posuere
+        eu volutpat id neque pellentesque"
     >
       <slot></slot>
     </div>
@@ -218,8 +218,8 @@ volutpat id neque pellentesque"
       id="lorem-ipsum"
       title="lorem ipsum"
       class="lorem ipsum dolor sit amet consectetur
-adipiscing elit proin ex massa hendrerit eu posuere eu
-volutpat id neque pellentesque"
+        adipiscing elit proin ex massa hendrerit eu posuere
+        eu volutpat id neque pellentesque"
     >
       <slot></slot>
     </div>
@@ -250,8 +250,8 @@ volutpat id neque pellentesque"
       id="lorem-ipsum"
       title="lorem ipsum"
       class="lorem ipsum dolor sit amet consectetur
-adipiscing elit proin ex massa hendrerit eu posuere eu
-volutpat id neque pellentesque"
+        adipiscing elit proin ex massa hendrerit eu posuere
+        eu volutpat id neque pellentesque"
     >
       <slot></slot>
     </div>
@@ -282,7 +282,7 @@ volutpat id neque pellentesque"
       id="lorem-ipsum"
       title="lorem ipsum"
       class="lorem ipsum dolor sit amet consectetur
-adipiscing elit proin ex massa hendrerit eu posuere"
+        adipiscing elit proin ex massa hendrerit eu posuere"
     >
       <slot></slot>
     </Box>

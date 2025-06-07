@@ -97,7 +97,7 @@ export function Foo({ children }) {
     <div
       className={classNames(
         \`lorem ipsum dolor sit amet consectetur adipiscing
-elit proin\`,
+        elit proin\`,
       )}
     >
       {children}
@@ -122,7 +122,7 @@ export function Foo({ children }) {
     <div
       className={classNames(
         \` lorem ipsum dolor sit amet consectetur adipiscing
-elit proin \`,
+        elit proin \`,
       )}
     >
       {children}
@@ -152,7 +152,7 @@ export function Foo({ children }) {
     <div
       className={classNames(
         \`lorem ipsum dolor sit amet consectetur adipiscing
-elit proin\`,
+        elit proin\`,
       )}
     >
       {children}
@@ -177,8 +177,8 @@ export function Foo({ children }) {
     <div
       className={classNames(
         \`lorem ipsum dolor sit amet consectetur adipiscing
-elit proin ex massa hendrerit eu posuere eu volutpat id
-neque pellentesque\`,
+        elit proin ex massa hendrerit eu posuere eu volutpat
+        id neque pellentesque\`,
       )}
     >
       {children}
@@ -203,8 +203,8 @@ export function Foo({ children }) {
     <div
       className={classNames(
         \` lorem ipsum dolor sit amet consectetur adipiscing
-elit proin ex massa hendrerit eu posuere eu volutpat id
-neque pellentesque \`,
+        elit proin ex massa hendrerit eu posuere eu volutpat
+        id neque pellentesque \`,
       )}
     >
       {children}
@@ -234,8 +234,8 @@ export function Foo({ children }) {
     <div
       className={classNames(
         \`lorem ipsum dolor sit amet consectetur adipiscing
-elit proin ex massa hendrerit eu posuere eu volutpat id
-neque pellentesque\`,
+        elit proin ex massa hendrerit eu posuere eu volutpat
+        id neque pellentesque\`,
       )}
     >
       {children}
@@ -260,7 +260,7 @@ export function Foo({ children }) {
     <Box
       className={classNames(
         \`lorem ipsum dolor sit amet consectetur adipiscing
-elit proin ex massa hendrerit eu posuere\`,
+        elit proin ex massa hendrerit eu posuere\`,
       )}
     >
       {children}

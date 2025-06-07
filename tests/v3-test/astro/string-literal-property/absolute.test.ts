@@ -103,7 +103,7 @@ const fixtures: Fixture[] = [
     <div
       class={classNames({
         [\`lorem ipsum dolor sit amet consectetur adipiscing
-elit proin\`]: true,
+        elit proin\`]: true,
       })}
     >
       <slot />
@@ -128,7 +128,7 @@ elit proin\`]: true,
     <div
       class={classNames({
         [\` lorem ipsum dolor sit amet consectetur adipiscing
-elit proin \`]: true,
+        elit proin \`]: true,
       })}
     >
       <slot />
@@ -158,7 +158,7 @@ elit proin \`]: true,
     <div
       class={classNames({
         [\`lorem ipsum dolor sit amet consectetur adipiscing
-elit proin\`]: true,
+        elit proin\`]: true,
       })}
     >
       <slot />
@@ -183,8 +183,8 @@ elit proin\`]: true,
     <div
       class={classNames({
         [\`lorem ipsum dolor sit amet consectetur adipiscing
-elit proin ex massa hendrerit eu posuere eu volutpat id
-neque pellentesque\`]: true,
+        elit proin ex massa hendrerit eu posuere eu volutpat
+        id neque pellentesque\`]: true,
       })}
     >
       <slot />
@@ -209,8 +209,8 @@ neque pellentesque\`]: true,
     <div
       class={classNames({
         [\` lorem ipsum dolor sit amet consectetur adipiscing
-elit proin ex massa hendrerit eu posuere eu volutpat id
-neque pellentesque \`]: true,
+        elit proin ex massa hendrerit eu posuere eu volutpat
+        id neque pellentesque \`]: true,
       })}
     >
       <slot />
@@ -240,8 +240,8 @@ neque pellentesque \`]: true,
     <div
       class={classNames({
         [\`lorem ipsum dolor sit amet consectetur adipiscing
-elit proin ex massa hendrerit eu posuere eu volutpat id
-neque pellentesque\`]: true,
+        elit proin ex massa hendrerit eu posuere eu volutpat
+        id neque pellentesque\`]: true,
       })}
     >
       <slot />
@@ -266,7 +266,7 @@ neque pellentesque\`]: true,
     <Box
       class={classNames({
         [\`lorem ipsum dolor sit amet consectetur adipiscing
-elit proin ex massa hendrerit eu posuere\`]: true,
+        elit proin ex massa hendrerit eu posuere\`]: true,
       })}
     >
       <slot />
@@ -292,11 +292,13 @@ elit proin ex massa hendrerit eu posuere\`]: true,
       class:list={[
         {
           [\`lorem ipsum dolor sit amet consectetur
-adipiscing elit proin ex massa hendrerit eu posuere\`]: true,
+          adipiscing elit proin ex massa hendrerit eu
+          posuere\`]: true,
         },
         {
           [\`lorem ipsum dolor sit amet consectetur
-adipiscing elit proin ex massa hendrerit eu posuere\`]: true,
+          adipiscing elit proin ex massa hendrerit eu
+          posuere\`]: true,
         },
       ]}
     >

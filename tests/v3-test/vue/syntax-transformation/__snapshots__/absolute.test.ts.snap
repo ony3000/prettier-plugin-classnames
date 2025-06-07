@@ -18,8 +18,8 @@ exports[`'(2) Long enough class names cause syntactic transformations.' > expect
   <div>
     <div
       :class="\`lorem ipsum dolor sit amet consectetur
-adipiscing elit proin ex massa hendrerit eu posuere eu
-volutpat id neque pellentesque\`"
+        adipiscing elit proin ex massa hendrerit eu posuere
+        eu volutpat id neque pellentesque\`"
     >
       <slot></slot>
     </div>

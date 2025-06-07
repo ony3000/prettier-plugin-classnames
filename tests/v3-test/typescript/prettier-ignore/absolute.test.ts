@@ -132,7 +132,7 @@ export function Foo({ children }) {
         // prettier-ignore
         'lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere',
         \`lorem ipsum dolor sit amet consectetur adipiscing
-elit proin ex massa hendrerit eu posuere\`,
+        elit proin ex massa hendrerit eu posuere\`,
       )}
     >
       {children}
@@ -163,7 +163,7 @@ export function Foo({ children }) {
     <div
       className={classNames(
         \`lorem ipsum dolor sit amet consectetur adipiscing
-elit proin ex massa hendrerit eu posuere\`,
+        elit proin ex massa hendrerit eu posuere\`,
       )}
     >
       {children}
@@ -190,7 +190,7 @@ export function Foo({ children }) {
     <div
       className={classNames(
         \`lorem ipsum dolor sit amet consectetur adipiscing
-elit proin ex massa hendrerit eu posuere\`,
+        elit proin ex massa hendrerit eu posuere\`,
       )}
     >
       {children}

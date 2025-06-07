@@ -91,7 +91,7 @@ const fixtures: Fixture[] = [
     <div
       [class]="
         'lorem ipsum dolor sit amet consectetur adipiscing
-elit proin'
+        elit proin'
       "
     >
       <slot></slot>
@@ -116,7 +116,7 @@ elit proin'
     <div
       [class]="
         ' lorem ipsum dolor sit amet consectetur adipiscing
-elit proin '
+        elit proin '
       "
     >
       <slot></slot>
@@ -146,7 +146,7 @@ elit proin '
     <div
       [class]="
         'lorem ipsum dolor sit amet consectetur adipiscing
-elit proin'
+        elit proin'
       "
     >
       <slot></slot>
@@ -171,8 +171,8 @@ elit proin'
     <div
       [class]="
         'lorem ipsum dolor sit amet consectetur adipiscing
-elit proin ex massa hendrerit eu posuere eu volutpat id
-neque pellentesque'
+        elit proin ex massa hendrerit eu posuere eu volutpat
+        id neque pellentesque'
       "
     >
       <slot></slot>
@@ -197,8 +197,8 @@ neque pellentesque'
     <div
       [class]="
         ' lorem ipsum dolor sit amet consectetur adipiscing
-elit proin ex massa hendrerit eu posuere eu volutpat id
-neque pellentesque '
+        elit proin ex massa hendrerit eu posuere eu volutpat
+        id neque pellentesque '
       "
     >
       <slot></slot>
@@ -228,8 +228,8 @@ neque pellentesque '
     <div
       [class]="
         'lorem ipsum dolor sit amet consectetur adipiscing
-elit proin ex massa hendrerit eu posuere eu volutpat id
-neque pellentesque'
+        elit proin ex massa hendrerit eu posuere eu volutpat
+        id neque pellentesque'
       "
     >
       <slot></slot>
@@ -254,7 +254,7 @@ neque pellentesque'
     <Box
       [class]="
         'lorem ipsum dolor sit amet consectetur adipiscing
-elit proin ex massa hendrerit eu posuere'
+        elit proin ex massa hendrerit eu posuere'
       "
     >
       <slot></slot>
@@ -279,7 +279,7 @@ elit proin ex massa hendrerit eu posuere'
     <div
       [className]="
         'lorem ipsum dolor sit amet consectetur adipiscing
-elit proin ex massa hendrerit eu posuere'
+        elit proin ex massa hendrerit eu posuere'
       "
     >
       <slot></slot>
@@ -304,7 +304,7 @@ elit proin ex massa hendrerit eu posuere'
     <div
       [attr.class]="
         'lorem ipsum dolor sit amet consectetur adipiscing
-elit proin ex massa hendrerit eu posuere'
+        elit proin ex massa hendrerit eu posuere'
       "
     >
       <slot></slot>
@@ -329,7 +329,7 @@ elit proin ex massa hendrerit eu posuere'
     <div
       [ngClass]="
         'lorem ipsum dolor sit amet consectetur adipiscing
-elit proin ex massa hendrerit eu posuere'
+        elit proin ex massa hendrerit eu posuere'
       "
     >
       <slot></slot>

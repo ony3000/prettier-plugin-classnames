@@ -23,7 +23,7 @@ const fixtures: Fixture[] = [
   </div>
 </div>
 `,
-    output: `<div>\r\n  <div>\r\n    <div\r\n      class="lorem ipsum dolor sit amet consectetur\r\nadipiscing elit proin ex massa hendrerit eu posuere"\r\n    >\r\n      <slot />\r\n    </div>\r\n  </div>\r\n</div>\r\n`,
+    output: `<div>\r\n  <div>\r\n    <div\r\n      class="lorem ipsum dolor sit amet consectetur\r\n        adipiscing elit proin ex massa hendrerit eu posuere"\r\n    >\r\n      <slot />\r\n    </div>\r\n  </div>\r\n</div>\r\n`,
     options: {
       endOfLine: 'crlf',
     },
@@ -43,7 +43,8 @@ const fixtures: Fixture[] = [
     <div>
         <div
             class="lorem ipsum dolor sit amet consectetur
-adipiscing elit proin ex massa hendrerit eu posuere"
+                adipiscing elit proin ex massa hendrerit eu
+                posuere"
         >
             <slot />
         </div>
@@ -69,7 +70,7 @@ adipiscing elit proin ex massa hendrerit eu posuere"
 \t<div>
 \t\t<div
 \t\t\tclass="lorem ipsum dolor sit amet consectetur
-adipiscing elit proin ex massa hendrerit eu posuere"
+\t\t\t\tadipiscing elit proin ex massa hendrerit eu posuere"
 \t\t>
 \t\t\t<slot />
 \t\t</div>
@@ -96,7 +97,8 @@ adipiscing elit proin ex massa hendrerit eu posuere"
 \t<div>
 \t\t<div
 \t\t\tclass="lorem ipsum dolor sit amet consectetur
-adipiscing elit proin ex massa hendrerit eu posuere"
+\t\t\t\tadipiscing elit proin ex massa hendrerit eu
+\t\t\t\tposuere"
 \t\t>
 \t\t\t<slot />
 \t\t</div>
@@ -123,8 +125,9 @@ adipiscing elit proin ex massa hendrerit eu posuere"
 \t<div>
 \t\t<div
 \t\t\tclass="lorem ipsum dolor sit amet
-consectetur adipiscing elit proin ex massa hendrerit eu
-posuere"
+\t\t\t\tconsectetur adipiscing elit
+\t\t\t\tproin ex massa hendrerit eu
+\t\t\t\tposuere"
 \t\t>
 \t\t\t<slot />
 \t\t</div>
@@ -175,7 +178,7 @@ posuere"
   <div>
     <div
       fixme="lorem ipsum dolor sit amet consectetur
-adipiscing elit proin ex massa hendrerit eu posuere"
+        adipiscing elit proin ex massa hendrerit eu posuere"
     >
       <slot />
     </div>
@@ -202,7 +205,7 @@ adipiscing elit proin ex massa hendrerit eu posuere"
     <div
       class={clsx(
         \`lorem ipsum dolor sit amet consectetur adipiscing
-elit proin ex massa hendrerit eu posuere\`,
+        elit proin ex massa hendrerit eu posuere\`,
       )}
     >
       <slot />
@@ -235,10 +238,10 @@ elit proin ex massa hendrerit eu posuere\`,
       class={classNames({
         short: "lorem ipsum dolor sit amet",
         near: \`lorem ipsum dolor sit amet consectetur
-adipiscing elit proin\`,
+        adipiscing elit proin\`,
         long: \`lorem ipsum dolor sit amet consectetur
-adipiscing elit proin ex massa hendrerit eu posuere eu
-volutpat id neque pellentesque\`,
+        adipiscing elit proin ex massa hendrerit eu posuere
+        eu volutpat id neque pellentesque\`,
       })}
     >
       <slot />

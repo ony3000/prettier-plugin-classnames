@@ -9,8 +9,8 @@ exports[`'(1) Line wrapping must be performed even when including TypeScript syn
 <div class="relative">
   <input
     class="text-primary-700 w-full rounded-md border
-border-gray-300 px-3 py-2 font-semibold focus:outline-none
-focus:ring-2 focus:ring-blue-500"
+      border-gray-300 px-3 py-2 font-semibold
+      focus:outline-none focus:ring-2 focus:ring-blue-500"
   />
 </div>
 "

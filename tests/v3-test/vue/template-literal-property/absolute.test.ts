@@ -108,7 +108,7 @@ const fixtures: Fixture[] = [
       v-bind:class="
         classNames({
           [\`lorem ipsum dolor sit amet consectetur
-adipiscing elit proin\`]: true,
+          adipiscing elit proin\`]: true,
         })
       "
     >
@@ -135,7 +135,7 @@ adipiscing elit proin\`]: true,
       v-bind:class="
         classNames({
           [\` lorem ipsum dolor sit amet consectetur
-adipiscing elit proin \`]: true,
+          adipiscing elit proin \`]: true,
         })
       "
     >
@@ -167,7 +167,7 @@ adipiscing elit proin \`]: true,
       v-bind:class="
         classNames({
           [\`lorem ipsum dolor sit amet consectetur
-adipiscing elit proin\`]: true,
+          adipiscing elit proin\`]: true,
         })
       "
     >
@@ -194,8 +194,8 @@ adipiscing elit proin\`]: true,
       v-bind:class="
         classNames({
           [\`lorem ipsum dolor sit amet consectetur
-adipiscing elit proin ex massa hendrerit eu posuere eu
-volutpat id neque pellentesque\`]: true,
+          adipiscing elit proin ex massa hendrerit eu
+          posuere eu volutpat id neque pellentesque\`]: true,
         })
       "
     >
@@ -222,8 +222,9 @@ volutpat id neque pellentesque\`]: true,
       v-bind:class="
         classNames({
           [\` lorem ipsum dolor sit amet consectetur
-adipiscing elit proin ex massa hendrerit eu posuere eu
-volutpat id neque pellentesque \`]: true,
+          adipiscing elit proin ex massa hendrerit eu
+          posuere eu volutpat id neque pellentesque \`]:
+            true,
         })
       "
     >
@@ -255,8 +256,8 @@ volutpat id neque pellentesque \`]: true,
       v-bind:class="
         classNames({
           [\`lorem ipsum dolor sit amet consectetur
-adipiscing elit proin ex massa hendrerit eu posuere eu
-volutpat id neque pellentesque\`]: true,
+          adipiscing elit proin ex massa hendrerit eu
+          posuere eu volutpat id neque pellentesque\`]: true,
         })
       "
     >
@@ -283,7 +284,8 @@ volutpat id neque pellentesque\`]: true,
       v-bind:class="
         classNames({
           [\`lorem ipsum dolor sit amet consectetur
-adipiscing elit proin ex massa hendrerit eu posuere\`]: true,
+          adipiscing elit proin ex massa hendrerit eu
+          posuere\`]: true,
         })
       "
     >
@@ -310,7 +312,8 @@ adipiscing elit proin ex massa hendrerit eu posuere\`]: true,
       :class="
         classNames({
           [\`lorem ipsum dolor sit amet consectetur
-adipiscing elit proin ex massa hendrerit eu posuere\`]: true,
+          adipiscing elit proin ex massa hendrerit eu
+          posuere\`]: true,
         })
       "
     >

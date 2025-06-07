@@ -8,7 +8,7 @@ export function Foo({ children }) {
       className={
         truthyExpression &&
         \`lorem ipsum dolor sit amet consectetur adipiscing
-elit proin ex massa hendrerit eu posuere\`
+        elit proin ex massa hendrerit eu posuere\`
       }
     >
       {children}
@@ -28,7 +28,7 @@ export function Foo({ children }) {
         "lorem ipsum dolor sit amet" !==
           "consectetur adipiscing elit proin ex massa hendrerit eu posuere" &&
         \`lorem ipsum dolor sit amet consectetur adipiscing
-elit proin ex massa hendrerit eu posuere\`
+        elit proin ex massa hendrerit eu posuere\`
       }
     >
       {children}
@@ -47,9 +47,11 @@ export function Foo({ children }) {
         truthyExpression &&
         (condition
           ? \`lorem ipsum dolor sit amet consectetur
-adipiscing elit proin ex massa hendrerit eu posuere\`
+            adipiscing elit proin ex massa hendrerit eu
+            posuere\`
           : \`lorem ipsum dolor sit amet consectetur
-adipiscing elit proin ex massa hendrerit eu posuere\`)
+            adipiscing elit proin ex massa hendrerit eu
+            posuere\`)
       }
     >
       {children}
@@ -67,7 +69,7 @@ export function Foo({ children }) {
       className={
         falsyExpression ||
         \`lorem ipsum dolor sit amet consectetur adipiscing
-elit proin ex massa hendrerit eu posuere\`
+        elit proin ex massa hendrerit eu posuere\`
       }
     >
       {children}
@@ -87,7 +89,7 @@ export function Foo({ children }) {
         "lorem ipsum dolor sit amet" ===
           "consectetur adipiscing elit proin ex massa hendrerit eu posuere" ||
         \`lorem ipsum dolor sit amet consectetur adipiscing
-elit proin ex massa hendrerit eu posuere\`
+        elit proin ex massa hendrerit eu posuere\`
       }
     >
       {children}
@@ -106,9 +108,11 @@ export function Foo({ children }) {
         falsyExpression ||
         (condition
           ? \`lorem ipsum dolor sit amet consectetur
-adipiscing elit proin ex massa hendrerit eu posuere\`
+            adipiscing elit proin ex massa hendrerit eu
+            posuere\`
           : \`lorem ipsum dolor sit amet consectetur
-adipiscing elit proin ex massa hendrerit eu posuere\`)
+            adipiscing elit proin ex massa hendrerit eu
+            posuere\`)
       }
     >
       {children}
@@ -126,7 +130,7 @@ export function Foo({ children }) {
       className={
         null ??
         \`lorem ipsum dolor sit amet consectetur adipiscing
-elit proin ex massa hendrerit eu posuere\`
+        elit proin ex massa hendrerit eu posuere\`
       }
     >
       {children}
@@ -145,7 +149,7 @@ export function Foo({ children }) {
         null ??
         void "lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere" ??
         \`lorem ipsum dolor sit amet consectetur adipiscing
-elit proin ex massa hendrerit eu posuere\`
+        elit proin ex massa hendrerit eu posuere\`
       }
     >
       {children}
@@ -164,9 +168,11 @@ export function Foo({ children }) {
         null ??
         (condition
           ? \`lorem ipsum dolor sit amet consectetur
-adipiscing elit proin ex massa hendrerit eu posuere\`
+            adipiscing elit proin ex massa hendrerit eu
+            posuere\`
           : \`lorem ipsum dolor sit amet consectetur
-adipiscing elit proin ex massa hendrerit eu posuere\`)
+            adipiscing elit proin ex massa hendrerit eu
+            posuere\`)
       }
     >
       {children}

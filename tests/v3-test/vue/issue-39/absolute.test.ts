@@ -33,7 +33,7 @@ const fixtures: Fixture[] = [
       ({ active }) =>
         \`relative cursor-default select-none py-2 pl-10 pr-4 \${
           active ? 'bg-teal-600 text-white' : 'text-gray-900'
-}\`
+        }\`
     "
     :value="'test'"
   ></Combobox.Option>
@@ -64,9 +64,9 @@ const fixtures: Fixture[] = [
           active
             ? \`bg-teal-600 \${
                 active ? 'bg-teal-600 text-white' : 'text-gray-900'
-} text-white\`
+              } text-white\`
             : 'text-gray-900'
-}\`
+        }\`
     "
     :value="'test'"
   ></Combobox.Option>

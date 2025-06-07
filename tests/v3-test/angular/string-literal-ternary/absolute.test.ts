@@ -111,9 +111,9 @@ const fixtures: Fixture[] = [
       [class]="
         condition
           ? 'lorem ipsum dolor sit amet consectetur
-adipiscing elit proin'
+            adipiscing elit proin'
           : 'lorem ipsum dolor sit amet consectetur
-adipiscing elit proin'
+            adipiscing elit proin'
       "
     >
       <slot></slot>
@@ -139,9 +139,9 @@ adipiscing elit proin'
       [class]="
         condition
           ? ' lorem ipsum dolor sit amet consectetur
-adipiscing elit proin '
+            adipiscing elit proin '
           : ' lorem ipsum dolor sit amet consectetur
-adipiscing elit proin '
+            adipiscing elit proin '
       "
     >
       <slot></slot>
@@ -175,9 +175,9 @@ adipiscing elit proin '
       [class]="
         condition
           ? 'lorem ipsum dolor sit amet consectetur
-adipiscing elit proin'
+            adipiscing elit proin'
           : 'lorem ipsum dolor sit amet consectetur
-adipiscing elit proin'
+            adipiscing elit proin'
       "
     >
       <slot></slot>
@@ -203,11 +203,11 @@ adipiscing elit proin'
       [class]="
         condition
           ? 'lorem ipsum dolor sit amet consectetur
-adipiscing elit proin ex massa hendrerit eu posuere eu
-volutpat id neque pellentesque'
+            adipiscing elit proin ex massa hendrerit eu
+            posuere eu volutpat id neque pellentesque'
           : 'lorem ipsum dolor sit amet consectetur
-adipiscing elit proin ex massa hendrerit eu posuere eu
-volutpat id neque pellentesque'
+            adipiscing elit proin ex massa hendrerit eu
+            posuere eu volutpat id neque pellentesque'
       "
     >
       <slot></slot>
@@ -233,11 +233,11 @@ volutpat id neque pellentesque'
       [class]="
         condition
           ? ' lorem ipsum dolor sit amet consectetur
-adipiscing elit proin ex massa hendrerit eu posuere eu
-volutpat id neque pellentesque '
+            adipiscing elit proin ex massa hendrerit eu
+            posuere eu volutpat id neque pellentesque '
           : ' lorem ipsum dolor sit amet consectetur
-adipiscing elit proin ex massa hendrerit eu posuere eu
-volutpat id neque pellentesque '
+            adipiscing elit proin ex massa hendrerit eu
+            posuere eu volutpat id neque pellentesque '
       "
     >
       <slot></slot>
@@ -271,11 +271,11 @@ volutpat id neque pellentesque '
       [class]="
         condition
           ? 'lorem ipsum dolor sit amet consectetur
-adipiscing elit proin ex massa hendrerit eu posuere eu
-volutpat id neque pellentesque'
+            adipiscing elit proin ex massa hendrerit eu
+            posuere eu volutpat id neque pellentesque'
           : 'lorem ipsum dolor sit amet consectetur
-adipiscing elit proin ex massa hendrerit eu posuere eu
-volutpat id neque pellentesque'
+            adipiscing elit proin ex massa hendrerit eu
+            posuere eu volutpat id neque pellentesque'
       "
     >
       <slot></slot>
@@ -301,9 +301,11 @@ volutpat id neque pellentesque'
       [class]="
         condition
           ? 'lorem ipsum dolor sit amet consectetur
-adipiscing elit proin ex massa hendrerit eu posuere'
+            adipiscing elit proin ex massa hendrerit eu
+            posuere'
           : 'lorem ipsum dolor sit amet consectetur
-adipiscing elit proin ex massa hendrerit eu posuere'
+            adipiscing elit proin ex massa hendrerit eu
+            posuere'
       "
     >
       <slot></slot>
@@ -329,9 +331,11 @@ adipiscing elit proin ex massa hendrerit eu posuere'
       [className]="
         condition
           ? 'lorem ipsum dolor sit amet consectetur
-adipiscing elit proin ex massa hendrerit eu posuere'
+            adipiscing elit proin ex massa hendrerit eu
+            posuere'
           : 'lorem ipsum dolor sit amet consectetur
-adipiscing elit proin ex massa hendrerit eu posuere'
+            adipiscing elit proin ex massa hendrerit eu
+            posuere'
       "
     >
       <slot></slot>
@@ -357,9 +361,11 @@ adipiscing elit proin ex massa hendrerit eu posuere'
       [attr.class]="
         condition
           ? 'lorem ipsum dolor sit amet consectetur
-adipiscing elit proin ex massa hendrerit eu posuere'
+            adipiscing elit proin ex massa hendrerit eu
+            posuere'
           : 'lorem ipsum dolor sit amet consectetur
-adipiscing elit proin ex massa hendrerit eu posuere'
+            adipiscing elit proin ex massa hendrerit eu
+            posuere'
       "
     >
       <slot></slot>
@@ -385,9 +391,11 @@ adipiscing elit proin ex massa hendrerit eu posuere'
       [ngClass]="
         condition
           ? 'lorem ipsum dolor sit amet consectetur
-adipiscing elit proin ex massa hendrerit eu posuere'
+            adipiscing elit proin ex massa hendrerit eu
+            posuere'
           : 'lorem ipsum dolor sit amet consectetur
-adipiscing elit proin ex massa hendrerit eu posuere'
+            adipiscing elit proin ex massa hendrerit eu
+            posuere'
       "
     >
       <slot></slot>

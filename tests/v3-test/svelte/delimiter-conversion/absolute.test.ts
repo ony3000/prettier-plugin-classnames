@@ -165,7 +165,7 @@ const fixtures: Fixture[] = [
   <div>
     <div
       class={\`lorem ipsum do\\\`or sit amet consectetur
-adipiscing elit proin ex massa hendrerit eu posuere\`}
+        adipiscing elit proin ex massa hendrerit eu posuere\`}
     >
       <slot />
     </div>
@@ -188,7 +188,7 @@ adipiscing elit proin ex massa hendrerit eu posuere\`}
   <div>
     <div
       class={\`lorem ipsum do\\\`or sit amet consectetur
-adipiscing elit proin ex massa hendrerit eu posuere\`}
+        adipiscing elit proin ex massa hendrerit eu posuere\`}
     >
       <slot />
     </div>
@@ -211,7 +211,7 @@ adipiscing elit proin ex massa hendrerit eu posuere\`}
   <div>
     <div
       class={\`lorem ipsum do\\\`or sit amet consectetur
-adipiscing elit proin ex massa hendrerit eu posuere\`}
+        adipiscing elit proin ex massa hendrerit eu posuere\`}
     >
       <slot />
     </div>

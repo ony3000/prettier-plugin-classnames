@@ -25,8 +25,8 @@ exports[`'(3) If a tagged template is written as an expression for an attribute 
     <div
       :class="
         tw\`lorem ipsum dolor sit amet consectetur adipiscing
-elit proin ex massa hendrerit eu posuere eu volutpat id
-neque pellentesque\`
+        elit proin ex massa hendrerit eu posuere eu volutpat
+        id neque pellentesque\`
       "
     >
       <slot></slot>

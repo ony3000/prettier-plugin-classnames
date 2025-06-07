@@ -165,7 +165,7 @@ export function Foo({ children }) {
   return (
     <div
       className={\`lorem ipsum do\\\`or sit amet consectetur
-adipiscing elit proin ex massa hendrerit eu posuere\`}
+        adipiscing elit proin ex massa hendrerit eu posuere\`}
     >
       {children}
     </div>
@@ -188,7 +188,7 @@ export function Foo({ children }) {
   return (
     <div
       className={\`lorem ipsum do\\\`or sit amet consectetur
-adipiscing elit proin ex massa hendrerit eu posuere\`}
+        adipiscing elit proin ex massa hendrerit eu posuere\`}
     >
       {children}
     </div>
@@ -211,7 +211,7 @@ export function Foo({ children }) {
   return (
     <div
       className={\`lorem ipsum do\\\`or sit amet consectetur
-adipiscing elit proin ex massa hendrerit eu posuere\`}
+        adipiscing elit proin ex massa hendrerit eu posuere\`}
     >
       {children}
     </div>

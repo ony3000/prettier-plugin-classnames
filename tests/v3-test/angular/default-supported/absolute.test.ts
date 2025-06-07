@@ -35,7 +35,8 @@ const fixtures: Fixture[] = [
         [class]="
           classNames(
             'lorem ipsum dolor sit amet consectetur
-adipiscing elit proin ex massa hendrerit eu posuere'
+            adipiscing elit proin ex massa hendrerit eu
+            posuere'
           )
         "
       >
@@ -45,7 +46,8 @@ adipiscing elit proin ex massa hendrerit eu posuere'
         [className]="
           classNames(
             'lorem ipsum dolor sit amet consectetur
-adipiscing elit proin ex massa hendrerit eu posuere'
+            adipiscing elit proin ex massa hendrerit eu
+            posuere'
           )
         "
       >
@@ -79,7 +81,8 @@ adipiscing elit proin ex massa hendrerit eu posuere'
         [class]="
           foo(
             'lorem ipsum dolor sit amet consectetur
-adipiscing elit proin ex massa hendrerit eu posuere'
+            adipiscing elit proin ex massa hendrerit eu
+            posuere'
           )
         "
       >
@@ -89,7 +92,8 @@ adipiscing elit proin ex massa hendrerit eu posuere'
         [className]="
           foo(
             'lorem ipsum dolor sit amet consectetur
-adipiscing elit proin ex massa hendrerit eu posuere'
+            adipiscing elit proin ex massa hendrerit eu
+            posuere'
           )
         "
       >
@@ -120,7 +124,8 @@ adipiscing elit proin ex massa hendrerit eu posuere'
         [title]="
           classNames(
             'lorem ipsum dolor sit amet consectetur
-adipiscing elit proin ex massa hendrerit eu posuere'
+            adipiscing elit proin ex massa hendrerit eu
+            posuere'
           )
         "
       >
