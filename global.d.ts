@@ -27,7 +27,7 @@ declare global {
   type ThisPluginOptions = {
     customAttributes: string[];
     customFunctions: string[];
-    endingPosition: 'relative' | 'absolute';
+    endingPosition: 'absolute' | 'relative';
     syntaxTransformation: boolean;
   };
 
