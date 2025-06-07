@@ -27,7 +27,7 @@ declare global {
   type ThisPluginOptions = {
     customAttributes: string[];
     customFunctions: string[];
-    endingPosition: 'relative' | 'absolute' | 'absolute-with-indent';
+    endingPosition: 'relative' | 'absolute';
     syntaxTransformation: boolean;
   };
 
