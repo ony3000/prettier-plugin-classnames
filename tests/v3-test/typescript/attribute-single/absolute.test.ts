@@ -90,7 +90,7 @@ export function Foo({ children }) {
   return (
     <div
       className="lorem ipsum dolor sit amet consectetur
-adipiscing elit proin"
+        adipiscing elit proin"
     >
       {children}
     </div>
@@ -113,7 +113,7 @@ export function Foo({ children }) {
   return (
     <div
       className="lorem ipsum dolor sit amet consectetur
-adipiscing elit proin"
+        adipiscing elit proin"
     >
       {children}
     </div>
@@ -141,7 +141,7 @@ export function Foo({ children }) {
   return (
     <div
       className="lorem ipsum dolor sit amet consectetur
-adipiscing elit proin"
+        adipiscing elit proin"
     >
       {children}
     </div>
@@ -164,8 +164,8 @@ export function Foo({ children }) {
   return (
     <div
       className="lorem ipsum dolor sit amet consectetur
-adipiscing elit proin ex massa hendrerit eu posuere eu
-volutpat id neque pellentesque"
+        adipiscing elit proin ex massa hendrerit eu posuere
+        eu volutpat id neque pellentesque"
     >
       {children}
     </div>
@@ -188,8 +188,8 @@ export function Foo({ children }) {
   return (
     <div
       className="lorem ipsum dolor sit amet consectetur
-adipiscing elit proin ex massa hendrerit eu posuere eu
-volutpat id neque pellentesque"
+        adipiscing elit proin ex massa hendrerit eu posuere
+        eu volutpat id neque pellentesque"
     >
       {children}
     </div>
@@ -217,8 +217,8 @@ export function Foo({ children }) {
   return (
     <div
       className="lorem ipsum dolor sit amet consectetur
-adipiscing elit proin ex massa hendrerit eu posuere eu
-volutpat id neque pellentesque"
+        adipiscing elit proin ex massa hendrerit eu posuere
+        eu volutpat id neque pellentesque"
     >
       {children}
     </div>
@@ -241,7 +241,7 @@ export function Foo({ children }) {
   return (
     <Box
       className="lorem ipsum dolor sit amet consectetur
-adipiscing elit proin ex massa hendrerit eu posuere"
+        adipiscing elit proin ex massa hendrerit eu posuere"
     >
       {children}
     </Box>

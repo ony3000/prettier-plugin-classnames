@@ -104,7 +104,7 @@ const fixtures: Fixture[] = [
       v-bind:class="
         classNames(
           \`lorem ipsum dolor sit amet consectetur adipiscing
-elit proin\`,
+          elit proin\`,
         )
       "
     >
@@ -131,7 +131,7 @@ elit proin\`,
       v-bind:class="
         classNames(
           \` lorem ipsum dolor sit amet consectetur
-adipiscing elit proin \`,
+          adipiscing elit proin \`,
         )
       "
     >
@@ -163,7 +163,7 @@ adipiscing elit proin \`,
       v-bind:class="
         classNames(
           \`lorem ipsum dolor sit amet consectetur adipiscing
-elit proin\`,
+          elit proin\`,
         )
       "
     >
@@ -190,8 +190,8 @@ elit proin\`,
       v-bind:class="
         classNames(
           \`lorem ipsum dolor sit amet consectetur adipiscing
-elit proin ex massa hendrerit eu posuere eu volutpat id
-neque pellentesque\`,
+          elit proin ex massa hendrerit eu posuere eu
+          volutpat id neque pellentesque\`,
         )
       "
     >
@@ -218,8 +218,8 @@ neque pellentesque\`,
       v-bind:class="
         classNames(
           \` lorem ipsum dolor sit amet consectetur
-adipiscing elit proin ex massa hendrerit eu posuere eu
-volutpat id neque pellentesque \`,
+          adipiscing elit proin ex massa hendrerit eu
+          posuere eu volutpat id neque pellentesque \`,
         )
       "
     >
@@ -251,8 +251,8 @@ volutpat id neque pellentesque \`,
       v-bind:class="
         classNames(
           \`lorem ipsum dolor sit amet consectetur adipiscing
-elit proin ex massa hendrerit eu posuere eu volutpat id
-neque pellentesque\`,
+          elit proin ex massa hendrerit eu posuere eu
+          volutpat id neque pellentesque\`,
         )
       "
     >
@@ -279,7 +279,7 @@ neque pellentesque\`,
       v-bind:class="
         classNames(
           \`lorem ipsum dolor sit amet consectetur adipiscing
-elit proin ex massa hendrerit eu posuere\`,
+          elit proin ex massa hendrerit eu posuere\`,
         )
       "
     >
@@ -306,7 +306,7 @@ elit proin ex massa hendrerit eu posuere\`,
       :class="
         classNames(
           \`lorem ipsum dolor sit amet consectetur adipiscing
-elit proin ex massa hendrerit eu posuere\`,
+          elit proin ex massa hendrerit eu posuere\`,
         )
       "
     >

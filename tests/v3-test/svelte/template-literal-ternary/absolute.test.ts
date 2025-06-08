@@ -104,9 +104,9 @@ const fixtures: Fixture[] = [
     <div
       class={condition
         ? \`lorem ipsum dolor sit amet consectetur adipiscing
-elit proin\`
+          elit proin\`
         : \`lorem ipsum dolor sit amet consectetur adipiscing
-elit proin\`}
+          elit proin\`}
     >
       <slot />
     </div>
@@ -130,9 +130,9 @@ elit proin\`}
     <div
       class={condition
         ? \` lorem ipsum dolor sit amet consectetur
-adipiscing elit proin \`
+          adipiscing elit proin \`
         : \` lorem ipsum dolor sit amet consectetur
-adipiscing elit proin \`}
+          adipiscing elit proin \`}
     >
       <slot />
     </div>
@@ -164,9 +164,9 @@ adipiscing elit proin \`}
     <div
       class={condition
         ? \`lorem ipsum dolor sit amet consectetur adipiscing
-elit proin\`
+          elit proin\`
         : \`lorem ipsum dolor sit amet consectetur adipiscing
-elit proin\`}
+          elit proin\`}
     >
       <slot />
     </div>
@@ -190,11 +190,11 @@ elit proin\`}
     <div
       class={condition
         ? \`lorem ipsum dolor sit amet consectetur adipiscing
-elit proin ex massa hendrerit eu posuere eu volutpat id
-neque pellentesque\`
+          elit proin ex massa hendrerit eu posuere eu
+          volutpat id neque pellentesque\`
         : \`lorem ipsum dolor sit amet consectetur adipiscing
-elit proin ex massa hendrerit eu posuere eu volutpat id
-neque pellentesque\`}
+          elit proin ex massa hendrerit eu posuere eu
+          volutpat id neque pellentesque\`}
     >
       <slot />
     </div>
@@ -218,11 +218,11 @@ neque pellentesque\`}
     <div
       class={condition
         ? \` lorem ipsum dolor sit amet consectetur
-adipiscing elit proin ex massa hendrerit eu posuere eu
-volutpat id neque pellentesque \`
+          adipiscing elit proin ex massa hendrerit eu
+          posuere eu volutpat id neque pellentesque \`
         : \` lorem ipsum dolor sit amet consectetur
-adipiscing elit proin ex massa hendrerit eu posuere eu
-volutpat id neque pellentesque \`}
+          adipiscing elit proin ex massa hendrerit eu
+          posuere eu volutpat id neque pellentesque \`}
     >
       <slot />
     </div>
@@ -254,11 +254,11 @@ volutpat id neque pellentesque \`}
     <div
       class={condition
         ? \`lorem ipsum dolor sit amet consectetur adipiscing
-elit proin ex massa hendrerit eu posuere eu volutpat id
-neque pellentesque\`
+          elit proin ex massa hendrerit eu posuere eu
+          volutpat id neque pellentesque\`
         : \`lorem ipsum dolor sit amet consectetur adipiscing
-elit proin ex massa hendrerit eu posuere eu volutpat id
-neque pellentesque\`}
+          elit proin ex massa hendrerit eu posuere eu
+          volutpat id neque pellentesque\`}
     >
       <slot />
     </div>
@@ -282,9 +282,9 @@ neque pellentesque\`}
     <Box
       class={condition
         ? \`lorem ipsum dolor sit amet consectetur adipiscing
-elit proin ex massa hendrerit eu posuere\`
+          elit proin ex massa hendrerit eu posuere\`
         : \`lorem ipsum dolor sit amet consectetur adipiscing
-elit proin ex massa hendrerit eu posuere\`}
+          elit proin ex massa hendrerit eu posuere\`}
     >
       <slot />
     </Box>

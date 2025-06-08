@@ -149,10 +149,10 @@ const classes = {
 const classes = {
   short: tw\`lorem ipsum dolor sit amet\`,
   near: tw\`lorem ipsum dolor sit amet consectetur adipiscing
-elit proin\`,
+  elit proin\`,
   long: tw\`lorem ipsum dolor sit amet consectetur adipiscing
-elit proin ex massa hendrerit eu posuere eu volutpat id
-neque pellentesque\`,
+  elit proin ex massa hendrerit eu posuere eu volutpat id
+  neque pellentesque\`,
 };
 </script>
 `,

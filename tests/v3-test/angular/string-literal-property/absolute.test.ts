@@ -108,7 +108,7 @@ const fixtures: Fixture[] = [
       [class]="
         classNames({
           'lorem ipsum dolor sit amet consectetur adipiscing
-elit proin': true
+          elit proin': true
         })
       "
     >
@@ -135,7 +135,7 @@ elit proin': true
       [class]="
         classNames({
           ' lorem ipsum dolor sit amet consectetur
-adipiscing elit proin ': true
+          adipiscing elit proin ': true
         })
       "
     >
@@ -167,7 +167,7 @@ adipiscing elit proin ': true
       [class]="
         classNames({
           'lorem ipsum dolor sit amet consectetur adipiscing
-elit proin': true
+          elit proin': true
         })
       "
     >
@@ -194,8 +194,8 @@ elit proin': true
       [class]="
         classNames({
           'lorem ipsum dolor sit amet consectetur adipiscing
-elit proin ex massa hendrerit eu posuere eu volutpat id
-neque pellentesque': true
+          elit proin ex massa hendrerit eu posuere eu
+          volutpat id neque pellentesque': true
         })
       "
     >
@@ -222,8 +222,8 @@ neque pellentesque': true
       [class]="
         classNames({
           ' lorem ipsum dolor sit amet consectetur
-adipiscing elit proin ex massa hendrerit eu posuere eu
-volutpat id neque pellentesque ': true
+          adipiscing elit proin ex massa hendrerit eu
+          posuere eu volutpat id neque pellentesque ': true
         })
       "
     >
@@ -255,8 +255,8 @@ volutpat id neque pellentesque ': true
       [class]="
         classNames({
           'lorem ipsum dolor sit amet consectetur adipiscing
-elit proin ex massa hendrerit eu posuere eu volutpat id
-neque pellentesque': true
+          elit proin ex massa hendrerit eu posuere eu
+          volutpat id neque pellentesque': true
         })
       "
     >
@@ -283,7 +283,7 @@ neque pellentesque': true
       [class]="
         classNames({
           'lorem ipsum dolor sit amet consectetur adipiscing
-elit proin ex massa hendrerit eu posuere': true
+          elit proin ex massa hendrerit eu posuere': true
         })
       "
     >
@@ -310,7 +310,7 @@ elit proin ex massa hendrerit eu posuere': true
       [className]="
         classNames({
           'lorem ipsum dolor sit amet consectetur adipiscing
-elit proin ex massa hendrerit eu posuere': true
+          elit proin ex massa hendrerit eu posuere': true
         })
       "
     >
@@ -337,7 +337,7 @@ elit proin ex massa hendrerit eu posuere': true
       [attr.class]="
         classNames({
           'lorem ipsum dolor sit amet consectetur adipiscing
-elit proin ex massa hendrerit eu posuere': true
+          elit proin ex massa hendrerit eu posuere': true
         })
       "
     >
@@ -364,7 +364,7 @@ elit proin ex massa hendrerit eu posuere': true
       [ngClass]="
         classNames({
           'lorem ipsum dolor sit amet consectetur adipiscing
-elit proin ex massa hendrerit eu posuere': true
+          elit proin ex massa hendrerit eu posuere': true
         })
       "
     >

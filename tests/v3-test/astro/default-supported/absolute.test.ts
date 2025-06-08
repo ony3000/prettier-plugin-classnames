@@ -37,7 +37,7 @@ const fixtures: Fixture[] = [
       <div
         class={classNames(
           \`lorem ipsum dolor sit amet consectetur adipiscing
-elit proin ex massa hendrerit eu posuere\`,
+          elit proin ex massa hendrerit eu posuere\`,
         )}
       >
         <span>lorem ipsum</span>
@@ -45,7 +45,7 @@ elit proin ex massa hendrerit eu posuere\`,
       <div
         className={classNames(
           \`lorem ipsum dolor sit amet consectetur adipiscing
-elit proin ex massa hendrerit eu posuere\`,
+          elit proin ex massa hendrerit eu posuere\`,
         )}
       >
         <span>lorem ipsum</span>
@@ -54,7 +54,8 @@ elit proin ex massa hendrerit eu posuere\`,
         class:list={[
           classNames(
             \`lorem ipsum dolor sit amet consectetur
-adipiscing elit proin ex massa hendrerit eu posuere\`,
+            adipiscing elit proin ex massa hendrerit eu
+            posuere\`,
           ),
         ]}
       >
@@ -90,7 +91,7 @@ adipiscing elit proin ex massa hendrerit eu posuere\`,
       <div
         class={foo(
           \`lorem ipsum dolor sit amet consectetur adipiscing
-elit proin ex massa hendrerit eu posuere\`,
+          elit proin ex massa hendrerit eu posuere\`,
         )}
       >
         <span>lorem ipsum</span>
@@ -98,7 +99,7 @@ elit proin ex massa hendrerit eu posuere\`,
       <div
         className={foo(
           \`lorem ipsum dolor sit amet consectetur adipiscing
-elit proin ex massa hendrerit eu posuere\`,
+          elit proin ex massa hendrerit eu posuere\`,
         )}
       >
         <span>lorem ipsum</span>
@@ -107,7 +108,8 @@ elit proin ex massa hendrerit eu posuere\`,
         class:list={[
           foo(
             \`lorem ipsum dolor sit amet consectetur
-adipiscing elit proin ex massa hendrerit eu posuere\`,
+            adipiscing elit proin ex massa hendrerit eu
+            posuere\`,
           ),
         ]}
       >
@@ -137,7 +139,7 @@ adipiscing elit proin ex massa hendrerit eu posuere\`,
       <div
         title={classNames(
           \`lorem ipsum dolor sit amet consectetur adipiscing
-elit proin ex massa hendrerit eu posuere\`,
+          elit proin ex massa hendrerit eu posuere\`,
         )}
       >
         <span>lorem ipsum</span>

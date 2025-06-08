@@ -23,7 +23,7 @@ export function Foo({ children }) {
   );
 }
 `,
-    output: `export function Foo({ children }) {\r\n  return (\r\n    <div\r\n      className="lorem ipsum dolor sit amet consectetur\r\nadipiscing elit proin ex massa hendrerit eu posuere"\r\n    >\r\n      {children}\r\n    </div>\r\n  );\r\n}\r\n`,
+    output: `export function Foo({ children }) {\r\n  return (\r\n    <div\r\n      className="lorem ipsum dolor sit amet consectetur\r\n        adipiscing elit proin ex massa hendrerit eu posuere"\r\n    >\r\n      {children}\r\n    </div>\r\n  );\r\n}\r\n`,
     options: {
       endOfLine: 'crlf',
     },
@@ -43,8 +43,8 @@ export function Foo({ children }) {
     return (
         <div
             className="lorem ipsum dolor sit amet
-consectetur adipiscing elit proin ex massa hendrerit eu
-posuere"
+                consectetur adipiscing elit proin ex massa
+                hendrerit eu posuere"
         >
             {children}
         </div>
@@ -70,7 +70,7 @@ export function Foo({ children }) {
 \treturn (
 \t\t<div
 \t\t\tclassName="lorem ipsum dolor sit amet consectetur
-adipiscing elit proin ex massa hendrerit eu posuere"
+\t\t\t\tadipiscing elit proin ex massa hendrerit eu posuere"
 \t\t>
 \t\t\t{children}
 \t\t</div>
@@ -97,8 +97,8 @@ export function Foo({ children }) {
 \treturn (
 \t\t<div
 \t\t\tclassName="lorem ipsum dolor sit amet
-consectetur adipiscing elit proin ex massa hendrerit eu
-posuere"
+\t\t\t\tconsectetur adipiscing elit proin ex massa
+\t\t\t\thendrerit eu posuere"
 \t\t>
 \t\t\t{children}
 \t\t</div>
@@ -125,8 +125,9 @@ export function Foo({ children }) {
 \treturn (
 \t\t<div
 \t\t\tclassName="lorem ipsum dolor sit
-amet consectetur adipiscing elit proin ex massa hendrerit eu
-posuere"
+\t\t\t\tamet consectetur adipiscing
+\t\t\t\telit proin ex massa
+\t\t\t\thendrerit eu posuere"
 \t\t>
 \t\t\t{children}
 \t\t</div>
@@ -197,7 +198,7 @@ export function Foo({ children }) {
   return (
     <div
       fixme="lorem ipsum dolor sit amet consectetur
-adipiscing elit proin ex massa hendrerit eu posuere"
+        adipiscing elit proin ex massa hendrerit eu posuere"
     >
       {children}
     </div>
@@ -224,7 +225,7 @@ export function Foo({ children }) {
     <div
       className={clsx(
         \`lorem ipsum dolor sit amet consectetur adipiscing
-elit proin ex massa hendrerit eu posuere\`,
+        elit proin ex massa hendrerit eu posuere\`,
       )}
     >
       {children}
@@ -257,10 +258,10 @@ export function Foo({ children }) {
       className={classNames({
         short: "lorem ipsum dolor sit amet",
         near: \`lorem ipsum dolor sit amet consectetur
-adipiscing elit proin\`,
+        adipiscing elit proin\`,
         long: \`lorem ipsum dolor sit amet consectetur
-adipiscing elit proin ex massa hendrerit eu posuere eu
-volutpat id neque pellentesque\`,
+        adipiscing elit proin ex massa hendrerit eu posuere
+        eu volutpat id neque pellentesque\`,
       })}
     >
       {children}
