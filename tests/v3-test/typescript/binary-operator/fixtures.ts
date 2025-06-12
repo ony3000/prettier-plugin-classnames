@@ -1,4 +1,4 @@
-import type { Fixture } from 'test-settings';
+import type { Fixture } from '../../../test-settings';
 
 export const fixtures: Omit<Fixture, 'output'>[] = [
   {

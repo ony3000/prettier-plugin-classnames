@@ -11,7 +11,6 @@
     "prettier": "3.1.0",
     "prettier-plugin-astro": "0.11.0",
     "prettier-plugin-svelte": "3.0.0",
-    "test-settings": "workspace:*",
     "vite-tsconfig-paths": "4.2.3",
     "vitest": "1.1.3"
   }

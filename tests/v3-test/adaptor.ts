@@ -1,10 +1,11 @@
 import type { Plugin } from 'prettier';
 import { format } from 'prettier';
-import type { Fixture } from 'test-settings';
 import { describe, expect, onTestFailed, test } from 'vitest';
 
 // eslint-disable-next-line import/no-extraneous-dependencies
 import * as thisPlugin from '@/packages/v3-plugin';
+
+import type { Fixture } from '../test-settings';
 
 export { thisPlugin };
 
