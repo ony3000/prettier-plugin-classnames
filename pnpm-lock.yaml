@@ -7,6 +7,10 @@ settings:
 importers:
 
   .:
+    dependencies:
+      zod:
+        specifier: 3.22.4
+        version: 3.22.4
     devDependencies:
       '@trivago/prettier-plugin-sort-imports':
         specifier: 4.2.1
@@ -62,35 +66,6 @@ importers:
       typescript:
         specifier: 5.8.3
         version: 5.8.3
-      zod:
-        specifier: 3.22.4
-        version: 3.22.4
-
-  src/packages/core-parts:
-    dependencies:
-      zod:
-        specifier: 3.22.4
-        version: 3.22.4
-
-  src/packages/v3-plugin:
-    dependencies:
-      prettier:
-        specifier: 3.1.0
-        version: 3.1.0
-
-  tests/test-settings: {}
-
-  tests/v3-test:
-    devDependencies:
-      prettier:
-        specifier: 3.1.0
-        version: 3.1.0
-      prettier-plugin-astro:
-        specifier: 0.11.0
-        version: 0.11.0
-      prettier-plugin-svelte:
-        specifier: 3.0.0
-        version: 3.0.0(prettier@3.1.0)(svelte@4.2.19)
       vite-tsconfig-paths:
         specifier: 4.2.3
         version: 4.2.3(typescript@5.8.3)(vite@5.4.19(@types/node@20.17.46))
