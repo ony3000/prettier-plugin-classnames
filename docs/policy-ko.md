@@ -10,6 +10,9 @@
 
    <!-- prettier-ignore -->
    ```typescript
+   // options
+   { printWidth: 60 }
+
    // input
    export function Foo({ children }) {
      return (
@@ -31,6 +34,9 @@
 
    <!-- prettier-ignore -->
    ```typescript
+   // options
+   { printWidth: 60 }
+
    // input
    export function Foo({ children }) {
      return (
@@ -56,6 +62,9 @@
 
    <!-- prettier-ignore -->
    ```typescript
+   // options
+   { printWidth: 60 }
+
    // input
    export function Foo({ children }) {
      return (
@@ -77,6 +86,9 @@
 
    <!-- prettier-ignore -->
    ```typescript
+   // options
+   { printWidth: 60 }
+
    // input
    export function Foo({ children }) {
      return (
@@ -98,132 +110,72 @@
 
 ## 들여쓰기
 
-클래스명에 줄바꿈이 발생하면 일반적으로는 첫 번째 줄의 들여쓰기 수준을 따르지만, `endingPosition` 옵션과 구문 유형에 따라 조정될 수 있다.
+클래스명에 줄바꿈이 발생하면 일반적으로는 첫 번째 줄의 들여쓰기 수준을 따른다.
 
-1. `endingPosition: 'absolute'`일 때
+예외적으로, 클래스명이 삼항 연산자의 피연산자이거나, 첫 번째 줄이 해당 속성의 이름과 같은 줄에 있는 경우 들여쓰기 수준이 한 단계 추가된다.
 
-   들여쓰기 수준이 0으로 고정된다.
+<!-- prettier-ignore -->
+```typescript
+// options
+{ printWidth: 60, endingPosition: 'relative' }
 
-   <!-- prettier-ignore -->
-   ```typescript
-   // options
-   { printWidth: 60, endingPosition: 'absolute' }
+// input
+export function Foo({ children }) {
+  return (
+    <div className="lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere">
+      {children}
+    </div>
+  );
+}
 
-   // input
-   export function Foo({ children }) {
-     return (
-       <div className="lorem ipsum dolor sit amet consectetur adipiscing elit proin">
-         {children}
-       </div>
-     );
-   }
+// output
+export function Foo({ children }) {
+  return (
+    <div
+      className="lorem ipsum dolor sit amet consectetur adipiscing elit proin
+        ex massa hendrerit eu posuere"
+    >
+      {children}
+    </div>
+  );
+}
+```
 
-   // output
-   export function Foo({ children }) {
-     return (
-       <div
-         className="lorem ipsum dolor sit amet consectetur
-   adipiscing elit proin"
-       >
-         {children}
-       </div>
-     );
-   }
-   ```
+<!-- prettier-ignore -->
+```typescript
+// options
+{ printWidth: 60, endingPosition: 'absolute' }
 
-   <!-- prettier-ignore -->
-   ```typescript
-   // options
-   { printWidth: 60, endingPosition: 'absolute' }
+// input
+export function Foo({ children }) {
+  return (
+    <div className={
+      condition
+        ? `lorem ipsum dolor sit amet consectetur adipiscing elit proin`
+        : `lorem ipsum dolor sit amet consectetur adipiscing elit proin`
+    }>
+      {children}
+    </div>
+  );
+}
 
-   // input
-   export function Foo({ children }) {
-     return (
-       <div className={`lorem ipsum dolor sit amet consectetur adipiscing elit proin`}>
-         {children}
-       </div>
-     );
-   }
-
-   // output
-   export function Foo({ children }) {
-     return (
-       <div
-         className={`lorem ipsum dolor sit amet consectetur
-   adipiscing elit proin`}
-       >
-         {children}
-       </div>
-     );
-   }
-   ```
-
-1. `endingPosition: 'absolute'`가 아닐 때
-
-   클래스명이 삼항 연산자의 피연산자이거나, 첫 번째 줄이 해당 속성의 이름과 같은 줄에 있는 경우 들여쓰기 수준이 한 단계 추가된다.
-
-   <!-- prettier-ignore -->
-   ```typescript
-   // options
-   { printWidth: 60, endingPosition: 'relative' }
-
-   // input
-   export function Foo({ children }) {
-     return (
-       <div className="lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere">
-         {children}
-       </div>
-     );
-   }
-
-   // output
-   export function Foo({ children }) {
-     return (
-       <div
-         className="lorem ipsum dolor sit amet consectetur adipiscing elit proin
-           ex massa hendrerit eu posuere"
-       >
-         {children}
-       </div>
-     );
-   }
-   ```
-
-   <!-- prettier-ignore -->
-   ```typescript
-   // options
-   { printWidth: 60, endingPosition: 'absolute-with-indent' }
-
-   // input
-   export function Foo({ children }) {
-     return (
-       <div className={
-         condition
-           ? `lorem ipsum dolor sit amet consectetur adipiscing elit proin`
-           : `lorem ipsum dolor sit amet consectetur adipiscing elit proin`
-       }>
-         {children}
-       </div>
-     );
-   }
-
-   // output
-   export function Foo({ children }) {
-     return (
-       <div
-         className={
-           condition
-             ? `lorem ipsum dolor sit amet consectetur
-               adipiscing elit proin`
-             : `lorem ipsum dolor sit amet consectetur
-               adipiscing elit proin`
-         }
-       >
-         {children}
-       </div>
-     );
-   }
-   ```
+// output
+export function Foo({ children }) {
+  return (
+    <div
+      className={
+        condition
+          ? `lorem ipsum dolor sit amet consectetur
+            adipiscing elit proin`
+          : `lorem ipsum dolor sit amet consectetur
+            adipiscing elit proin`
+      }
+    >
+      {children}
+    </div>
+  );
+}
+```
 
 ## 구분자 변환
 
@@ -236,7 +188,7 @@
    <!-- prettier-ignore -->
    ```typescript
    // options
-   { printWidth: 60, endingPosition: 'absolute-with-indent' }
+   { printWidth: 60, endingPosition: 'absolute' }
 
    // input
    export function Foo({ children }) {
@@ -263,7 +215,7 @@
    <!-- prettier-ignore -->
    ```typescript
    // options
-   { printWidth: 60, endingPosition: 'absolute-with-indent' }
+   { printWidth: 60, endingPosition: 'absolute' }
 
    // input
    export function Foo({ children }) {
@@ -300,7 +252,7 @@
    <!-- prettier-ignore -->
    ```typescript
    // options
-   { singleQuote: false }
+   { printWidth: 60, singleQuote: false }
 
    // input
    export function Foo({ children }) {
@@ -392,6 +344,9 @@ export function Foo({ children }) {
 
    <!-- prettier-ignore -->
    ```typescript
+   // options
+   { printWidth: 60 }
+
    // input
    export function Foo({ children }) {
      return (
@@ -415,6 +370,9 @@ export function Foo({ children }) {
 
    <!-- prettier-ignore -->
    ```typescript
+   // options
+   { printWidth: 60 }
+
    // input
    export function Foo({ children }) {
      return (
@@ -498,7 +456,8 @@ export function Foo({ children }) {
   return (
     <div
       className={`lorem ipsum dolor sit amet ${
-        condition ? "adipiscing" : "elit proin" } ex massa hendrerit
+        condition ? "adipiscing" : "elit proin"
+      } ex massa hendrerit
         eu posuere`}
     >
       {children}
