@@ -24,11 +24,10 @@
   "scripts": {
     "build": "pnpm run clean:bundle && esbuild src/index.ts --bundle --outdir=dist --platform=node \"--external:@prettier\" \"--external:prettier\" --minify",
     "build:plain": "pnpm run clean:bundle && esbuild src/index.ts --bundle --outdir=dist --platform=node \"--external:@prettier\" \"--external:prettier\"",
-    "clean": "pnpm run clean:bundle && pnpm -r exec rimraf node_modules/ && rimraf package.merged.json",
+    "clean": "pnpm run clean:bundle",
     "clean:bundle": "rimraf dist/",
     "lint": "eslint src/ tests/",
-    "merge-deps": "rimraf package.merged.json && merge-packages ./ src/packages/core-parts/ src/packages/v3-plugin/",
-    "prepare-release": "pnpm run build:plain && npm version prerelease --preid=alpha --git-tag-version=false && pnpm run merge-deps && npm pack",
+    "prepare-release": "pnpm run build:plain && npm version prerelease --preid=alpha --git-tag-version=false && npm pack",
     "test": "vitest run --passWithNoTests"
   },
   "dependencies": {
@@ -47,7 +46,6 @@
     "eslint-import-resolver-node": "0.3.7",
     "eslint-import-resolver-typescript": "3.5.3",
     "eslint-plugin-import": "2.27.5",
-    "merge-packages": "0.1.6",
     "prettier": "3.1.0",
     "prettier-plugin-astro": "0.11.0",
     "prettier-plugin-svelte": "3.0.0",
