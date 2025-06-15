@@ -248,6 +248,26 @@ export function Foo({ children }) {
 }
 `,
   },
+  {
+    name: 'syntax variants - addition operation between strings',
+    input: `
+export function Foo({ children }) {
+  return (
+    <div className={'  lorem ipsum  ' + '  dolor sit amet  '}>
+      {children}
+    </div>
+  );
+}
+`,
+    output: `export function Foo({ children }) {
+  return (
+    <div className={" lorem ipsum " + " dolor sit amet "}>
+      {children}
+    </div>
+  );
+}
+`,
+  },
 ];
 
 testEach(fixtures, options);
