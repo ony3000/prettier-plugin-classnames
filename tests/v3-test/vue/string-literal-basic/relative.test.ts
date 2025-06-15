@@ -270,6 +270,28 @@ const fixtures: Fixture[] = [
 </template>
 `,
   },
+  {
+    name: 'syntax variants - addition operation between strings',
+    input: `
+<template>
+  <div>
+    <div v-bind:class="'  lorem ipsum  ' + '  dolor sit amet  '">
+      <slot></slot>
+    </div>
+  </div>
+</template>
+`,
+    output: `<template>
+  <div>
+    <div
+      v-bind:class="' lorem ipsum ' + ' dolor sit amet '"
+    >
+      <slot></slot>
+    </div>
+  </div>
+</template>
+`,
+  },
 ];
 
 testEach(fixtures, options);
