@@ -138,6 +138,10 @@ export function findTargetClassNameNodes(ast: any, options: ResolvedOptions): Cl
           recursiveProps = ['body'];
           break;
         }
+        case 'BinaryExpression': {
+          recursiveProps = ['left', 'right'];
+          break;
+        }
         case 'CallExpression': {
           recursiveProps = ['arguments'];
           break;
@@ -2282,6 +2286,10 @@ export function findTargetClassNameNodesForSvelte(
         }
         case 'Attribute': {
           recursiveProps = ['value'];
+          break;
+        }
+        case 'BinaryExpression': {
+          recursiveProps = ['left', 'right'];
           break;
         }
         case 'CallExpression': {

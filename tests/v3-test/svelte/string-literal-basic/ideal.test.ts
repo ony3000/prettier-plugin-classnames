@@ -249,6 +249,26 @@ const fixtures: Fixture[] = [
 </div>
 `,
   },
+  {
+    name: 'syntax variants - addition operation between strings',
+    input: `
+<div>
+  <div>
+    <div class={'  lorem ipsum  ' + '  dolor sit amet  '}>
+      <slot />
+    </div>
+  </div>
+</div>
+`,
+    output: `<div>
+  <div>
+    <div class={" lorem ipsum " + " dolor sit amet "}>
+      <slot />
+    </div>
+  </div>
+</div>
+`,
+  },
 ];
 
 testEach(fixtures, options);
