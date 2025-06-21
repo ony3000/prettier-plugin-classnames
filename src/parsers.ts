@@ -100,7 +100,6 @@ function transformParser(
           );
         }
 
-        // eslint-disable-next-line no-param-reassign
         defaultParser = languageImplementedParser;
       }
 

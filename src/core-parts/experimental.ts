@@ -127,7 +127,6 @@ function structuringClassNameNodes(
     if (parentNodeCandidateIndex !== -1) {
       const parentNode = sortedStructuredClassNameNodes[parentNodeCandidateIndex];
 
-      // eslint-disable-next-line no-param-reassign
       classNameNode.parent = parentNode;
       parentNode.children.push(classNameNode);
     }
@@ -509,7 +508,6 @@ function formatTokens(
             formattedClassName = formattedClassName.replace(/"/g, `\\${DOUBLE_QUOTE}`);
           }
         } else {
-          // eslint-disable-next-line no-lonely-if
           if (props.delimiterType !== 'backtick' && props.hasBacktick) {
             formattedClassName = formattedClassName.replace(/`/g, `\\${BACKTICK}`);
           }
@@ -558,28 +556,24 @@ function unfreezeToken(token: TextToken, options: ResolvedOptions): string {
             replaceValue = `${isNestedExpressionOpenedOnThePreviousLine ? '' : EOL}${
               token.children[index - 1].body.match(new RegExp(`[${SPACE}${TAB}]*$`))![0]
             }${plainText}${
-              // eslint-disable-next-line no-nested-ternary
               isNestedExpressionClosedOnTheNextLine
                 ? ''
                 : token.children[index + 1].body.match(new RegExp(`^${EOL}[${SPACE}${TAB}]*`))![0]
             }`;
           }
 
-          // eslint-disable-next-line no-param-reassign
           token.body = token.body.replace(replaceTarget, replaceValue);
         } else if (tokenOfChildren.type === 'expression') {
           const props = tokenOfChildren.props as Omit<ExpressionNode, 'range' | 'type'> & {
             indentLevel: number;
           };
           const originalDelimiter =
-            // eslint-disable-next-line no-nested-ternary
             props.delimiterType === 'single-quote'
               ? SINGLE_QUOTE
               : props.delimiterType === 'double-quote'
                 ? DOUBLE_QUOTE
                 : BACKTICK;
 
-          // eslint-disable-next-line no-param-reassign
           token.body = token.body.replace(
             `${originalDelimiter}${tokenOfChildren.frozenClassName}${originalDelimiter}`,
             `${token.children[index - 1].body}${unfreezeToken(tokenOfChildren, options)}${

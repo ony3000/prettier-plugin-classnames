@@ -115,18 +115,15 @@ export function refineSvelteAst(preprocessedText: string, ast: any) {
     }
 
     if (ast.instance.end <= node.start) {
-      // eslint-disable-next-line no-param-reassign
       node.start += restoreOffset;
     }
     if (ast.instance.end <= node.end) {
-      // eslint-disable-next-line no-param-reassign
       node.end += restoreOffset;
     }
   }
 
   recursion(ast.html);
 
-  // eslint-disable-next-line no-param-reassign
   ast.instance = {
     type: 'RefinedScript',
     start: ast.instance.start,
