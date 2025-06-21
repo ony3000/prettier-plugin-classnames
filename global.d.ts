@@ -1,3 +1,5 @@
+import type { ParserOptions } from 'prettier';
+
 declare global {
   type PrettierBaseOptions = {
     printWidth: number;
@@ -31,7 +33,7 @@ declare global {
     syntaxTransformation: boolean;
   };
 
-  type ResolvedOptions = PrettierBaseOptions & { parser: unknown } & ThisPluginOptions;
+  type ResolvedOptions = ParserOptions & ThisPluginOptions;
 
   type SupportedParserNames =
     | 'babel'
@@ -47,5 +49,3 @@ declare global {
     body: string;
   };
 }
-
-export {};

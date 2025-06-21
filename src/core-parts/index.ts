@@ -10,7 +10,7 @@ import {
   findTargetClassNameNodesForAstro,
   findTargetClassNameNodesForSvelte,
 } from './finder';
-import type { Dict, ClassNameNode } from './shared';
+import type { ClassNameNode } from './shared';
 import { EOL, SPACE, TAB, isTypeof } from './shared';
 
 function base64Decode(input: string): string {
@@ -21,13 +21,10 @@ export async function parseLineByLineAndReplaceAsync({
   formattedText,
   ast,
   options,
-  addon,
 }: {
   formattedText: string;
   ast: AST;
   options: ResolvedOptions;
-  // biome-ignore lint/suspicious/noExplicitAny: The addon will be removed.
-  addon: Dict<(text: string, options: any) => AST>;
 }): Promise<string> {
   if (formattedText === '') {
     return formattedText;
@@ -38,23 +35,23 @@ export async function parseLineByLineAndReplaceAsync({
   let targetClassNameNodes: ClassNameNode[] = [];
   switch (options.parser) {
     case 'astro': {
-      targetClassNameNodes = findTargetClassNameNodesForAstro(formattedText, ast, options, addon);
+      targetClassNameNodes = findTargetClassNameNodesForAstro(formattedText, ast, options);
       break;
     }
     case 'svelte': {
-      targetClassNameNodes = findTargetClassNameNodesForSvelte(formattedText, ast, options, addon);
+      targetClassNameNodes = findTargetClassNameNodesForSvelte(formattedText, ast, options);
       break;
     }
     case 'angular': {
-      targetClassNameNodes = findTargetClassNameNodesForAngular(ast, options, addon);
+      targetClassNameNodes = findTargetClassNameNodesForAngular(ast, options);
       break;
     }
     case 'html': {
-      targetClassNameNodes = findTargetClassNameNodesForHtml(ast, options, addon);
+      targetClassNameNodes = findTargetClassNameNodesForHtml(ast, options);
       break;
     }
     case 'vue': {
-      targetClassNameNodes = findTargetClassNameNodesForVue(ast, options, addon);
+      targetClassNameNodes = findTargetClassNameNodesForVue(ast, options);
       break;
     }
     default: {

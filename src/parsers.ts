@@ -1,4 +1,4 @@
-import type { AST, Parser, ParserOptions, Plugin } from 'prettier';
+import type { AST, Parser, Plugin } from 'prettier';
 import { format } from 'prettier';
 import { parsers as babelParsers } from 'prettier/plugins/babel';
 import { parsers as htmlParsers } from 'prettier/plugins/html';
@@ -9,12 +9,6 @@ import { parseLineByLineAndReplaceAsync, refineSvelteAst } from './core-parts';
 const EOL = '\n';
 
 const SPACE = ' ';
-
-const addon = {
-  parseBabel: (text: string, options: ParserOptions) => babelParsers.babel.parse(text, options),
-  parseTypescript: (text: string, options: ParserOptions) =>
-    typescriptParsers.typescript.parse(text, options),
-};
 
 function addIndent(text: string, width = 2) {
   return text
@@ -27,7 +21,7 @@ async function advancedParse(
   text: string,
   parserName: SupportedParserNames,
   defaultParser: Parser,
-  options: ParserOptions & ThisPluginOptions,
+  options: ResolvedOptions,
 ): Promise<AST> {
   const preprocessedText = defaultParser.preprocess
     ? defaultParser.preprocess(text, options)
@@ -49,10 +43,7 @@ function transformParser(
   return {
     ...defaultParser,
     // @ts-ignore
-    parse: async (
-      text: string,
-      options: ParserOptions & ThisPluginOptions,
-    ): Promise<FormattedTextAST> => {
+    parse: async (text: string, options: ResolvedOptions): Promise<FormattedTextAST> => {
       if (options.parentParser === 'markdown' || options.parentParser === 'mdx') {
         let codeblockStart = '```';
         const codeblockEnd = '```';
@@ -121,7 +112,6 @@ function transformParser(
           ...options,
           useTabs: options.useTabs ?? false,
         },
-        addon,
       });
 
       if (classNameWrappedText === firstFormattedText) {
@@ -167,7 +157,6 @@ function transformParser(
           ...options,
           useTabs: options.useTabs ?? false,
         },
-        addon,
       });
 
       return {

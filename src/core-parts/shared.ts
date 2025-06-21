@@ -40,8 +40,6 @@ export const BACKTICK = '`';
  */
 export const UNKNOWN_DELIMITER = '?';
 
-export type Dict<T = unknown> = Record<string, T | undefined>;
-
 export type NodeRange = [number, number];
 
 type ClassNameNodeBase = {

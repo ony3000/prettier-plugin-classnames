@@ -1,7 +1,9 @@
-import type { AST } from 'prettier';
+import type { AST, ParserOptions } from 'prettier';
+import { parsers as babelParsers } from 'prettier/plugins/babel';
+import { parsers as typescriptParsers } from 'prettier/plugins/typescript';
 import { z } from 'zod';
 
-import type { Dict, NodeRange, ExpressionNode, ClassNameNode } from './shared';
+import type { NodeRange, ExpressionNode, ClassNameNode } from './shared';
 import { EOL, SINGLE_QUOTE, DOUBLE_QUOTE, BACKTICK, UNKNOWN_DELIMITER, isTypeof } from './shared';
 
 type ASTNode = {
@@ -98,6 +100,14 @@ function filterAndSortClassNameNodes(
       ) =>
         latterStartLineIndex - formerStartLineIndex || latterNodeRangeStart - formerNodeRangeStart,
     );
+}
+
+function parseBabel(text: string, options: ParserOptions) {
+  return babelParsers.babel.parse(text, options);
+}
+
+function parseTypescript(text: string, options: ParserOptions) {
+  return typescriptParsers.typescript.parse(text, options);
 }
 
 export function findTargetClassNameNodes(ast: AST, options: ResolvedOptions): ClassNameNode[] {
@@ -817,8 +827,6 @@ export function findTargetClassNameNodes(ast: AST, options: ResolvedOptions): Cl
 export function findTargetClassNameNodesForHtml(
   ast: AST,
   options: ResolvedOptions,
-  // biome-ignore lint/suspicious/noExplicitAny: The addon will be removed.
-  addon: Dict<(text: string, options: any) => AST>,
 ): ClassNameNode[] {
   const supportedAttributes: string[] = ['class', 'className', ...options.customAttributes];
   /**
@@ -999,11 +1007,11 @@ export function findTargetClassNameNodesForHtml(
             // Note: In fact, the script element is not a `keywordStartingNode`, but it is considered a kind of safe list to maintain the `classNameNode`s obtained from the code inside the element.
             keywordStartingNodes.push(currentASTNode);
 
-            if (addon.parseTypescript && textNodeInScript) {
+            if (textNodeInScript) {
               const openingTagEndingLineIndex = node.startSourceSpan.end.line;
               const openingTagEndingOffset = node.startSourceSpan.end.offset;
 
-              const typescriptAst = addon.parseTypescript(textNodeInScript.value, {
+              const typescriptAst = parseTypescript(textNodeInScript.value, {
                 ...options,
                 parser: 'typescript',
               });
@@ -1035,11 +1043,11 @@ export function findTargetClassNameNodesForHtml(
             // Note: In fact, the script element is not a `keywordStartingNode`, but it is considered a kind of safe list to maintain the `classNameNode`s obtained from the code inside the element.
             keywordStartingNodes.push(currentASTNode);
 
-            if (addon.parseBabel && textNodeInScript) {
+            if (textNodeInScript) {
               const openingTagEndingLineIndex = node.startSourceSpan.end.line;
               const openingTagEndingOffset = node.startSourceSpan.end.offset;
 
-              const babelAst = addon.parseBabel(textNodeInScript.value, {
+              const babelAst = parseBabel(textNodeInScript.value, {
                 ...options,
                 parser: 'babel',
               });
@@ -1099,8 +1107,6 @@ export function findTargetClassNameNodesForHtml(
 export function findTargetClassNameNodesForVue(
   ast: AST,
   options: ResolvedOptions,
-  // biome-ignore lint/suspicious/noExplicitAny: The addon will be removed.
-  addon: Dict<(text: string, options: any) => AST>,
 ): ClassNameNode[] {
   const supportedAttributes: string[] = ['class', 'className', ...options.customAttributes];
   /**
@@ -1228,53 +1234,49 @@ export function findTargetClassNameNodesForVue(
           if (isBoundAttribute) {
             keywordStartingNodes.push(currentASTNode);
 
-            if (addon.parseBabel) {
-              try {
-                const plainAttributeName = node.name.replace(boundAttributeRegExp, '');
-                const isSupportedAttribute = supportedAttributes.includes(plainAttributeName);
+            try {
+              const plainAttributeName = node.name.replace(boundAttributeRegExp, '');
+              const isSupportedAttribute = supportedAttributes.includes(plainAttributeName);
 
-                const jsxStart = `<div ${
-                  isSupportedAttribute ? 'className' : plainAttributeName
-                }={`;
-                const jsxEnd = '}></div>';
+              const jsxStart = `<div ${isSupportedAttribute ? 'className' : plainAttributeName}={`;
+              const jsxEnd = '}></div>';
 
-                const babelAst = addon.parseBabel(`${jsxStart}${node.value}${jsxEnd}`, {
-                  ...options,
-                  parser: 'babel',
-                });
-                const targetClassNameNodesInAttribute = findTargetClassNameNodes(
-                  babelAst,
-                  options,
-                ).map<ClassNameNode>((classNameNode) => {
-                  const [classNameNodeRangeStart, classNameNodeRangeEnd] = classNameNode.range;
+              const babelAst = parseBabel(`${jsxStart}${node.value}${jsxEnd}`, {
+                ...options,
+                parser: 'babel',
+              });
+              const targetClassNameNodesInAttribute = findTargetClassNameNodes(
+                babelAst,
+                options,
+              ).map<ClassNameNode>((classNameNode) => {
+                const [classNameNodeRangeStart, classNameNodeRangeEnd] = classNameNode.range;
 
-                  if (classNameNode.type === 'expression') {
-                    classNameNode.isItInVueTemplate = true;
+                if (classNameNode.type === 'expression') {
+                  classNameNode.isItInVueTemplate = true;
 
-                    if (
-                      classNameNode.delimiterType !== 'backtick' &&
-                      classNameNode.startLineIndex === 0
-                    ) {
-                      classNameNode.isTheFirstLineOnTheSameLineAsTheAttributeName = true;
-                    }
+                  if (
+                    classNameNode.delimiterType !== 'backtick' &&
+                    classNameNode.startLineIndex === 0
+                  ) {
+                    classNameNode.isTheFirstLineOnTheSameLineAsTheAttributeName = true;
                   }
+                }
 
-                  const attributeOffset = -jsxStart.length + node.valueSpan.start.offset + 1;
+                const attributeOffset = -jsxStart.length + node.valueSpan.start.offset + 1;
 
-                  return {
-                    ...classNameNode,
-                    range: [
-                      classNameNodeRangeStart + attributeOffset,
-                      classNameNodeRangeEnd + attributeOffset,
-                    ],
-                    startLineIndex: classNameNode.startLineIndex + node.sourceSpan.start.line,
-                  };
-                });
+                return {
+                  ...classNameNode,
+                  range: [
+                    classNameNodeRangeStart + attributeOffset,
+                    classNameNodeRangeEnd + attributeOffset,
+                  ],
+                  startLineIndex: classNameNode.startLineIndex + node.sourceSpan.start.line,
+                };
+              });
 
-                classNameNodes.push(...targetClassNameNodesInAttribute);
-              } catch (_) {
-                // no action
-              }
+              classNameNodes.push(...targetClassNameNodesInAttribute);
+            } catch (_) {
+              // no action
             }
           } else {
             if (supportedAttributes.includes(node.name)) {
@@ -1332,11 +1334,11 @@ export function findTargetClassNameNodesForVue(
 
           const textNodeInScript = node.children.at(0);
 
-          if (addon.parseTypescript && textNodeInScript) {
+          if (textNodeInScript) {
             const openingTagEndingLineIndex = node.startSourceSpan.end.line;
             const openingTagEndingOffset = node.startSourceSpan.end.offset;
 
-            const typescriptAst = addon.parseTypescript(textNodeInScript.value, {
+            const typescriptAst = parseTypescript(textNodeInScript.value, {
               ...options,
               parser: 'typescript',
             });
@@ -1395,8 +1397,6 @@ export function findTargetClassNameNodesForVue(
 export function findTargetClassNameNodesForAngular(
   ast: AST,
   options: ResolvedOptions,
-  // biome-ignore lint/suspicious/noExplicitAny: The addon will be removed.
-  addon: Dict<(text: string, options: any) => AST>,
 ): ClassNameNode[] {
   const supportedAttributes: string[] = [
     'class',
@@ -1529,120 +1529,115 @@ export function findTargetClassNameNodesForAngular(
           if (isBoundAttribute) {
             keywordStartingNodes.push(currentASTNode);
 
-            if (addon.parseBabel) {
-              const backslashIndexes: number[] = [];
-              let mutableAttributeValue = node.value;
-              let errorLineIndex: number | null = null;
+            const backslashIndexes: number[] = [];
+            let mutableAttributeValue = node.value;
+            let errorLineIndex: number | null = null;
 
-              do {
-                errorLineIndex = null;
+            do {
+              errorLineIndex = null;
 
-                try {
-                  const plainAttributeName = node.name.replace(/^\[(?:attr\.)?(.+)\]$/, '$1');
-                  const isSupportedAttribute = supportedAttributes.includes(plainAttributeName);
+              try {
+                const plainAttributeName = node.name.replace(/^\[(?:attr\.)?(.+)\]$/, '$1');
+                const isSupportedAttribute = supportedAttributes.includes(plainAttributeName);
 
-                  const jsxStart = `<div ${
-                    isSupportedAttribute ? 'className' : plainAttributeName
-                  }={`;
-                  const jsxEnd = '}></div>';
+                const jsxStart = `<div ${
+                  isSupportedAttribute ? 'className' : plainAttributeName
+                }={`;
+                const jsxEnd = '}></div>';
 
-                  const babelAst = addon.parseBabel(
-                    `${jsxStart}${mutableAttributeValue}${jsxEnd}`,
-                    {
-                      ...options,
-                      parser: 'babel',
-                    },
-                  );
-                  const targetClassNameNodesInAttribute = findTargetClassNameNodes(
-                    babelAst,
-                    options,
-                  ).map<ClassNameNode>((classNameNode) => {
-                    const [classNameNodeRangeStart, classNameNodeRangeEnd] = classNameNode.range;
+                const babelAst = parseBabel(`${jsxStart}${mutableAttributeValue}${jsxEnd}`, {
+                  ...options,
+                  parser: 'babel',
+                });
+                const targetClassNameNodesInAttribute = findTargetClassNameNodes(
+                  babelAst,
+                  options,
+                ).map<ClassNameNode>((classNameNode) => {
+                  const [classNameNodeRangeStart, classNameNodeRangeEnd] = classNameNode.range;
 
-                    if (classNameNode.type === 'expression') {
-                      classNameNode.isItAngularExpression = true;
+                  if (classNameNode.type === 'expression') {
+                    classNameNode.isItAngularExpression = true;
 
-                      if (
-                        classNameNode.delimiterType !== 'backtick' &&
-                        classNameNode.startLineIndex === 0
-                      ) {
-                        classNameNode.isTheFirstLineOnTheSameLineAsTheAttributeName = true;
-                      }
+                    if (
+                      classNameNode.delimiterType !== 'backtick' &&
+                      classNameNode.startLineIndex === 0
+                    ) {
+                      classNameNode.isTheFirstLineOnTheSameLineAsTheAttributeName = true;
                     }
+                  }
 
-                    const attributeOffset = -jsxStart.length + node.valueSpan.start.offset + 1;
+                  const attributeOffset = -jsxStart.length + node.valueSpan.start.offset + 1;
 
-                    const rangeStartWithoutJsx = classNameNodeRangeStart - jsxStart.length;
-                    const backslashCountBeforeThisNode = backslashIndexes.filter(
-                      (backslashIndex) => backslashIndex < rangeStartWithoutJsx,
-                    ).length;
-                    const rangeEndWithoutJsx = classNameNodeRangeEnd - jsxStart.length;
-                    const backslashCountUptoThisNode = backslashIndexes.filter(
-                      (backslashIndex) => backslashIndex < rangeEndWithoutJsx,
-                    ).length;
+                  const rangeStartWithoutJsx = classNameNodeRangeStart - jsxStart.length;
+                  const backslashCountBeforeThisNode = backslashIndexes.filter(
+                    (backslashIndex) => backslashIndex < rangeStartWithoutJsx,
+                  ).length;
+                  const rangeEndWithoutJsx = classNameNodeRangeEnd - jsxStart.length;
+                  const backslashCountUptoThisNode = backslashIndexes.filter(
+                    (backslashIndex) => backslashIndex < rangeEndWithoutJsx,
+                  ).length;
 
-                    return {
-                      ...classNameNode,
-                      range: [
-                        classNameNodeRangeStart + attributeOffset - backslashCountBeforeThisNode,
-                        classNameNodeRangeEnd + attributeOffset - backslashCountUptoThisNode,
-                      ],
-                      startLineIndex: classNameNode.startLineIndex + node.sourceSpan.start.line,
-                    };
-                  });
+                  return {
+                    ...classNameNode,
+                    range: [
+                      classNameNodeRangeStart + attributeOffset - backslashCountBeforeThisNode,
+                      classNameNodeRangeEnd + attributeOffset - backslashCountUptoThisNode,
+                    ],
+                    startLineIndex: classNameNode.startLineIndex + node.sourceSpan.start.line,
+                  };
+                });
 
-                  classNameNodes.push(...targetClassNameNodesInAttribute);
-                } catch (error) {
-                  if (
-                    isTypeof(
-                      error,
-                      z.object({
-                        message: z.string(),
-                        loc: z.object({
-                          start: z.object({
-                            line: z.number(),
-                          }),
+                classNameNodes.push(...targetClassNameNodesInAttribute);
+              } catch (error) {
+                if (
+                  isTypeof(
+                    error,
+                    z.object({
+                      message: z.string(),
+                      loc: z.object({
+                        start: z.object({
+                          line: z.number(),
                         }),
                       }),
-                    )
-                  ) {
-                    if (error.message.match(/^Unterminated string constant./) === null) {
-                      break;
+                    }),
+                  )
+                ) {
+                  if (error.message.match(/^Unterminated string constant./) === null) {
+                    break;
+                  }
+
+                  errorLineIndex = error.loc.start.line - 1;
+                }
+              }
+
+              if (errorLineIndex !== null) {
+                const mutableAttributeLines = mutableAttributeValue.split(EOL);
+                let isBackslashAdded = false;
+
+                mutableAttributeValue = mutableAttributeLines
+                  .map((line, index) => {
+                    if (
+                      !isBackslashAdded &&
+                      // biome-ignore lint/style/noNonNullAssertion: Type guarded in upper scope.
+                      index >= errorLineIndex! &&
+                      line[line.length - 1] !== '\\'
+                    ) {
+                      isBackslashAdded = true;
+
+                      const totalTextLengthUptoPrevLine = mutableAttributeLines
+                        .slice(0, index)
+                        .reduce((textLength, _line) => textLength + _line.length + EOL.length, 0);
+
+                      backslashIndexes.push(totalTextLengthUptoPrevLine + line.length);
+
+                      return `${line}\\`;
                     }
 
-                    errorLineIndex = error.loc.start.line - 1;
-                  }
-                }
-
-                if (errorLineIndex !== null) {
-                  const mutableAttributeLines = mutableAttributeValue.split(EOL);
-                  let isBackslashAdded = false;
-
-                  mutableAttributeValue = mutableAttributeLines
-                    .map((line, index) => {
-                      if (
-                        !isBackslashAdded &&
-                        // biome-ignore lint/style/noNonNullAssertion: Type guarded in upper scope.
-                        index >= errorLineIndex! &&
-                        line[line.length - 1] !== '\\'
-                      ) {
-                        isBackslashAdded = true;
-
-                        const totalTextLengthUptoPrevLine = mutableAttributeLines
-                          .slice(0, index)
-                          .reduce((textLength, _line) => textLength + _line.length + EOL.length, 0);
-
-                        backslashIndexes.push(totalTextLengthUptoPrevLine + line.length);
-
-                        return `${line}\\`;
-                      }
-
-                      return line;
-                    })
-                    .join(EOL);
-                }
-              } while (errorLineIndex !== null);
-            }
+                    return line;
+                  })
+                  .join(EOL);
+              }
+            } while (errorLineIndex !== null);
           } else {
             if (supportedAttributes.includes(node.name)) {
               keywordStartingNodes.push(currentASTNode);
@@ -1699,11 +1694,11 @@ export function findTargetClassNameNodesForAngular(
 
           const textNodeInScript = node.children.at(0);
 
-          if (addon.parseTypescript && textNodeInScript) {
+          if (textNodeInScript) {
             const openingTagEndingLineIndex = node.startSourceSpan.end.line;
             const openingTagEndingOffset = node.startSourceSpan.end.offset;
 
-            const typescriptAst = addon.parseTypescript(textNodeInScript.value, {
+            const typescriptAst = parseTypescript(textNodeInScript.value, {
               ...options,
               parser: 'typescript',
             });
@@ -1763,8 +1758,6 @@ export function findTargetClassNameNodesForAstro(
   formattedText: string,
   ast: AST,
   options: ResolvedOptions,
-  // biome-ignore lint/suspicious/noExplicitAny: The addon will be removed.
-  addon: Dict<(text: string, options: any) => AST>,
 ): ClassNameNode[] {
   const supportedAttributes: string[] = [
     'class',
@@ -1893,32 +1886,30 @@ export function findTargetClassNameNodesForAstro(
           // Note: In fact, the frontmatter is not a `keywordStartingNode`, but it is considered a kind of safe list to maintain the `classNameNode`s obtained from the code inside the frontmatter.
           keywordStartingNodes.push(currentASTNode);
 
-          if (addon.parseTypescript) {
-            const typescriptAst = addon.parseTypescript(node.value, {
-              ...options,
-              parser: 'typescript',
-            });
-            const targetClassNameNodesInFrontMatter = findTargetClassNameNodes(typescriptAst, {
-              ...options,
-              customAttributes: supportedAttributes,
-              customFunctions: supportedFunctions,
-            }).map<ClassNameNode>((classNameNode) => {
-              const [classNameNodeRangeStart, classNameNodeRangeEnd] = classNameNode.range;
+          const typescriptAst = parseTypescript(node.value, {
+            ...options,
+            parser: 'typescript',
+          });
+          const targetClassNameNodesInFrontMatter = findTargetClassNameNodes(typescriptAst, {
+            ...options,
+            customAttributes: supportedAttributes,
+            customFunctions: supportedFunctions,
+          }).map<ClassNameNode>((classNameNode) => {
+            const [classNameNodeRangeStart, classNameNodeRangeEnd] = classNameNode.range;
 
-              const frontMatterOffset = '---'.length;
+            const frontMatterOffset = '---'.length;
 
-              return {
-                ...classNameNode,
-                range: [
-                  classNameNodeRangeStart + frontMatterOffset,
-                  classNameNodeRangeEnd + frontMatterOffset,
-                ],
-                startLineIndex: classNameNode.startLineIndex,
-              };
-            });
+            return {
+              ...classNameNode,
+              range: [
+                classNameNodeRangeStart + frontMatterOffset,
+                classNameNodeRangeEnd + frontMatterOffset,
+              ],
+              startLineIndex: classNameNode.startLineIndex,
+            };
+          });
 
-            classNameNodes.push(...targetClassNameNodesInFrontMatter);
-          }
+          classNameNodes.push(...targetClassNameNodesInFrontMatter);
         }
         break;
       }
@@ -1952,46 +1943,44 @@ export function findTargetClassNameNodesForAstro(
           if (node.kind === 'expression') {
             keywordStartingNodes.push(currentASTNode);
 
-            if (addon.parseTypescript) {
-              const isSupportedAttribute = supportedAttributes.includes(node.name);
+            const isSupportedAttribute = supportedAttributes.includes(node.name);
 
-              const jsxStart = `<div ${isSupportedAttribute ? 'className' : node.name}={`;
-              const jsxEnd = '}></div>';
+            const jsxStart = `<div ${isSupportedAttribute ? 'className' : node.name}={`;
+            const jsxEnd = '}></div>';
 
-              const typescriptAst = addon.parseTypescript(`${jsxStart}${node.value}${jsxEnd}`, {
-                ...options,
-                parser: 'typescript',
-              });
-              const targetClassNameNodesInAttribute = findTargetClassNameNodes(typescriptAst, {
-                ...options,
-                customAttributes: supportedAttributes,
-                customFunctions: supportedFunctions,
-              }).map<ClassNameNode>((classNameNode) => {
-                const [classNameNodeRangeStart, classNameNodeRangeEnd] = classNameNode.range;
+            const typescriptAst = parseTypescript(`${jsxStart}${node.value}${jsxEnd}`, {
+              ...options,
+              parser: 'typescript',
+            });
+            const targetClassNameNodesInAttribute = findTargetClassNameNodes(typescriptAst, {
+              ...options,
+              customAttributes: supportedAttributes,
+              customFunctions: supportedFunctions,
+            }).map<ClassNameNode>((classNameNode) => {
+              const [classNameNodeRangeStart, classNameNodeRangeEnd] = classNameNode.range;
 
-                if (
-                  classNameNode.type === 'expression' &&
-                  classNameNode.delimiterType !== 'backtick' &&
-                  classNameNode.startLineIndex === 0
-                ) {
-                  classNameNode.isTheFirstLineOnTheSameLineAsTheAttributeName = true;
-                }
+              if (
+                classNameNode.type === 'expression' &&
+                classNameNode.delimiterType !== 'backtick' &&
+                classNameNode.startLineIndex === 0
+              ) {
+                classNameNode.isTheFirstLineOnTheSameLineAsTheAttributeName = true;
+              }
 
-                const attributeOffset =
-                  -jsxStart.length + currentNodeRangeStart + attributeStart.length;
+              const attributeOffset =
+                -jsxStart.length + currentNodeRangeStart + attributeStart.length;
 
-                return {
-                  ...classNameNode,
-                  range: [
-                    classNameNodeRangeStart + attributeOffset,
-                    classNameNodeRangeEnd + attributeOffset,
-                  ],
-                  startLineIndex: classNameNode.startLineIndex + node.position.start.line - 1,
-                };
-              });
+              return {
+                ...classNameNode,
+                range: [
+                  classNameNodeRangeStart + attributeOffset,
+                  classNameNodeRangeEnd + attributeOffset,
+                ],
+                startLineIndex: classNameNode.startLineIndex + node.position.start.line - 1,
+              };
+            });
 
-              classNameNodes.push(...targetClassNameNodesInAttribute);
-            }
+            classNameNodes.push(...targetClassNameNodesInAttribute);
           } else if (node.kind === 'quoted') {
             if (supportedAttributes.includes(node.name)) {
               keywordStartingNodes.push(currentASTNode);
@@ -2040,11 +2029,11 @@ export function findTargetClassNameNodesForAstro(
 
           const textNodeInScript = node.children.at(0);
 
-          if (addon.parseTypescript && textNodeInScript) {
+          if (textNodeInScript) {
             const openingTagEndingLineIndex = textNodeInScript.position.start.line - 1;
             const openingTagEndingOffset = textNodeInScript.position.start.offset;
 
-            const typescriptAst = addon.parseTypescript(textNodeInScript.value, {
+            const typescriptAst = parseTypescript(textNodeInScript.value, {
               ...options,
               parser: 'typescript',
             });
@@ -2111,8 +2100,6 @@ export function findTargetClassNameNodesForSvelte(
   formattedText: string,
   ast: AST,
   options: ResolvedOptions,
-  // biome-ignore lint/suspicious/noExplicitAny: The addon will be removed.
-  addon: Dict<(text: string, options: any) => AST>,
 ): ClassNameNode[] {
   const supportedAttributes: string[] = ['class', 'className', ...options.customAttributes];
   const supportedFunctions: string[] = ['classNames', ...options.customFunctions];
@@ -2283,10 +2270,10 @@ export function findTargetClassNameNodesForSvelte(
 
           const textNodeInScript = node.content;
 
-          if (addon.parseTypescript && textNodeInScript) {
+          if (textNodeInScript) {
             const openingTagEndingOffset = node.content.start;
 
-            const typescriptAst = addon.parseTypescript(textNodeInScript.value, {
+            const typescriptAst = parseTypescript(textNodeInScript.value, {
               ...options,
               parser: 'typescript',
             });
