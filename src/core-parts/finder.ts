@@ -1,3 +1,4 @@
+import type { AST } from 'prettier';
 import { z } from 'zod';
 
 import type { Dict, NodeRange, ExpressionNode, ClassNameNode } from './shared';
@@ -99,7 +100,7 @@ function filterAndSortClassNameNodes(
     );
 }
 
-export function findTargetClassNameNodes(ast: any, options: ResolvedOptions): ClassNameNode[] {
+export function findTargetClassNameNodes(ast: AST, options: ResolvedOptions): ClassNameNode[] {
   const supportedAttributes: string[] = ['class', 'className', ...options.customAttributes];
   const supportedFunctions: string[] = ['classNames', ...options.customFunctions];
   /**
@@ -280,7 +281,6 @@ export function findTargetClassNameNodes(ast: any, options: ResolvedOptions): Cl
               classNameNodeRangeEnd <= currentNodeRangeEnd
             ) {
               if (classNameNode.type === 'unknown') {
-                // eslint-disable-next-line no-param-reassign
                 array[index] = createExpressionNode({
                   delimiterType: classNameNode.delimiterType,
                   isItFunctionArgument: true,
@@ -288,7 +288,6 @@ export function findTargetClassNameNodes(ast: any, options: ResolvedOptions): Cl
                   startLineIndex: classNameNode.startLineIndex,
                 });
               } else if (classNameNode.type === 'expression') {
-                // eslint-disable-next-line no-param-reassign
                 classNameNode.isItFunctionArgument = true;
               }
             }
@@ -363,7 +362,6 @@ export function findTargetClassNameNodes(ast: any, options: ResolvedOptions): Cl
               classNameNodeRangeEnd <= currentNodeRangeEnd
             ) {
               if (classNameNode.type === 'unknown' && classNameNode.delimiterType !== 'backtick') {
-                // eslint-disable-next-line no-param-reassign
                 array[index] = {
                   type: 'attribute',
                   isTheFirstLineOnTheSameLineAsTheOpeningTag:
@@ -407,7 +405,6 @@ export function findTargetClassNameNodes(ast: any, options: ResolvedOptions): Cl
             ) {
               if (classNameNode.type === 'unknown') {
                 if (classNameNode.delimiterType !== 'backtick') {
-                  // eslint-disable-next-line no-param-reassign
                   array[index] = createExpressionNode({
                     delimiterType: classNameNode.delimiterType,
                     hasSingleQuote: classNameNode.hasSingleQuote,
@@ -419,7 +416,6 @@ export function findTargetClassNameNodes(ast: any, options: ResolvedOptions): Cl
                     startLineIndex: classNameNode.startLineIndex,
                   });
                 } else {
-                  // eslint-disable-next-line no-param-reassign
                   array[index] = createExpressionNode({
                     delimiterType: classNameNode.delimiterType,
                     isTheFirstLineOnTheSameLineAsTheAttributeName:
@@ -429,7 +425,6 @@ export function findTargetClassNameNodes(ast: any, options: ResolvedOptions): Cl
                   });
                 }
               } else if (classNameNode.type === 'expression') {
-                // eslint-disable-next-line no-param-reassign
                 classNameNode.isTheFirstLineOnTheSameLineAsTheAttributeName =
                   classNameNode.startLineIndex === currentNodeStartLineIndex;
               }
@@ -467,7 +462,6 @@ export function findTargetClassNameNodes(ast: any, options: ResolvedOptions): Cl
               classNameNodeRangeEnd <= currentNodeRangeEnd
             ) {
               if (classNameNode.type === 'unknown') {
-                // eslint-disable-next-line no-param-reassign
                 array[index] = createExpressionNode({
                   delimiterType: classNameNode.delimiterType,
                   isItAnObjectProperty,
@@ -475,7 +469,6 @@ export function findTargetClassNameNodes(ast: any, options: ResolvedOptions): Cl
                   startLineIndex: classNameNode.startLineIndex,
                 });
               } else if (classNameNode.type === 'expression') {
-                // eslint-disable-next-line no-param-reassign
                 classNameNode.isItAnObjectProperty = isItAnObjectProperty;
               }
             }
@@ -494,7 +487,6 @@ export function findTargetClassNameNodes(ast: any, options: ResolvedOptions): Cl
             classNameNodeRangeEnd <= currentNodeRangeEnd
           ) {
             if (classNameNode.type === 'unknown') {
-              // eslint-disable-next-line no-param-reassign
               array[index] = createExpressionNode({
                 delimiterType: classNameNode.delimiterType,
                 isItAnOperandOfTernaryOperator: true,
@@ -502,7 +494,6 @@ export function findTargetClassNameNodes(ast: any, options: ResolvedOptions): Cl
                 startLineIndex: classNameNode.startLineIndex,
               });
             } else if (classNameNode.type === 'expression') {
-              // eslint-disable-next-line no-param-reassign
               classNameNode.isItAnOperandOfTernaryOperator = true;
             }
           }
@@ -548,7 +539,6 @@ export function findTargetClassNameNodes(ast: any, options: ResolvedOptions): Cl
           classNameNodes.push({
             type: 'unknown',
             delimiterType:
-              // eslint-disable-next-line no-nested-ternary
               node.raw[0] === SINGLE_QUOTE
                 ? 'single-quote'
                 : node.raw[0] === DOUBLE_QUOTE
@@ -585,7 +575,6 @@ export function findTargetClassNameNodes(ast: any, options: ResolvedOptions): Cl
           classNameNodes.push({
             type: 'unknown',
             delimiterType:
-              // eslint-disable-next-line no-nested-ternary
               node.extra.raw[0] === SINGLE_QUOTE
                 ? 'single-quote'
                 : node.extra.raw[0] === DOUBLE_QUOTE
@@ -720,7 +709,6 @@ export function findTargetClassNameNodes(ast: any, options: ResolvedOptions): Cl
               classNameNodeRangeEnd <= currentNodeRangeEnd
             ) {
               if (classNameNode.type === 'unknown' && classNameNode.delimiterType === 'backtick') {
-                // eslint-disable-next-line no-param-reassign
                 array[index] = createExpressionNode({
                   delimiterType: classNameNode.delimiterType,
                   isItFunctionArgument: node.tag.type === 'CallExpression',
@@ -732,9 +720,7 @@ export function findTargetClassNameNodes(ast: any, options: ResolvedOptions): Cl
                 classNameNode.type === 'expression' &&
                 classNameNode.delimiterType === 'backtick'
               ) {
-                // eslint-disable-next-line no-param-reassign
                 classNameNode.isItFunctionArgument = node.tag.type === 'CallExpression';
-                // eslint-disable-next-line no-param-reassign
                 classNameNode.shouldKeepDelimiter = true;
               }
             }
@@ -829,13 +815,12 @@ export function findTargetClassNameNodes(ast: any, options: ResolvedOptions): Cl
 }
 
 export function findTargetClassNameNodesForHtml(
-  ast: any,
+  ast: AST,
   options: ResolvedOptions,
-  addon: Dict<(text: string, options: any) => any>,
+  // biome-ignore lint/suspicious/noExplicitAny: The addon will be removed.
+  addon: Dict<(text: string, options: any) => AST>,
 ): ClassNameNode[] {
   const supportedAttributes: string[] = ['class', 'className', ...options.customAttributes];
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const supportedFunctions: string[] = ['classNames', ...options.customFunctions];
   /**
    * Most nodes
    */
@@ -1112,13 +1097,12 @@ export function findTargetClassNameNodesForHtml(
 }
 
 export function findTargetClassNameNodesForVue(
-  ast: any,
+  ast: AST,
   options: ResolvedOptions,
-  addon: Dict<(text: string, options: any) => any>,
+  // biome-ignore lint/suspicious/noExplicitAny: The addon will be removed.
+  addon: Dict<(text: string, options: any) => AST>,
 ): ClassNameNode[] {
   const supportedAttributes: string[] = ['class', 'className', ...options.customAttributes];
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const supportedFunctions: string[] = ['classNames', ...options.customFunctions];
   /**
    * Most nodes
    */
@@ -1265,14 +1249,12 @@ export function findTargetClassNameNodesForVue(
                   const [classNameNodeRangeStart, classNameNodeRangeEnd] = classNameNode.range;
 
                   if (classNameNode.type === 'expression') {
-                    // eslint-disable-next-line no-param-reassign
                     classNameNode.isItInVueTemplate = true;
 
                     if (
                       classNameNode.delimiterType !== 'backtick' &&
                       classNameNode.startLineIndex === 0
                     ) {
-                      // eslint-disable-next-line no-param-reassign
                       classNameNode.isTheFirstLineOnTheSameLineAsTheAttributeName = true;
                     }
                   }
@@ -1290,12 +1272,11 @@ export function findTargetClassNameNodesForVue(
                 });
 
                 classNameNodes.push(...targetClassNameNodesInAttribute);
-              } catch (error) {
+              } catch (_) {
                 // no action
               }
             }
           } else {
-            // eslint-disable-next-line no-lonely-if
             if (supportedAttributes.includes(node.name)) {
               keywordStartingNodes.push(currentASTNode);
 
@@ -1412,9 +1393,10 @@ export function findTargetClassNameNodesForVue(
 }
 
 export function findTargetClassNameNodesForAngular(
-  ast: any,
+  ast: AST,
   options: ResolvedOptions,
-  addon: Dict<(text: string, options: any) => any>,
+  // biome-ignore lint/suspicious/noExplicitAny: The addon will be removed.
+  addon: Dict<(text: string, options: any) => AST>,
 ): ClassNameNode[] {
   const supportedAttributes: string[] = [
     'class',
@@ -1422,8 +1404,6 @@ export function findTargetClassNameNodesForAngular(
     'ngClass',
     ...options.customAttributes,
   ];
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const supportedFunctions: string[] = ['classNames', ...options.customFunctions];
   /**
    * Most nodes
    */
@@ -1580,14 +1560,12 @@ export function findTargetClassNameNodesForAngular(
                     const [classNameNodeRangeStart, classNameNodeRangeEnd] = classNameNode.range;
 
                     if (classNameNode.type === 'expression') {
-                      // eslint-disable-next-line no-param-reassign
                       classNameNode.isItAngularExpression = true;
 
                       if (
                         classNameNode.delimiterType !== 'backtick' &&
                         classNameNode.startLineIndex === 0
                       ) {
-                        // eslint-disable-next-line no-param-reassign
                         classNameNode.isTheFirstLineOnTheSameLineAsTheAttributeName = true;
                       }
                     }
@@ -1644,6 +1622,7 @@ export function findTargetClassNameNodesForAngular(
                     .map((line, index) => {
                       if (
                         !isBackslashAdded &&
+                        // biome-ignore lint/style/noNonNullAssertion: Type guarded in upper scope.
                         index >= errorLineIndex! &&
                         line[line.length - 1] !== '\\'
                       ) {
@@ -1665,7 +1644,6 @@ export function findTargetClassNameNodesForAngular(
               } while (errorLineIndex !== null);
             }
           } else {
-            // eslint-disable-next-line no-lonely-if
             if (supportedAttributes.includes(node.name)) {
               keywordStartingNodes.push(currentASTNode);
 
@@ -1783,9 +1761,10 @@ export function findTargetClassNameNodesForAngular(
 
 export function findTargetClassNameNodesForAstro(
   formattedText: string,
-  ast: any,
+  ast: AST,
   options: ResolvedOptions,
-  addon: Dict<(text: string, options: any) => any>,
+  // biome-ignore lint/suspicious/noExplicitAny: The addon will be removed.
+  addon: Dict<(text: string, options: any) => AST>,
 ): ClassNameNode[] {
   const supportedAttributes: string[] = [
     'class',
@@ -1995,7 +1974,6 @@ export function findTargetClassNameNodesForAstro(
                   classNameNode.delimiterType !== 'backtick' &&
                   classNameNode.startLineIndex === 0
                 ) {
-                  // eslint-disable-next-line no-param-reassign
                   classNameNode.isTheFirstLineOnTheSameLineAsTheAttributeName = true;
                 }
 
@@ -2131,9 +2109,10 @@ export function findTargetClassNameNodesForAstro(
 
 export function findTargetClassNameNodesForSvelte(
   formattedText: string,
-  ast: any,
+  ast: AST,
   options: ResolvedOptions,
-  addon: Dict<(text: string, options: any) => any>,
+  // biome-ignore lint/suspicious/noExplicitAny: The addon will be removed.
+  addon: Dict<(text: string, options: any) => AST>,
 ): ClassNameNode[] {
   const supportedAttributes: string[] = ['class', 'className', ...options.customAttributes];
   const supportedFunctions: string[] = ['classNames', ...options.customFunctions];
@@ -2357,7 +2336,6 @@ export function findTargetClassNameNodesForSvelte(
               classNameNodeRangeEnd <= currentNodeRangeEnd
             ) {
               if (classNameNode.type === 'unknown') {
-                // eslint-disable-next-line no-param-reassign
                 array[index] = createExpressionNode({
                   delimiterType: classNameNode.delimiterType,
                   isItFunctionArgument: true,
@@ -2365,7 +2343,6 @@ export function findTargetClassNameNodesForSvelte(
                   startLineIndex: classNameNode.startLineIndex,
                 });
               } else if (classNameNode.type === 'expression') {
-                // eslint-disable-next-line no-param-reassign
                 classNameNode.isItFunctionArgument = true;
               }
             }
@@ -2450,7 +2427,6 @@ export function findTargetClassNameNodesForSvelte(
                   classNameNode.type === 'unknown' &&
                   classNameNode.delimiterType !== 'backtick'
                 ) {
-                  // eslint-disable-next-line no-param-reassign
                   array[index] = {
                     type: 'attribute',
                     isTheFirstLineOnTheSameLineAsTheOpeningTag: false,
@@ -2480,7 +2456,6 @@ export function findTargetClassNameNodesForSvelte(
           ) {
             if (classNameNode.type === 'unknown') {
               if (classNameNode.delimiterType !== 'backtick') {
-                // eslint-disable-next-line no-param-reassign
                 array[index] = createExpressionNode({
                   delimiterType: classNameNode.delimiterType,
                   hasSingleQuote: classNameNode.hasSingleQuote,
@@ -2491,7 +2466,6 @@ export function findTargetClassNameNodesForSvelte(
                   startLineIndex: classNameNode.startLineIndex,
                 });
               } else {
-                // eslint-disable-next-line no-param-reassign
                 array[index] = createExpressionNode({
                   delimiterType: classNameNode.delimiterType,
                   isTheFirstLineOnTheSameLineAsTheAttributeName:
@@ -2501,7 +2475,6 @@ export function findTargetClassNameNodesForSvelte(
                 });
               }
             } else if (classNameNode.type === 'expression') {
-              // eslint-disable-next-line no-param-reassign
               classNameNode.isTheFirstLineOnTheSameLineAsTheAttributeName =
                 classNameNode.startLineIndex === currentNodeStartLineIndex;
             }
@@ -2536,7 +2509,6 @@ export function findTargetClassNameNodesForSvelte(
               classNameNodeRangeEnd <= currentNodeRangeEnd
             ) {
               if (classNameNode.type === 'unknown') {
-                // eslint-disable-next-line no-param-reassign
                 array[index] = createExpressionNode({
                   delimiterType: classNameNode.delimiterType,
                   isItAnObjectProperty,
@@ -2544,7 +2516,6 @@ export function findTargetClassNameNodesForSvelte(
                   startLineIndex: classNameNode.startLineIndex,
                 });
               } else if (classNameNode.type === 'expression') {
-                // eslint-disable-next-line no-param-reassign
                 classNameNode.isItAnObjectProperty = isItAnObjectProperty;
               }
             }
@@ -2563,7 +2534,6 @@ export function findTargetClassNameNodesForSvelte(
             classNameNodeRangeEnd <= currentNodeRangeEnd
           ) {
             if (classNameNode.type === 'unknown') {
-              // eslint-disable-next-line no-param-reassign
               array[index] = createExpressionNode({
                 delimiterType: classNameNode.delimiterType,
                 isItAnOperandOfTernaryOperator: true,
@@ -2571,7 +2541,6 @@ export function findTargetClassNameNodesForSvelte(
                 startLineIndex: classNameNode.startLineIndex,
               });
             } else if (classNameNode.type === 'expression') {
-              // eslint-disable-next-line no-param-reassign
               classNameNode.isItAnOperandOfTernaryOperator = true;
             }
           }
@@ -2622,7 +2591,6 @@ export function findTargetClassNameNodesForSvelte(
           classNameNodes.push({
             type: 'unknown',
             delimiterType:
-              // eslint-disable-next-line no-nested-ternary
               delimiter === SINGLE_QUOTE
                 ? 'single-quote'
                 : delimiter === DOUBLE_QUOTE
@@ -2657,7 +2625,6 @@ export function findTargetClassNameNodesForSvelte(
           classNameNodes.push({
             type: 'unknown',
             delimiterType:
-              // eslint-disable-next-line no-nested-ternary
               node.raw[0] === SINGLE_QUOTE
                 ? 'single-quote'
                 : node.raw[0] === DOUBLE_QUOTE
@@ -2792,7 +2759,6 @@ export function findTargetClassNameNodesForSvelte(
               classNameNodeRangeEnd <= currentNodeRangeEnd
             ) {
               if (classNameNode.type === 'unknown' && classNameNode.delimiterType === 'backtick') {
-                // eslint-disable-next-line no-param-reassign
                 array[index] = createExpressionNode({
                   delimiterType: classNameNode.delimiterType,
                   isItFunctionArgument: node.tag.type === 'CallExpression',
@@ -2804,9 +2770,7 @@ export function findTargetClassNameNodesForSvelte(
                 classNameNode.type === 'expression' &&
                 classNameNode.delimiterType === 'backtick'
               ) {
-                // eslint-disable-next-line no-param-reassign
                 classNameNode.isItFunctionArgument = node.tag.type === 'CallExpression';
-                // eslint-disable-next-line no-param-reassign
                 classNameNode.shouldKeepDelimiter = true;
               }
             }
@@ -2874,7 +2838,6 @@ export function findTargetClassNameNodesForSvelte(
   }
 
   if (!ast.type) {
-    // eslint-disable-next-line no-param-reassign
     ast.type = 'Root';
   }
   recursion(ast);

@@ -1,3 +1,4 @@
+import type { AST } from 'prettier';
 import { z } from 'zod';
 
 import { parseAndAssemble } from './experimental';
@@ -23,9 +24,10 @@ export async function parseLineByLineAndReplaceAsync({
   addon,
 }: {
   formattedText: string;
-  ast: any;
+  ast: AST;
   options: ResolvedOptions;
-  addon: Dict<(text: string, options: any) => any>;
+  // biome-ignore lint/suspicious/noExplicitAny: The addon will be removed.
+  addon: Dict<(text: string, options: any) => AST>;
 }): Promise<string> {
   if (formattedText === '') {
     return formattedText;
@@ -64,7 +66,7 @@ export async function parseLineByLineAndReplaceAsync({
   return parseAndAssemble(formattedText, indentUnit, targetClassNameNodes, options);
 }
 
-export function refineSvelteAst(preprocessedText: string, ast: any) {
+export function refineSvelteAst(preprocessedText: string, ast: AST) {
   if (!ast.instance) {
     return ast;
   }
@@ -115,18 +117,15 @@ export function refineSvelteAst(preprocessedText: string, ast: any) {
     }
 
     if (ast.instance.end <= node.start) {
-      // eslint-disable-next-line no-param-reassign
       node.start += restoreOffset;
     }
     if (ast.instance.end <= node.end) {
-      // eslint-disable-next-line no-param-reassign
       node.end += restoreOffset;
     }
   }
 
   recursion(ast.html);
 
-  // eslint-disable-next-line no-param-reassign
   ast.instance = {
     type: 'RefinedScript',
     start: ast.instance.start,

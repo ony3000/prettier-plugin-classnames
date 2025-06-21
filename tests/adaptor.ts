@@ -2,7 +2,6 @@ import type { Plugin } from 'prettier';
 import { format } from 'prettier';
 import { describe, expect, onTestFailed, test } from 'vitest';
 
-// eslint-disable-next-line import/no-extraneous-dependencies
 import * as thisPlugin from '@/index';
 
 import type { Fixture } from './settings';
