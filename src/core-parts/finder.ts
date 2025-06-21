@@ -1,3 +1,4 @@
+import type { AST } from 'prettier';
 import { z } from 'zod';
 
 import type { Dict, NodeRange, ExpressionNode, ClassNameNode } from './shared';
@@ -99,7 +100,7 @@ function filterAndSortClassNameNodes(
     );
 }
 
-export function findTargetClassNameNodes(ast: any, options: ResolvedOptions): ClassNameNode[] {
+export function findTargetClassNameNodes(ast: AST, options: ResolvedOptions): ClassNameNode[] {
   const supportedAttributes: string[] = ['class', 'className', ...options.customAttributes];
   const supportedFunctions: string[] = ['classNames', ...options.customFunctions];
   /**
@@ -814,12 +815,12 @@ export function findTargetClassNameNodes(ast: any, options: ResolvedOptions): Cl
 }
 
 export function findTargetClassNameNodesForHtml(
-  ast: any,
+  ast: AST,
   options: ResolvedOptions,
-  addon: Dict<(text: string, options: any) => any>,
+  // biome-ignore lint/suspicious/noExplicitAny: The addon will be removed.
+  addon: Dict<(text: string, options: any) => AST>,
 ): ClassNameNode[] {
   const supportedAttributes: string[] = ['class', 'className', ...options.customAttributes];
-  const supportedFunctions: string[] = ['classNames', ...options.customFunctions];
   /**
    * Most nodes
    */
@@ -1096,12 +1097,12 @@ export function findTargetClassNameNodesForHtml(
 }
 
 export function findTargetClassNameNodesForVue(
-  ast: any,
+  ast: AST,
   options: ResolvedOptions,
-  addon: Dict<(text: string, options: any) => any>,
+  // biome-ignore lint/suspicious/noExplicitAny: The addon will be removed.
+  addon: Dict<(text: string, options: any) => AST>,
 ): ClassNameNode[] {
   const supportedAttributes: string[] = ['class', 'className', ...options.customAttributes];
-  const supportedFunctions: string[] = ['classNames', ...options.customFunctions];
   /**
    * Most nodes
    */
@@ -1271,7 +1272,7 @@ export function findTargetClassNameNodesForVue(
                 });
 
                 classNameNodes.push(...targetClassNameNodesInAttribute);
-              } catch (error) {
+              } catch (_) {
                 // no action
               }
             }
@@ -1392,9 +1393,10 @@ export function findTargetClassNameNodesForVue(
 }
 
 export function findTargetClassNameNodesForAngular(
-  ast: any,
+  ast: AST,
   options: ResolvedOptions,
-  addon: Dict<(text: string, options: any) => any>,
+  // biome-ignore lint/suspicious/noExplicitAny: The addon will be removed.
+  addon: Dict<(text: string, options: any) => AST>,
 ): ClassNameNode[] {
   const supportedAttributes: string[] = [
     'class',
@@ -1402,7 +1404,6 @@ export function findTargetClassNameNodesForAngular(
     'ngClass',
     ...options.customAttributes,
   ];
-  const supportedFunctions: string[] = ['classNames', ...options.customFunctions];
   /**
    * Most nodes
    */
@@ -1621,6 +1622,7 @@ export function findTargetClassNameNodesForAngular(
                     .map((line, index) => {
                       if (
                         !isBackslashAdded &&
+                        // biome-ignore lint/style/noNonNullAssertion: Type guarded in upper scope.
                         index >= errorLineIndex! &&
                         line[line.length - 1] !== '\\'
                       ) {
@@ -1759,9 +1761,10 @@ export function findTargetClassNameNodesForAngular(
 
 export function findTargetClassNameNodesForAstro(
   formattedText: string,
-  ast: any,
+  ast: AST,
   options: ResolvedOptions,
-  addon: Dict<(text: string, options: any) => any>,
+  // biome-ignore lint/suspicious/noExplicitAny: The addon will be removed.
+  addon: Dict<(text: string, options: any) => AST>,
 ): ClassNameNode[] {
   const supportedAttributes: string[] = [
     'class',
@@ -2106,9 +2109,10 @@ export function findTargetClassNameNodesForAstro(
 
 export function findTargetClassNameNodesForSvelte(
   formattedText: string,
-  ast: any,
+  ast: AST,
   options: ResolvedOptions,
-  addon: Dict<(text: string, options: any) => any>,
+  // biome-ignore lint/suspicious/noExplicitAny: The addon will be removed.
+  addon: Dict<(text: string, options: any) => AST>,
 ): ClassNameNode[] {
   const supportedAttributes: string[] = ['class', 'className', ...options.customAttributes];
   const supportedFunctions: string[] = ['classNames', ...options.customFunctions];

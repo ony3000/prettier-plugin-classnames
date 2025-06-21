@@ -1,6 +1,6 @@
 import { createHash } from 'node:crypto';
 
-import type { NodeRange, ExpressionNode, ClassNameNode } from './shared';
+import type { NodeRange, AttributeNode, ExpressionNode, ClassNameNode } from './shared';
 import { EOL, PH, SPACE, TAB, SINGLE_QUOTE, DOUBLE_QUOTE, BACKTICK } from './shared';
 
 function sha1(input: string): string {
@@ -159,6 +159,7 @@ function linearParse(
     const [rangeStartOfClassName, rangeEndOfClassName] = range;
 
     const indentMatchResult = formattedLines[startLineIndex].match(new RegExp(`^(${indentUnit})*`));
+    // biome-ignore lint/style/noNonNullAssertion: The '0 or more' match quantifier returns a result array even if no matches are found.
     const indentLevel = indentMatchResult![0].length / indentUnit.length;
 
     const delimiterOffset =
@@ -336,7 +337,9 @@ function formatTokens(
         token.children = formatTokens(token.children, indentUnit, options);
       }
     } else if (token.type === 'attribute') {
-      const props = token.props!;
+      const props = token.props as Omit<AttributeNode, 'range' | 'type'> & {
+        indentLevel: number;
+      };
       const leadingText = isEndingPositionAbsolute
         ? assembleTokens(formattedTokens.slice(0, tokenIndex))
             .split(EOL)
@@ -554,11 +557,13 @@ function unfreezeToken(token: TextToken, options: ResolvedOptions): string {
               }`,
             );
             replaceValue = `${isNestedExpressionOpenedOnThePreviousLine ? '' : EOL}${
+              // biome-ignore lint/style/noNonNullAssertion: The '0 or more' match quantifier returns a result array even if no matches are found.
               token.children[index - 1].body.match(new RegExp(`[${SPACE}${TAB}]*$`))![0]
             }${plainText}${
               isNestedExpressionClosedOnTheNextLine
                 ? ''
-                : token.children[index + 1].body.match(new RegExp(`^${EOL}[${SPACE}${TAB}]*`))![0]
+                : // biome-ignore lint/style/noNonNullAssertion: The '0 or more' match quantifier returns a result array even if no matches are found.
+                  token.children[index + 1].body.match(new RegExp(`^${EOL}[${SPACE}${TAB}]*`))![0]
             }`;
           }
 

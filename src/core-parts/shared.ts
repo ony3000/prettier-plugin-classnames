@@ -57,7 +57,7 @@ type UnknownNode = ClassNameNodeBase & {
   hasBacktick?: boolean;
 };
 
-type AttributeNode = ClassNameNodeBase & {
+export type AttributeNode = ClassNameNodeBase & {
   type: 'attribute';
   /**
    * @deprecated

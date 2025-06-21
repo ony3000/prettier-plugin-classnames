@@ -1,4 +1,4 @@
-import type { Parser, ParserOptions, Plugin } from 'prettier';
+import type { AST, Parser, ParserOptions, Plugin } from 'prettier';
 import { format } from 'prettier';
 import { parsers as babelParsers } from 'prettier/plugins/babel';
 import { parsers as htmlParsers } from 'prettier/plugins/html';
@@ -28,7 +28,7 @@ async function advancedParse(
   parserName: SupportedParserNames,
   defaultParser: Parser,
   options: ParserOptions & ThisPluginOptions,
-): Promise<any> {
+): Promise<AST> {
   const preprocessedText = defaultParser.preprocess
     ? defaultParser.preprocess(text, options)
     : text;

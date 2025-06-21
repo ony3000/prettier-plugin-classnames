@@ -26,7 +26,7 @@
     "build:plain": "pnpm run clean:bundle && esbuild src/index.ts --bundle --outdir=dist --platform=node \"--external:@prettier\" \"--external:prettier\"",
     "clean": "pnpm run clean:bundle",
     "clean:bundle": "rimraf dist/",
-    "lint": "biome lint src/ tests/",
+    "lint": "biome lint --max-diagnostics=none src/ tests/",
     "prepare-release": "pnpm run build:plain && npm version prerelease --preid=alpha --git-tag-version=false && npm pack",
     "test": "vitest run --passWithNoTests"
   },

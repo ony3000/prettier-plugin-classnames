@@ -1,7 +1,7 @@
-import type { AstPath, ParserOptions, Doc, Printer } from 'prettier';
+import type { AstPath, Doc, Printer } from 'prettier';
 
 function createPrinter(): Printer {
-  function main(path: AstPath, options: ParserOptions, print: (path: AstPath) => Doc): Doc {
+  function main(path: AstPath): Doc {
     const { node } = path;
 
     if (node.type === 'FormattedText') {
