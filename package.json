@@ -27,7 +27,8 @@
     "clean": "pnpm run clean:bundle",
     "clean:bundle": "rimraf dist/",
     "lint": "biome lint --max-diagnostics=none src/ tests/",
-    "prepare-release": "pnpm run build:plain && npm version prerelease --preid=alpha --git-tag-version=false && npm pack",
+    "preview": "pnpm run build:plain && npm version prerelease --preid=alpha --git-tag-version=false && npm pack",
+    "preview:minor": "pnpm run build:plain && npm version preminor --preid=alpha --git-tag-version=false && npm pack",
     "test": "vitest run --passWithNoTests"
   },
   "dependencies": {
