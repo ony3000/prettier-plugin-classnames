@@ -8,6 +8,7 @@ on:
       - '.github/workflows/code-analysis.yml'
       - 'src/**'
       - 'tests/**'
+      - 'pnpm-lock.yaml'
   pull_request:
     branches:
       - master
@@ -15,6 +16,7 @@ on:
       - '.github/workflows/code-analysis.yml'
       - 'src/**'
       - 'tests/**'
+      - 'pnpm-lock.yaml'
 
 jobs:
   run-linter:
