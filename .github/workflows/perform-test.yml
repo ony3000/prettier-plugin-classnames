@@ -1,0 +1,32 @@
+name: Performing tests
+
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - '.github/workflows/perform-test.yml'
+      - 'src/**'
+      - 'tests/**'
+  pull_request:
+    branches:
+      - master
+    paths:
+      - '.github/workflows/perform-test.yml'
+      - 'src/**'
+      - 'tests/**'
+
+jobs:
+  run-tester:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          registry-url: https://registry.npmjs.org/
+      - uses: pnpm/action-setup@v2
+        with:
+          run_install: true
+      - name: Perform a test
+        run: pnpm run test

@@ -1,0 +1,32 @@
+name: Static Code Analysis
+
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - '.github/workflows/code-analysis.yml'
+      - 'src/**'
+      - 'tests/**'
+  pull_request:
+    branches:
+      - master
+    paths:
+      - '.github/workflows/code-analysis.yml'
+      - 'src/**'
+      - 'tests/**'
+
+jobs:
+  run-linter:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          registry-url: https://registry.npmjs.org/
+      - uses: pnpm/action-setup@v2
+        with:
+          run_install: true
+      - name: Analyze the code
+        run: pnpm run lint
