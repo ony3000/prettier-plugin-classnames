@@ -1,6 +1,6 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`'(1) Even when nested expressions contain logical expressions, the opening and closing braces and nested indentation of the expressions should be preserved in Prettier\\'s output as much as possible.' > expectation 1`] = `
+exports[`'(1) Even when nested expressions cont…' > expectation 1`] = `
 "//-----------------------------------------------------------------------------| printWidth=80 (in snapshot)
 export function Foo() {
   return (

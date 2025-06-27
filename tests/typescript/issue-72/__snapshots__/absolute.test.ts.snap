@@ -1,6 +1,6 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`'(1) If the end position is absolute, the delimiter following the class name is also included in the line wrapping.' > expectation 1`] = `
+exports[`'(1) If the end position is absolute, …' > expectation 1`] = `
 "//------------------------------------------------------------------| printWidth=69 (in snapshot)
 export function Foo({ children }) {
   return (
@@ -14,7 +14,7 @@ export function Foo({ children }) {
 "
 `;
 
-exports[`'(2) If the end position is absolute, the delimiter following the class name is also included in the line wrapping.' > expectation 1`] = `
+exports[`'(2) If the end position is absolute, …' > expectation 1`] = `
 "//-------------------------------------------------------| printWidth=58 (in snapshot)
 export function Foo({ children }) {
   return (
@@ -29,7 +29,7 @@ export function Foo({ children }) {
 "
 `;
 
-exports[`'(3) If the end position is absolute, the delimiter following the class name is also included in the line wrapping.' > expectation 1`] = `
+exports[`'(3) If the end position is absolute, …' > expectation 1`] = `
 "//---------------------------------------------------------| printWidth=60 (in snapshot)
 export function Foo({ children }) {
   return (

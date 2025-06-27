@@ -1,6 +1,6 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`'(1) Empty JSX tags should also behave the same as named tags.' > expectation 1`] = `
+exports[`'(1) Empty JSX tags should also behave…' > expectation 1`] = `
 "//-----------------------------------------------------------------------------| printWidth=80 (in snapshot)
 function Foo() {
   return (

@@ -1,6 +1,6 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`'(1) Tagged templates are not supported by default.' > expectation 1`] = `
+exports[`'(1) Tagged templates are not supporte…' > expectation 1`] = `
 "<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
 <script>
   const classes = tw\`lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere eu volutpat id neque pellentesque\`;
@@ -8,7 +8,7 @@ exports[`'(1) Tagged templates are not supported by default.' > expectation 1`] 
 "
 `;
 
-exports[`'(2) Tagged templates are supported by adding tag function names to the \`customFunctions\` option.' > expectation 1`] = `
+exports[`'(2) Tagged templates are supported by…' > expectation 1`] = `
 "<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
 <script>
   const classes = tw\`lorem ipsum dolor sit amet consectetur
@@ -18,7 +18,7 @@ exports[`'(2) Tagged templates are supported by adding tag function names to the
 "
 `;
 
-exports[`'(3) If a tagged template is written as an expression for an attribute that supports line wrapping, it will appear to be supported even if the \`customFunctions\` option does not include the tagged function name, but in fact it is supported as a template literal.' > expectation 1`] = `
+exports[`'(3) If a tagged template is written a…' > expectation 1`] = `
 "<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
 <div>
   <div>
@@ -34,7 +34,7 @@ exports[`'(3) If a tagged template is written as an expression for an attribute 
 "
 `;
 
-exports[`'(4) If the tag function name is \`css\`, the tagged template is considered special and is not supported even if it is written as an expression for an attribute that supports line wrapping.' > expectation 1`] = `
+exports[`'(4) If the tag function name is \`css\`…' > expectation 1`] = `
 "<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
 <div>
   <div>
@@ -48,7 +48,7 @@ exports[`'(4) If the tag function name is \`css\`, the tagged template is consid
 "
 `;
 
-exports[`'(5) If the tag function name is \`css\`, the tagged template is considered special and is not supported even if you add the tag function name to the \`customFunctions\` option.' > expectation 1`] = `
+exports[`'(5) If the tag function name is \`css\`…' > expectation 1`] = `
 "<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
 <div>
   <div>
