@@ -112,6 +112,40 @@ const classes = {
 };
 `,
   },
+  {
+    name: 'The `String.raw` method should not be target to line wrapping, even if it is inside an attribute or function that is supported by default',
+    input: `
+export function Foo() {
+  return (
+    <div
+      className={classNames([
+        "lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere eu volutpat id neque pellentesque",
+        String.raw\`[&_.react-datepicker\\_\\_input-container>div]:!border-red-50\`,
+      ])}
+    >
+      content
+    </div>
+  );
+}
+`,
+    output: `export function Foo() {
+  return (
+    <div
+      className={classNames([
+        \`lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit
+        eu posuere eu volutpat id neque pellentesque\`,
+        String.raw\`[&_.react-datepicker\\_\\_input-container>div]:!border-red-50\`,
+      ])}
+    >
+      content
+    </div>
+  );
+}
+`,
+    options: {
+      printWidth: 80,
+    },
+  },
 ];
 
 testEach(fixtures, options);
