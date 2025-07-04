@@ -162,7 +162,8 @@ export function findTargetClassNameNodes(ast: AST, options: ResolvedOptions): Cl
         recursiveProps = ['arguments'];
         break;
       }
-      case 'ConditionalExpression': {
+      case 'ConditionalExpression':
+      case 'IfStatement': {
         recursiveProps = ['consequent', 'alternate'];
         break;
       }
