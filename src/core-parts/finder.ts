@@ -148,6 +148,11 @@ export function findTargetClassNameNodes(ast: AST, options: ResolvedOptions): Cl
         recursiveProps = ['body'];
         break;
       }
+      case 'AssignmentExpression':
+      case 'LogicalExpression': {
+        recursiveProps = ['right'];
+        break;
+      }
       case 'BinaryExpression': {
         recursiveProps = ['left', 'right'];
         break;
@@ -188,10 +193,6 @@ export function findTargetClassNameNodes(ast: AST, options: ResolvedOptions): Cl
       }
       case 'JSXOpeningElement': {
         recursiveProps = ['attributes'];
-        break;
-      }
-      case 'LogicalExpression': {
-        recursiveProps = ['right'];
         break;
       }
       case 'ObjectExpression': {
