@@ -158,18 +158,20 @@ export function findTargetClassNameNodes(ast: AST, options: ResolvedOptions): Cl
         recursiveProps = ['left', 'right'];
         break;
       }
-      case 'CallExpression': {
+      case 'CallExpression':
+      case 'OptionalCallExpression': {
         recursiveProps = ['arguments'];
+        break;
+      }
+      case 'ChainExpression':
+      case 'ExpressionStatement':
+      case 'JSXExpressionContainer': {
+        recursiveProps = ['expression'];
         break;
       }
       case 'ConditionalExpression':
       case 'IfStatement': {
         recursiveProps = ['consequent', 'alternate'];
-        break;
-      }
-      case 'ExpressionStatement':
-      case 'JSXExpressionContainer': {
-        recursiveProps = ['expression'];
         break;
       }
       case 'ExportDefaultDeclaration':

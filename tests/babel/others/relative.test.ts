@@ -324,6 +324,41 @@ function Foo() {
       printWidth: 80,
     },
   },
+  {
+    name: 'JSX mapped from object references including optional chaining',
+    input: `
+function Foo() {
+  return (
+    <div>
+      {foo?.data.map((_, index) => (
+        <div key={index} className="lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere eu volutpat id neque pellentesque">
+          content
+        </div>
+      ))}
+    </div>
+  );
+}
+`,
+    output: `function Foo() {
+  return (
+    <div>
+      {foo?.data.map((_, index) => (
+        <div
+          key={index}
+          className="lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit
+            eu posuere eu volutpat id neque pellentesque"
+        >
+          content
+        </div>
+      ))}
+    </div>
+  );
+}
+`,
+    options: {
+      printWidth: 80,
+    },
+  },
 ];
 
 testEach(fixtures, options);
