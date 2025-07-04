@@ -652,7 +652,7 @@ export function findTargetClassNameNodes(ast: AST, options: ResolvedOptions): Cl
         nonCommentNodes.push(currentASTNode);
 
         if (
-          isTypeof(
+          (isTypeof(
             node,
             z.object({
               tag: z.object({
@@ -664,7 +664,26 @@ export function findTargetClassNameNodes(ast: AST, options: ResolvedOptions): Cl
               }),
             }),
           ) &&
-          node.tag.name === 'css'
+            node.tag.name === 'css') ||
+          (isTypeof(
+            node,
+            z.object({
+              tag: z.object({
+                type: z.literal('MemberExpression'),
+                range: z.custom<NodeRange>((value) =>
+                  isTypeof(value, z.tuple([z.number(), z.number()])),
+                ),
+                object: z.object({
+                  name: z.string(),
+                }),
+                property: z.object({
+                  name: z.string(),
+                }),
+              }),
+            }),
+          ) &&
+            node.tag.object.name === 'String' &&
+            node.tag.property.name === 'raw')
         ) {
           const [tagRangeStart, tagRangeEnd] = node.tag.range;
 
