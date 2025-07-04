@@ -290,6 +290,40 @@ const Foo = forwardRef(function Foo() {
       printWidth: 80,
     },
   },
+  {
+    name: "class name inside the 'if' block",
+    input: `
+function Foo() {
+  let elem;
+  if (true) {
+    elem = (
+      <div className="lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere eu volutpat id neque pellentesque">
+        content
+      </div>
+    );
+  }
+  return elem;
+}
+`,
+    output: `function Foo() {
+  let elem;
+  if (true) {
+    elem = (
+      <div
+        className="lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit
+          eu posuere eu volutpat id neque pellentesque"
+      >
+        content
+      </div>
+    );
+  }
+  return elem;
+}
+`,
+    options: {
+      printWidth: 80,
+    },
+  },
 ];
 
 testEach(fixtures, options);
