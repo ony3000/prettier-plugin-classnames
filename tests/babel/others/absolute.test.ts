@@ -269,6 +269,32 @@ export function Foo({ children }) {
 }
 `,
   },
+  {
+    name: 'class name passed as a function argument',
+    input: `
+const Foo = forwardRef(function Foo() {
+  return (
+    <div className="lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere eu volutpat id neque pellentesque">
+      content
+    </div>
+  );
+});
+`,
+    output: `const Foo = forwardRef(function Foo() {
+  return (
+    <div
+      className="lorem ipsum dolor sit amet consectetur adipiscing elit proin ex
+        massa hendrerit eu posuere eu volutpat id neque pellentesque"
+    >
+      content
+    </div>
+  );
+});
+`,
+    options: {
+      printWidth: 80,
+    },
+  },
 ];
 
 testEach(fixtures, options);

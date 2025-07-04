@@ -144,7 +144,8 @@ export function findTargetClassNameNodes(ast: AST, options: ResolvedOptions): Cl
       }
       case 'ArrowFunctionExpression':
       case 'BlockStatement':
-      case 'FunctionDeclaration': {
+      case 'FunctionDeclaration':
+      case 'FunctionExpression': {
         recursiveProps = ['body'];
         break;
       }
