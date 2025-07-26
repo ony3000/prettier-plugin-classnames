@@ -3,7 +3,8 @@ import { z } from 'zod';
 
 import { parseAndAssemble } from './experimental';
 import {
-  findTargetClassNameNodes,
+  findTargetClassNameNodesForBabel,
+  findTargetClassNameNodesForTypescript,
   findTargetClassNameNodesForHtml,
   findTargetClassNameNodesForVue,
   findTargetClassNameNodesForAngular,
@@ -42,6 +43,14 @@ export async function parseLineByLineAndReplaceAsync({
       targetClassNameNodes = findTargetClassNameNodesForSvelte(formattedText, ast, options);
       break;
     }
+    case 'babel': {
+      targetClassNameNodes = findTargetClassNameNodesForBabel(ast, options);
+      break;
+    }
+    case 'typescript': {
+      targetClassNameNodes = findTargetClassNameNodesForTypescript(ast, options);
+      break;
+    }
     case 'angular': {
       targetClassNameNodes = findTargetClassNameNodesForAngular(ast, options);
       break;
@@ -55,7 +64,6 @@ export async function parseLineByLineAndReplaceAsync({
       break;
     }
     default: {
-      targetClassNameNodes = findTargetClassNameNodes(ast, options);
       break;
     }
   }
