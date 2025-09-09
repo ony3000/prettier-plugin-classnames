@@ -2082,12 +2082,13 @@ export function findTargetClassNameNodesForAngular(
     let recursiveProps: string[] = [];
 
     switch (node.type) {
-      case 'element': {
-        recursiveProps = ['attrs', 'children'];
-        break;
-      }
+      case 'angularControlFlowBlock':
       case 'root': {
         recursiveProps = ['children'];
+        break;
+      }
+      case 'element': {
+        recursiveProps = ['attrs', 'children'];
         break;
       }
       default: {
