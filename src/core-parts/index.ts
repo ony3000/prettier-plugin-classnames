@@ -86,8 +86,9 @@ export function refineSvelteAst(preprocessedText: string, ast: AST) {
   const [temporaryAttributeWithLeadingSpace, encodedContent] = matchResult;
   const plainContent = base64Decode(encodedContent);
 
-  const restoreOffset =
+  const restoreTextOffset =
     plainContent.length - (temporaryAttributeWithLeadingSpace.length + '{}'.length);
+  const restoreLineOffset = plainContent.split(EOL).length - 1;
 
   function recursion(node: unknown): void {
     if (!isTypeof(node, z.object({ type: z.string() }))) {
@@ -122,10 +123,40 @@ export function refineSvelteAst(preprocessedText: string, ast: AST) {
     }
 
     if (ast.instance.end <= node.start) {
-      node.start += restoreOffset;
+      node.start += restoreTextOffset;
+
+      if (
+        isTypeof(
+          node,
+          z.object({
+            loc: z.object({
+              start: z.object({
+                line: z.number(),
+              }),
+            }),
+          }),
+        )
+      ) {
+        node.loc.start.line += restoreLineOffset;
+      }
     }
     if (ast.instance.end <= node.end) {
-      node.end += restoreOffset;
+      node.end += restoreTextOffset;
+
+      if (
+        isTypeof(
+          node,
+          z.object({
+            loc: z.object({
+              end: z.object({
+                line: z.number(),
+              }),
+            }),
+          }),
+        )
+      ) {
+        node.loc.end.line += restoreLineOffset;
+      }
     }
   }
 
@@ -134,7 +165,7 @@ export function refineSvelteAst(preprocessedText: string, ast: AST) {
   ast.instance = {
     type: 'RefinedScript',
     start: ast.instance.start,
-    end: ast.instance.end + restoreOffset,
+    end: ast.instance.end + restoreTextOffset,
     loc: {
       start: {
         line: preprocessedText.slice(0, ast.instance.start).split(EOL).length,
@@ -142,8 +173,8 @@ export function refineSvelteAst(preprocessedText: string, ast: AST) {
     },
     content: {
       type: 'RefinedScriptSource',
-      start: ast.instance.end + restoreOffset - ('</script>'.length + plainContent.length),
-      end: ast.instance.end + restoreOffset - '</script>'.length,
+      start: ast.instance.end + restoreTextOffset - ('</script>'.length + plainContent.length),
+      end: ast.instance.end + restoreTextOffset - '</script>'.length,
       loc: {
         start: {
           line: ast.instance.content.body[0].loc.start.line,

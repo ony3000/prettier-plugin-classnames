@@ -1,0 +1,44 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`'(1) These fixtures must have the same…' > expectation 1`] = `
+"<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
+<div
+  class={[
+    \`flex w-0 cursor-default overflow-clip
+    transition-[width] duration-300 group-hover:w-5
+    focus-visible:w-5\`,
+  ]}
+></div>
+"
+`;
+
+exports[`'(2) These fixtures must have the same…' > expectation 1`] = `
+"<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
+<script>
+</script>
+
+<div
+  class={[
+    \`flex w-0 cursor-default overflow-clip
+    transition-[width] duration-300 group-hover:w-5
+    focus-visible:w-5\`,
+  ]}
+></div>
+"
+`;
+
+exports[`'(3) These fixtures must have the same…' > expectation 1`] = `
+"<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
+<script>
+  //
+</script>
+
+<div
+  class={[
+    \`flex w-0 cursor-default overflow-clip
+    transition-[width] duration-300 group-hover:w-5
+    focus-visible:w-5\`,
+  ]}
+></div>
+"
+`;
