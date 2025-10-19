@@ -88,7 +88,7 @@ export function refineSvelteAst(preprocessedText: string, ast: AST) {
 
   const restoreTextOffset =
     plainContent.length - (temporaryAttributeWithLeadingSpace.length + '{}'.length);
-  const restoreLineOffset = plainContent.split(EOL).length - 1;
+  // const restoreLineOffset = plainContent.split(EOL).length - 1;
 
   function recursion(node: unknown): void {
     if (!isTypeof(node, z.object({ type: z.string() }))) {
@@ -125,38 +125,38 @@ export function refineSvelteAst(preprocessedText: string, ast: AST) {
     if (ast.instance.end <= node.start) {
       node.start += restoreTextOffset;
 
-      if (
-        isTypeof(
-          node,
-          z.object({
-            loc: z.object({
-              start: z.object({
-                line: z.number(),
-              }),
-            }),
-          }),
-        )
-      ) {
-        node.loc.start.line += restoreLineOffset;
-      }
+      // if (
+      //   isTypeof(
+      //     node,
+      //     z.object({
+      //       loc: z.object({
+      //         start: z.object({
+      //           line: z.number(),
+      //         }),
+      //       }),
+      //     }),
+      //   )
+      // ) {
+      //   node.loc.start.line += restoreLineOffset;
+      // }
     }
     if (ast.instance.end <= node.end) {
       node.end += restoreTextOffset;
 
-      if (
-        isTypeof(
-          node,
-          z.object({
-            loc: z.object({
-              end: z.object({
-                line: z.number(),
-              }),
-            }),
-          }),
-        )
-      ) {
-        node.loc.end.line += restoreLineOffset;
-      }
+      // if (
+      //   isTypeof(
+      //     node,
+      //     z.object({
+      //       loc: z.object({
+      //         end: z.object({
+      //           line: z.number(),
+      //         }),
+      //       }),
+      //     }),
+      //   )
+      // ) {
+      //   node.loc.end.line += restoreLineOffset;
+      // }
     }
   }
 
