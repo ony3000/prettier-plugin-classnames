@@ -1,0 +1,989 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`'(Non-TS-01) literal' > expectation 1`] = `
+"<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
+<script></script>
+
+<div class={"w-full"}></div>
+"
+`;
+
+exports[`'(Non-TS-02) function argument' > expectation 1`] = `
+"<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
+<script></script>
+
+<div class={classNames("w-full")}></div>
+"
+`;
+
+exports[`'(Non-TS-03) object property' > expectation 1`] = `
+"<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
+<script></script>
+
+<div class={{ "w-full": true }}></div>
+"
+`;
+
+exports[`'(Non-TS-04) ternary operator' > expectation 1`] = `
+"<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
+<script></script>
+
+<div class={condition ? "w-full" : "w-full"}></div>
+"
+`;
+
+exports[`'(Non-TS-05) binary operator' > expectation 1`] = `
+"<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
+<script></script>
+
+<div class={truthyExpression && "w-full"}></div>
+"
+`;
+
+exports[`'(Non-TS-06) multiple class names' > expectation 1`] = `
+"<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
+<script></script>
+
+<div
+  class={[
+    "w-full",
+    classNames("w-full"),
+    { "w-full": true },
+    condition ? "w-full" : "w-full",
+    truthyExpression && "w-full",
+  ]}
+></div>
+"
+`;
+
+exports[`'(Non-TS-07) literal' > expectation 1`] = `
+"<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
+<script
+  zero-one-two-three-four-five-six-seven-eight-nine="0123456789"
+></script>
+
+<div class={"w-full"}></div>
+"
+`;
+
+exports[`'(Non-TS-08) function argument' > expectation 1`] = `
+"<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
+<script
+  zero-one-two-three-four-five-six-seven-eight-nine="0123456789"
+></script>
+
+<div class={classNames("w-full")}></div>
+"
+`;
+
+exports[`'(Non-TS-09) object property' > expectation 1`] = `
+"<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
+<script
+  zero-one-two-three-four-five-six-seven-eight-nine="0123456789"
+></script>
+
+<div class={{ "w-full": true }}></div>
+"
+`;
+
+exports[`'(Non-TS-10) ternary operator' > expectation 1`] = `
+"<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
+<script
+  zero-one-two-three-four-five-six-seven-eight-nine="0123456789"
+></script>
+
+<div class={condition ? "w-full" : "w-full"}></div>
+"
+`;
+
+exports[`'(Non-TS-11) binary operator' > expectation 1`] = `
+"<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
+<script
+  zero-one-two-three-four-five-six-seven-eight-nine="0123456789"
+></script>
+
+<div class={truthyExpression && "w-full"}></div>
+"
+`;
+
+exports[`'(Non-TS-12) multiple class names' > expectation 1`] = `
+"<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
+<script
+  zero-one-two-three-four-five-six-seven-eight-nine="0123456789"
+></script>
+
+<div
+  class={[
+    "w-full",
+    classNames("w-full"),
+    { "w-full": true },
+    condition ? "w-full" : "w-full",
+    truthyExpression && "w-full",
+  ]}
+></div>
+"
+`;
+
+exports[`'(Non-TS-13) literal' > expectation 1`] = `
+"<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
+<script>
+</script>
+
+<div class={"w-full"}></div>
+"
+`;
+
+exports[`'(Non-TS-14) function argument' > expectation 1`] = `
+"<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
+<script>
+</script>
+
+<div class={classNames("w-full")}></div>
+"
+`;
+
+exports[`'(Non-TS-15) object property' > expectation 1`] = `
+"<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
+<script>
+</script>
+
+<div class={{ "w-full": true }}></div>
+"
+`;
+
+exports[`'(Non-TS-16) ternary operator' > expectation 1`] = `
+"<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
+<script>
+</script>
+
+<div class={condition ? "w-full" : "w-full"}></div>
+"
+`;
+
+exports[`'(Non-TS-17) binary operator' > expectation 1`] = `
+"<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
+<script>
+</script>
+
+<div class={truthyExpression && "w-full"}></div>
+"
+`;
+
+exports[`'(Non-TS-18) multiple class names' > expectation 1`] = `
+"<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
+<script>
+</script>
+
+<div
+  class={[
+    "w-full",
+    classNames("w-full"),
+    { "w-full": true },
+    condition ? "w-full" : "w-full",
+    truthyExpression && "w-full",
+  ]}
+></div>
+"
+`;
+
+exports[`'(Non-TS-19) literal' > expectation 1`] = `
+"<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
+<script
+  zero-one-two-three-four-five-six-seven-eight-nine="0123456789"
+>
+</script>
+
+<div class={"w-full"}></div>
+"
+`;
+
+exports[`'(Non-TS-20) function argument' > expectation 1`] = `
+"<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
+<script
+  zero-one-two-three-four-five-six-seven-eight-nine="0123456789"
+>
+</script>
+
+<div class={classNames("w-full")}></div>
+"
+`;
+
+exports[`'(Non-TS-21) object property' > expectation 1`] = `
+"<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
+<script
+  zero-one-two-three-four-five-six-seven-eight-nine="0123456789"
+>
+</script>
+
+<div class={{ "w-full": true }}></div>
+"
+`;
+
+exports[`'(Non-TS-22) ternary operator' > expectation 1`] = `
+"<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
+<script
+  zero-one-two-three-four-five-six-seven-eight-nine="0123456789"
+>
+</script>
+
+<div class={condition ? "w-full" : "w-full"}></div>
+"
+`;
+
+exports[`'(Non-TS-23) binary operator' > expectation 1`] = `
+"<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
+<script
+  zero-one-two-three-four-five-six-seven-eight-nine="0123456789"
+>
+</script>
+
+<div class={truthyExpression && "w-full"}></div>
+"
+`;
+
+exports[`'(Non-TS-24) multiple class names' > expectation 1`] = `
+"<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
+<script
+  zero-one-two-three-four-five-six-seven-eight-nine="0123456789"
+>
+</script>
+
+<div
+  class={[
+    "w-full",
+    classNames("w-full"),
+    { "w-full": true },
+    condition ? "w-full" : "w-full",
+    truthyExpression && "w-full",
+  ]}
+></div>
+"
+`;
+
+exports[`'(Non-TS-25) literal' > expectation 1`] = `
+"<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
+<script>
+  const now = new Date();
+</script>
+
+<div class={"w-full"}></div>
+"
+`;
+
+exports[`'(Non-TS-26) function argument' > expectation 1`] = `
+"<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
+<script>
+  const now = new Date();
+</script>
+
+<div class={classNames("w-full")}></div>
+"
+`;
+
+exports[`'(Non-TS-27) object property' > expectation 1`] = `
+"<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
+<script>
+  const now = new Date();
+</script>
+
+<div class={{ "w-full": true }}></div>
+"
+`;
+
+exports[`'(Non-TS-28) ternary operator' > expectation 1`] = `
+"<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
+<script>
+  const now = new Date();
+</script>
+
+<div class={condition ? "w-full" : "w-full"}></div>
+"
+`;
+
+exports[`'(Non-TS-29) binary operator' > expectation 1`] = `
+"<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
+<script>
+  const now = new Date();
+</script>
+
+<div class={truthyExpression && "w-full"}></div>
+"
+`;
+
+exports[`'(Non-TS-30) multiple class names' > expectation 1`] = `
+"<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
+<script>
+  const now = new Date();
+</script>
+
+<div
+  class={[
+    "w-full",
+    classNames("w-full"),
+    { "w-full": true },
+    condition ? "w-full" : "w-full",
+    truthyExpression && "w-full",
+  ]}
+></div>
+"
+`;
+
+exports[`'(Non-TS-31) literal' > expectation 1`] = `
+"<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
+<script
+  zero-one-two-three-four-five-six-seven-eight-nine="0123456789"
+>
+  const now = new Date();
+</script>
+
+<div class={"w-full"}></div>
+"
+`;
+
+exports[`'(Non-TS-32) function argument' > expectation 1`] = `
+"<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
+<script
+  zero-one-two-three-four-five-six-seven-eight-nine="0123456789"
+>
+  const now = new Date();
+</script>
+
+<div class={classNames("w-full")}></div>
+"
+`;
+
+exports[`'(Non-TS-33) object property' > expectation 1`] = `
+"<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
+<script
+  zero-one-two-three-four-five-six-seven-eight-nine="0123456789"
+>
+  const now = new Date();
+</script>
+
+<div class={{ "w-full": true }}></div>
+"
+`;
+
+exports[`'(Non-TS-34) ternary operator' > expectation 1`] = `
+"<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
+<script
+  zero-one-two-three-four-five-six-seven-eight-nine="0123456789"
+>
+  const now = new Date();
+</script>
+
+<div class={condition ? "w-full" : "w-full"}></div>
+"
+`;
+
+exports[`'(Non-TS-35) binary operator' > expectation 1`] = `
+"<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
+<script
+  zero-one-two-three-four-five-six-seven-eight-nine="0123456789"
+>
+  const now = new Date();
+</script>
+
+<div class={truthyExpression && "w-full"}></div>
+"
+`;
+
+exports[`'(Non-TS-36) multiple class names' > expectation 1`] = `
+"<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
+<script
+  zero-one-two-three-four-five-six-seven-eight-nine="0123456789"
+>
+  const now = new Date();
+</script>
+
+<div
+  class={[
+    "w-full",
+    classNames("w-full"),
+    { "w-full": true },
+    condition ? "w-full" : "w-full",
+    truthyExpression && "w-full",
+  ]}
+></div>
+"
+`;
+
+exports[`'(TS-01) literal' > expectation 1`] = `
+"<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
+<script lang="ts"></script>
+
+<div class={"w-full"}></div>
+"
+`;
+
+exports[`'(TS-02) function argument' > expectation 1`] = `
+"<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
+<script lang="ts"></script>
+
+<div class={classNames("w-full")}></div>
+"
+`;
+
+exports[`'(TS-03) object property' > expectation 1`] = `
+"<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
+<script lang="ts"></script>
+
+<div class={{ "w-full": true }}></div>
+"
+`;
+
+exports[`'(TS-04) ternary operator' > expectation 1`] = `
+"<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
+<script lang="ts"></script>
+
+<div class={condition ? "w-full" : "w-full"}></div>
+"
+`;
+
+exports[`'(TS-05) binary operator' > expectation 1`] = `
+"<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
+<script lang="ts"></script>
+
+<div class={truthyExpression && "w-full"}></div>
+"
+`;
+
+exports[`'(TS-06) multiple class names' > expectation 1`] = `
+"<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
+<script lang="ts"></script>
+
+<div
+  class={[
+    "w-full",
+    classNames("w-full"),
+    { "w-full": true },
+    condition ? "w-full" : "w-full",
+    truthyExpression && "w-full",
+  ]}
+></div>
+"
+`;
+
+exports[`'(TS-07) literal' > expectation 1`] = `
+"<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
+<script
+  lang="ts"
+  zero-one-two-three-four-five-six-seven-eight-nine="0123456789"
+></script>
+
+<div class={"w-full"}></div>
+"
+`;
+
+exports[`'(TS-08) function argument' > expectation 1`] = `
+"<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
+<script
+  lang="ts"
+  zero-one-two-three-four-five-six-seven-eight-nine="0123456789"
+></script>
+
+<div class={classNames("w-full")}></div>
+"
+`;
+
+exports[`'(TS-09) object property' > expectation 1`] = `
+"<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
+<script
+  lang="ts"
+  zero-one-two-three-four-five-six-seven-eight-nine="0123456789"
+></script>
+
+<div class={{ "w-full": true }}></div>
+"
+`;
+
+exports[`'(TS-10) ternary operator' > expectation 1`] = `
+"<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
+<script
+  lang="ts"
+  zero-one-two-three-four-five-six-seven-eight-nine="0123456789"
+></script>
+
+<div class={condition ? "w-full" : "w-full"}></div>
+"
+`;
+
+exports[`'(TS-11) binary operator' > expectation 1`] = `
+"<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
+<script
+  lang="ts"
+  zero-one-two-three-four-five-six-seven-eight-nine="0123456789"
+></script>
+
+<div class={truthyExpression && "w-full"}></div>
+"
+`;
+
+exports[`'(TS-12) multiple class names' > expectation 1`] = `
+"<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
+<script
+  lang="ts"
+  zero-one-two-three-four-five-six-seven-eight-nine="0123456789"
+></script>
+
+<div
+  class={[
+    "w-full",
+    classNames("w-full"),
+    { "w-full": true },
+    condition ? "w-full" : "w-full",
+    truthyExpression && "w-full",
+  ]}
+></div>
+"
+`;
+
+exports[`'(TS-13) literal' > expectation 1`] = `
+"<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
+<script lang="ts">
+</script>
+
+<div class={"w-full"}></div>
+"
+`;
+
+exports[`'(TS-14) function argument' > expectation 1`] = `
+"<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
+<script lang="ts">
+</script>
+
+<div class={classNames("w-full")}></div>
+"
+`;
+
+exports[`'(TS-15) object property' > expectation 1`] = `
+"<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
+<script lang="ts">
+</script>
+
+<div class={{ "w-full": true }}></div>
+"
+`;
+
+exports[`'(TS-16) ternary operator' > expectation 1`] = `
+"<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
+<script lang="ts">
+</script>
+
+<div class={condition ? "w-full" : "w-full"}></div>
+"
+`;
+
+exports[`'(TS-17) binary operator' > expectation 1`] = `
+"<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
+<script lang="ts">
+</script>
+
+<div class={truthyExpression && "w-full"}></div>
+"
+`;
+
+exports[`'(TS-18) multiple class names' > expectation 1`] = `
+"<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
+<script lang="ts">
+</script>
+
+<div
+  class={[
+    "w-full",
+    classNames("w-full"),
+    { "w-full": true },
+    condition ? "w-full" : "w-full",
+    truthyExpression && "w-full",
+  ]}
+></div>
+"
+`;
+
+exports[`'(TS-19) literal' > expectation 1`] = `
+"<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
+<script
+  lang="ts"
+  zero-one-two-three-four-five-six-seven-eight-nine="0123456789"
+>
+</script>
+
+<div class={"w-full"}></div>
+"
+`;
+
+exports[`'(TS-20) function argument' > expectation 1`] = `
+"<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
+<script
+  lang="ts"
+  zero-one-two-three-four-five-six-seven-eight-nine="0123456789"
+>
+</script>
+
+<div class={classNames("w-full")}></div>
+"
+`;
+
+exports[`'(TS-21) object property' > expectation 1`] = `
+"<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
+<script
+  lang="ts"
+  zero-one-two-three-four-five-six-seven-eight-nine="0123456789"
+>
+</script>
+
+<div class={{ "w-full": true }}></div>
+"
+`;
+
+exports[`'(TS-22) ternary operator' > expectation 1`] = `
+"<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
+<script
+  lang="ts"
+  zero-one-two-three-four-five-six-seven-eight-nine="0123456789"
+>
+</script>
+
+<div class={condition ? "w-full" : "w-full"}></div>
+"
+`;
+
+exports[`'(TS-23) binary operator' > expectation 1`] = `
+"<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
+<script
+  lang="ts"
+  zero-one-two-three-four-five-six-seven-eight-nine="0123456789"
+>
+</script>
+
+<div class={truthyExpression && "w-full"}></div>
+"
+`;
+
+exports[`'(TS-24) multiple class names' > expectation 1`] = `
+"<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
+<script
+  lang="ts"
+  zero-one-two-three-four-five-six-seven-eight-nine="0123456789"
+>
+</script>
+
+<div
+  class={[
+    "w-full",
+    classNames("w-full"),
+    { "w-full": true },
+    condition ? "w-full" : "w-full",
+    truthyExpression && "w-full",
+  ]}
+></div>
+"
+`;
+
+exports[`'(TS-25) literal' > expectation 1`] = `
+"<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
+<script lang="ts">
+  const now = new Date();
+</script>
+
+<div class={"w-full"}></div>
+"
+`;
+
+exports[`'(TS-26) function argument' > expectation 1`] = `
+"<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
+<script lang="ts">
+  const now = new Date();
+</script>
+
+<div class={classNames("w-full")}></div>
+"
+`;
+
+exports[`'(TS-27) object property' > expectation 1`] = `
+"<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
+<script lang="ts">
+  const now = new Date();
+</script>
+
+<div class={{ "w-full": true }}></div>
+"
+`;
+
+exports[`'(TS-28) ternary operator' > expectation 1`] = `
+"<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
+<script lang="ts">
+  const now = new Date();
+</script>
+
+<div class={condition ? "w-full" : "w-full"}></div>
+"
+`;
+
+exports[`'(TS-29) binary operator' > expectation 1`] = `
+"<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
+<script lang="ts">
+  const now = new Date();
+</script>
+
+<div class={truthyExpression && "w-full"}></div>
+"
+`;
+
+exports[`'(TS-30) multiple class names' > expectation 1`] = `
+"<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
+<script lang="ts">
+  const now = new Date();
+</script>
+
+<div
+  class={[
+    "w-full",
+    classNames("w-full"),
+    { "w-full": true },
+    condition ? "w-full" : "w-full",
+    truthyExpression && "w-full",
+  ]}
+></div>
+"
+`;
+
+exports[`'(TS-31) literal' > expectation 1`] = `
+"<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
+<script
+  lang="ts"
+  zero-one-two-three-four-five-six-seven-eight-nine="0123456789"
+>
+  const now = new Date();
+</script>
+
+<div class={"w-full"}></div>
+"
+`;
+
+exports[`'(TS-32) function argument' > expectation 1`] = `
+"<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
+<script
+  lang="ts"
+  zero-one-two-three-four-five-six-seven-eight-nine="0123456789"
+>
+  const now = new Date();
+</script>
+
+<div class={classNames("w-full")}></div>
+"
+`;
+
+exports[`'(TS-33) object property' > expectation 1`] = `
+"<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
+<script
+  lang="ts"
+  zero-one-two-three-four-five-six-seven-eight-nine="0123456789"
+>
+  const now = new Date();
+</script>
+
+<div class={{ "w-full": true }}></div>
+"
+`;
+
+exports[`'(TS-34) ternary operator' > expectation 1`] = `
+"<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
+<script
+  lang="ts"
+  zero-one-two-three-four-five-six-seven-eight-nine="0123456789"
+>
+  const now = new Date();
+</script>
+
+<div class={condition ? "w-full" : "w-full"}></div>
+"
+`;
+
+exports[`'(TS-35) binary operator' > expectation 1`] = `
+"<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
+<script
+  lang="ts"
+  zero-one-two-three-four-five-six-seven-eight-nine="0123456789"
+>
+  const now = new Date();
+</script>
+
+<div class={truthyExpression && "w-full"}></div>
+"
+`;
+
+exports[`'(TS-36) multiple class names' > expectation 1`] = `
+"<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
+<script
+  lang="ts"
+  zero-one-two-three-four-five-six-seven-eight-nine="0123456789"
+>
+  const now = new Date();
+</script>
+
+<div
+  class={[
+    "w-full",
+    classNames("w-full"),
+    { "w-full": true },
+    condition ? "w-full" : "w-full",
+    truthyExpression && "w-full",
+  ]}
+></div>
+"
+`;
+
+exports[`'(TS-37) literal' > expectation 1`] = `
+"<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
+<script lang="ts">
+  const now: Date = new Date();
+</script>
+
+<div class={"w-full"}></div>
+"
+`;
+
+exports[`'(TS-38) function argument' > expectation 1`] = `
+"<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
+<script lang="ts">
+  const now: Date = new Date();
+</script>
+
+<div class={classNames("w-full")}></div>
+"
+`;
+
+exports[`'(TS-39) object property' > expectation 1`] = `
+"<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
+<script lang="ts">
+  const now: Date = new Date();
+</script>
+
+<div class={{ "w-full": true }}></div>
+"
+`;
+
+exports[`'(TS-40) ternary operator' > expectation 1`] = `
+"<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
+<script lang="ts">
+  const now: Date = new Date();
+</script>
+
+<div class={condition ? "w-full" : "w-full"}></div>
+"
+`;
+
+exports[`'(TS-41) binary operator' > expectation 1`] = `
+"<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
+<script lang="ts">
+  const now: Date = new Date();
+</script>
+
+<div class={truthyExpression && "w-full"}></div>
+"
+`;
+
+exports[`'(TS-42) multiple class names' > expectation 1`] = `
+"<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
+<script lang="ts">
+  const now: Date = new Date();
+</script>
+
+<div
+  class={[
+    "w-full",
+    classNames("w-full"),
+    { "w-full": true },
+    condition ? "w-full" : "w-full",
+    truthyExpression && "w-full",
+  ]}
+></div>
+"
+`;
+
+exports[`'(TS-43) literal' > expectation 1`] = `
+"<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
+<script
+  lang="ts"
+  zero-one-two-three-four-five-six-seven-eight-nine="0123456789"
+>
+  const now: Date = new Date();
+</script>
+
+<div class={"w-full"}></div>
+"
+`;
+
+exports[`'(TS-44) function argument' > expectation 1`] = `
+"<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
+<script
+  lang="ts"
+  zero-one-two-three-four-five-six-seven-eight-nine="0123456789"
+>
+  const now: Date = new Date();
+</script>
+
+<div class={classNames("w-full")}></div>
+"
+`;
+
+exports[`'(TS-45) object property' > expectation 1`] = `
+"<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
+<script
+  lang="ts"
+  zero-one-two-three-four-five-six-seven-eight-nine="0123456789"
+>
+  const now: Date = new Date();
+</script>
+
+<div class={{ "w-full": true }}></div>
+"
+`;
+
+exports[`'(TS-46) ternary operator' > expectation 1`] = `
+"<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
+<script
+  lang="ts"
+  zero-one-two-three-four-five-six-seven-eight-nine="0123456789"
+>
+  const now: Date = new Date();
+</script>
+
+<div class={condition ? "w-full" : "w-full"}></div>
+"
+`;
+
+exports[`'(TS-47) binary operator' > expectation 1`] = `
+"<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
+<script
+  lang="ts"
+  zero-one-two-three-four-five-six-seven-eight-nine="0123456789"
+>
+  const now: Date = new Date();
+</script>
+
+<div class={truthyExpression && "w-full"}></div>
+"
+`;
+
+exports[`'(TS-48) multiple class names' > expectation 1`] = `
+"<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
+<script
+  lang="ts"
+  zero-one-two-three-four-five-six-seven-eight-nine="0123456789"
+>
+  const now: Date = new Date();
+</script>
+
+<div
+  class={[
+    "w-full",
+    classNames("w-full"),
+    { "w-full": true },
+    condition ? "w-full" : "w-full",
+    truthyExpression && "w-full",
+  ]}
+></div>
+"
+`;
