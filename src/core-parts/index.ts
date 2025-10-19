@@ -77,7 +77,7 @@ export function refineSvelteAst(preprocessedText: string, ast: AST) {
   }
 
   const scriptTag = preprocessedText.slice(ast.instance.start, ast.instance.end);
-  const matchResult = scriptTag.match(/ ✂prettier:content✂="([^"]+)"/);
+  const matchResult = scriptTag.match(/ ✂prettier:content✂="([^"]*)"/);
 
   if (matchResult === null) {
     return ast;
