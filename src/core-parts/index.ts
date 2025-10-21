@@ -77,7 +77,7 @@ export function refineSvelteAst(preprocessedText: string, ast: AST) {
   }
 
   const scriptTag = preprocessedText.slice(ast.instance.start, ast.instance.end);
-  const matchResult = scriptTag.match(/ ✂prettier:content✂="([^"]+)"/);
+  const matchResult = scriptTag.match(/ ✂prettier:content✂="([^"]*)"/);
 
   if (matchResult === null) {
     return ast;
@@ -137,7 +137,10 @@ export function refineSvelteAst(preprocessedText: string, ast: AST) {
           }),
         )
       ) {
-        node.loc.start.line += restoreLineOffset;
+        node.loc.start = {
+          ...node.loc.start,
+          line: node.loc.start.line + restoreLineOffset,
+        };
       }
     }
     if (ast.instance.end <= node.end) {
@@ -155,7 +158,10 @@ export function refineSvelteAst(preprocessedText: string, ast: AST) {
           }),
         )
       ) {
-        node.loc.end.line += restoreLineOffset;
+        node.loc.end = {
+          ...node.loc.end,
+          line: node.loc.end.line + restoreLineOffset,
+        };
       }
     }
   }
