@@ -2461,6 +2461,7 @@ export function findTargetClassNameNodesForAstro(
         recursiveProps = ['attributes', 'children'];
         break;
       }
+      case 'expression':
       case 'fragment':
       case 'root': {
         recursiveProps = ['children'];
