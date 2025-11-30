@@ -51,7 +51,7 @@ const fixtures: Fixture[] = [
     <div
       [class]="
         classNames({
-          ' lorem ipsum dolor sit amet ': true
+          ' lorem ipsum dolor sit amet ': true,
         })
       "
     >
@@ -80,7 +80,7 @@ const fixtures: Fixture[] = [
     <div
       [class]="
         classNames({
-          'lorem ipsum dolor sit amet': true
+          'lorem ipsum dolor sit amet': true,
         })
       "
     >
@@ -106,7 +106,7 @@ const fixtures: Fixture[] = [
     <div
       [class]="
         classNames({
-          'lorem ipsum dolor sit amet consectetur adipiscing elit proin': true
+          'lorem ipsum dolor sit amet consectetur adipiscing elit proin': true,
         })
       "
     >
@@ -133,7 +133,7 @@ const fixtures: Fixture[] = [
       [class]="
         classNames({
           ' lorem ipsum dolor sit amet consectetur adipiscing elit
-          proin ': true
+          proin ': true,
         })
       "
     >
@@ -152,7 +152,7 @@ const fixtures: Fixture[] = [
       'lorem ipsum
       dolor sit amet
       consectetur adipiscing elit
-      proin': true
+      proin': true,
     })">
       <slot></slot>
     </div>
@@ -164,7 +164,7 @@ const fixtures: Fixture[] = [
     <div
       [class]="
         classNames({
-          'lorem ipsum dolor sit amet consectetur adipiscing elit proin': true
+          'lorem ipsum dolor sit amet consectetur adipiscing elit proin': true,
         })
       "
     >
@@ -192,7 +192,7 @@ const fixtures: Fixture[] = [
         classNames({
           'lorem ipsum dolor sit amet consectetur adipiscing elit proin
           ex massa hendrerit eu posuere eu volutpat id neque
-          pellentesque': true
+          pellentesque': true,
         })
       "
     >
@@ -220,7 +220,7 @@ const fixtures: Fixture[] = [
         classNames({
           ' lorem ipsum dolor sit amet consectetur adipiscing elit
           proin ex massa hendrerit eu posuere eu volutpat id neque
-          pellentesque ': true
+          pellentesque ': true,
         })
       "
     >
@@ -239,7 +239,7 @@ const fixtures: Fixture[] = [
       'lorem ipsum
       dolor sit amet
       consectetur adipiscing elit
-      proin ex massa hendrerit eu posuere eu volutpat id neque pellentesque': true
+      proin ex massa hendrerit eu posuere eu volutpat id neque pellentesque': true,
     })">
       <slot></slot>
     </div>
@@ -253,7 +253,7 @@ const fixtures: Fixture[] = [
         classNames({
           'lorem ipsum dolor sit amet consectetur adipiscing elit proin
           ex massa hendrerit eu posuere eu volutpat id neque
-          pellentesque': true
+          pellentesque': true,
         })
       "
     >
@@ -280,7 +280,7 @@ const fixtures: Fixture[] = [
       [class]="
         classNames({
           'lorem ipsum dolor sit amet consectetur adipiscing elit proin
-          ex massa hendrerit eu posuere': true
+          ex massa hendrerit eu posuere': true,
         })
       "
     >
@@ -307,7 +307,7 @@ const fixtures: Fixture[] = [
       [className]="
         classNames({
           'lorem ipsum dolor sit amet consectetur adipiscing elit proin
-          ex massa hendrerit eu posuere': true
+          ex massa hendrerit eu posuere': true,
         })
       "
     >
@@ -334,7 +334,7 @@ const fixtures: Fixture[] = [
       [attr.class]="
         classNames({
           'lorem ipsum dolor sit amet consectetur adipiscing elit proin
-          ex massa hendrerit eu posuere': true
+          ex massa hendrerit eu posuere': true,
         })
       "
     >
@@ -361,7 +361,7 @@ const fixtures: Fixture[] = [
       [ngClass]="
         classNames({
           'lorem ipsum dolor sit amet consectetur adipiscing elit proin
-          ex massa hendrerit eu posuere': true
+          ex massa hendrerit eu posuere': true,
         })
       "
     >
