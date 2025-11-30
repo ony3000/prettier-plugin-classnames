@@ -29,7 +29,8 @@
     "lint": "biome lint --max-diagnostics=none src/ tests/",
     "preview": "pnpm run build:plain && npm version prerelease --preid=alpha --git-tag-version=false && npm pack",
     "preview:minor": "pnpm run build:plain && npm version preminor --preid=alpha --git-tag-version=false && npm pack",
-    "test": "vitest run --passWithNoTests"
+    "test": "vitest run --passWithNoTests",
+    "snapshot": "vitest -u"
   },
   "dependencies": {
     "zod": "3.22.4"
@@ -39,7 +40,7 @@
     "@trivago/prettier-plugin-sort-imports": "4.2.1",
     "@types/node": "20.17.46",
     "esbuild": "0.25.0",
-    "prettier": "3.1.0",
+    "prettier": "3.2.0",
     "prettier-plugin-astro": "0.11.0",
     "prettier-plugin-svelte": "3.0.0",
     "rimraf": "5.0.1",
