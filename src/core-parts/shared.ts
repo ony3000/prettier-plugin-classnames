@@ -100,21 +100,3 @@ export function isTypeof<T extends ZodTypeAny>(
 ): arg is ZodInfer<T> {
   return expectedSchema.safeParse(arg).success;
 }
-
-export function getNodeType(node: unknown): string | undefined {
-  if (!node || typeof node !== 'object') {
-    return undefined;
-  }
-
-  const { type, kind } = node as { type?: unknown; kind?: unknown };
-
-  if (typeof type === 'string') {
-    return type;
-  }
-
-  if (typeof kind === 'string') {
-    return kind;
-  }
-
-  return undefined;
-}

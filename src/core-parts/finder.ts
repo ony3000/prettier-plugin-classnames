@@ -4,15 +4,7 @@ import { parsers as typescriptParsers } from 'prettier/plugins/typescript';
 import { z } from 'zod';
 
 import type { NodeRange, ExpressionNode, ClassNameNode } from './shared';
-import {
-  EOL,
-  SINGLE_QUOTE,
-  DOUBLE_QUOTE,
-  BACKTICK,
-  UNKNOWN_DELIMITER,
-  getNodeType,
-  isTypeof,
-} from './shared';
+import { EOL, SINGLE_QUOTE, DOUBLE_QUOTE, BACKTICK, UNKNOWN_DELIMITER, isTypeof } from './shared';
 
 type ASTNode = {
   type: string;
@@ -1507,12 +1499,19 @@ export function findTargetClassNameNodesForHtml(
    */
   const classNameNodes: ClassNameNode[] = [];
 
-  function recursion(node: unknown, parentNode?: unknown): void {
-    const nodeType = getNodeType(node);
-
-    if (!nodeType) {
+  function recursion(
+    node: unknown,
+    parentNode?: { kind: string; type?: undefined } | { kind?: undefined; type: string },
+  ): void {
+    if (
+      !isTypeof(node, z.object({ kind: z.string() })) &&
+      !isTypeof(node, z.object({ type: z.string() }))
+    ) {
       return;
     }
+
+    const nodeType = isTypeof(node, z.object({ kind: z.string() })) ? node.kind : node.type;
+    const parentNodeType = parentNode?.kind ?? parentNode?.type;
 
     let recursiveProps: string[] = [];
 
@@ -1530,9 +1529,7 @@ export function findTargetClassNameNodesForHtml(
       }
     }
 
-    const currentNode = node as Record<string, unknown>;
-
-    Object.entries(currentNode).forEach(([key, value]) => {
+    Object.entries(node).forEach(([key, value]) => {
       if (!recursiveProps.includes(key)) {
         return;
       }
@@ -1577,8 +1574,6 @@ export function findTargetClassNameNodesForHtml(
     switch (nodeType) {
       case 'attribute': {
         nonCommentNodes.push(currentASTNode);
-
-        const parentNodeType = getNodeType(parentNode);
 
         if (
           isTypeof(
@@ -1793,12 +1788,19 @@ export function findTargetClassNameNodesForVue(
    */
   const classNameNodes: ClassNameNode[] = [];
 
-  function recursion(node: unknown, parentNode?: unknown): void {
-    const nodeType = getNodeType(node);
-
-    if (!nodeType) {
+  function recursion(
+    node: unknown,
+    parentNode?: { kind: string; type?: undefined } | { kind?: undefined; type: string },
+  ): void {
+    if (
+      !isTypeof(node, z.object({ kind: z.string() })) &&
+      !isTypeof(node, z.object({ type: z.string() }))
+    ) {
       return;
     }
+
+    const nodeType = isTypeof(node, z.object({ kind: z.string() })) ? node.kind : node.type;
+    const parentNodeType = parentNode?.kind ?? parentNode?.type;
 
     let recursiveProps: string[] = [];
 
@@ -1816,9 +1818,7 @@ export function findTargetClassNameNodesForVue(
       }
     }
 
-    const currentNode = node as Record<string, unknown>;
-
-    Object.entries(currentNode).forEach(([key, value]) => {
+    Object.entries(node).forEach(([key, value]) => {
       if (!recursiveProps.includes(key)) {
         return;
       }
@@ -1865,7 +1865,6 @@ export function findTargetClassNameNodesForVue(
         nonCommentNodes.push(currentASTNode);
 
         const boundAttributeRegExp = /^(?:v-bind)?:/;
-        const parentNodeType = getNodeType(parentNode);
 
         if (
           isTypeof(
@@ -2093,12 +2092,19 @@ export function findTargetClassNameNodesForAngular(
    */
   const classNameNodes: ClassNameNode[] = [];
 
-  function recursion(node: unknown, parentNode?: unknown): void {
-    const nodeType = getNodeType(node);
-
-    if (!nodeType) {
+  function recursion(
+    node: unknown,
+    parentNode?: { kind: string; type?: undefined } | { kind?: undefined; type: string },
+  ): void {
+    if (
+      !isTypeof(node, z.object({ kind: z.string() })) &&
+      !isTypeof(node, z.object({ type: z.string() }))
+    ) {
       return;
     }
+
+    const nodeType = isTypeof(node, z.object({ kind: z.string() })) ? node.kind : node.type;
+    const parentNodeType = parentNode?.kind ?? parentNode?.type;
 
     let recursiveProps: string[] = [];
 
@@ -2117,9 +2123,7 @@ export function findTargetClassNameNodesForAngular(
       }
     }
 
-    const currentNode = node as Record<string, unknown>;
-
-    Object.entries(currentNode).forEach(([key, value]) => {
+    Object.entries(node).forEach(([key, value]) => {
       if (!recursiveProps.includes(key)) {
         return;
       }
@@ -2166,7 +2170,6 @@ export function findTargetClassNameNodesForAngular(
         nonCommentNodes.push(currentASTNode);
 
         const boundAttributeRegExp = /^\[(?:.+)\]$/;
-        const parentNodeType = getNodeType(parentNode);
 
         if (
           isTypeof(
