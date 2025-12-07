@@ -21,8 +21,13 @@ on:
 jobs:
   run-tester:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        prettier-version: [v3.7]
     steps:
       - uses: actions/checkout@v3
+        with:
+          ref: testing-prettier-${{ matrix.prettier-version }}
       - uses: actions/setup-node@v3
         with:
           node-version: 18
