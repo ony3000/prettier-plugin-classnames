@@ -23,9 +23,9 @@ async function advancedParse(
   defaultParser: Parser,
   options: ResolvedOptions,
 ): Promise<AST> {
-  const preprocessedText = defaultParser.preprocess
+  const preprocessedText = await (defaultParser.preprocess
     ? defaultParser.preprocess(text, options)
-    : text;
+    : text);
   let ast = await defaultParser.parse(preprocessedText, options);
 
   if (parserName === 'svelte') {

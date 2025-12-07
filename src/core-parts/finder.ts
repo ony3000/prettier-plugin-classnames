@@ -1499,14 +1499,23 @@ export function findTargetClassNameNodesForHtml(
    */
   const classNameNodes: ClassNameNode[] = [];
 
-  function recursion(node: unknown, parentNode?: { type?: unknown }): void {
-    if (!isTypeof(node, z.object({ type: z.string() }))) {
+  function recursion(
+    node: unknown,
+    parentNode?: { kind: string; type?: undefined } | { kind?: undefined; type: string },
+  ): void {
+    if (
+      !isTypeof(node, z.object({ kind: z.string() })) &&
+      !isTypeof(node, z.object({ type: z.string() }))
+    ) {
       return;
     }
 
+    const nodeType = isTypeof(node, z.object({ kind: z.string() })) ? node.kind : node.type;
+    const parentNodeType = parentNode?.kind ?? parentNode?.type;
+
     let recursiveProps: string[] = [];
 
-    switch (node.type) {
+    switch (nodeType) {
       case 'element': {
         recursiveProps = ['attrs', 'children'];
         break;
@@ -1558,11 +1567,11 @@ export function findTargetClassNameNodesForHtml(
       node.sourceSpan.end.offset,
     ];
     const currentASTNode: ASTNode = {
-      type: node.type,
+      type: nodeType,
       range: [currentNodeRangeStart, currentNodeRangeEnd],
     };
 
-    switch (node.type) {
+    switch (nodeType) {
       case 'attribute': {
         nonCommentNodes.push(currentASTNode);
 
@@ -1578,7 +1587,7 @@ export function findTargetClassNameNodesForHtml(
               name: z.string(),
             }),
           ) &&
-          parentNode.type === 'element' &&
+          parentNodeType === 'element' &&
           isTypeof(
             node,
             z.object({
@@ -1779,14 +1788,23 @@ export function findTargetClassNameNodesForVue(
    */
   const classNameNodes: ClassNameNode[] = [];
 
-  function recursion(node: unknown, parentNode?: { type?: unknown }): void {
-    if (!isTypeof(node, z.object({ type: z.string() }))) {
+  function recursion(
+    node: unknown,
+    parentNode?: { kind: string; type?: undefined } | { kind?: undefined; type: string },
+  ): void {
+    if (
+      !isTypeof(node, z.object({ kind: z.string() })) &&
+      !isTypeof(node, z.object({ type: z.string() }))
+    ) {
       return;
     }
 
+    const nodeType = isTypeof(node, z.object({ kind: z.string() })) ? node.kind : node.type;
+    const parentNodeType = parentNode?.kind ?? parentNode?.type;
+
     let recursiveProps: string[] = [];
 
-    switch (node.type) {
+    switch (nodeType) {
       case 'element': {
         recursiveProps = ['attrs', 'children'];
         break;
@@ -1838,11 +1856,11 @@ export function findTargetClassNameNodesForVue(
       node.sourceSpan.end.offset,
     ];
     const currentASTNode: ASTNode = {
-      type: node.type,
+      type: nodeType,
       range: [currentNodeRangeStart, currentNodeRangeEnd],
     };
 
-    switch (node.type) {
+    switch (nodeType) {
       case 'attribute': {
         nonCommentNodes.push(currentASTNode);
 
@@ -1860,7 +1878,7 @@ export function findTargetClassNameNodesForVue(
               name: z.string(),
             }),
           ) &&
-          parentNode.type === 'element' &&
+          parentNodeType === 'element' &&
           isTypeof(
             node,
             z.object({
@@ -2074,14 +2092,23 @@ export function findTargetClassNameNodesForAngular(
    */
   const classNameNodes: ClassNameNode[] = [];
 
-  function recursion(node: unknown, parentNode?: { type?: unknown }): void {
-    if (!isTypeof(node, z.object({ type: z.string() }))) {
+  function recursion(
+    node: unknown,
+    parentNode?: { kind: string; type?: undefined } | { kind?: undefined; type: string },
+  ): void {
+    if (
+      !isTypeof(node, z.object({ kind: z.string() })) &&
+      !isTypeof(node, z.object({ type: z.string() }))
+    ) {
       return;
     }
 
+    const nodeType = isTypeof(node, z.object({ kind: z.string() })) ? node.kind : node.type;
+    const parentNodeType = parentNode?.kind ?? parentNode?.type;
+
     let recursiveProps: string[] = [];
 
-    switch (node.type) {
+    switch (nodeType) {
       case 'angularControlFlowBlock':
       case 'root': {
         recursiveProps = ['children'];
@@ -2134,11 +2161,11 @@ export function findTargetClassNameNodesForAngular(
       node.sourceSpan.end.offset,
     ];
     const currentASTNode: ASTNode = {
-      type: node.type,
+      type: nodeType,
       range: [currentNodeRangeStart, currentNodeRangeEnd],
     };
 
-    switch (node.type) {
+    switch (nodeType) {
       case 'attribute': {
         nonCommentNodes.push(currentASTNode);
 
@@ -2156,7 +2183,7 @@ export function findTargetClassNameNodesForAngular(
               name: z.string(),
             }),
           ) &&
-          parentNode.type === 'element' &&
+          parentNodeType === 'element' &&
           isTypeof(
             node,
             z.object({
