@@ -152,7 +152,7 @@ const fixtures: Fixture[] = [
       'lorem ipsum
       dolor sit amet
       consectetur adipiscing elit
-      proin': true,
+      proin': true
     })">
       <slot></slot>
     </div>
@@ -239,7 +239,7 @@ const fixtures: Fixture[] = [
       'lorem ipsum
       dolor sit amet
       consectetur adipiscing elit
-      proin ex massa hendrerit eu posuere eu volutpat id neque pellentesque': true,
+      proin ex massa hendrerit eu posuere eu volutpat id neque pellentesque': true
     })">
       <slot></slot>
     </div>
