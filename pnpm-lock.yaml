@@ -17,7 +17,7 @@ importers:
         version: 2.0.0
       '@trivago/prettier-plugin-sort-imports':
         specifier: 4.2.1
-        version: 4.2.1(prettier@3.7.3)
+        version: 4.2.1(prettier@3.6.2)
       '@types/node':
         specifier: 20.17.46
         version: 20.17.46
@@ -25,14 +25,14 @@ importers:
         specifier: 0.25.0
         version: 0.25.0
       prettier:
-        specifier: 3.7.3
-        version: 3.7.3
+        specifier: 3.6.2
+        version: 3.6.2
       prettier-plugin-astro:
         specifier: 0.11.0
         version: 0.11.0
       prettier-plugin-svelte:
         specifier: 3.0.0
-        version: 3.0.0(prettier@3.7.3)(svelte@4.2.19)
+        version: 3.0.0(prettier@3.6.2)(svelte@4.2.19)
       rimraf:
         specifier: 5.0.1
         version: 5.0.1
@@ -911,8 +911,8 @@ packages:
       prettier: ^3.0.0
       svelte: ^3.2.0 || ^4.0.0-next.0
 
-  prettier@3.7.3:
-    resolution: {integrity: sha512-QgODejq9K3OzoBbuyobZlUhznP5SKwPqp+6Q6xw6o8gnhr4O85L2U915iM2IDcfF2NPXVaM9zlo9tdwipnYwzg==}
+  prettier@3.6.2:
+    resolution: {integrity: sha512-I7AIg5boAr5R0FFtJ6rCfD+LFsWHp81dolrFD8S79U9tb8Az2nGrJncnMSnys+bpQJfRUzqs9hnA81OAA3hCuQ==}
     engines: {node: '>=14'}
     hasBin: true
 
@@ -1491,7 +1491,7 @@ snapshots:
 
   '@sinclair/typebox@0.27.8': {}
 
-  '@trivago/prettier-plugin-sort-imports@4.2.1(prettier@3.7.3)':
+  '@trivago/prettier-plugin-sort-imports@4.2.1(prettier@3.6.2)':
     dependencies:
       '@babel/generator': 7.17.7
       '@babel/parser': 7.27.2
@@ -1499,7 +1499,7 @@ snapshots:
       '@babel/types': 7.17.0
       javascript-natural-sort: 0.7.1
       lodash: 4.17.21
-      prettier: 3.7.3
+      prettier: 3.6.2
     transitivePeerDependencies:
       - supports-color
 
@@ -1844,15 +1844,15 @@ snapshots:
   prettier-plugin-astro@0.11.0:
     dependencies:
       '@astrojs/compiler': 1.8.2
-      prettier: 3.7.3
+      prettier: 3.6.2
       sass-formatter: 0.7.9
 
-  prettier-plugin-svelte@3.0.0(prettier@3.7.3)(svelte@4.2.19):
+  prettier-plugin-svelte@3.0.0(prettier@3.6.2)(svelte@4.2.19):
     dependencies:
-      prettier: 3.7.3
+      prettier: 3.6.2
       svelte: 4.2.19
 
-  prettier@3.7.3: {}
+  prettier@3.6.2: {}
 
   pretty-format@29.7.0:
     dependencies:
