@@ -1,0 +1,67 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`'contains double quote (1) - delimiter…' > expectation 1`] = `
+"<div>
+  <div>
+    <div class={'lorem ipsum do"or sit amet'}>
+      <slot />
+    </div>
+  </div>
+</div>
+"
+`;
+
+exports[`'contains double quote (2) - delimiter…' > expectation 1`] = `
+"<div>
+  <div>
+    <div class={'lorem ipsum do"or sit amet'}>
+      <slot />
+    </div>
+  </div>
+</div>
+"
+`;
+
+exports[`'contains double quote (3) - delimiter…' > expectation 1`] = `
+"<div>
+  <div>
+    <div class={'lorem ipsum do"or sit amet'}>
+      <slot />
+    </div>
+  </div>
+</div>
+"
+`;
+
+exports[`'contains single quote (1) - delimiter…' > expectation 1`] = `
+"<div>
+  <div>
+    <div class={"lorem ipsum do'or sit amet"}>
+      <slot />
+    </div>
+  </div>
+</div>
+"
+`;
+
+exports[`'contains single quote (2) - delimiter…' > expectation 1`] = `
+"<div>
+  <div>
+    <div class={"lorem ipsum do'or sit amet"}>
+      <slot />
+    </div>
+  </div>
+</div>
+"
+`;
+
+exports[`'contains single quote (3) - delimiter…' > expectation 1`] = `
+"<div>
+  <div>
+    <div class={"lorem ipsum do'or sit amet"}>
+      <slot />
+    </div>
+  </div>
+</div>
+"
+`;

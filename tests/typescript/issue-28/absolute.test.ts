@@ -1,6 +1,7 @@
-import { thisPlugin, testEach } from '../../adaptor';
-import type { Fixture } from '../../settings';
+import { thisPlugin, testSnapshotEach } from '../../adaptor';
+
 import { baseOptions } from '../../settings';
+import { fixtures } from './fixtures';
 
 const options = {
   ...baseOptions,
@@ -9,31 +10,4 @@ const options = {
   endingPosition: 'absolute',
 };
 
-const fixtures: Fixture[] = [
-  {
-    name: 'template literal in ternary operator',
-    input: `
-const { data } = useSWR<CartResponse>(
-  cartId ? \`\${process.env.NEXT_PUBLIC_API_URL}/cart/\${cartId}\` : null,
-);
-`,
-    output: `const { data } = useSWR<CartResponse>(
-  cartId ? \`\${process.env.NEXT_PUBLIC_API_URL}/cart/\${cartId}\` : null,
-);
-`,
-  },
-  {
-    name: 'just template literal',
-    input: `
-const { data } = useSWR<CartResponse>(
-  \`\${process.env.NEXT_PUBLIC_API_URL}/cart/\${cartId}\`,
-);
-`,
-    output: `const { data } = useSWR<CartResponse>(
-  \`\${process.env.NEXT_PUBLIC_API_URL}/cart/\${cartId}\`,
-);
-`,
-  },
-];
-
-testEach(fixtures, options);
+testSnapshotEach(fixtures, options);

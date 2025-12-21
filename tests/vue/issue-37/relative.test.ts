@@ -1,6 +1,7 @@
-import { thisPlugin, testEach } from '../../adaptor';
-import type { Fixture } from '../../settings';
+import { thisPlugin, testSnapshotEach } from '../../adaptor';
+
 import { baseOptions } from '../../settings';
+import { fixtures } from './fixtures';
 
 const options = {
   ...baseOptions,
@@ -9,28 +10,4 @@ const options = {
   endingPosition: 'relative',
 };
 
-const fixtures: Fixture[] = [
-  {
-    name: 'short enough object key (no error in v0.4.0, error in v0.5.0 ~ v0.6.0)',
-    input: `
-<template>
-  <div
-    :class="{
-        'bg-black': true
-    }">Some text</div>
-</template>
-`,
-    output: `<template>
-  <div
-    :class="{
-      'bg-black': true,
-    }"
-  >
-    Some text
-  </div>
-</template>
-`,
-  },
-];
-
-testEach(fixtures, options);
+testSnapshotEach(fixtures, options);

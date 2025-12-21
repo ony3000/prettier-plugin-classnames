@@ -1,0 +1,40 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`'supported attributes' > expectation 1`] = `
+"<template>
+  <div>
+    <div>
+      <div
+        class="lorem ipsum dolor sit amet consectetur
+          adipiscing elit proin ex massa hendrerit eu
+          posuere"
+      >
+        <span>lorem ipsum</span>
+      </div>
+      <div
+        className="lorem ipsum dolor sit amet consectetur
+          adipiscing elit proin ex massa hendrerit eu
+          posuere"
+      >
+        <span>lorem ipsum</span>
+      </div>
+    </div>
+  </div>
+</template>
+"
+`;
+
+exports[`'unsupported attributes' > expectation 1`] = `
+"<template>
+  <div>
+    <div>
+      <div
+        title="lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere"
+      >
+        <span>lorem ipsum</span>
+      </div>
+    </div>
+  </div>
+</template>
+"
+`;

@@ -1,0 +1,37 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`'component composition' > expectation 1`] = `
+"export const Overlay = () => {
+  return (
+    <Dialog.Overlay
+      className="bg-popover backdrop-opacity-disabled focus:ring-0 fixed inset-0 z-50 h-screen
+        w-screen"
+    />
+  );
+};
+"
+`;
+
+exports[`'double composition' > expectation 1`] = `
+"export const Overlay = () => {
+  return (
+    <Foo.Dialog.Overlay
+      className="bg-popover backdrop-opacity-disabled focus:ring-0 fixed inset-0 z-50 h-screen
+        w-screen"
+    />
+  );
+};
+"
+`;
+
+exports[`'triple composition' > expectation 1`] = `
+"export const Overlay = () => {
+  return (
+    <Foo.Bar.Dialog.Overlay
+      className="bg-popover backdrop-opacity-disabled focus:ring-0 fixed inset-0 z-50 h-screen
+        w-screen"
+    />
+  );
+};
+"
+`;
