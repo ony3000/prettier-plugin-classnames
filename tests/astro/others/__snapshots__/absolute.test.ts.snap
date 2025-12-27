@@ -1,0 +1,138 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`'comment - multi line comment' > expectation 1`] = `
+"<!--
+<div>
+  <div>
+    <div class="lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere">
+      <slot />
+    </div>
+  </div>
+</div>
+-->
+"
+`;
+
+exports[`'endOfLine: crlf' > expectation 1`] = `
+"<div>
+  <div>
+    <div
+      class="lorem ipsum dolor sit amet consectetur
+        adipiscing elit proin ex massa hendrerit eu posuere"
+    >
+      <slot />
+    </div>
+  </div>
+</div>
+"
+`;
+
+exports[`'plugin options (1) - custom attributes' > expectation 1`] = `
+"<div>
+  <div>
+    <div
+      fixme="lorem ipsum dolor sit amet consectetur
+        adipiscing elit proin ex massa hendrerit eu posuere"
+    >
+      <slot />
+    </div>
+  </div>
+</div>
+"
+`;
+
+exports[`'plugin options (2) - custom functions' > expectation 1`] = `
+"<div>
+  <div>
+    <div
+      class={clsx(
+        \`lorem ipsum dolor sit amet consectetur adipiscing
+        elit proin ex massa hendrerit eu posuere\`,
+      )}
+    >
+      <slot />
+    </div>
+  </div>
+</div>
+"
+`;
+
+exports[`'tabWidth: 4' > expectation 1`] = `
+"<div>
+    <div>
+        <div
+            class="lorem ipsum dolor sit amet consectetur
+                adipiscing elit proin ex massa hendrerit eu
+                posuere"
+        >
+            <slot />
+        </div>
+    </div>
+</div>
+"
+`;
+
+exports[`'template literal - written as an obje…' > expectation 1`] = `
+"<div>
+  <div>
+    <div
+      class={classNames({
+        short: "lorem ipsum dolor sit amet",
+        near: \`lorem ipsum dolor sit amet consectetur
+        adipiscing elit proin\`,
+        long: \`lorem ipsum dolor sit amet consectetur
+        adipiscing elit proin ex massa hendrerit eu posuere
+        eu volutpat id neque pellentesque\`,
+      })}
+    >
+      <slot />
+    </div>
+  </div>
+</div>
+"
+`;
+
+exports[`'useTabs: true (1) - tabWidth: 2' > expectation 1`] = `
+"<div>
+	<div>
+		<div
+			class="lorem ipsum dolor sit amet consectetur
+				adipiscing elit proin ex massa hendrerit eu posuere"
+		>
+			<slot />
+		</div>
+	</div>
+</div>
+"
+`;
+
+exports[`'useTabs: true (2) - tabWidth: 4' > expectation 1`] = `
+"<div>
+	<div>
+		<div
+			class="lorem ipsum dolor sit amet consectetur
+				adipiscing elit proin ex massa hendrerit eu
+				posuere"
+		>
+			<slot />
+		</div>
+	</div>
+</div>
+"
+`;
+
+exports[`'useTabs: true (3) - tabWidth: 8' > expectation 1`] = `
+"<div>
+	<div>
+		<div
+			class="lorem ipsum dolor sit amet
+				consectetur adipiscing elit
+				proin ex massa hendrerit eu
+				posuere"
+		>
+			<slot />
+		</div>
+	</div>
+</div>
+"
+`;

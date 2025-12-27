@@ -1,0 +1,28 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`'contains backtick - delimiter is sing…' > expectation 1`] = `
+"<template>
+  <div>
+    <div
+      [class]="
+        'lorem ipsum do\`or sit amet consectetur adipiscing
+        elit proin ex massa hendrerit eu posuere'
+      "
+    >
+      <slot></slot>
+    </div>
+  </div>
+</template>
+"
+`;
+
+exports[`'contains single quote - delimiter is …' > expectation 1`] = `
+"<template>
+  <div>
+    <div [class]="'lorem ipsum do\\'or sit amet'">
+      <slot></slot>
+    </div>
+  </div>
+</template>
+"
+`;

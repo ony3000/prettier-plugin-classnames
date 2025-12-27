@@ -1,0 +1,206 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`'long enough (1) - single line with no…' > expectation 1`] = `
+"<template>
+  <div>
+    <div
+      [class]="
+        'lorem ipsum dolor sit amet consectetur adipiscing elit proin
+        ex massa hendrerit eu posuere eu volutpat id neque
+        pellentesque'
+      "
+    >
+      <slot></slot>
+    </div>
+  </div>
+</template>
+"
+`;
+
+exports[`'long enough (2) - single line with sp…' > expectation 1`] = `
+"<template>
+  <div>
+    <div
+      [class]="
+        ' lorem ipsum dolor sit amet consectetur adipiscing elit
+        proin ex massa hendrerit eu posuere eu volutpat id neque
+        pellentesque '
+      "
+    >
+      <slot></slot>
+    </div>
+  </div>
+</template>
+"
+`;
+
+exports[`'long enough (3) - multiple lines' > expectation 1`] = `
+"<template>
+  <div>
+    <div
+      [class]="
+        'lorem ipsum dolor sit amet consectetur adipiscing elit proin
+        ex massa hendrerit eu posuere eu volutpat id neque
+        pellentesque'
+      "
+    >
+      <slot></slot>
+    </div>
+  </div>
+</template>
+"
+`;
+
+exports[`'near boundary (1) - single line with …' > expectation 1`] = `
+"<template>
+  <div>
+    <div
+      [class]="
+        'lorem ipsum dolor sit amet consectetur adipiscing elit proin'
+      "
+    >
+      <slot></slot>
+    </div>
+  </div>
+</template>
+"
+`;
+
+exports[`'near boundary (2) - single line with …' > expectation 1`] = `
+"<template>
+  <div>
+    <div
+      [class]="
+        ' lorem ipsum dolor sit amet consectetur adipiscing elit
+        proin '
+      "
+    >
+      <slot></slot>
+    </div>
+  </div>
+</template>
+"
+`;
+
+exports[`'near boundary (3) - multiple lines' > expectation 1`] = `
+"<template>
+  <div>
+    <div
+      [class]="
+        'lorem ipsum dolor sit amet consectetur adipiscing elit proin'
+      "
+    >
+      <slot></slot>
+    </div>
+  </div>
+</template>
+"
+`;
+
+exports[`'short enough (1) - single line with n…' > expectation 1`] = `
+"<template>
+  <div>
+    <div [class]="'lorem ipsum dolor sit amet'">
+      <slot></slot>
+    </div>
+  </div>
+</template>
+"
+`;
+
+exports[`'short enough (2) - single line with s…' > expectation 1`] = `
+"<template>
+  <div>
+    <div [class]="' lorem ipsum dolor sit amet '">
+      <slot></slot>
+    </div>
+  </div>
+</template>
+"
+`;
+
+exports[`'short enough (3) - multiple lines' > expectation 1`] = `
+"<template>
+  <div>
+    <div [class]="'lorem ipsum dolor sit amet'">
+      <slot></slot>
+    </div>
+  </div>
+</template>
+"
+`;
+
+exports[`'syntax variants (1) - component' > expectation 1`] = `
+"<template>
+  <div>
+    <Box
+      [class]="
+        'lorem ipsum dolor sit amet consectetur adipiscing elit proin
+        ex massa hendrerit eu posuere'
+      "
+    >
+      <slot></slot>
+    </Box>
+  </div>
+</template>
+"
+`;
+
+exports[`'syntax variants (2) - property binding' > expectation 1`] = `
+"<template>
+  <div>
+    <div
+      [className]="
+        'lorem ipsum dolor sit amet consectetur adipiscing elit proin
+        ex massa hendrerit eu posuere'
+      "
+    >
+      <slot></slot>
+    </div>
+  </div>
+</template>
+"
+`;
+
+exports[`'syntax variants (3) - attribute bindi…' > expectation 1`] = `
+"<template>
+  <div>
+    <div
+      [attr.class]="
+        'lorem ipsum dolor sit amet consectetur adipiscing elit proin
+        ex massa hendrerit eu posuere'
+      "
+    >
+      <slot></slot>
+    </div>
+  </div>
+</template>
+"
+`;
+
+exports[`'syntax variants (4) - built-in direct…' > expectation 1`] = `
+"<template>
+  <div>
+    <div
+      [ngClass]="
+        'lorem ipsum dolor sit amet consectetur adipiscing elit proin
+        ex massa hendrerit eu posuere'
+      "
+    >
+      <slot></slot>
+    </div>
+  </div>
+</template>
+"
+`;
+
+exports[`'syntax variants - addition operation …' > expectation 1`] = `
+"<template>
+  <div>
+    <div [class]="' lorem ipsum ' + ' dolor sit amet '">
+      <slot></slot>
+    </div>
+  </div>
+</template>
+"
+`;
