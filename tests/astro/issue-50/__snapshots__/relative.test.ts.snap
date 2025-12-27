@@ -1,0 +1,46 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`'bullet character' > expectation 1`] = `
+"---
+import SettingsLayout from "@layouts/settings.astro";
+import SecurityForm from "./_security";
+---
+
+<SettingsLayout
+  title="Settings • Details"
+  class="flex max-w-[1100px] flex-col gap-4 overflow-x-hidden text-left"
+>
+  <SecurityForm client:only />
+</SettingsLayout>
+"
+`;
+
+exports[`'emoji' > expectation 1`] = `
+"---
+import SettingsLayout from "@layouts/settings.astro";
+import SecurityForm from "./_security";
+---
+
+<SettingsLayout
+  title="Settings 😂 Details"
+  class="flex max-w-[1100px] flex-col gap-4 overflow-x-hidden text-left"
+>
+  <SecurityForm client:only />
+</SettingsLayout>
+"
+`;
+
+exports[`'i18n - Korean' > expectation 1`] = `
+"---
+import SettingsLayout from "@layouts/settings.astro";
+import SecurityForm from "./_security";
+---
+
+<SettingsLayout
+  title="설정 * 세부정보"
+  class="flex max-w-[1100px] flex-col gap-4 overflow-x-hidden text-left"
+>
+  <SecurityForm client:only />
+</SettingsLayout>
+"
+`;
