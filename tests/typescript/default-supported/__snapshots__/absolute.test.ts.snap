@@ -1,0 +1,88 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`'supported attributes and supported fu…' > expectation 1`] = `
+"export function Foo() {
+  return (
+    <div>
+      <div
+        class={classNames(
+          \`lorem ipsum dolor sit amet consectetur adipiscing
+          elit proin ex massa hendrerit eu posuere\`,
+        )}
+      >
+        <span>lorem ipsum</span>
+      </div>
+      <div
+        className={classNames(
+          \`lorem ipsum dolor sit amet consectetur adipiscing
+          elit proin ex massa hendrerit eu posuere\`,
+        )}
+      >
+        <span>lorem ipsum</span>
+      </div>
+    </div>
+  );
+}
+"
+`;
+
+exports[`'supported attributes and unsupported …' > expectation 1`] = `
+"export function Foo() {
+  return (
+    <div>
+      <div
+        class={foo(
+          \`lorem ipsum dolor sit amet consectetur adipiscing
+          elit proin ex massa hendrerit eu posuere\`,
+        )}
+      >
+        <span>lorem ipsum</span>
+      </div>
+      <div
+        className={foo(
+          \`lorem ipsum dolor sit amet consectetur adipiscing
+          elit proin ex massa hendrerit eu posuere\`,
+        )}
+      >
+        <span>lorem ipsum</span>
+      </div>
+    </div>
+  );
+}
+"
+`;
+
+exports[`'unsupported attributes and supported …' > expectation 1`] = `
+"export function Foo() {
+  return (
+    <div>
+      <div
+        title={classNames(
+          \`lorem ipsum dolor sit amet consectetur adipiscing
+          elit proin ex massa hendrerit eu posuere\`,
+        )}
+      >
+        <span>lorem ipsum</span>
+      </div>
+    </div>
+  );
+}
+"
+`;
+
+exports[`'unsupported attributes and unsupporte…' > expectation 1`] = `
+"export function Foo() {
+  return (
+    <div>
+      <div
+        title={foo(
+          "lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere",
+        )}
+      >
+        <span>lorem ipsum</span>
+      </div>
+    </div>
+  );
+}
+"
+`;

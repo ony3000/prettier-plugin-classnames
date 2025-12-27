@@ -1,0 +1,106 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`'invalid ignore comment (1) - formatti…' > expectation 1`] = `
+"/**
+ * prettier-ignore
+ */
+export function Foo({ children }) {
+  return (
+    <div
+      className={classNames(
+        \`lorem ipsum dolor sit amet consectetur adipiscing elit proin
+        ex massa hendrerit eu posuere\`,
+      )}
+    >
+      {children}
+    </div>
+  );
+}
+"
+`;
+
+exports[`'invalid ignore comment (2) - formatti…' > expectation 1`] = `
+"// /* prettier-ignore */
+export function Foo({ children }) {
+  return (
+    <div
+      className={classNames(
+        \`lorem ipsum dolor sit amet consectetur adipiscing elit proin
+        ex massa hendrerit eu posuere\`,
+      )}
+    >
+      {children}
+    </div>
+  );
+}
+"
+`;
+
+exports[`'valid ignore comment (1) - component' > expectation 1`] = `
+"/* prettier-ignore */
+export function Foo({ children }) {
+  return (
+    <div
+      className={classNames(
+        'lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere',
+        'lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere',
+      )}
+    >
+      {children}
+    </div>
+  );
+}
+"
+`;
+
+exports[`'valid ignore comment (2) - element' > expectation 1`] = `
+"export function Foo({ children }) {
+  return (
+    /* prettier-ignore */
+    <div
+      className={classNames(
+        'lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere',
+        'lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere',
+      )}
+    >
+      {children}
+    </div>
+  );
+}
+"
+`;
+
+exports[`'valid ignore comment (3) - attribute' > expectation 1`] = `
+"export function Foo({ children }) {
+  return (
+    <div
+      // prettier-ignore
+      className={classNames(
+        'lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere',
+        'lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere',
+      )}
+    >
+      {children}
+    </div>
+  );
+}
+"
+`;
+
+exports[`'valid ignore comment (4) - class name…' > expectation 1`] = `
+"export function Foo({ children }) {
+  return (
+    <div
+      className={classNames(
+        // prettier-ignore
+        'lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere',
+        \`lorem ipsum dolor sit amet consectetur adipiscing elit proin
+        ex massa hendrerit eu posuere\`,
+      )}
+    >
+      {children}
+    </div>
+  );
+}
+"
+`;

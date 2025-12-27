@@ -1,6 +1,6 @@
-import { thisPlugin, testEach } from '../../adaptor';
-import type { Fixture } from '../../settings';
+import { thisPlugin, testSnapshotEach } from '../../adaptor';
 import { baseOptions } from '../../settings';
+import { fixtures } from './fixtures';
 
 const options = {
   ...baseOptions,
@@ -10,69 +10,4 @@ const options = {
   endingPosition: 'relative',
 };
 
-const fixtures: Fixture[] = [
-  {
-    name: 'supported attributes',
-    input: `
-<template>
-  <div>
-    <div>
-      <div class="lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere">
-        <span>lorem ipsum</span>
-      </div>
-      <div className="lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere">
-        <span>lorem ipsum</span>
-      </div>
-    </div>
-  </div>
-</template>
-`,
-    output: `<template>
-  <div>
-    <div>
-      <div
-        class="lorem ipsum dolor sit amet consectetur adipiscing elit proin
-          ex massa hendrerit eu posuere"
-      >
-        <span>lorem ipsum</span>
-      </div>
-      <div
-        className="lorem ipsum dolor sit amet consectetur adipiscing elit proin
-          ex massa hendrerit eu posuere"
-      >
-        <span>lorem ipsum</span>
-      </div>
-    </div>
-  </div>
-</template>
-`,
-  },
-  {
-    name: 'unsupported attributes',
-    input: `
-<template>
-  <div>
-    <div>
-      <div title="lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere">
-        <span>lorem ipsum</span>
-      </div>
-    </div>
-  </div>
-</template>
-`,
-    output: `<template>
-  <div>
-    <div>
-      <div
-        title="lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere"
-      >
-        <span>lorem ipsum</span>
-      </div>
-    </div>
-  </div>
-</template>
-`,
-  },
-];
-
-testEach(fixtures, options);
+testSnapshotEach(fixtures, options);
