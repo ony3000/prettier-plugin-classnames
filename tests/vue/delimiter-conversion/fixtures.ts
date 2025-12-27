@@ -1,7 +1,6 @@
 import type { Fixture } from '../../settings';
 
 export const fixtures: Omit<Fixture, 'output'>[] = [
-
   {
     name: 'contains single quote (1) - delimiter is backtick',
     input: `
@@ -56,5 +55,4 @@ export const fixtures: Omit<Fixture, 'output'>[] = [
 </template>
 `,
   },
-
 ];
