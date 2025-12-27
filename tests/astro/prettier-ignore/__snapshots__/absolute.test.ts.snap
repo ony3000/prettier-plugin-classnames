@@ -1,0 +1,169 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`'invalid ignore comment (1) - formatti…' > expectation 1`] = `
+"<!--
+ ! prettier-ignore
+-->
+<div>
+  <div>
+    <div
+      class={classNames(
+        \`lorem ipsum dolor sit amet consectetur adipiscing
+        elit proin ex massa hendrerit eu posuere\`,
+      )}
+    >
+      <slot />
+    </div>
+  </div>
+</div>
+"
+`;
+
+exports[`'invalid ignore comment (2) - formatti…' > expectation 1`] = `
+"<!-- /* prettier-ignore */ -->
+<div>
+  <div>
+    <div
+      class={classNames(
+        \`lorem ipsum dolor sit amet consectetur adipiscing
+        elit proin ex massa hendrerit eu posuere\`,
+      )}
+    >
+      <slot />
+    </div>
+  </div>
+</div>
+"
+`;
+
+exports[`'valid ignore comment (1) - component' > expectation 1`] = `
+"<!-- prettier-ignore -->
+<div>
+  <div>
+    <div
+      class={classNames(
+        'lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere',
+        'lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere',
+      )}
+    >
+      <slot />
+    </div>
+  </div>
+</div>
+"
+`;
+
+exports[`'valid ignore comment (2) - element' > expectation 1`] = `
+"<div>
+  <div>
+    <!-- prettier-ignore -->
+    <div
+      class={classNames(
+        'lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere',
+        'lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere',
+      )}
+    >
+      <slot />
+    </div>
+  </div>
+</div>
+"
+`;
+
+exports[`'valid ignore comment (3) - class name…' > expectation 1`] = `
+"<div>
+  <div>
+    <div
+      class={classNames(
+        // prettier-ignore
+        'lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere',
+        \`lorem ipsum dolor sit amet consectetur adipiscing
+        elit proin ex massa hendrerit eu posuere\`,
+      )}
+    >
+      <slot />
+    </div>
+  </div>
+</div>
+"
+`;
+
+exports[`'valid ignore comment (4) - class name…' > expectation 1`] = `
+"<div>
+  <div>
+    <div
+      class={classNames([
+        // prettier-ignore
+        'lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere',
+        \`lorem ipsum dolor sit amet consectetur adipiscing
+        elit proin ex massa hendrerit eu posuere\`,
+      ])}
+    >
+      <slot />
+    </div>
+  </div>
+</div>
+"
+`;
+
+exports[`'valid ignore comment (5) - frontmatter' > expectation 1`] = `
+"---
+const combination = classNames(
+  /* prettier-ignore */
+  'lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere',
+  \`lorem ipsum dolor sit amet consectetur adipiscing elit
+  proin ex massa hendrerit eu posuere\`,
+);
+---
+"
+`;
+
+exports[`'valid ignore comment (6) - frontmatter' > expectation 1`] = `
+"---
+const combination = classNames(
+  // prettier-ignore
+  'lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere',
+  \`lorem ipsum dolor sit amet consectetur adipiscing elit
+  proin ex massa hendrerit eu posuere\`,
+);
+---
+"
+`;
+
+exports[`'valid ignore comment (7) - script tag' > expectation 1`] = `
+"<script>
+  const combination = classNames(
+    /* prettier-ignore */
+    'lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere',
+    \`lorem ipsum dolor sit amet consectetur adipiscing elit
+    proin ex massa hendrerit eu posuere\`,
+  );
+</script>
+"
+`;
+
+exports[`'valid ignore comment (8) - script tag' > expectation 1`] = `
+"<script>
+  const combination = classNames(
+    // prettier-ignore
+    'lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere',
+    \`lorem ipsum dolor sit amet consectetur adipiscing elit
+    proin ex massa hendrerit eu posuere\`,
+  );
+</script>
+"
+`;
+
+exports[`'valid ignore comment (9) - multi-line…' > expectation 1`] = `
+"<script
+  zero-one-two-three-four-five-six-seven-eight-nine="0123456789"
+>
+  const combination = classNames(
+    // prettier-ignore
+    'lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere',
+    \`lorem ipsum dolor sit amet consectetur adipiscing elit
+    proin ex massa hendrerit eu posuere\`,
+  );
+</script>
+"
+`;
