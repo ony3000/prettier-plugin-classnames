@@ -1,0 +1,28 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`'(1) nested expression in template lit…' > expectation 1`] = `
+"---
+import classNames from "classnames";
+
+const combination = classNames(
+  \`relative cursor-default select-none py-2 pl-10 pr-4 \${
+    active ? "bg-teal-600 text-white" : "text-gray-900"
+  }\`,
+);
+---
+"
+`;
+
+exports[`'(2) double nested expression in templ…' > expectation 1`] = `
+"---
+const combination = classNames(
+  \`relative cursor-default select-none py-2 pl-10 pr-4 \${
+    active
+      ? \`bg-teal-600 \${active ? "bg-teal-600 text-white" : "text-gray-900"}
+        text-white\`
+      : "text-gray-900"
+  }\`,
+);
+---
+"
+`;

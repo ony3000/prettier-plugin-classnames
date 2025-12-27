@@ -1,0 +1,135 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`'invalid ignore comment (1) - formatti…' > expectation 1`] = `
+"<!--
+ ! prettier-ignore
+-->
+<template>
+  <div>
+    <div
+      :class="
+        classNames(
+          \`lorem ipsum dolor sit amet consectetur adipiscing
+          elit proin ex massa hendrerit eu posuere\`,
+        )
+      "
+    >
+      <slot></slot>
+    </div>
+  </div>
+</template>
+"
+`;
+
+exports[`'invalid ignore comment (2) - formatti…' > expectation 1`] = `
+"<!-- /* prettier-ignore */ -->
+<template>
+  <div>
+    <div
+      :class="
+        classNames(
+          \`lorem ipsum dolor sit amet consectetur adipiscing
+          elit proin ex massa hendrerit eu posuere\`,
+        )
+      "
+    >
+      <slot></slot>
+    </div>
+  </div>
+</template>
+"
+`;
+
+exports[`'valid ignore comment (1) - component' > expectation 1`] = `
+"<!-- prettier-ignore -->
+<template>
+  <div>
+    <div
+      :class="classNames(
+        'lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere',
+        'lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere',
+      )"
+    >
+      <slot></slot>
+    </div>
+  </div>
+</template>
+"
+`;
+
+exports[`'valid ignore comment (2) - element' > expectation 1`] = `
+"<template>
+  <div>
+    <!-- prettier-ignore -->
+    <div
+      :class="classNames(
+        'lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere',
+        'lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere',
+      )"
+    >
+      <slot></slot>
+    </div>
+  </div>
+</template>
+"
+`;
+
+exports[`'valid ignore comment (3) - class name…' > expectation 1`] = `
+"<template>
+  <div>
+    <div
+      :class="
+        classNames(
+          // prettier-ignore
+          'lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere',
+          \`lorem ipsum dolor sit amet consectetur adipiscing
+          elit proin ex massa hendrerit eu posuere\`,
+        )
+      "
+    >
+      <slot></slot>
+    </div>
+  </div>
+</template>
+"
+`;
+
+exports[`'valid ignore comment (4) - script tag' > expectation 1`] = `
+"<script setup lang="ts">
+const combination = classNames(
+  /* prettier-ignore */
+  'lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere',
+  \`lorem ipsum dolor sit amet consectetur adipiscing elit
+  proin ex massa hendrerit eu posuere\`,
+);
+</script>
+"
+`;
+
+exports[`'valid ignore comment (5) - script tag' > expectation 1`] = `
+"<script setup lang="ts">
+const combination = classNames(
+  // prettier-ignore
+  'lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere',
+  \`lorem ipsum dolor sit amet consectetur adipiscing elit
+  proin ex massa hendrerit eu posuere\`,
+);
+</script>
+"
+`;
+
+exports[`'valid ignore comment (6) - multi-line…' > expectation 1`] = `
+"<script
+  setup
+  lang="ts"
+  zero-one-two-three-four-five-six-seven-eight-nine="0123456789"
+>
+const combination = classNames(
+  // prettier-ignore
+  'lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere',
+  \`lorem ipsum dolor sit amet consectetur adipiscing elit
+  proin ex massa hendrerit eu posuere\`,
+);
+</script>
+"
+`;
