@@ -1,0 +1,23 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`'another input' > expectation 1`] = `
+"export default function MyComponent() {
+  return (
+    <section className="lorem ipsum dolor sit amet consectetur adipiscing elit aenean p">
+      content
+    </section>
+  );
+}
+"
+`;
+
+exports[`'one input' > expectation 1`] = `
+"export default function MyComponent() {
+  return (
+    <section className="lorem ipsum dolor sit amet consectetur adipiscing elit aenean p">
+      content
+    </section>
+  );
+}
+"
+`;
