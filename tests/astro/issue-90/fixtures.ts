@@ -4,7 +4,7 @@ export const fixtures: Omit<Fixture, 'output'>[] = [
   {
     name: '(1) Empty JSX tags should also behave the same as named tags.',
     input: `
-//-----------------------------------------------------------------------------| printWidth=80 (in snapshot)
+<!-- ---------------------------------------------------------------------------| printWidth=80 (in snapshot) -->
 <div>
   <div>
     <>

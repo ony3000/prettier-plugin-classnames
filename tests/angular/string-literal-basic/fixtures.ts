@@ -4,6 +4,7 @@ export const fixtures: Omit<Fixture, 'output'>[] = [
   {
     name: 'short enough (1) - single line with no spaces at both ends',
     input: `
+<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
 <template>
   <div>
     <div [class]="'lorem ipsum dolor sit amet'">
@@ -16,6 +17,7 @@ export const fixtures: Omit<Fixture, 'output'>[] = [
   {
     name: 'short enough (2) - single line with spaces at both ends',
     input: `
+<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
 <template>
   <div>
     <div [class]="'  lorem ipsum dolor sit amet  '">
@@ -28,6 +30,7 @@ export const fixtures: Omit<Fixture, 'output'>[] = [
   {
     name: 'short enough (3) - multiple lines',
     input: `
+<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
 <template>
   <div>
     <div [class]="
@@ -43,6 +46,7 @@ export const fixtures: Omit<Fixture, 'output'>[] = [
   {
     name: 'near boundary (1) - single line with no spaces at both ends',
     input: `
+<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
 <template>
   <div>
     <div [class]="'lorem ipsum dolor sit amet consectetur adipiscing elit proin'">
@@ -55,6 +59,7 @@ export const fixtures: Omit<Fixture, 'output'>[] = [
   {
     name: 'near boundary (2) - single line with spaces at both ends',
     input: `
+<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
 <template>
   <div>
     <div [class]="'   lorem ipsum dolor sit amet consectetur adipiscing elit proin   '">
@@ -67,6 +72,7 @@ export const fixtures: Omit<Fixture, 'output'>[] = [
   {
     name: 'near boundary (3) - multiple lines',
     input: `
+<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
 <template>
   <div>
     <div [class]="
@@ -84,6 +90,7 @@ export const fixtures: Omit<Fixture, 'output'>[] = [
   {
     name: 'long enough (1) - single line with no spaces at both ends',
     input: `
+<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
 <template>
   <div>
     <div [class]="'lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere eu volutpat id neque pellentesque'">
@@ -96,6 +103,7 @@ export const fixtures: Omit<Fixture, 'output'>[] = [
   {
     name: 'long enough (2) - single line with spaces at both ends',
     input: `
+<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
 <template>
   <div>
     <div [class]="'    lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere eu volutpat id neque pellentesque    '">
@@ -108,6 +116,7 @@ export const fixtures: Omit<Fixture, 'output'>[] = [
   {
     name: 'long enough (3) - multiple lines',
     input: `
+<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
 <template>
   <div>
     <div [class]="
@@ -125,6 +134,7 @@ export const fixtures: Omit<Fixture, 'output'>[] = [
   {
     name: 'syntax variants (1) - component',
     input: `
+<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
 <template>
   <div>
     <Box [class]="'lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere'">
@@ -137,6 +147,7 @@ export const fixtures: Omit<Fixture, 'output'>[] = [
   {
     name: 'syntax variants (2) - property binding',
     input: `
+<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
 <template>
   <div>
     <div [className]="'lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere'">
@@ -149,6 +160,7 @@ export const fixtures: Omit<Fixture, 'output'>[] = [
   {
     name: 'syntax variants (3) - attribute binding',
     input: `
+<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
 <template>
   <div>
     <div [attr.class]="'lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere'">
@@ -161,6 +173,7 @@ export const fixtures: Omit<Fixture, 'output'>[] = [
   {
     name: 'syntax variants (4) - built-in directive',
     input: `
+<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
 <template>
   <div>
     <div [ngClass]="'lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere'">
@@ -173,6 +186,7 @@ export const fixtures: Omit<Fixture, 'output'>[] = [
   {
     name: 'syntax variants - addition operation between strings',
     input: `
+<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
 <template>
   <div>
     <div [class]="'  lorem ipsum  ' + '  dolor sit amet  '">

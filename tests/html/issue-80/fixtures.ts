@@ -4,6 +4,7 @@ export const fixtures: Omit<Fixture, 'output'>[] = [
   {
     name: '(1) If a script tag has no type, it is assumed to contain JavaScript code.',
     input: `
+<!-- --------------------------------------------------------------------------| printWidth=80 (in snapshot) -->
 <script>
 export function Foo({ children }) {
   return (
@@ -19,6 +20,7 @@ export function Foo({ children }) {
   {
     name: '(2) If a script tag has an empty type, it is assumed to contain JavaScript code.',
     input: `
+<!-- --------------------------------------------------------------------------| printWidth=80 (in snapshot) -->
 <script type="">
 export function Foo({ children }) {
   return (
@@ -34,6 +36,7 @@ export function Foo({ children }) {
   {
     name: '(3) If a script tag has a type of `text/javascript`, it is assumed to contain JavaScript code.',
     input: `
+<!-- --------------------------------------------------------------------------| printWidth=80 (in snapshot) -->
 <script type="text/javascript">
 export function Foo({ children }) {
   return (
@@ -49,6 +52,7 @@ export function Foo({ children }) {
   {
     name: '(4) If a script tag has a `lang` attribute whose value is `ts`, it is assumed to contain TypeScript code, regardless of type.',
     input: `
+<!-- --------------------------------------------------------------------------| printWidth=80 (in snapshot) -->
 <script lang="ts" type="anything">
 interface MyInterface { foo(): string, bar: Array<number> }
 </script>

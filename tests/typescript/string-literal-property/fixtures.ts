@@ -4,6 +4,7 @@ export const fixtures: Omit<Fixture, 'output'>[] = [
   {
     name: 'short enough (1) - single line with no spaces at both ends',
     input: `
+//---------------------------------------------------------| printWidth=60 (in snapshot)
 export function Foo({ children }) {
   return (
     <div className={classNames({'lorem ipsum dolor sit amet': true})}>
@@ -16,6 +17,7 @@ export function Foo({ children }) {
   {
     name: 'short enough (2) - single line with spaces at both ends',
     input: `
+//---------------------------------------------------------| printWidth=60 (in snapshot)
 export function Foo({ children }) {
   return (
     <div className={classNames({'  lorem ipsum dolor sit amet  ': true})}>
@@ -28,6 +30,7 @@ export function Foo({ children }) {
   {
     name: 'short enough (3) - multiple lines',
     input: `
+//---------------------------------------------------------| printWidth=60 (in snapshot)
 export function Foo({ children }) {
   return (
     <div className={classNames({
@@ -43,6 +46,7 @@ export function Foo({ children }) {
   {
     name: 'near boundary (1) - single line with no spaces at both ends',
     input: `
+//---------------------------------------------------------| printWidth=60 (in snapshot)
 export function Foo({ children }) {
   return (
     <div className={classNames({'lorem ipsum dolor sit amet consectetur adipiscing elit proin': true})}>
@@ -55,6 +59,7 @@ export function Foo({ children }) {
   {
     name: 'near boundary (2) - single line with spaces at both ends',
     input: `
+//---------------------------------------------------------| printWidth=60 (in snapshot)
 export function Foo({ children }) {
   return (
     <div className={classNames({'   lorem ipsum dolor sit amet consectetur adipiscing elit proin   ': true})}>
@@ -67,6 +72,7 @@ export function Foo({ children }) {
   {
     name: 'near boundary (3) - multiple lines',
     input: `
+//---------------------------------------------------------| printWidth=60 (in snapshot)
 export function Foo({ children }) {
   return (
     <div className={classNames({
@@ -84,6 +90,7 @@ export function Foo({ children }) {
   {
     name: 'long enough (1) - single line with no spaces at both ends',
     input: `
+//---------------------------------------------------------| printWidth=60 (in snapshot)
 export function Foo({ children }) {
   return (
     <div className={classNames({'lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere eu volutpat id neque pellentesque': true})}>
@@ -96,6 +103,7 @@ export function Foo({ children }) {
   {
     name: 'long enough (2) - single line with spaces at both ends',
     input: `
+//---------------------------------------------------------| printWidth=60 (in snapshot)
 export function Foo({ children }) {
   return (
     <div className={classNames({'    lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere eu volutpat id neque pellentesque    ': true})}>
@@ -108,6 +116,7 @@ export function Foo({ children }) {
   {
     name: 'long enough (3) - multiple lines',
     input: `
+//---------------------------------------------------------| printWidth=60 (in snapshot)
 export function Foo({ children }) {
   return (
     <div className={classNames({
@@ -125,6 +134,7 @@ export function Foo({ children }) {
   {
     name: 'syntax variants - component',
     input: `
+//---------------------------------------------------------| printWidth=60 (in snapshot)
 export function Foo({ children }) {
   return (
     <Box className={classNames({'lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere': true})}>

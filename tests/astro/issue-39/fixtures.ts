@@ -4,6 +4,7 @@ export const fixtures: Omit<Fixture, 'output'>[] = [
   {
     name: '(1) nested expression in template literal',
     input: `
+//------------------------------------------------------------------------------| printWidth=80 (in snapshot)
 ---
 import classNames from 'classnames'
 
@@ -20,6 +21,7 @@ const combination = classNames(
   {
     name: '(2) double nested expression in template literal',
     input: `
+//------------------------------------------------------------------------------| printWidth=80 (in snapshot)
 ---
 const combination = classNames(
     \`relative cursor-default select-none py-2 pl-10 pr-4 \${
