@@ -1,7 +1,8 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`'long enough (1) - single line with no…' > expectation 1`] = `
-"<div>
+"<!-- -------------------------------------------------------| printWidth=60 (in snapshot) -->
+<div>
   <div>
     <div
       dir="ltr"
@@ -19,7 +20,8 @@ exports[`'long enough (1) - single line with no…' > expectation 1`] = `
 `;
 
 exports[`'long enough (2) - single line with sp…' > expectation 1`] = `
-"<div>
+"<!-- -------------------------------------------------------| printWidth=60 (in snapshot) -->
+<div>
   <div>
     <div
       dir="ltr"
@@ -37,7 +39,8 @@ exports[`'long enough (2) - single line with sp…' > expectation 1`] = `
 `;
 
 exports[`'long enough (3) - multiple lines' > expectation 1`] = `
-"<div>
+"<!-- -------------------------------------------------------| printWidth=60 (in snapshot) -->
+<div>
   <div>
     <div
       dir="ltr"
@@ -55,7 +58,8 @@ exports[`'long enough (3) - multiple lines' > expectation 1`] = `
 `;
 
 exports[`'near boundary (1) - single line with …' > expectation 1`] = `
-"<div>
+"<!-- -------------------------------------------------------| printWidth=60 (in snapshot) -->
+<div>
   <div>
     <div
       dir="ltr"
@@ -71,7 +75,8 @@ exports[`'near boundary (1) - single line with …' > expectation 1`] = `
 `;
 
 exports[`'near boundary (2) - single line with …' > expectation 1`] = `
-"<div>
+"<!-- -------------------------------------------------------| printWidth=60 (in snapshot) -->
+<div>
   <div>
     <div
       dir="ltr"
@@ -87,7 +92,8 @@ exports[`'near boundary (2) - single line with …' > expectation 1`] = `
 `;
 
 exports[`'near boundary (3) - multiple lines' > expectation 1`] = `
-"<div>
+"<!-- -------------------------------------------------------| printWidth=60 (in snapshot) -->
+<div>
   <div>
     <div
       dir="ltr"
@@ -103,7 +109,8 @@ exports[`'near boundary (3) - multiple lines' > expectation 1`] = `
 `;
 
 exports[`'short enough (1) - single line with n…' > expectation 1`] = `
-"<div>
+"<!-- -------------------------------------------------------| printWidth=60 (in snapshot) -->
+<div>
   <div>
     <div
       dir="ltr"
@@ -119,7 +126,8 @@ exports[`'short enough (1) - single line with n…' > expectation 1`] = `
 `;
 
 exports[`'short enough (2) - single line with s…' > expectation 1`] = `
-"<div>
+"<!-- -------------------------------------------------------| printWidth=60 (in snapshot) -->
+<div>
   <div>
     <div
       dir="ltr"
@@ -135,7 +143,8 @@ exports[`'short enough (2) - single line with s…' > expectation 1`] = `
 `;
 
 exports[`'short enough (3) - multiple lines' > expectation 1`] = `
-"<div>
+"<!-- -------------------------------------------------------| printWidth=60 (in snapshot) -->
+<div>
   <div>
     <div
       dir="ltr"
@@ -151,7 +160,8 @@ exports[`'short enough (3) - multiple lines' > expectation 1`] = `
 `;
 
 exports[`'syntax variants - component' > expectation 1`] = `
-"<div>
+"<!-- -------------------------------------------------------| printWidth=60 (in snapshot) -->
+<div>
   <div>
     <Box
       dir="ltr"

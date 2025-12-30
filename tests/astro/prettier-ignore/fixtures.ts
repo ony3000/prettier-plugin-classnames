@@ -80,8 +80,8 @@ export const fixtures: Omit<Fixture, 'output'>[] = [
   {
     name: 'valid ignore comment (5) - frontmatter',
     input: `
-//----------------------------------------------------------| printWidth=60 (in snapshot)
 ---
+//----------------------------------------------------------| printWidth=60 (in snapshot)
 const combination = classNames(
   /* prettier-ignore */
   'lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere',
@@ -93,8 +93,8 @@ const combination = classNames(
   {
     name: 'valid ignore comment (6) - frontmatter',
     input: `
-//----------------------------------------------------------| printWidth=60 (in snapshot)
 ---
+//----------------------------------------------------------| printWidth=60 (in snapshot)
 const combination = classNames(
   // prettier-ignore
   'lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere',

@@ -1,7 +1,7 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`'(1) Short enough class names do not c…' > expectation 1`] = `
-"<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
+"<!-- -------------------------------------------------------| printWidth=60 (in snapshot) -->
 <div>
   <div>
     <div class="lorem ipsum dolor sit amet">
@@ -13,7 +13,7 @@ exports[`'(1) Short enough class names do not c…' > expectation 1`] = `
 `;
 
 exports[`'(2) Long enough class names cause syn…' > expectation 1`] = `
-"<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
+"<!-- -------------------------------------------------------| printWidth=60 (in snapshot) -->
 <div>
   <div>
     <div
@@ -29,7 +29,7 @@ exports[`'(2) Long enough class names cause syn…' > expectation 1`] = `
 `;
 
 exports[`'(3) This transformation does not supp…' > expectation 1`] = `
-"<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
+"<!-- -------------------------------------------------------| printWidth=60 (in snapshot) -->
 <div>
   <div>
     <div class={"lorem ipsum dolor sit amet"}>

@@ -1,7 +1,8 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`'long enough (1)' > expectation 1`] = `
-"<script setup lang="ts">
+"<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
+<script setup lang="ts">
 const classes = tw\`lorem ipsum dolor sit amet consectetur
 adipiscing elit proin ex massa hendrerit eu posuere eu
 volutpat id neque pellentesque\`;
@@ -10,7 +11,8 @@ volutpat id neque pellentesque\`;
 `;
 
 exports[`'long enough (2)' > expectation 1`] = `
-"<script setup lang="ts">
+"<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
+<script setup lang="ts">
 const Bar = tw.foo\`lorem ipsum dolor sit amet consectetur
 adipiscing elit proin ex massa hendrerit eu posuere eu
 volutpat id neque pellentesque\`;
@@ -19,7 +21,8 @@ volutpat id neque pellentesque\`;
 `;
 
 exports[`'long enough (3)' > expectation 1`] = `
-"<script setup lang="ts">
+"<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
+<script setup lang="ts">
 const Bar = tw(
   Foo,
 )\`lorem ipsum dolor sit amet consectetur adipiscing elit
@@ -30,7 +33,8 @@ pellentesque\`;
 `;
 
 exports[`'near boundary (1)' > expectation 1`] = `
-"<script setup lang="ts">
+"<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
+<script setup lang="ts">
 const classes = tw\`lorem ipsum dolor sit amet consectetur
 adipiscing elit proin\`;
 </script>
@@ -38,7 +42,8 @@ adipiscing elit proin\`;
 `;
 
 exports[`'near boundary (2)' > expectation 1`] = `
-"<script setup lang="ts">
+"<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
+<script setup lang="ts">
 const Bar = tw.foo\`lorem ipsum dolor sit amet consectetur
 adipiscing elit proin\`;
 </script>
@@ -46,7 +51,8 @@ adipiscing elit proin\`;
 `;
 
 exports[`'near boundary (3)' > expectation 1`] = `
-"<script setup lang="ts">
+"<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
+<script setup lang="ts">
 const Bar = tw(
   Foo,
 )\`lorem ipsum dolor sit amet consectetur adipiscing elit
@@ -56,28 +62,32 @@ proin\`;
 `;
 
 exports[`'short enough (1)' > expectation 1`] = `
-"<script setup lang="ts">
+"<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
+<script setup lang="ts">
 const classes = tw\`lorem ipsum dolor sit amet\`;
 </script>
 "
 `;
 
 exports[`'short enough (2)' > expectation 1`] = `
-"<script setup lang="ts">
+"<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
+<script setup lang="ts">
 const Bar = tw.foo\`lorem ipsum dolor sit amet\`;
 </script>
 "
 `;
 
 exports[`'short enough (3)' > expectation 1`] = `
-"<script setup lang="ts">
+"<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
+<script setup lang="ts">
 const Bar = tw(Foo)\`lorem ipsum dolor sit amet\`;
 </script>
 "
 `;
 
 exports[`'syntax variants - written as an objec…' > expectation 1`] = `
-"<script setup lang="ts">
+"<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
+<script setup lang="ts">
 const classes = {
   short: tw\`lorem ipsum dolor sit amet\`,
   near: tw\`lorem ipsum dolor sit amet consectetur adipiscing
