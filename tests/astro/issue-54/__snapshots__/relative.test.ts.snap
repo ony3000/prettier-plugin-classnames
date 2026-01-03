@@ -1,7 +1,8 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`'delimiter conversion (1) - \`jsxSingle…' > expectation 1`] = `
-"<div>
+"<!-- --------------------------------------------------------------------------| printWidth=80 (in snapshot) -->
+<div>
   <div>
     <div class='lorem ipsum dolor sit amet'>
       <slot />
@@ -12,7 +13,8 @@ exports[`'delimiter conversion (1) - \`jsxSingle…' > expectation 1`] = `
 `;
 
 exports[`'delimiter conversion (2) - \`jsxSingle…' > expectation 1`] = `
-"<div>
+"<!-- --------------------------------------------------------------------------| printWidth=80 (in snapshot) -->
+<div>
   <div>
     <div class="lorem ipsum do'or sit amet">
       <slot />
@@ -23,7 +25,8 @@ exports[`'delimiter conversion (2) - \`jsxSingle…' > expectation 1`] = `
 `;
 
 exports[`'delimiter conversion (3) - \`jsxSingle…' > expectation 1`] = `
-"<div>
+"<!-- --------------------------------------------------------------------------| printWidth=80 (in snapshot) -->
+<div>
   <div>
     <div class="lorem ipsum dolor sit amet">
       <slot />
@@ -34,7 +37,8 @@ exports[`'delimiter conversion (3) - \`jsxSingle…' > expectation 1`] = `
 `;
 
 exports[`'delimiter conversion (4) - \`jsxSingle…' > expectation 1`] = `
-"<div>
+"<!-- --------------------------------------------------------------------------| printWidth=80 (in snapshot) -->
+<div>
   <div>
     <div class='lorem ipsum do"or sit amet'>
       <slot />
