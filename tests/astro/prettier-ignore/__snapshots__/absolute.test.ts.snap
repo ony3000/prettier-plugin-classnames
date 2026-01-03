@@ -1,7 +1,7 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`'invalid ignore comment (1) - formatti…' > expectation 1`] = `
-"<!--
+"<!-- ------------------------------------------------------| printWidth=60 (in snapshot) --><!--
  ! prettier-ignore
 -->
 <div>
@@ -20,7 +20,7 @@ exports[`'invalid ignore comment (1) - formatti…' > expectation 1`] = `
 `;
 
 exports[`'invalid ignore comment (2) - formatti…' > expectation 1`] = `
-"<!-- /* prettier-ignore */ -->
+"<!-- ------------------------------------------------------| printWidth=60 (in snapshot) --><!-- /* prettier-ignore */ -->
 <div>
   <div>
     <div
@@ -37,7 +37,7 @@ exports[`'invalid ignore comment (2) - formatti…' > expectation 1`] = `
 `;
 
 exports[`'valid ignore comment (1) - component' > expectation 1`] = `
-"<!-- prettier-ignore -->
+"<!-- ------------------------------------------------------| printWidth=60 (in snapshot) --><!-- prettier-ignore -->
 <div>
   <div>
     <div
@@ -54,7 +54,8 @@ exports[`'valid ignore comment (1) - component' > expectation 1`] = `
 `;
 
 exports[`'valid ignore comment (2) - element' > expectation 1`] = `
-"<div>
+"<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
+<div>
   <div>
     <!-- prettier-ignore -->
     <div
@@ -71,7 +72,8 @@ exports[`'valid ignore comment (2) - element' > expectation 1`] = `
 `;
 
 exports[`'valid ignore comment (3) - class name…' > expectation 1`] = `
-"<div>
+"<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
+<div>
   <div>
     <div
       class={classNames(
@@ -89,7 +91,8 @@ exports[`'valid ignore comment (3) - class name…' > expectation 1`] = `
 `;
 
 exports[`'valid ignore comment (4) - class name…' > expectation 1`] = `
-"<div>
+"<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
+<div>
   <div>
     <div
       class={classNames([
@@ -108,6 +111,7 @@ exports[`'valid ignore comment (4) - class name…' > expectation 1`] = `
 
 exports[`'valid ignore comment (5) - frontmatter' > expectation 1`] = `
 "---
+//----------------------------------------------------------| printWidth=60 (in snapshot)
 const combination = classNames(
   /* prettier-ignore */
   'lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere',
@@ -120,6 +124,7 @@ const combination = classNames(
 
 exports[`'valid ignore comment (6) - frontmatter' > expectation 1`] = `
 "---
+//----------------------------------------------------------| printWidth=60 (in snapshot)
 const combination = classNames(
   // prettier-ignore
   'lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere',
@@ -131,7 +136,8 @@ const combination = classNames(
 `;
 
 exports[`'valid ignore comment (7) - script tag' > expectation 1`] = `
-"<script>
+"<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
+<script>
   const combination = classNames(
     /* prettier-ignore */
     'lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere',
@@ -143,7 +149,8 @@ exports[`'valid ignore comment (7) - script tag' > expectation 1`] = `
 `;
 
 exports[`'valid ignore comment (8) - script tag' > expectation 1`] = `
-"<script>
+"<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
+<script>
   const combination = classNames(
     // prettier-ignore
     'lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere',
@@ -155,7 +162,8 @@ exports[`'valid ignore comment (8) - script tag' > expectation 1`] = `
 `;
 
 exports[`'valid ignore comment (9) - multi-line…' > expectation 1`] = `
-"<script
+"<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
+<script
   zero-one-two-three-four-five-six-seven-eight-nine="0123456789"
 >
   const combination = classNames(

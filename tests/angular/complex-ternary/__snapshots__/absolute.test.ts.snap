@@ -1,7 +1,8 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`'(1) nested ternary' > expectation 1`] = `
-"<template>
+"<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
+<template>
   <div>
     <div
       [class]="
@@ -23,7 +24,8 @@ exports[`'(1) nested ternary' > expectation 1`] = `
 `;
 
 exports[`'(2) double nested ternary' > expectation 1`] = `
-"<template>
+"<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
+<template>
   <div>
     <div
       [class]="

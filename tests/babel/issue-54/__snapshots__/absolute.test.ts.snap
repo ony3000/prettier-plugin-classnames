@@ -1,28 +1,32 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`'delimiter conversion (1) - \`jsxSingle…' > expectation 1`] = `
-"export function Foo({ children }) {
+"//-----------------------------------------------------------------------------| printWidth=80 (in snapshot)
+export function Foo({ children }) {
   return <div className='lorem ipsum dolor sit amet'>{children}</div>;
 }
 "
 `;
 
 exports[`'delimiter conversion (2) - \`jsxSingle…' > expectation 1`] = `
-"export function Foo({ children }) {
+"//-----------------------------------------------------------------------------| printWidth=80 (in snapshot)
+export function Foo({ children }) {
   return <div className="lorem ipsum do'or sit amet">{children}</div>;
 }
 "
 `;
 
 exports[`'delimiter conversion (3) - \`jsxSingle…' > expectation 1`] = `
-"export function Foo({ children }) {
+"//-----------------------------------------------------------------------------| printWidth=80 (in snapshot)
+export function Foo({ children }) {
   return <div className="lorem ipsum dolor sit amet">{children}</div>;
 }
 "
 `;
 
 exports[`'delimiter conversion (4) - \`jsxSingle…' > expectation 1`] = `
-"export function Foo({ children }) {
+"//-----------------------------------------------------------------------------| printWidth=80 (in snapshot)
+export function Foo({ children }) {
   return <div className='lorem ipsum do"or sit amet'>{children}</div>;
 }
 "

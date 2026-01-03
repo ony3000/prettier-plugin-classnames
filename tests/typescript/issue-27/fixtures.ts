@@ -4,6 +4,7 @@ export const fixtures: Omit<Fixture, 'output'>[] = [
   {
     name: 'template literal ending with a space',
     input: `
+//-----------------------------------------------------------------------------| printWidth=80 (in snapshot)
 export default function Test() {
   return (
     <div>
@@ -23,6 +24,7 @@ export default function Test() {
   {
     name: 'template literal starting with a space',
     input: `
+//-----------------------------------------------------------------------------| printWidth=80 (in snapshot)
 export default function Test() {
   return (
     <div>
@@ -42,6 +44,7 @@ export default function Test() {
   {
     name: 'trimmed template literal (no error in v0.4.0, error in v0.5.0)',
     input: `
+//-----------------------------------------------------------------------------| printWidth=80 (in snapshot)
 export default function Test() {
   return (
     <div>

@@ -1,7 +1,8 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`'(1) nested expression - string litera…' > expectation 1`] = `
-"<template>
+"<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
+<template>
   <div>
     <div
       v-bind:class="\`lorem ipsum dolor sit amet
@@ -16,7 +17,8 @@ exports[`'(1) nested expression - string litera…' > expectation 1`] = `
 `;
 
 exports[`'(2) nested expression - template lite…' > expectation 1`] = `
-"<template>
+"<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
+<template>
   <div>
     <div
       v-bind:class="\`lorem ipsum dolor sit amet
@@ -31,7 +33,8 @@ exports[`'(2) nested expression - template lite…' > expectation 1`] = `
 `;
 
 exports[`'(3) double nested expression - string…' > expectation 1`] = `
-"<template>
+"<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
+<template>
   <div>
     <div
       v-bind:class="\`lorem ipsum dolor sit amet
@@ -48,7 +51,8 @@ exports[`'(3) double nested expression - string…' > expectation 1`] = `
 `;
 
 exports[`'(4) double nested expression - templa…' > expectation 1`] = `
-"<template>
+"<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
+<template>
   <div>
     <div
       v-bind:class="\`lorem ipsum dolor sit amet
@@ -65,7 +69,8 @@ exports[`'(4) double nested expression - templa…' > expectation 1`] = `
 `;
 
 exports[`'(5) nested expression - string litera…' > expectation 1`] = `
-"<template>
+"<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
+<template>
   <div>
     <div
       v-bind:class="\`lorem ipsum dolor sit amet \${
@@ -84,7 +89,8 @@ exports[`'(5) nested expression - string litera…' > expectation 1`] = `
 `;
 
 exports[`'(6) nested expression - template lite…' > expectation 1`] = `
-"<template>
+"<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
+<template>
   <div>
     <div
       v-bind:class="\`lorem ipsum dolor sit amet \${
@@ -103,7 +109,8 @@ exports[`'(6) nested expression - template lite…' > expectation 1`] = `
 `;
 
 exports[`'(7) double nested expression - string…' > expectation 1`] = `
-"<template>
+"<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
+<template>
   <div>
     <div
       v-bind:class="\`lorem ipsum dolor sit amet
@@ -124,7 +131,8 @@ exports[`'(7) double nested expression - string…' > expectation 1`] = `
 `;
 
 exports[`'(8) double nested expression - templa…' > expectation 1`] = `
-"<template>
+"<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
+<template>
   <div>
     <div
       v-bind:class="\`lorem ipsum dolor sit amet

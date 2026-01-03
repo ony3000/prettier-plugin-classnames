@@ -4,6 +4,7 @@ export const fixtures: Omit<Fixture, 'output'>[] = [
   {
     name: 'supported attributes',
     input: `
+<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
 <template>
   <div>
     <div>
@@ -21,6 +22,7 @@ export const fixtures: Omit<Fixture, 'output'>[] = [
   {
     name: 'unsupported attributes',
     input: `
+<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
 <template>
   <div>
     <div>

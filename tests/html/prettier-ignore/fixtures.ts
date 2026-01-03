@@ -4,6 +4,7 @@ export const fixtures: Omit<Fixture, 'output'>[] = [
   {
     name: 'valid ignore comment (1) - element',
     input: `
+<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
 <template>
   <div>
     <!-- prettier-ignore -->
@@ -20,6 +21,7 @@ export const fixtures: Omit<Fixture, 'output'>[] = [
   {
     name: 'valid ignore comment (2) - script tag',
     input: `
+<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
 <script setup lang="ts">
 const combination = classNames(
   /* prettier-ignore */
@@ -32,6 +34,7 @@ const combination = classNames(
   {
     name: 'valid ignore comment (3) - script tag',
     input: `
+<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
 <script setup lang="ts">
 const combination = classNames(
   // prettier-ignore
@@ -44,6 +47,7 @@ const combination = classNames(
   {
     name: 'valid ignore comment (4) - multi-line script opening tag',
     input: `
+<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
 <script setup lang="ts" zero-one-two-three-four-five-six-seven-eight-nine="0123456789">
 const combination = classNames(
   // prettier-ignore
@@ -56,6 +60,7 @@ const combination = classNames(
   {
     name: 'invalid ignore comment (1) - formatting works as usual',
     input: `
+<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
 <!--
  ! prettier-ignore
 -->
@@ -71,6 +76,7 @@ const combination = classNames(
   {
     name: 'invalid ignore comment (2) - formatting works as usual',
     input: `
+<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
 <!-- /* prettier-ignore */ -->
 <template>
   <div>

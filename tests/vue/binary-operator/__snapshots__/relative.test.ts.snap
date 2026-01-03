@@ -1,8 +1,7 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`'(1) When expressions are joined by th…' > expectation 1`] = `
-"//---------------------------------------------------------|
-printWidth=60 (in snapshot)
+"<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
 <template>
   <div>
     <div
@@ -20,8 +19,7 @@ printWidth=60 (in snapshot)
 `;
 
 exports[`'(2) When expressions are joined by th…' > expectation 1`] = `
-"//---------------------------------------------------------|
-printWidth=60 (in snapshot)
+"<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
 <template>
   <div>
     <div
@@ -41,8 +39,7 @@ printWidth=60 (in snapshot)
 `;
 
 exports[`'(3) When expressions are joined by th…' > expectation 1`] = `
-"//---------------------------------------------------------|
-printWidth=60 (in snapshot)
+"<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
 <template>
   <div>
     <div
@@ -63,8 +60,7 @@ printWidth=60 (in snapshot)
 `;
 
 exports[`'(4) When expressions are joined by th…' > expectation 1`] = `
-"//---------------------------------------------------------|
-printWidth=60 (in snapshot)
+"<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
 <template>
   <div>
     <div
@@ -82,8 +78,7 @@ printWidth=60 (in snapshot)
 `;
 
 exports[`'(5) When expressions are joined by th…' > expectation 1`] = `
-"//---------------------------------------------------------|
-printWidth=60 (in snapshot)
+"<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
 <template>
   <div>
     <div
@@ -103,8 +98,7 @@ printWidth=60 (in snapshot)
 `;
 
 exports[`'(6) When expressions are joined by th…' > expectation 1`] = `
-"//---------------------------------------------------------|
-printWidth=60 (in snapshot)
+"<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
 <template>
   <div>
     <div
@@ -125,8 +119,7 @@ printWidth=60 (in snapshot)
 `;
 
 exports[`'(7) When expressions are joined by th…' > expectation 1`] = `
-"//---------------------------------------------------------|
-printWidth=60 (in snapshot)
+"<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
 <template>
   <div>
     <div
@@ -144,8 +137,7 @@ printWidth=60 (in snapshot)
 `;
 
 exports[`'(8) When expressions are joined by th…' > expectation 1`] = `
-"//---------------------------------------------------------|
-printWidth=60 (in snapshot)
+"<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
 <template>
   <div>
     <div
@@ -164,8 +156,7 @@ printWidth=60 (in snapshot)
 `;
 
 exports[`'(9) When expressions are joined by th…' > expectation 1`] = `
-"//---------------------------------------------------------|
-printWidth=60 (in snapshot)
+"<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
 <template>
   <div>
     <div

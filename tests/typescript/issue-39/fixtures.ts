@@ -4,6 +4,7 @@ export const fixtures: Omit<Fixture, 'output'>[] = [
   {
     name: '(1) nested expression in template literal',
     input: `
+//-----------------------------------------------------------------------------| printWidth=80 (in snapshot)
 import { Combobox } from "@headlessui/react"
 
 export default function ClassNameCb() {
@@ -25,6 +26,7 @@ export default function ClassNameCb() {
   {
     name: '(2) double nested expression in template literal',
     input: `
+//-----------------------------------------------------------------------------| printWidth=80 (in snapshot)
 export default function ClassNameCb() {
     return (
         <Combobox.Option
