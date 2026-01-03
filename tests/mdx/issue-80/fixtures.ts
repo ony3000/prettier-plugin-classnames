@@ -4,6 +4,7 @@ export const fixtures: Omit<Fixture, 'output'>[] = [
   {
     name: "(1) This plugin doesn't support mdx parser, so it leaves Prettier's output as is.",
     input: `
+<!-- --------------------------------------------------------------------------| printWidth=80 (in snapshot) -->
 \`\`\`jsx
 <div />;
 \`\`\`
@@ -13,6 +14,7 @@ export const fixtures: Omit<Fixture, 'output'>[] = [
   {
     name: "(2) This plugin doesn't support mdx parser, so it leaves Prettier's output as is.",
     input: `
+<!-- --------------------------------------------------------------------------| printWidth=80 (in snapshot) -->
 \`\`\`jsx
 import foo from 'foo'
 
@@ -24,6 +26,7 @@ import foo from 'foo'
   {
     name: "(3) This plugin doesn't support mdx parser, so it leaves Prettier's output as is.",
     input: `
+<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
 \`\`\`jsx
 export function Foo({ children }) {
   return (
@@ -41,6 +44,7 @@ export function Foo({ children }) {
   {
     name: "(4) This plugin doesn't support mdx parser, so it leaves Prettier's output as is.",
     input: `
+<!-- --------------------------------------------------------------------------| printWidth=80 (in snapshot) -->
 \`\`\`tsx
 <div />;
 \`\`\`
@@ -50,6 +54,7 @@ export function Foo({ children }) {
   {
     name: "(5) This plugin doesn't support mdx parser, so it leaves Prettier's output as is.",
     input: `
+<!-- --------------------------------------------------------------------------| printWidth=80 (in snapshot) -->
 \`\`\`tsx
 import foo from 'foo'
 
@@ -61,6 +66,7 @@ import foo from 'foo'
   {
     name: "(6) This plugin doesn't support mdx parser, so it leaves Prettier's output as is.",
     input: `
+<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
 \`\`\`tsx
 export function Foo({ children }) {
   return (

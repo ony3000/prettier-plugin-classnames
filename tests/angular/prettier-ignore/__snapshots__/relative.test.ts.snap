@@ -1,7 +1,8 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`'invalid ignore comment (1) - formatti…' > expectation 1`] = `
-"<!--
+"<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
+<!--
  ! prettier-ignore
 -->
 <template>
@@ -22,7 +23,8 @@ exports[`'invalid ignore comment (1) - formatti…' > expectation 1`] = `
 `;
 
 exports[`'invalid ignore comment (2) - formatti…' > expectation 1`] = `
-"<!-- /* prettier-ignore */ -->
+"<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
+<!-- /* prettier-ignore */ -->
 <template>
   <div>
     <div
@@ -41,7 +43,8 @@ exports[`'invalid ignore comment (2) - formatti…' > expectation 1`] = `
 `;
 
 exports[`'valid ignore comment (1) - element' > expectation 1`] = `
-"<template>
+"<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
+<template>
   <div>
     <!-- prettier-ignore -->
     <div
@@ -58,7 +61,8 @@ exports[`'valid ignore comment (1) - element' > expectation 1`] = `
 `;
 
 exports[`'valid ignore comment (2) - script tag' > expectation 1`] = `
-"<script setup lang="ts">
+"<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
+<script setup lang="ts">
   const combination = classNames(
     /* prettier-ignore */
     'lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere',
@@ -70,7 +74,8 @@ exports[`'valid ignore comment (2) - script tag' > expectation 1`] = `
 `;
 
 exports[`'valid ignore comment (3) - script tag' > expectation 1`] = `
-"<script setup lang="ts">
+"<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
+<script setup lang="ts">
   const combination = classNames(
     // prettier-ignore
     'lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere',
@@ -82,7 +87,8 @@ exports[`'valid ignore comment (3) - script tag' > expectation 1`] = `
 `;
 
 exports[`'valid ignore comment (4) - multi-line…' > expectation 1`] = `
-"<script
+"<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
+<script
   setup
   lang="ts"
   zero-one-two-three-four-five-six-seven-eight-nine="0123456789"

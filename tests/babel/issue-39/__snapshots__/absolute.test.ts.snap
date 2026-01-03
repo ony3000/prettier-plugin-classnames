@@ -1,7 +1,8 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`'(1) nested expression in template lit…' > expectation 1`] = `
-"import { Combobox } from "@headlessui/react";
+"//-----------------------------------------------------------------------------| printWidth=80 (in snapshot)
+import { Combobox } from "@headlessui/react";
 
 export default function ClassNameCb() {
   return (
@@ -19,7 +20,8 @@ export default function ClassNameCb() {
 `;
 
 exports[`'(2) double nested expression in templ…' > expectation 1`] = `
-"export default function ClassNameCb() {
+"//-----------------------------------------------------------------------------| printWidth=80 (in snapshot)
+export default function ClassNameCb() {
   return (
     <Combobox.Option
       className={({ active }) =>

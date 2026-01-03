@@ -1,14 +1,16 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`'just template literal' > expectation 1`] = `
-"const { data } = useSWR<CartResponse>(
+"//-----------------------------------------------------------------------------| printWidth=80 (in snapshot)
+const { data } = useSWR<CartResponse>(
   \`\${process.env.NEXT_PUBLIC_API_URL}/cart/\${cartId}\`,
 );
 "
 `;
 
 exports[`'template literal in ternary operator' > expectation 1`] = `
-"const { data } = useSWR<CartResponse>(
+"//-----------------------------------------------------------------------------| printWidth=80 (in snapshot)
+const { data } = useSWR<CartResponse>(
   cartId ? \`\${process.env.NEXT_PUBLIC_API_URL}/cart/\${cartId}\` : null,
 );
 "
