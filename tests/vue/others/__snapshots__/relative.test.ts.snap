@@ -1,7 +1,8 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`'comment - multi line comment' > expectation 1`] = `
-"<!--
+"<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
+<!--
 <template>
   <div>
     <div class="lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere">
@@ -14,7 +15,8 @@ exports[`'comment - multi line comment' > expectation 1`] = `
 `;
 
 exports[`'endOfLine: crlf' > expectation 1`] = `
-"<template>
+"<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
+<template>
   <div>
     <div
       class="lorem ipsum dolor sit amet consectetur adipiscing elit proin
@@ -28,7 +30,8 @@ exports[`'endOfLine: crlf' > expectation 1`] = `
 `;
 
 exports[`'plugin options (1) - custom attributes' > expectation 1`] = `
-"<template>
+"<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
+<template>
   <div>
     <div
       fixme="lorem ipsum dolor sit amet consectetur adipiscing elit proin
@@ -42,7 +45,8 @@ exports[`'plugin options (1) - custom attributes' > expectation 1`] = `
 `;
 
 exports[`'plugin options (2) - custom functions' > expectation 1`] = `
-"<template>
+"<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
+<template>
   <div>
     <div
       :class="
@@ -60,7 +64,8 @@ exports[`'plugin options (2) - custom functions' > expectation 1`] = `
 `;
 
 exports[`'tabWidth: 4' > expectation 1`] = `
-"<template>
+"<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
+<template>
     <div>
         <div
             class="lorem ipsum dolor sit amet consectetur adipiscing elit proin
@@ -74,7 +79,8 @@ exports[`'tabWidth: 4' > expectation 1`] = `
 `;
 
 exports[`'template literal - written as an obje…' > expectation 1`] = `
-"<template>
+"<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
+<template>
   <div>
     <div
       v-bind:class="
@@ -95,7 +101,8 @@ exports[`'template literal - written as an obje…' > expectation 1`] = `
 `;
 
 exports[`'useTabs: true (1) - tabWidth: 2' > expectation 1`] = `
-"<template>
+"<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
+<template>
 	<div>
 		<div
 			class="lorem ipsum dolor sit amet consectetur adipiscing elit proin
@@ -109,7 +116,8 @@ exports[`'useTabs: true (1) - tabWidth: 2' > expectation 1`] = `
 `;
 
 exports[`'useTabs: true (2) - tabWidth: 4' > expectation 1`] = `
-"<template>
+"<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
+<template>
 	<div>
 		<div
 			class="lorem ipsum dolor sit amet consectetur adipiscing elit proin
@@ -123,7 +131,8 @@ exports[`'useTabs: true (2) - tabWidth: 4' > expectation 1`] = `
 `;
 
 exports[`'useTabs: true (3) - tabWidth: 8' > expectation 1`] = `
-"<template>
+"<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
+<template>
 	<div>
 		<div
 			class="lorem ipsum dolor sit amet consectetur adipiscing elit proin

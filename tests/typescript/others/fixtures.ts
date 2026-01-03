@@ -4,6 +4,7 @@ export const fixtures: Omit<Fixture, 'output'>[] = [
   {
     name: 'endOfLine: crlf',
     input: `
+//---------------------------------------------------------| printWidth=60 (in snapshot)
 export function Foo({ children }) {
   return (
     <div className="lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere">
@@ -19,6 +20,7 @@ export function Foo({ children }) {
   {
     name: 'tabWidth: 4',
     input: `
+//---------------------------------------------------------| printWidth=60 (in snapshot)
 export function Foo({ children }) {
   return (
     <div className="lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere">
@@ -34,6 +36,7 @@ export function Foo({ children }) {
   {
     name: 'useTabs: true (1) - tabWidth: 2',
     input: `
+//---------------------------------------------------------| printWidth=60 (in snapshot)
 export function Foo({ children }) {
   return (
     <div className="lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere">
@@ -50,6 +53,7 @@ export function Foo({ children }) {
   {
     name: 'useTabs: true (2) - tabWidth: 4',
     input: `
+//---------------------------------------------------------| printWidth=60 (in snapshot)
 export function Foo({ children }) {
   return (
     <div className="lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere">
@@ -66,6 +70,7 @@ export function Foo({ children }) {
   {
     name: 'useTabs: true (3) - tabWidth: 8',
     input: `
+//---------------------------------------------------------| printWidth=60 (in snapshot)
 export function Foo({ children }) {
   return (
     <div className="lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere">
@@ -82,6 +87,7 @@ export function Foo({ children }) {
   {
     name: 'comment (1) - multi line comment',
     input: `
+//---------------------------------------------------------| printWidth=60 (in snapshot)
 /*
 export function Foo({ children }) {
   return (
@@ -96,6 +102,7 @@ export function Foo({ children }) {
   {
     name: 'comment (2) - single line comment applied to multi line',
     input: `
+//---------------------------------------------------------| printWidth=60 (in snapshot)
 // export function Foo({ children }) {
 //   return (
 //     <div className="lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere">
@@ -108,6 +115,7 @@ export function Foo({ children }) {
   {
     name: 'plugin options (1) - custom attributes',
     input: `
+//---------------------------------------------------------| printWidth=60 (in snapshot)
 export function Foo({ children }) {
   return (
     <div fixme="lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere">
@@ -123,6 +131,7 @@ export function Foo({ children }) {
   {
     name: 'plugin options (2) - custom functions',
     input: `
+//---------------------------------------------------------| printWidth=60 (in snapshot)
 export function Foo({ children }) {
   return (
     <div className={clsx('lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere')}>
@@ -138,6 +147,7 @@ export function Foo({ children }) {
   {
     name: 'template literal - written as an object value',
     input: `
+//---------------------------------------------------------| printWidth=60 (in snapshot)
 export function Foo({ children }) {
   return (
     <div className={classNames({
@@ -154,6 +164,7 @@ export function Foo({ children }) {
   {
     name: 'class name passed as a function argument',
     input: `
+//-----------------------------------------------------------------------------| printWidth=80 (in snapshot)
 const Foo = forwardRef(function Foo() {
   return (
     <div className="lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere eu volutpat id neque pellentesque">
@@ -169,6 +180,7 @@ const Foo = forwardRef(function Foo() {
   {
     name: "class name inside the 'if' block",
     input: `
+//-----------------------------------------------------------------------------| printWidth=80 (in snapshot)
 function Foo() {
   let elem;
   if (true) {
@@ -188,6 +200,7 @@ function Foo() {
   {
     name: 'JSX mapped from object references including optional chaining',
     input: `
+//-----------------------------------------------------------------------------| printWidth=80 (in snapshot)
 function Foo() {
   return (
     <div>

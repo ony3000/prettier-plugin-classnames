@@ -1,7 +1,8 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`'long enough (1) - single line with no…' > expectation 1`] = `
-"<template>
+"<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
+<template>
   <div>
     <div
       [class]="
@@ -20,7 +21,8 @@ exports[`'long enough (1) - single line with no…' > expectation 1`] = `
 `;
 
 exports[`'long enough (2) - single line with sp…' > expectation 1`] = `
-"<template>
+"<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
+<template>
   <div>
     <div
       [class]="
@@ -39,7 +41,8 @@ exports[`'long enough (2) - single line with sp…' > expectation 1`] = `
 `;
 
 exports[`'long enough (3) - multiple lines' > expectation 1`] = `
-"<template>
+"<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
+<template>
   <div>
     <div
       [class]="
@@ -58,7 +61,8 @@ exports[`'long enough (3) - multiple lines' > expectation 1`] = `
 `;
 
 exports[`'near boundary (1) - single line with …' > expectation 1`] = `
-"<template>
+"<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
+<template>
   <div>
     <div
       [class]="
@@ -75,7 +79,8 @@ exports[`'near boundary (1) - single line with …' > expectation 1`] = `
 `;
 
 exports[`'near boundary (2) - single line with …' > expectation 1`] = `
-"<template>
+"<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
+<template>
   <div>
     <div
       [class]="
@@ -93,7 +98,8 @@ exports[`'near boundary (2) - single line with …' > expectation 1`] = `
 `;
 
 exports[`'near boundary (3) - multiple lines' > expectation 1`] = `
-"<template>
+"<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
+<template>
   <div>
     <div
       [class]="
@@ -110,7 +116,8 @@ exports[`'near boundary (3) - multiple lines' > expectation 1`] = `
 `;
 
 exports[`'short enough (1) - single line with n…' > expectation 1`] = `
-"<template>
+"<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
+<template>
   <div>
     <div [class]="classNames('lorem ipsum dolor sit amet')">
       <slot></slot>
@@ -121,7 +128,8 @@ exports[`'short enough (1) - single line with n…' > expectation 1`] = `
 `;
 
 exports[`'short enough (2) - single line with s…' > expectation 1`] = `
-"<template>
+"<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
+<template>
   <div>
     <div
       [class]="classNames(' lorem ipsum dolor sit amet ')"
@@ -134,7 +142,8 @@ exports[`'short enough (2) - single line with s…' > expectation 1`] = `
 `;
 
 exports[`'short enough (3) - multiple lines' > expectation 1`] = `
-"<template>
+"<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
+<template>
   <div>
     <div [class]="classNames('lorem ipsum dolor sit amet')">
       <slot></slot>
@@ -145,7 +154,8 @@ exports[`'short enough (3) - multiple lines' > expectation 1`] = `
 `;
 
 exports[`'syntax variants (1) - component' > expectation 1`] = `
-"<template>
+"<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
+<template>
   <div>
     <Box
       [class]="
@@ -163,7 +173,8 @@ exports[`'syntax variants (1) - component' > expectation 1`] = `
 `;
 
 exports[`'syntax variants (2) - property binding' > expectation 1`] = `
-"<template>
+"<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
+<template>
   <div>
     <div
       [className]="
@@ -181,7 +192,8 @@ exports[`'syntax variants (2) - property binding' > expectation 1`] = `
 `;
 
 exports[`'syntax variants (3) - attribute bindi…' > expectation 1`] = `
-"<template>
+"<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
+<template>
   <div>
     <div
       [attr.class]="
@@ -199,7 +211,8 @@ exports[`'syntax variants (3) - attribute bindi…' > expectation 1`] = `
 `;
 
 exports[`'syntax variants (4) - built-in direct…' > expectation 1`] = `
-"<template>
+"<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
+<template>
   <div>
     <div
       [ngClass]="
@@ -217,7 +230,8 @@ exports[`'syntax variants (4) - built-in direct…' > expectation 1`] = `
 `;
 
 exports[`'syntax variants (5) - script tag' > expectation 1`] = `
-"<script setup lang="ts">
+"<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
+<script setup lang="ts">
   const combination = classNames([
     "lorem ipsum dolor sit amet",
     { "lorem ipsum dolor sit amet": true },
