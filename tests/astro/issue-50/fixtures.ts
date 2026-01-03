@@ -9,6 +9,7 @@ import SettingsLayout from "@layouts/settings.astro";
 import SecurityForm from "./_security";
 ---
 
+<!-- ---------------------------------------------------------------------------| printWidth=80 (in snapshot) -->
 <SettingsLayout
   title="Settings • Details"
   class="flex max-w-[1100px] flex-col gap-4 overflow-x-hidden text-left"
@@ -25,6 +26,7 @@ import SettingsLayout from "@layouts/settings.astro";
 import SecurityForm from "./_security";
 ---
 
+<!-- ---------------------------------------------------------------------------| printWidth=80 (in snapshot) -->
 <SettingsLayout
   title="Settings 😂 Details"
   class="flex max-w-[1100px] flex-col gap-4 overflow-x-hidden text-left"
@@ -41,6 +43,7 @@ import SettingsLayout from "@layouts/settings.astro";
 import SecurityForm from "./_security";
 ---
 
+<!-- ---------------------------------------------------------------------------| printWidth=80 (in snapshot) -->
 <SettingsLayout
   title="설정 * 세부정보"
   class="flex max-w-[1100px] flex-col gap-4 overflow-x-hidden text-left"

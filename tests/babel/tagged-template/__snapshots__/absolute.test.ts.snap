@@ -1,7 +1,8 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`'The \`String.raw\` method should not be…' > expectation 1`] = `
-"export function Foo() {
+"//-----------------------------------------------------------------------------| printWidth=80 (in snapshot)
+export function Foo() {
   return (
     <div
       className={classNames([
@@ -18,21 +19,24 @@ exports[`'The \`String.raw\` method should not be…' > expectation 1`] = `
 `;
 
 exports[`'long enough (1)' > expectation 1`] = `
-"const classes = tw\`lorem ipsum dolor sit amet consectetur
+"//---------------------------------------------------------| printWidth=60 (in snapshot)
+const classes = tw\`lorem ipsum dolor sit amet consectetur
 adipiscing elit proin ex massa hendrerit eu posuere eu
 volutpat id neque pellentesque\`;
 "
 `;
 
 exports[`'long enough (2)' > expectation 1`] = `
-"const Bar = tw.foo\`lorem ipsum dolor sit amet consectetur
+"//---------------------------------------------------------| printWidth=60 (in snapshot)
+const Bar = tw.foo\`lorem ipsum dolor sit amet consectetur
 adipiscing elit proin ex massa hendrerit eu posuere eu
 volutpat id neque pellentesque\`;
 "
 `;
 
 exports[`'long enough (3)' > expectation 1`] = `
-"const Bar = tw(
+"//---------------------------------------------------------| printWidth=60 (in snapshot)
+const Bar = tw(
   Foo,
 )\`lorem ipsum dolor sit amet consectetur adipiscing elit
 proin ex massa hendrerit eu posuere eu volutpat id neque
@@ -41,19 +45,22 @@ pellentesque\`;
 `;
 
 exports[`'near boundary (1)' > expectation 1`] = `
-"const classes = tw\`lorem ipsum dolor sit amet consectetur
+"//---------------------------------------------------------| printWidth=60 (in snapshot)
+const classes = tw\`lorem ipsum dolor sit amet consectetur
 adipiscing elit proin\`;
 "
 `;
 
 exports[`'near boundary (2)' > expectation 1`] = `
-"const Bar = tw.foo\`lorem ipsum dolor sit amet consectetur
+"//---------------------------------------------------------| printWidth=60 (in snapshot)
+const Bar = tw.foo\`lorem ipsum dolor sit amet consectetur
 adipiscing elit proin\`;
 "
 `;
 
 exports[`'near boundary (3)' > expectation 1`] = `
-"const Bar = tw(
+"//---------------------------------------------------------| printWidth=60 (in snapshot)
+const Bar = tw(
   Foo,
 )\`lorem ipsum dolor sit amet consectetur adipiscing elit
 proin\`;
@@ -61,22 +68,26 @@ proin\`;
 `;
 
 exports[`'short enough (1)' > expectation 1`] = `
-"const classes = tw\`lorem ipsum dolor sit amet\`;
+"//---------------------------------------------------------| printWidth=60 (in snapshot)
+const classes = tw\`lorem ipsum dolor sit amet\`;
 "
 `;
 
 exports[`'short enough (2)' > expectation 1`] = `
-"const Bar = tw.foo\`lorem ipsum dolor sit amet\`;
+"//---------------------------------------------------------| printWidth=60 (in snapshot)
+const Bar = tw.foo\`lorem ipsum dolor sit amet\`;
 "
 `;
 
 exports[`'short enough (3)' > expectation 1`] = `
-"const Bar = tw(Foo)\`lorem ipsum dolor sit amet\`;
+"//---------------------------------------------------------| printWidth=60 (in snapshot)
+const Bar = tw(Foo)\`lorem ipsum dolor sit amet\`;
 "
 `;
 
 exports[`'syntax variants - written as an objec…' > expectation 1`] = `
-"const classes = {
+"//---------------------------------------------------------| printWidth=60 (in snapshot)
+const classes = {
   short: tw\`lorem ipsum dolor sit amet\`,
   near: tw\`lorem ipsum dolor sit amet consectetur adipiscing
   elit proin\`,

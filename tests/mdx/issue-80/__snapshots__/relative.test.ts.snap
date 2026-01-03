@@ -1,14 +1,18 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`'(1) This plugin doesn\\'t support mdx …' > expectation 1`] = `
-"\`\`\`jsx
+"<!-- --------------------------------------------------------------------------| printWidth=80 (in snapshot) -->
+
+\`\`\`jsx
 <div />
 \`\`\`
 "
 `;
 
 exports[`'(2) This plugin doesn\\'t support mdx …' > expectation 1`] = `
-"\`\`\`jsx
+"<!-- --------------------------------------------------------------------------| printWidth=80 (in snapshot) -->
+
+\`\`\`jsx
 import foo from "foo";
 
 <div />;
@@ -17,7 +21,9 @@ import foo from "foo";
 `;
 
 exports[`'(3) This plugin doesn\\'t support mdx …' > expectation 1`] = `
-"\`\`\`jsx
+"<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
+
+\`\`\`jsx
 export function Foo({ children }) {
   return (
     <div className="lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere eu volutpat id neque pellentesque">
@@ -30,14 +36,18 @@ export function Foo({ children }) {
 `;
 
 exports[`'(4) This plugin doesn\\'t support mdx …' > expectation 1`] = `
-"\`\`\`tsx
+"<!-- --------------------------------------------------------------------------| printWidth=80 (in snapshot) -->
+
+\`\`\`tsx
 <div />
 \`\`\`
 "
 `;
 
 exports[`'(5) This plugin doesn\\'t support mdx …' > expectation 1`] = `
-"\`\`\`tsx
+"<!-- --------------------------------------------------------------------------| printWidth=80 (in snapshot) -->
+
+\`\`\`tsx
 import foo from "foo";
 
 <div />;
@@ -46,7 +56,9 @@ import foo from "foo";
 `;
 
 exports[`'(6) This plugin doesn\\'t support mdx …' > expectation 1`] = `
-"\`\`\`tsx
+"<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
+
+\`\`\`tsx
 export function Foo({ children }) {
   return (
     <div className="lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere eu volutpat id neque pellentesque">

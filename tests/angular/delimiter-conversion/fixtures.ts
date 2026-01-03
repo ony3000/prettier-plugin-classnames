@@ -4,6 +4,7 @@ export const fixtures: Omit<Fixture, 'output'>[] = [
   {
     name: 'contains single quote - delimiter is single quote',
     input: `
+<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
 <template>
   <div>
     <div [class]="'lorem ipsum do\\'or sit amet'">
@@ -19,6 +20,7 @@ export const fixtures: Omit<Fixture, 'output'>[] = [
   {
     name: 'contains backtick - delimiter is single quote',
     input: `
+<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
 <template>
   <div>
     <div [class]="'lorem ipsum do\`or sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere'">
