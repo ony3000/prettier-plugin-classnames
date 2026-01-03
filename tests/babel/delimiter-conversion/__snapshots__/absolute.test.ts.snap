@@ -1,7 +1,8 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`'contains backtick (1) - delimiter is …' > expectation 1`] = `
-"export function Foo({ children }) {
+"//---------------------------------------------------------| printWidth=60 (in snapshot)
+export function Foo({ children }) {
   return (
     <div
       className={\`lorem ipsum do\\\`or sit amet consectetur
@@ -15,7 +16,8 @@ exports[`'contains backtick (1) - delimiter is …' > expectation 1`] = `
 `;
 
 exports[`'contains backtick (2) - delimiter is …' > expectation 1`] = `
-"export function Foo({ children }) {
+"//---------------------------------------------------------| printWidth=60 (in snapshot)
+export function Foo({ children }) {
   return (
     <div
       className={\`lorem ipsum do\\\`or sit amet consectetur
@@ -29,7 +31,8 @@ exports[`'contains backtick (2) - delimiter is …' > expectation 1`] = `
 `;
 
 exports[`'contains backtick (3) - delimiter is …' > expectation 1`] = `
-"export function Foo({ children }) {
+"//---------------------------------------------------------| printWidth=60 (in snapshot)
+export function Foo({ children }) {
   return (
     <div
       className={\`lorem ipsum do\\\`or sit amet consectetur
@@ -43,7 +46,8 @@ exports[`'contains backtick (3) - delimiter is …' > expectation 1`] = `
 `;
 
 exports[`'contains double quote (1) - delimiter…' > expectation 1`] = `
-"export function Foo({ children }) {
+"//---------------------------------------------------------| printWidth=60 (in snapshot)
+export function Foo({ children }) {
   return (
     <div className={'lorem ipsum do"or sit amet'}>
       {children}
@@ -54,7 +58,8 @@ exports[`'contains double quote (1) - delimiter…' > expectation 1`] = `
 `;
 
 exports[`'contains double quote (2) - delimiter…' > expectation 1`] = `
-"export function Foo({ children }) {
+"//---------------------------------------------------------| printWidth=60 (in snapshot)
+export function Foo({ children }) {
   return (
     <div className={'lorem ipsum do"or sit amet'}>
       {children}
@@ -65,7 +70,8 @@ exports[`'contains double quote (2) - delimiter…' > expectation 1`] = `
 `;
 
 exports[`'contains double quote (3) - delimiter…' > expectation 1`] = `
-"export function Foo({ children }) {
+"//---------------------------------------------------------| printWidth=60 (in snapshot)
+export function Foo({ children }) {
   return (
     <div className={'lorem ipsum do"or sit amet'}>
       {children}
@@ -76,7 +82,8 @@ exports[`'contains double quote (3) - delimiter…' > expectation 1`] = `
 `;
 
 exports[`'contains single quote (1) - delimiter…' > expectation 1`] = `
-"export function Foo({ children }) {
+"//---------------------------------------------------------| printWidth=60 (in snapshot)
+export function Foo({ children }) {
   return (
     <div className={"lorem ipsum do'or sit amet"}>
       {children}
@@ -87,7 +94,8 @@ exports[`'contains single quote (1) - delimiter…' > expectation 1`] = `
 `;
 
 exports[`'contains single quote (2) - delimiter…' > expectation 1`] = `
-"export function Foo({ children }) {
+"//---------------------------------------------------------| printWidth=60 (in snapshot)
+export function Foo({ children }) {
   return (
     <div className={"lorem ipsum do'or sit amet"}>
       {children}
@@ -98,7 +106,8 @@ exports[`'contains single quote (2) - delimiter…' > expectation 1`] = `
 `;
 
 exports[`'contains single quote (3) - delimiter…' > expectation 1`] = `
-"export function Foo({ children }) {
+"//---------------------------------------------------------| printWidth=60 (in snapshot)
+export function Foo({ children }) {
   return (
     <div className={"lorem ipsum do'or sit amet"}>
       {children}

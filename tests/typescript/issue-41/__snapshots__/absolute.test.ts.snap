@@ -1,7 +1,8 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`'another input' > expectation 1`] = `
-"export default function MyComponent() {
+"//-----------------------------------------------------------------------------| printWidth=80 (in snapshot)
+export default function MyComponent() {
   return (
     <section
       className="lorem ipsum dolor sit amet consectetur adipiscing elit aenean
@@ -15,7 +16,8 @@ exports[`'another input' > expectation 1`] = `
 `;
 
 exports[`'one input' > expectation 1`] = `
-"export default function MyComponent() {
+"//-----------------------------------------------------------------------------| printWidth=80 (in snapshot)
+export default function MyComponent() {
   return (
     <section
       className="lorem ipsum dolor sit amet consectetur adipiscing elit aenean

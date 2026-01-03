@@ -4,6 +4,7 @@ export const fixtures: Omit<Fixture, 'output'>[] = [
   {
     name: 'valid ignore comment (1) - component',
     input: `
+//---------------------------------------------------------| printWidth=60 (in snapshot)
 /* prettier-ignore */
 export function Foo({ children }) {
   return (
@@ -22,6 +23,7 @@ export function Foo({ children }) {
   {
     name: 'valid ignore comment (2) - element',
     input: `
+//---------------------------------------------------------| printWidth=60 (in snapshot)
 export function Foo({ children }) {
   return (
     /* prettier-ignore */
@@ -40,6 +42,7 @@ export function Foo({ children }) {
   {
     name: 'valid ignore comment (3) - attribute',
     input: `
+//---------------------------------------------------------| printWidth=60 (in snapshot)
 export function Foo({ children }) {
   return (
     <div
@@ -58,6 +61,7 @@ export function Foo({ children }) {
   {
     name: 'valid ignore comment (4) - class name combination',
     input: `
+//---------------------------------------------------------| printWidth=60 (in snapshot)
 export function Foo({ children }) {
   return (
     <div
@@ -76,6 +80,7 @@ export function Foo({ children }) {
   {
     name: 'invalid ignore comment (1) - formatting works as usual',
     input: `
+//---------------------------------------------------------| printWidth=60 (in snapshot)
 /**
  * prettier-ignore
  */
@@ -91,6 +96,7 @@ export function Foo({ children }) {
   {
     name: 'invalid ignore comment (2) - formatting works as usual',
     input: `
+//---------------------------------------------------------| printWidth=60 (in snapshot)
 // /* prettier-ignore */
 export function Foo({ children }) {
   return (

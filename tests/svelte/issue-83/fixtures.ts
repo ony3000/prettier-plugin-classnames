@@ -4,7 +4,7 @@ export const fixtures: Omit<Fixture, 'output'>[] = [
   {
     name: '(1) If a template literal contains nested expressions, object properties must still be enclosed in square brackets.',
     input: `
-//---------------------------------------------------------| printWidth=60 (in snapshot)
+<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
 <div>
   <div>
     <div

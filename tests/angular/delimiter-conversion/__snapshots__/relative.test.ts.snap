@@ -1,7 +1,8 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`'contains backtick - delimiter is sing…' > expectation 1`] = `
-"<template>
+"<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
+<template>
   <div>
     <div
       [class]="
@@ -17,7 +18,8 @@ exports[`'contains backtick - delimiter is sing…' > expectation 1`] = `
 `;
 
 exports[`'contains single quote - delimiter is …' > expectation 1`] = `
-"<template>
+"<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
+<template>
   <div>
     <div [class]="'lorem ipsum do\\'or sit amet'">
       <slot></slot>

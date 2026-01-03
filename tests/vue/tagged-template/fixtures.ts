@@ -4,6 +4,7 @@ export const fixtures: Omit<Fixture, 'output'>[] = [
   {
     name: 'short enough (1)',
     input: `
+<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
 <script setup lang="ts">
 const classes = tw\`lorem ipsum dolor sit amet\`;
 </script>
@@ -12,6 +13,7 @@ const classes = tw\`lorem ipsum dolor sit amet\`;
   {
     name: 'short enough (2)',
     input: `
+<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
 <script setup lang="ts">
 const Bar = tw.foo\`lorem ipsum dolor sit amet\`;
 </script>
@@ -20,6 +22,7 @@ const Bar = tw.foo\`lorem ipsum dolor sit amet\`;
   {
     name: 'short enough (3)',
     input: `
+<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
 <script setup lang="ts">
 const Bar = tw(Foo)\`lorem ipsum dolor sit amet\`;
 </script>
@@ -28,6 +31,7 @@ const Bar = tw(Foo)\`lorem ipsum dolor sit amet\`;
   {
     name: 'near boundary (1)',
     input: `
+<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
 <script setup lang="ts">
 const classes = tw\`lorem ipsum dolor sit amet consectetur adipiscing elit proin\`;
 </script>
@@ -36,6 +40,7 @@ const classes = tw\`lorem ipsum dolor sit amet consectetur adipiscing elit proin
   {
     name: 'near boundary (2)',
     input: `
+<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
 <script setup lang="ts">
 const Bar = tw.foo\`lorem ipsum dolor sit amet consectetur adipiscing elit proin\`;
 </script>
@@ -44,6 +49,7 @@ const Bar = tw.foo\`lorem ipsum dolor sit amet consectetur adipiscing elit proin
   {
     name: 'near boundary (3)',
     input: `
+<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
 <script setup lang="ts">
 const Bar = tw(Foo)\`lorem ipsum dolor sit amet consectetur adipiscing elit proin\`;
 </script>
@@ -52,6 +58,7 @@ const Bar = tw(Foo)\`lorem ipsum dolor sit amet consectetur adipiscing elit proi
   {
     name: 'long enough (1)',
     input: `
+<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
 <script setup lang="ts">
 const classes = tw\`lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere eu volutpat id neque pellentesque\`;
 </script>
@@ -60,6 +67,7 @@ const classes = tw\`lorem ipsum dolor sit amet consectetur adipiscing elit proin
   {
     name: 'long enough (2)',
     input: `
+<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
 <script setup lang="ts">
 const Bar = tw.foo\`lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere eu volutpat id neque pellentesque\`;
 </script>
@@ -68,6 +76,7 @@ const Bar = tw.foo\`lorem ipsum dolor sit amet consectetur adipiscing elit proin
   {
     name: 'long enough (3)',
     input: `
+<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
 <script setup lang="ts">
 const Bar = tw(Foo)\`lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere eu volutpat id neque pellentesque\`;
 </script>
@@ -76,6 +85,7 @@ const Bar = tw(Foo)\`lorem ipsum dolor sit amet consectetur adipiscing elit proi
   {
     name: 'syntax variants - written as an object value',
     input: `
+<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
 <script setup lang="ts">
 const classes = {
   short: tw\`lorem ipsum dolor sit amet\`,

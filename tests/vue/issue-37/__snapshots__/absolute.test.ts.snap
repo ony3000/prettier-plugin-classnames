@@ -1,7 +1,8 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`'short enough object key (no error in …' > expectation 1`] = `
-"<template>
+"<!-- --------------------------------------------------------------------------| printWidth=80 (in snapshot) -->
+<template>
   <div
     :class="{
       'bg-black': true,

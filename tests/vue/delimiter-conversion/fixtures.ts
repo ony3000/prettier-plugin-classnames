@@ -4,6 +4,7 @@ export const fixtures: Omit<Fixture, 'output'>[] = [
   {
     name: 'contains single quote (1) - delimiter is backtick',
     input: `
+<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
 <template>
   <div>
     <div v-bind:class="\`lorem ipsum do'or sit amet\`">
@@ -19,6 +20,7 @@ export const fixtures: Omit<Fixture, 'output'>[] = [
   {
     name: 'contains single quote (2) - delimiter is single quote',
     input: `
+<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
 <template>
   <div>
     <div v-bind:class="'lorem ipsum do\\'or sit amet'">
@@ -34,6 +36,7 @@ export const fixtures: Omit<Fixture, 'output'>[] = [
   {
     name: 'contains backtick (1) - delimiter is backtick',
     input: `
+<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
 <template>
   <div>
     <div v-bind:class="\`lorem ipsum do\\\`or sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere\`">
@@ -46,6 +49,7 @@ export const fixtures: Omit<Fixture, 'output'>[] = [
   {
     name: 'contains backtick (2) - delimiter is single quote',
     input: `
+<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
 <template>
   <div>
     <div v-bind:class="'lorem ipsum do\`or sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere'">
