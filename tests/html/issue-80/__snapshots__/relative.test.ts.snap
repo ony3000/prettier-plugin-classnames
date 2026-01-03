@@ -1,7 +1,8 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`'(1) If a script tag has no type, it i…' > expectation 1`] = `
-"<script>
+"<!-- --------------------------------------------------------------------------| printWidth=80 (in snapshot) -->
+<script>
   export function Foo({ children }) {
     return <div className="lorem ipsum dolor sit amet">{children}</div>;
   }
@@ -10,7 +11,8 @@ exports[`'(1) If a script tag has no type, it i…' > expectation 1`] = `
 `;
 
 exports[`'(2) If a script tag has an empty type…' > expectation 1`] = `
-"<script type="">
+"<!-- --------------------------------------------------------------------------| printWidth=80 (in snapshot) -->
+<script type="">
   export function Foo({ children }) {
     return <div className="lorem ipsum dolor sit amet">{children}</div>;
   }
@@ -19,7 +21,8 @@ exports[`'(2) If a script tag has an empty type…' > expectation 1`] = `
 `;
 
 exports[`'(3) If a script tag has a type of \`te…' > expectation 1`] = `
-"<script type="text/javascript">
+"<!-- --------------------------------------------------------------------------| printWidth=80 (in snapshot) -->
+<script type="text/javascript">
   export function Foo({ children }) {
     return <div className="lorem ipsum dolor sit amet">{children}</div>;
   }
@@ -28,7 +31,8 @@ exports[`'(3) If a script tag has a type of \`te…' > expectation 1`] = `
 `;
 
 exports[`'(4) If a script tag has a \`lang\` attr…' > expectation 1`] = `
-"<script lang="ts" type="anything">
+"<!-- --------------------------------------------------------------------------| printWidth=80 (in snapshot) -->
+<script lang="ts" type="anything">
   interface MyInterface {
     foo(): string;
     bar: Array<number>;
@@ -38,7 +42,8 @@ exports[`'(4) If a script tag has a \`lang\` attr…' > expectation 1`] = `
 `;
 
 exports[`'(5) Otherwise, leave Prettier\\'s outp…' > expectation 1`] = `
-"<script type="application/json">
+"<!-- --------------------------------------------------------------------------| printWidth=80 (in snapshot) -->
+<script type="application/json">
   {
     "lorem": "ipsum",
     "dolor": "sit amet"

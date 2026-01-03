@@ -4,6 +4,7 @@ export const fixtures: Omit<Fixture, 'output'>[] = [
   {
     name: '(1) nested expression in template literal',
     input: `
+<!-- --------------------------------------------------------------------------| printWidth=80 (in snapshot) -->
 <template>
     <Combobox.Option
         :class="({ active }) =>
@@ -21,6 +22,7 @@ export const fixtures: Omit<Fixture, 'output'>[] = [
   {
     name: '(2) double nested expression in template literal',
     input: `
+<!-- --------------------------------------------------------------------------| printWidth=80 (in snapshot) -->
 <template>
     <Combobox.Option
         :class="({ active }) =>
