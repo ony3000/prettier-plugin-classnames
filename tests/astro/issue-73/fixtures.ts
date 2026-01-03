@@ -4,7 +4,7 @@ export const fixtures: Omit<Fixture, 'output'>[] = [
   {
     name: '(1) Tagged templates are not supported by default.',
     input: `
-//----------------------------------------------------------| printWidth=60 (in snapshot)
+<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
 <script>
 const classes = tw\`lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere eu volutpat id neque pellentesque\`;
 </script>
@@ -16,7 +16,7 @@ const classes = tw\`lorem ipsum dolor sit amet consectetur adipiscing elit proin
   {
     name: '(2) Tagged templates are supported by adding tag function names to the `customFunctions` option.',
     input: `
-//----------------------------------------------------------| printWidth=60 (in snapshot)
+<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
 <script>
 const classes = tw\`lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere eu volutpat id neque pellentesque\`;
 </script>

@@ -1,8 +1,7 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`'(1) Tagged templates are not supporte…' > expectation 1`] = `
-"//----------------------------------------------------------|
-printWidth=60 (in snapshot)
+"<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
 <script>
   const classes = tw\`lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere eu volutpat id neque pellentesque\`;
 </script>
@@ -10,8 +9,7 @@ printWidth=60 (in snapshot)
 `;
 
 exports[`'(2) Tagged templates are supported by…' > expectation 1`] = `
-"//----------------------------------------------------------|
-printWidth=60 (in snapshot)
+"<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
 <script>
   const classes = tw\`lorem ipsum dolor sit amet consectetur
   adipiscing elit proin ex massa hendrerit eu posuere eu

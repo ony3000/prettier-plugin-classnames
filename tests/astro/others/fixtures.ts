@@ -102,7 +102,7 @@ export const fixtures: Omit<Fixture, 'output'>[] = [
   {
     name: 'plugin options (1) - custom attributes',
     input: `
-//----------------------------------------------------------| printWidth=60 (in snapshot)
+<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
 <div>
   <div>
     <div fixme="lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere">

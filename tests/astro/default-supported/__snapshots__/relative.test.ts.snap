@@ -75,8 +75,7 @@ exports[`'supported attributes and unsupported …' > expectation 1`] = `
 `;
 
 exports[`'unsupported attributes and supported …' > expectation 1`] = `
-"//----------------------------------------------------------|
-printWidth=60 (in snapshot)
+"<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
 <div>
   <div>
     <div>
@@ -95,8 +94,7 @@ printWidth=60 (in snapshot)
 `;
 
 exports[`'unsupported attributes and unsupporte…' > expectation 1`] = `
-"//----------------------------------------------------------|
-printWidth=60 (in snapshot)
+"<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
 <div>
   <div>
     <div>

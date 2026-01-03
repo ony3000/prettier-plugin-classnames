@@ -154,7 +154,7 @@ export const fixtures: Omit<Fixture, 'output'>[] = [
   {
     name: 'syntax variants (2) - `class:list` directive',
     input: `
-//----------------------------------------------------------| printWidth=60 (in snapshot)
+<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
 <div>
   <div>
     <div class:list={[condition ? \`lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere\` : \`lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere\`, condition ? \`lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere\` : \`lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere\`]}>

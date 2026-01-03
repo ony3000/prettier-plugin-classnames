@@ -106,7 +106,7 @@ const combination = classNames(
   {
     name: 'valid ignore comment (7) - script tag',
     input: `
-//----------------------------------------------------------| printWidth=60 (in snapshot)
+<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
 <script>
 const combination = classNames(
   /* prettier-ignore */
@@ -119,7 +119,7 @@ const combination = classNames(
   {
     name: 'valid ignore comment (8) - script tag',
     input: `
-//----------------------------------------------------------| printWidth=60 (in snapshot)
+<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
 <script>
 const combination = classNames(
   // prettier-ignore
@@ -132,7 +132,7 @@ const combination = classNames(
   {
     name: 'valid ignore comment (9) - multi-line script opening tag',
     input: `
-//----------------------------------------------------------| printWidth=60 (in snapshot)
+<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
 <script zero-one-two-three-four-five-six-seven-eight-nine="0123456789">
 const combination = classNames(
   // prettier-ignore

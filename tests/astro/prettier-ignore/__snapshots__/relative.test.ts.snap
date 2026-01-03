@@ -136,8 +136,7 @@ const combination = classNames(
 `;
 
 exports[`'valid ignore comment (7) - script tag' > expectation 1`] = `
-"//----------------------------------------------------------|
-printWidth=60 (in snapshot)
+"<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
 <script>
   const combination = classNames(
     /* prettier-ignore */
@@ -150,8 +149,7 @@ printWidth=60 (in snapshot)
 `;
 
 exports[`'valid ignore comment (8) - script tag' > expectation 1`] = `
-"//----------------------------------------------------------|
-printWidth=60 (in snapshot)
+"<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
 <script>
   const combination = classNames(
     // prettier-ignore
@@ -164,8 +162,7 @@ printWidth=60 (in snapshot)
 `;
 
 exports[`'valid ignore comment (9) - multi-line…' > expectation 1`] = `
-"//----------------------------------------------------------|
-printWidth=60 (in snapshot)
+"<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
 <script
   zero-one-two-three-four-five-six-seven-eight-nine="0123456789"
 >

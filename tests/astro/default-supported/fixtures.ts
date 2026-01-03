@@ -46,7 +46,7 @@ export const fixtures: Omit<Fixture, 'output'>[] = [
   {
     name: 'unsupported attributes and supported functions',
     input: `
-//----------------------------------------------------------| printWidth=60 (in snapshot)
+<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
 <div>
   <div>
     <div>
@@ -61,7 +61,7 @@ export const fixtures: Omit<Fixture, 'output'>[] = [
   {
     name: 'unsupported attributes and unsupported functions',
     input: `
-//----------------------------------------------------------| printWidth=60 (in snapshot)
+<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
 <div>
   <div>
     <div>
