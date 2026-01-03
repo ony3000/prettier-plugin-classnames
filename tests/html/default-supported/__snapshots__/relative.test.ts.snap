@@ -1,7 +1,8 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`'supported attributes' > expectation 1`] = `
-"<template>
+"<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
+<template>
   <div>
     <div>
       <div
@@ -23,7 +24,8 @@ exports[`'supported attributes' > expectation 1`] = `
 `;
 
 exports[`'unsupported attributes' > expectation 1`] = `
-"<template>
+"<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
+<template>
   <div>
     <div>
       <div

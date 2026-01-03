@@ -1,7 +1,8 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`'template literal ending with a space' > expectation 1`] = `
-"export default function Test() {
+"//-----------------------------------------------------------------------------| printWidth=80 (in snapshot)
+export default function Test() {
   return (
     <div>
       {[0, 1, 2, 3].map((key) => {
@@ -18,7 +19,8 @@ exports[`'template literal ending with a space' > expectation 1`] = `
 `;
 
 exports[`'template literal starting with a space' > expectation 1`] = `
-"export default function Test() {
+"//-----------------------------------------------------------------------------| printWidth=80 (in snapshot)
+export default function Test() {
   return (
     <div>
       {[0, 1, 2, 3].map((key) => {
@@ -35,7 +37,8 @@ exports[`'template literal starting with a space' > expectation 1`] = `
 `;
 
 exports[`'trimmed template literal (no error in…' > expectation 1`] = `
-"export default function Test() {
+"//-----------------------------------------------------------------------------| printWidth=80 (in snapshot)
+export default function Test() {
   return (
     <div>
       {[0, 1, 2, 3].map((key) => {

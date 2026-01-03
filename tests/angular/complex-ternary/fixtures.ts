@@ -4,6 +4,7 @@ export const fixtures: Omit<Fixture, 'output'>[] = [
   {
     name: '(1) nested ternary',
     input: `
+<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
 <template>
   <div>
     <div [class]="
@@ -23,6 +24,7 @@ export const fixtures: Omit<Fixture, 'output'>[] = [
   {
     name: '(2) double nested ternary',
     input: `
+<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
 <template>
   <div>
     <div [class]="

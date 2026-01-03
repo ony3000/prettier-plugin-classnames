@@ -1,7 +1,8 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`'(1) nested ternary - string literal t…' > expectation 1`] = `
-"<template>
+"<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
+<template>
   <div>
     <div
       v-bind:class="
@@ -21,7 +22,8 @@ exports[`'(1) nested ternary - string literal t…' > expectation 1`] = `
 `;
 
 exports[`'(2) nested ternary - template literal…' > expectation 1`] = `
-"<template>
+"<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
+<template>
   <div>
     <div
       v-bind:class="
@@ -41,7 +43,8 @@ exports[`'(2) nested ternary - template literal…' > expectation 1`] = `
 `;
 
 exports[`'(3) nested ternary - nested expressio…' > expectation 1`] = `
-"<template>
+"<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
+<template>
   <div>
     <div
       v-bind:class="
@@ -64,7 +67,8 @@ exports[`'(3) nested ternary - nested expressio…' > expectation 1`] = `
 `;
 
 exports[`'(4) nested ternary - nested expressio…' > expectation 1`] = `
-"<template>
+"<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
+<template>
   <div>
     <div
       v-bind:class="
@@ -87,7 +91,8 @@ exports[`'(4) nested ternary - nested expressio…' > expectation 1`] = `
 `;
 
 exports[`'(5) double nested ternary - string li…' > expectation 1`] = `
-"<template>
+"<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
+<template>
   <div>
     <div
       v-bind:class="
@@ -109,7 +114,8 @@ exports[`'(5) double nested ternary - string li…' > expectation 1`] = `
 `;
 
 exports[`'(6) double nested ternary - template …' > expectation 1`] = `
-"<template>
+"<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
+<template>
   <div>
     <div
       v-bind:class="
@@ -131,7 +137,8 @@ exports[`'(6) double nested ternary - template …' > expectation 1`] = `
 `;
 
 exports[`'(7) double nested ternary - nested ex…' > expectation 1`] = `
-"<template>
+"<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
+<template>
   <div>
     <div
       v-bind:class="
@@ -156,7 +163,8 @@ exports[`'(7) double nested ternary - nested ex…' > expectation 1`] = `
 `;
 
 exports[`'(8) double nested ternary - nested ex…' > expectation 1`] = `
-"<template>
+"<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
+<template>
   <div>
     <div
       v-bind:class="

@@ -1,7 +1,8 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`'invalid ignore comment (1) - formatti…' > expectation 1`] = `
-"/**
+"//---------------------------------------------------------| printWidth=60 (in snapshot)
+/**
  * prettier-ignore
  */
 export function Foo({ children }) {
@@ -20,7 +21,8 @@ export function Foo({ children }) {
 `;
 
 exports[`'invalid ignore comment (2) - formatti…' > expectation 1`] = `
-"// /* prettier-ignore */
+"//---------------------------------------------------------| printWidth=60 (in snapshot)
+// /* prettier-ignore */
 export function Foo({ children }) {
   return (
     <div
@@ -37,7 +39,8 @@ export function Foo({ children }) {
 `;
 
 exports[`'valid ignore comment (1) - component' > expectation 1`] = `
-"/* prettier-ignore */
+"//---------------------------------------------------------| printWidth=60 (in snapshot)
+/* prettier-ignore */
 export function Foo({ children }) {
   return (
     <div
@@ -54,7 +57,8 @@ export function Foo({ children }) {
 `;
 
 exports[`'valid ignore comment (2) - element' > expectation 1`] = `
-"export function Foo({ children }) {
+"//---------------------------------------------------------| printWidth=60 (in snapshot)
+export function Foo({ children }) {
   return (
     /* prettier-ignore */
     <div
@@ -71,7 +75,8 @@ exports[`'valid ignore comment (2) - element' > expectation 1`] = `
 `;
 
 exports[`'valid ignore comment (3) - attribute' > expectation 1`] = `
-"export function Foo({ children }) {
+"//---------------------------------------------------------| printWidth=60 (in snapshot)
+export function Foo({ children }) {
   return (
     <div
       // prettier-ignore
@@ -88,7 +93,8 @@ exports[`'valid ignore comment (3) - attribute' > expectation 1`] = `
 `;
 
 exports[`'valid ignore comment (4) - class name…' > expectation 1`] = `
-"export function Foo({ children }) {
+"//---------------------------------------------------------| printWidth=60 (in snapshot)
+export function Foo({ children }) {
   return (
     <div
       className={classNames(
