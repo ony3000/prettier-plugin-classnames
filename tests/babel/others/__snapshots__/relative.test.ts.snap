@@ -21,7 +21,8 @@ function Foo() {
 `;
 
 exports[`'class name inside the \\'if\\' block' > expectation 1`] = `
-"function Foo() {
+"//-----------------------------------------------------------------------------| printWidth=80 (in snapshot)
+function Foo() {
   let elem;
   if (true) {
     elem = (

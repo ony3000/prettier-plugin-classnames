@@ -42,7 +42,8 @@ exports[`'(4) If a script tag has a \`lang\` attr…' > expectation 1`] = `
 `;
 
 exports[`'(5) Otherwise, leave Prettier\\'s outp…' > expectation 1`] = `
-"<script type="application/json">
+"<!-- --------------------------------------------------------------------------| printWidth=80 (in snapshot) -->
+<script type="application/json">
   {
     "lorem": "ipsum",
     "dolor": "sit amet"

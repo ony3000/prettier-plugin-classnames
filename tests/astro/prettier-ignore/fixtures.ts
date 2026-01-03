@@ -4,7 +4,7 @@ export const fixtures: Omit<Fixture, 'output'>[] = [
   {
     name: 'valid ignore comment (1) - component',
     input: `
-<!-- -------------------------------------------------------| printWidth=60 (in snapshot) -->
+<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
 <!-- prettier-ignore -->
 <div>
   <div>
@@ -23,7 +23,7 @@ export const fixtures: Omit<Fixture, 'output'>[] = [
   {
     name: 'valid ignore comment (2) - element',
     input: `
-<!-- -------------------------------------------------------| printWidth=60 (in snapshot) -->
+<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
 <div>
   <div>
     <!-- prettier-ignore -->
@@ -42,7 +42,7 @@ export const fixtures: Omit<Fixture, 'output'>[] = [
   {
     name: 'valid ignore comment (3) - class name combination',
     input: `
-<!-- -------------------------------------------------------| printWidth=60 (in snapshot) -->
+<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
 <div>
   <div>
     <div
@@ -61,7 +61,7 @@ export const fixtures: Omit<Fixture, 'output'>[] = [
   {
     name: 'valid ignore comment (4) - class name combination',
     input: `
-<!-- -------------------------------------------------------| printWidth=60 (in snapshot) -->
+<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
 <div>
   <div>
     <div
@@ -145,7 +145,7 @@ const combination = classNames(
   {
     name: 'invalid ignore comment (1) - formatting works as usual',
     input: `
-<!-- -------------------------------------------------------| printWidth=60 (in snapshot) -->
+<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
 <!--
  ! prettier-ignore
 -->
@@ -161,7 +161,7 @@ const combination = classNames(
   {
     name: 'invalid ignore comment (2) - formatting works as usual',
     input: `
-<!-- -------------------------------------------------------| printWidth=60 (in snapshot) -->
+<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
 <!-- /* prettier-ignore */ -->
 <div>
   <div>

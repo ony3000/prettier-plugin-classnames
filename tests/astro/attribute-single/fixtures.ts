@@ -4,7 +4,7 @@ export const fixtures: Omit<Fixture, 'output'>[] = [
   {
     name: 'short enough (1) - single line with no spaces at both ends',
     input: `
-<!-- -------------------------------------------------------| printWidth=60 (in snapshot) -->
+<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
 <div>
   <div>
     <div class="lorem ipsum dolor sit amet">
@@ -17,7 +17,7 @@ export const fixtures: Omit<Fixture, 'output'>[] = [
   {
     name: 'short enough (2) - single line with spaces at both ends',
     input: `
-<!-- -------------------------------------------------------| printWidth=60 (in snapshot) -->
+<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
 <div>
   <div>
     <div class="  lorem ipsum dolor sit amet  ">
@@ -30,7 +30,7 @@ export const fixtures: Omit<Fixture, 'output'>[] = [
   {
     name: 'short enough (3) - multiple lines',
     input: `
-<!-- -------------------------------------------------------| printWidth=60 (in snapshot) -->
+<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
 <div>
   <div>
     <div class="
@@ -46,7 +46,7 @@ export const fixtures: Omit<Fixture, 'output'>[] = [
   {
     name: 'near boundary (1) - single line with no spaces at both ends',
     input: `
-<!-- -------------------------------------------------------| printWidth=60 (in snapshot) -->
+<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
 <div>
   <div>
     <div class="lorem ipsum dolor sit amet consectetur adipiscing elit proin">
@@ -59,7 +59,7 @@ export const fixtures: Omit<Fixture, 'output'>[] = [
   {
     name: 'near boundary (2) - single line with spaces at both ends',
     input: `
-<!-- -------------------------------------------------------| printWidth=60 (in snapshot) -->
+<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
 <div>
   <div>
     <div class="   lorem ipsum dolor sit amet consectetur adipiscing elit proin   ">
@@ -72,7 +72,7 @@ export const fixtures: Omit<Fixture, 'output'>[] = [
   {
     name: 'near boundary (3) - multiple lines',
     input: `
-<!-- -------------------------------------------------------| printWidth=60 (in snapshot) -->
+<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
 <div>
   <div>
     <div class="
@@ -90,7 +90,7 @@ export const fixtures: Omit<Fixture, 'output'>[] = [
   {
     name: 'long enough (1) - single line with no spaces at both ends',
     input: `
-<!-- -------------------------------------------------------| printWidth=60 (in snapshot) -->
+<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
 <div>
   <div>
     <div class="lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere eu volutpat id neque pellentesque">
@@ -103,7 +103,7 @@ export const fixtures: Omit<Fixture, 'output'>[] = [
   {
     name: 'long enough (2) - single line with spaces at both ends',
     input: `
-<!-- -------------------------------------------------------| printWidth=60 (in snapshot) -->
+<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
 <div>
   <div>
     <div class="    lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere eu volutpat id neque pellentesque    ">
@@ -116,7 +116,7 @@ export const fixtures: Omit<Fixture, 'output'>[] = [
   {
     name: 'long enough (3) - multiple lines',
     input: `
-<!-- -------------------------------------------------------| printWidth=60 (in snapshot) -->
+<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
 <div>
   <div>
     <div class="
@@ -134,7 +134,7 @@ export const fixtures: Omit<Fixture, 'output'>[] = [
   {
     name: 'syntax variants - component',
     input: `
-<!-- -------------------------------------------------------| printWidth=60 (in snapshot) -->
+<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
 <div>
   <div>
     <Box class="lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere">

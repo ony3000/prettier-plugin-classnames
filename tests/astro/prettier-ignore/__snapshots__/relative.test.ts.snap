@@ -1,7 +1,7 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`'invalid ignore comment (1) - formatti…' > expectation 1`] = `
-"<!-- -------------------------------------------------------| printWidth=60 (in snapshot) --><!--
+"<!-- ------------------------------------------------------| printWidth=60 (in snapshot) --><!--
  ! prettier-ignore
 -->
 <div>
@@ -20,7 +20,7 @@ exports[`'invalid ignore comment (1) - formatti…' > expectation 1`] = `
 `;
 
 exports[`'invalid ignore comment (2) - formatti…' > expectation 1`] = `
-"<!-- -------------------------------------------------------| printWidth=60 (in snapshot) --><!-- /* prettier-ignore */ -->
+"<!-- ------------------------------------------------------| printWidth=60 (in snapshot) --><!-- /* prettier-ignore */ -->
 <div>
   <div>
     <div
@@ -37,7 +37,7 @@ exports[`'invalid ignore comment (2) - formatti…' > expectation 1`] = `
 `;
 
 exports[`'valid ignore comment (1) - component' > expectation 1`] = `
-"<!-- -------------------------------------------------------| printWidth=60 (in snapshot) --><!-- prettier-ignore -->
+"<!-- ------------------------------------------------------| printWidth=60 (in snapshot) --><!-- prettier-ignore -->
 <div>
   <div>
     <div
@@ -54,7 +54,7 @@ exports[`'valid ignore comment (1) - component' > expectation 1`] = `
 `;
 
 exports[`'valid ignore comment (2) - element' > expectation 1`] = `
-"<!-- -------------------------------------------------------| printWidth=60 (in snapshot) -->
+"<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
 <div>
   <div>
     <!-- prettier-ignore -->
@@ -72,7 +72,7 @@ exports[`'valid ignore comment (2) - element' > expectation 1`] = `
 `;
 
 exports[`'valid ignore comment (3) - class name…' > expectation 1`] = `
-"<!-- -------------------------------------------------------| printWidth=60 (in snapshot) -->
+"<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
 <div>
   <div>
     <div
@@ -91,7 +91,7 @@ exports[`'valid ignore comment (3) - class name…' > expectation 1`] = `
 `;
 
 exports[`'valid ignore comment (4) - class name…' > expectation 1`] = `
-"<!-- -------------------------------------------------------| printWidth=60 (in snapshot) -->
+"<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
 <div>
   <div>
     <div

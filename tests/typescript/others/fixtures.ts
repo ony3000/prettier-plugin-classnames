@@ -180,6 +180,7 @@ const Foo = forwardRef(function Foo() {
   {
     name: "class name inside the 'if' block",
     input: `
+//-----------------------------------------------------------------------------| printWidth=80 (in snapshot)
 function Foo() {
   let elem;
   if (true) {

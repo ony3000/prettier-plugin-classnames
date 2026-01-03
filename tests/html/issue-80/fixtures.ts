@@ -62,6 +62,7 @@ interface MyInterface { foo(): string, bar: Array<number> }
   {
     name: "(5) Otherwise, leave Prettier's output as is.",
     input: `
+<!-- --------------------------------------------------------------------------| printWidth=80 (in snapshot) -->
 <script type="application/json">
 {
 lorem: "ipsum",

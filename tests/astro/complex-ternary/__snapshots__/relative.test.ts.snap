@@ -1,7 +1,7 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
 exports[`'(1) nested ternary - string literal t…' > expectation 1`] = `
-"<!-- -------------------------------------------------------| printWidth=60 (in snapshot) -->
+"<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
 <div>
   <div>
     <div
@@ -20,7 +20,7 @@ exports[`'(1) nested ternary - string literal t…' > expectation 1`] = `
 `;
 
 exports[`'(2) nested ternary - template literal…' > expectation 1`] = `
-"<!-- -------------------------------------------------------| printWidth=60 (in snapshot) -->
+"<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
 <div>
   <div>
     <div
@@ -39,7 +39,7 @@ exports[`'(2) nested ternary - template literal…' > expectation 1`] = `
 `;
 
 exports[`'(3) nested ternary - nested expressio…' > expectation 1`] = `
-"<!-- -------------------------------------------------------| printWidth=60 (in snapshot) -->
+"<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
 <div>
   <div>
     <div
@@ -61,7 +61,7 @@ exports[`'(3) nested ternary - nested expressio…' > expectation 1`] = `
 `;
 
 exports[`'(4) nested ternary - nested expressio…' > expectation 1`] = `
-"<!-- -------------------------------------------------------| printWidth=60 (in snapshot) -->
+"<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
 <div>
   <div>
     <div
@@ -83,7 +83,7 @@ exports[`'(4) nested ternary - nested expressio…' > expectation 1`] = `
 `;
 
 exports[`'(5) double nested ternary - string li…' > expectation 1`] = `
-"<!-- -------------------------------------------------------| printWidth=60 (in snapshot) -->
+"<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
 <div>
   <div>
     <div
@@ -104,7 +104,7 @@ exports[`'(5) double nested ternary - string li…' > expectation 1`] = `
 `;
 
 exports[`'(6) double nested ternary - template …' > expectation 1`] = `
-"<!-- -------------------------------------------------------| printWidth=60 (in snapshot) -->
+"<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
 <div>
   <div>
     <div
@@ -125,7 +125,7 @@ exports[`'(6) double nested ternary - template …' > expectation 1`] = `
 `;
 
 exports[`'(7) double nested ternary - nested ex…' > expectation 1`] = `
-"<!-- -------------------------------------------------------| printWidth=60 (in snapshot) -->
+"<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
 <div>
   <div>
     <div
@@ -149,7 +149,7 @@ exports[`'(7) double nested ternary - nested ex…' > expectation 1`] = `
 `;
 
 exports[`'(8) double nested ternary - nested ex…' > expectation 1`] = `
-"<!-- -------------------------------------------------------| printWidth=60 (in snapshot) -->
+"<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
 <div>
   <div>
     <div

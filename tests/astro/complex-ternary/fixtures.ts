@@ -4,7 +4,7 @@ export const fixtures: Omit<Fixture, 'output'>[] = [
   {
     name: '(1) nested ternary - string literal ternary',
     input: `
-<!-- -------------------------------------------------------| printWidth=60 (in snapshot) -->
+<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
 <div>
   <div>
     <div class={
@@ -24,7 +24,7 @@ export const fixtures: Omit<Fixture, 'output'>[] = [
   {
     name: '(2) nested ternary - template literal ternary',
     input: `
-<!-- -------------------------------------------------------| printWidth=60 (in snapshot) -->
+<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
 <div>
   <div>
     <div class={
@@ -44,7 +44,7 @@ export const fixtures: Omit<Fixture, 'output'>[] = [
   {
     name: '(3) nested ternary - nested expression in falsy part',
     input: `
-<!-- -------------------------------------------------------| printWidth=60 (in snapshot) -->
+<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
 <div>
   <div>
     <div class={
@@ -64,7 +64,7 @@ export const fixtures: Omit<Fixture, 'output'>[] = [
   {
     name: '(4) nested ternary - nested expression in truthy part',
     input: `
-<!-- -------------------------------------------------------| printWidth=60 (in snapshot) -->
+<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
 <div>
   <div>
     <div class={
@@ -84,7 +84,7 @@ export const fixtures: Omit<Fixture, 'output'>[] = [
   {
     name: '(5) double nested ternary - string literal ternary',
     input: `
-<!-- -------------------------------------------------------| printWidth=60 (in snapshot) -->
+<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
 <div>
   <div>
     <div class={
@@ -106,7 +106,7 @@ export const fixtures: Omit<Fixture, 'output'>[] = [
   {
     name: '(6) double nested ternary - template literal ternary',
     input: `
-<!-- -------------------------------------------------------| printWidth=60 (in snapshot) -->
+<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
 <div>
   <div>
     <div class={
@@ -128,7 +128,7 @@ export const fixtures: Omit<Fixture, 'output'>[] = [
   {
     name: '(7) double nested ternary - nested expression in falsy part',
     input: `
-<!-- -------------------------------------------------------| printWidth=60 (in snapshot) -->
+<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
 <div>
   <div>
     <div class={
@@ -150,7 +150,7 @@ export const fixtures: Omit<Fixture, 'output'>[] = [
   {
     name: '(8) double nested ternary - nested expression in truthy part',
     input: `
-<!-- -------------------------------------------------------| printWidth=60 (in snapshot) -->
+<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
 <div>
   <div>
     <div class={
