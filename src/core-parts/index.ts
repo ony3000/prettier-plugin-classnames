@@ -64,7 +64,8 @@ export async function parseLineByLineAndReplaceAsync({
       targetClassNameNodes = findTargetClassNameNodesForVue(ast, options);
       break;
     }
-    case 'oxc': {
+    case 'oxc':
+    case 'oxc-ts': {
       targetClassNameNodes = findTargetClassNameNodesForOxc(ast, options, formattedText);
       break;
     }

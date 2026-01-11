@@ -380,6 +380,7 @@ function formatTokens(
           case 'babel':
           case 'typescript':
           case 'oxc':
+          case 'oxc-ts':
           case 'astro':
           case 'svelte': {
             formattedTokens[tokenIndex - 1].body = `{${BACKTICK}`;
