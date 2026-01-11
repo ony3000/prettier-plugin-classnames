@@ -378,6 +378,7 @@ function formatTokens(
       if (isMultiLineClassName && options.syntaxTransformation) {
         switch (options.parser) {
           case 'babel':
+          case 'babel-ts':
           case 'typescript':
           case 'oxc':
           case 'oxc-ts':

@@ -193,6 +193,9 @@ export const parsers: { [parserName: string]: Parser } = {
   babel: transformParser('babel', {
     defaultParser: babelParsers.babel,
   }),
+  'babel-ts': transformParser('babel-ts', {
+    defaultParser: babelParsers['babel-ts'],
+  }),
   typescript: transformParser('typescript', {
     defaultParser: typescriptParsers.typescript,
   }),
