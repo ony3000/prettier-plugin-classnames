@@ -44,7 +44,8 @@ export async function parseLineByLineAndReplaceAsync({
       targetClassNameNodes = findTargetClassNameNodesForSvelte(formattedText, ast, options);
       break;
     }
-    case 'babel': {
+    case 'babel':
+    case 'babel-ts': {
       targetClassNameNodes = findTargetClassNameNodesForBabel(ast, options);
       break;
     }
