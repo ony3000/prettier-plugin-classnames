@@ -10,6 +10,7 @@ import {
   findTargetClassNameNodesForAngular,
   findTargetClassNameNodesForAstro,
   findTargetClassNameNodesForSvelte,
+  findTargetClassNameNodesForOxc,
 } from './finder';
 import type { ClassNameNode } from './shared';
 import { EOL, SPACE, TAB, isTypeof } from './shared';
@@ -61,6 +62,11 @@ export async function parseLineByLineAndReplaceAsync({
     }
     case 'vue': {
       targetClassNameNodes = findTargetClassNameNodesForVue(ast, options);
+      break;
+    }
+    case 'oxc':
+    case 'oxc-ts': {
+      targetClassNameNodes = findTargetClassNameNodesForOxc(ast, options, formattedText);
       break;
     }
     default: {
