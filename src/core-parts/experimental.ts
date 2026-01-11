@@ -379,6 +379,7 @@ function formatTokens(
         switch (options.parser) {
           case 'babel':
           case 'typescript':
+          case 'oxc':
           case 'astro':
           case 'svelte': {
             formattedTokens[tokenIndex - 1].body = `{${BACKTICK}`;
