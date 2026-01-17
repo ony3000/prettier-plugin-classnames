@@ -378,7 +378,10 @@ function formatTokens(
       if (isMultiLineClassName && options.syntaxTransformation) {
         switch (options.parser) {
           case 'babel':
+          case 'babel-ts':
           case 'typescript':
+          case 'oxc':
+          case 'oxc-ts':
           case 'astro':
           case 'svelte': {
             formattedTokens[tokenIndex - 1].body = `{${BACKTICK}`;

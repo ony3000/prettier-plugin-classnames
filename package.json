@@ -37,6 +37,8 @@
   },
   "devDependencies": {
     "@biomejs/biome": "2.0.0",
+    "@oxc-parser/binding-linux-x64-gnu": "0.97.0",
+    "@prettier/plugin-oxc": "0.0.5",
     "@trivago/prettier-plugin-sort-imports": "4.2.1",
     "@types/node": "20.17.46",
     "esbuild": "0.25.0",
@@ -49,11 +51,15 @@
     "vitest": "1.6.1"
   },
   "peerDependencies": {
+    "@prettier/plugin-oxc": "*",
     "prettier": "^3",
     "prettier-plugin-astro": "*",
     "prettier-plugin-svelte": "*"
   },
   "peerDependenciesMeta": {
+    "@prettier/plugin-oxc": {
+      "optional": true
+    },
     "prettier-plugin-astro": {
       "optional": true
     },
