@@ -1,0 +1,59 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`'(1) Tagged templates are not supporte…' > expectation 1`] = `
+"//---------------------------------------------------------| printWidth=60 (in snapshot)
+const classes = tw\`lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere eu volutpat id neque pellentesque\`;
+"
+`;
+
+exports[`'(2) Tagged templates are supported by…' > expectation 1`] = `
+"//---------------------------------------------------------| printWidth=60 (in snapshot)
+const classes = tw\`lorem ipsum dolor sit amet consectetur adipiscing elit proin
+ex massa hendrerit eu posuere eu volutpat id neque
+pellentesque\`;
+"
+`;
+
+exports[`'(3) If a tagged template is written a…' > expectation 1`] = `
+"//---------------------------------------------------------| printWidth=60 (in snapshot)
+export function Foo({ children }) {
+  return (
+    <div
+      className={tw\`lorem ipsum dolor sit amet consectetur adipiscing elit proin
+        ex massa hendrerit eu posuere eu volutpat id neque
+        pellentesque\`}
+    >
+      {children}
+    </div>
+  );
+}
+"
+`;
+
+exports[`'(4) If the tag function name is \`css\`…' > expectation 1`] = `
+"//---------------------------------------------------------| printWidth=60 (in snapshot)
+export function Foo({ children }) {
+  return (
+    <div
+      className={css\`lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere eu volutpat id neque pellentesque\`}
+    >
+      {children}
+    </div>
+  );
+}
+"
+`;
+
+exports[`'(5) If the tag function name is \`css\`…' > expectation 1`] = `
+"//---------------------------------------------------------| printWidth=60 (in snapshot)
+export function Foo({ children }) {
+  return (
+    <div
+      className={css\`lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere eu volutpat id neque pellentesque\`}
+    >
+      {children}
+    </div>
+  );
+}
+"
+`;
