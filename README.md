@@ -180,3 +180,7 @@ JSON example:
   ]
 }
 ```
+
+## Stargazers over time
+
+[![Stargazers over time](https://starchart.cc/ony3000/prettier-plugin-classnames.svg?variant=adaptive)](https://starchart.cc/ony3000/prettier-plugin-classnames)
