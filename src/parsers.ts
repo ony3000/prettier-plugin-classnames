@@ -1,4 +1,3 @@
-import { parsers as oxcParsers } from '@prettier/plugin-oxc';
 import type { AST, Parser, Plugin } from 'prettier';
 import { format } from 'prettier';
 import { parsers as babelParsers } from 'prettier/plugins/babel';
@@ -209,11 +208,11 @@ export const parsers: { [parserName: string]: Parser } = {
     defaultParser: htmlParsers.vue,
   }),
   oxc: transformParser('oxc', {
-    defaultParser: oxcParsers.oxc,
+    defaultParser: null,
     externalPluginName: '@prettier/plugin-oxc',
   }),
   'oxc-ts': transformParser('oxc-ts', {
-    defaultParser: oxcParsers['oxc-ts'],
+    defaultParser: null,
     externalPluginName: '@prettier/plugin-oxc',
   }),
   astro: transformParser('astro', {
