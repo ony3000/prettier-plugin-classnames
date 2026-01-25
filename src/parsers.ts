@@ -4,8 +4,8 @@ import { parsers as babelParsers } from 'prettier/plugins/babel';
 import { parsers as htmlParsers } from 'prettier/plugins/html';
 import { parsers as typescriptParsers } from 'prettier/plugins/typescript';
 
-import { parseLineByLineAndReplaceAsync } from './core-parts';
 import { advancedParse } from './core-parts/parser';
+import { parseLineByLineAndReplaceAsync } from './core-parts/processor';
 import { EOL, SPACE } from './core-parts/utils';
 
 function addIndent(text: string, width = 2) {
