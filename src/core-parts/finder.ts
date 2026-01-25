@@ -3,8 +3,17 @@ import { parsers as babelParsers } from 'prettier/plugins/babel';
 import { parsers as typescriptParsers } from 'prettier/plugins/typescript';
 import { z } from 'zod';
 
-import type { NodeRange, ExpressionNode, ClassNameNode } from './shared';
-import { EOL, SINGLE_QUOTE, DOUBLE_QUOTE, BACKTICK, UNKNOWN_DELIMITER, isTypeof } from './shared';
+import {
+  type NodeRange,
+  type ExpressionNode,
+  type ClassNameNode,
+  EOL,
+  SINGLE_QUOTE,
+  DOUBLE_QUOTE,
+  BACKTICK,
+  UNKNOWN_DELIMITER,
+  isTypeof,
+} from './utils';
 
 type ASTNode = {
   type: string;

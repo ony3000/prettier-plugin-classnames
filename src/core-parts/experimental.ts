@@ -1,7 +1,18 @@
 import { createHash } from 'node:crypto';
 
-import type { NodeRange, AttributeNode, ExpressionNode, ClassNameNode } from './shared';
-import { EOL, PH, SPACE, TAB, SINGLE_QUOTE, DOUBLE_QUOTE, BACKTICK } from './shared';
+import {
+  type NodeRange,
+  type AttributeNode,
+  type ExpressionNode,
+  type ClassNameNode,
+  EOL,
+  PH,
+  SPACE,
+  TAB,
+  SINGLE_QUOTE,
+  DOUBLE_QUOTE,
+  BACKTICK,
+} from './utils';
 
 function sha1(input: string): string {
   return createHash('sha1').update(input).digest('hex');

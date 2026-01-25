@@ -12,8 +12,7 @@ import {
   findTargetClassNameNodesForSvelte,
   findTargetClassNameNodesForOxc,
 } from './finder';
-import type { ClassNameNode } from './shared';
-import { EOL, SPACE, TAB, isTypeof } from './shared';
+import { type ClassNameNode, EOL, SPACE, TAB, isTypeof } from './utils';
 
 function base64Decode(input: string): string {
   return Buffer.from(input, 'base64').toString('utf8');

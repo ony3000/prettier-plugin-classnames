@@ -5,10 +5,7 @@ import { parsers as htmlParsers } from 'prettier/plugins/html';
 import { parsers as typescriptParsers } from 'prettier/plugins/typescript';
 
 import { parseLineByLineAndReplaceAsync, refineSvelteAst } from './core-parts';
-
-const EOL = '\n';
-
-const SPACE = ' ';
+import { EOL, SPACE } from './core-parts/utils';
 
 function addIndent(text: string, width = 2) {
   return text
