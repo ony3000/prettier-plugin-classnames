@@ -1,45 +1,5 @@
 import type { ZodTypeAny, infer as ZodInfer } from 'zod';
 
-/**
- * end of line
- */
-export const EOL = '\n';
-
-/**
- * placeholder
- */
-export const PH = '_';
-
-/**
- * single space character
- */
-export const SPACE = ' ';
-
-/**
- * single tab character
- */
-export const TAB = '\t';
-
-/**
- * single quote character
- */
-export const SINGLE_QUOTE = "'";
-
-/**
- * double quote character
- */
-export const DOUBLE_QUOTE = '"';
-
-/**
- * backtick character
- */
-export const BACKTICK = '`';
-
-/**
- * placeholder of delimiter
- */
-export const UNKNOWN_DELIMITER = '?';
-
 export type NodeRange = [number, number];
 
 type ClassNameNodeBase = {
@@ -93,6 +53,46 @@ type PreservingExpressionNode = ClassNameNodeBase & {
 };
 
 export type ClassNameNode = UnknownNode | AttributeNode | ExpressionNode | PreservingExpressionNode;
+
+/**
+ * end of line
+ */
+export const EOL = '\n';
+
+/**
+ * placeholder
+ */
+export const PH = '_';
+
+/**
+ * single space character
+ */
+export const SPACE = ' ';
+
+/**
+ * single tab character
+ */
+export const TAB = '\t';
+
+/**
+ * single quote character
+ */
+export const SINGLE_QUOTE = "'";
+
+/**
+ * double quote character
+ */
+export const DOUBLE_QUOTE = '"';
+
+/**
+ * backtick character
+ */
+export const BACKTICK = '`';
+
+/**
+ * placeholder of delimiter
+ */
+export const UNKNOWN_DELIMITER = '?';
 
 export function isTypeof<T extends ZodTypeAny>(
   arg: unknown,

@@ -1,7 +1,24 @@
 import { createHash } from 'node:crypto';
+import type { AST } from 'prettier';
 
-import type { NodeRange, AttributeNode, ExpressionNode, ClassNameNode } from './shared';
-import { EOL, PH, SPACE, TAB, SINGLE_QUOTE, DOUBLE_QUOTE, BACKTICK } from './shared';
+import {
+  findTargetClassNameNodesBasedOnJavaScript,
+  findTargetClassNameNodesBasedOnHtml,
+  findTargetClassNameNodesBasedOnAstro,
+} from './finder';
+import {
+  type NodeRange,
+  type AttributeNode,
+  type ExpressionNode,
+  type ClassNameNode,
+  EOL,
+  PH,
+  SPACE,
+  TAB,
+  SINGLE_QUOTE,
+  DOUBLE_QUOTE,
+  BACKTICK,
+} from './utils';
 
 function sha1(input: string): string {
   return createHash('sha1').update(input).digest('hex');
@@ -596,12 +613,47 @@ function unfreezeToken(token: TextToken, options: ResolvedOptions): string {
   return token.body;
 }
 
-export function parseAndAssemble(
-  formattedText: string,
-  indentUnit: string,
-  targetClassNameNodes: ClassNameNode[],
-  options: ResolvedOptions,
-): string {
+export async function parseLineByLineAndReplaceAsync({
+  formattedText,
+  ast,
+  options,
+}: {
+  formattedText: string;
+  ast: AST;
+  options: ResolvedOptions;
+}): Promise<string> {
+  if (formattedText === '') {
+    return formattedText;
+  }
+
+  const indentUnit = options.useTabs ? TAB : SPACE.repeat(options.tabWidth);
+
+  let targetClassNameNodes: ClassNameNode[] = [];
+  switch (options.parser) {
+    case 'babel':
+    case 'babel-ts':
+    case 'typescript':
+    case 'oxc':
+    case 'oxc-ts':
+    case 'svelte': {
+      targetClassNameNodes = findTargetClassNameNodesBasedOnJavaScript(formattedText, ast, options);
+      break;
+    }
+    case 'html':
+    case 'angular':
+    case 'vue': {
+      targetClassNameNodes = findTargetClassNameNodesBasedOnHtml(formattedText, ast, options);
+      break;
+    }
+    case 'astro': {
+      targetClassNameNodes = findTargetClassNameNodesBasedOnAstro(formattedText, ast, options);
+      break;
+    }
+    default: {
+      break;
+    }
+  }
+
   const structuredClassNameNodes = structuringClassNameNodes(targetClassNameNodes);
 
   const textTokens = linearParse(formattedText, indentUnit, structuredClassNameNodes);
