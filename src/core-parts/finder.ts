@@ -5193,6 +5193,406 @@ function handleSvelteText(ctx: CaseHandlerContext) {
   }
 }
 
+function handleHtmlAttribute(ctx: CaseHandlerContext) {
+  ctx.nonCommentNodes.push(ctx.currentASTNode);
+
+  if (
+    isTypeof(
+      ctx.parentNode,
+      z.object({
+        sourceSpan: z.object({
+          start: z.object({
+            line: z.number(),
+          }),
+        }),
+        name: z.string(),
+      }),
+    ) &&
+    (ctx.parentNode?.kind ?? ctx.parentNode?.type) === 'element' &&
+    isTypeof(
+      ctx.node,
+      z.object({
+        sourceSpan: z.object({
+          start: z.object({
+            line: z.number(),
+          }),
+        }),
+        name: z.string(),
+        value: z.string(),
+        valueSpan: z.object({
+          start: z.object({
+            offset: z.number(),
+          }),
+          end: z.object({
+            offset: z.number(),
+          }),
+        }),
+      }),
+    )
+  ) {
+    const typedNode = ctx.node;
+
+    const boundAngularAttributeRegExp = /^\[(?:.+)\]$/;
+    const isBoundAngularAttribute = ctx.node.name.match(boundAngularAttributeRegExp) !== null;
+
+    const boundVueAttributeRegExp = /^(?:v-bind)?:/;
+    const isBoundVueAttribute = ctx.node.name.match(boundVueAttributeRegExp) !== null;
+
+    if (isBoundAngularAttribute) {
+      ctx.keywordStartingNodes.push(ctx.currentASTNode);
+
+      const backslashIndexes: number[] = [];
+      let mutableAttributeValue = ctx.node.value;
+      let errorLineIndex: number | null = null;
+
+      do {
+        errorLineIndex = null;
+
+        try {
+          const plainAttributeName = ctx.node.name.replace(/^\[(?:attr\.)?(.+)\]$/, '$1');
+          const isSupportedAttribute = ctx.supportedAttributes.includes(plainAttributeName);
+
+          const jsxStart = `<div ${isSupportedAttribute ? 'className' : plainAttributeName}={`;
+          const jsxEnd = '}></div>';
+
+          const babelAst = parseBabel(`${jsxStart}${mutableAttributeValue}${jsxEnd}`, {
+            ...ctx.options,
+            parser: 'babel',
+          });
+          const targetClassNameNodesInAttribute = findTargetClassNameNodesForBabel(
+            babelAst,
+            ctx.options,
+          ).map<ClassNameNode>((classNameNode) => {
+            const [classNameNodeRangeStart, classNameNodeRangeEnd] = classNameNode.range;
+
+            if (classNameNode.type === 'expression') {
+              classNameNode.isItAngularExpression = true;
+
+              if (
+                classNameNode.delimiterType !== 'backtick' &&
+                classNameNode.startLineIndex === 0
+              ) {
+                classNameNode.isTheFirstLineOnTheSameLineAsTheAttributeName = true;
+              }
+            }
+
+            const attributeOffset = -jsxStart.length + typedNode.valueSpan.start.offset + 1;
+
+            const rangeStartWithoutJsx = classNameNodeRangeStart - jsxStart.length;
+            const backslashCountBeforeThisNode = backslashIndexes.filter(
+              (backslashIndex) => backslashIndex < rangeStartWithoutJsx,
+            ).length;
+            const rangeEndWithoutJsx = classNameNodeRangeEnd - jsxStart.length;
+            const backslashCountUptoThisNode = backslashIndexes.filter(
+              (backslashIndex) => backslashIndex < rangeEndWithoutJsx,
+            ).length;
+
+            return {
+              ...classNameNode,
+              range: [
+                classNameNodeRangeStart + attributeOffset - backslashCountBeforeThisNode,
+                classNameNodeRangeEnd + attributeOffset - backslashCountUptoThisNode,
+              ],
+              startLineIndex: classNameNode.startLineIndex + typedNode.sourceSpan.start.line,
+            };
+          });
+
+          ctx.classNameNodes.push(...targetClassNameNodesInAttribute);
+        } catch (error) {
+          if (
+            isTypeof(
+              error,
+              z.object({
+                message: z.string(),
+                loc: z.object({
+                  start: z.object({
+                    line: z.number(),
+                  }),
+                }),
+              }),
+            )
+          ) {
+            if (error.message.match(/^Unterminated string constant./) === null) {
+              break;
+            }
+
+            errorLineIndex = error.loc.start.line - 1;
+          }
+        }
+
+        if (errorLineIndex !== null) {
+          const mutableAttributeLines = mutableAttributeValue.split(EOL);
+          let isBackslashAdded = false;
+
+          mutableAttributeValue = mutableAttributeLines
+            .map((line, index) => {
+              if (
+                !isBackslashAdded &&
+                // biome-ignore lint/style/noNonNullAssertion: Type guarded in upper scope.
+                index >= errorLineIndex! &&
+                line[line.length - 1] !== '\\'
+              ) {
+                isBackslashAdded = true;
+
+                const totalTextLengthUptoPrevLine = mutableAttributeLines
+                  .slice(0, index)
+                  .reduce((textLength, _line) => textLength + _line.length + EOL.length, 0);
+
+                backslashIndexes.push(totalTextLengthUptoPrevLine + line.length);
+
+                return `${line}\\`;
+              }
+
+              return line;
+            })
+            .join(EOL);
+        }
+      } while (errorLineIndex !== null);
+    } else if (isBoundVueAttribute) {
+      ctx.keywordStartingNodes.push(ctx.currentASTNode);
+
+      try {
+        const plainAttributeName = ctx.node.name.replace(boundVueAttributeRegExp, '');
+        const isSupportedAttribute = ctx.supportedAttributes.includes(plainAttributeName);
+
+        const jsxStart = `<div ${isSupportedAttribute ? 'className' : plainAttributeName}={`;
+        const jsxEnd = '}></div>';
+
+        const babelAst = parseBabel(`${jsxStart}${ctx.node.value}${jsxEnd}`, {
+          ...ctx.options,
+          parser: 'babel',
+        });
+        const targetClassNameNodesInAttribute = findTargetClassNameNodesForBabel(
+          babelAst,
+          ctx.options,
+        ).map<ClassNameNode>((classNameNode) => {
+          const [classNameNodeRangeStart, classNameNodeRangeEnd] = classNameNode.range;
+
+          if (classNameNode.type === 'expression') {
+            classNameNode.isItInVueTemplate = true;
+
+            if (classNameNode.delimiterType !== 'backtick' && classNameNode.startLineIndex === 0) {
+              classNameNode.isTheFirstLineOnTheSameLineAsTheAttributeName = true;
+            }
+          }
+
+          const attributeOffset = -jsxStart.length + typedNode.valueSpan.start.offset + 1;
+
+          return {
+            ...classNameNode,
+            range: [
+              classNameNodeRangeStart + attributeOffset,
+              classNameNodeRangeEnd + attributeOffset,
+            ],
+            startLineIndex: classNameNode.startLineIndex + typedNode.sourceSpan.start.line,
+          };
+        });
+
+        ctx.classNameNodes.push(...targetClassNameNodesInAttribute);
+      } catch (_) {
+        // no action
+      }
+    } else {
+      if (ctx.supportedAttributes.includes(ctx.node.name)) {
+        ctx.keywordStartingNodes.push(ctx.currentASTNode);
+
+        const classNameNodeRangeStart = ctx.node.valueSpan.start.offset;
+        const classNameNodeRangeEnd = ctx.node.valueSpan.end.offset;
+
+        ctx.nonCommentNodes.push({
+          type: 'StringLiteral',
+          range: [classNameNodeRangeStart, classNameNodeRangeEnd],
+          start: classNameNodeRangeStart,
+          end: classNameNodeRangeEnd,
+        });
+
+        const parentNodeStartLineIndex = ctx.parentNode.sourceSpan.start.line;
+        const nodeStartLineIndex = ctx.node.sourceSpan.start.line;
+
+        ctx.classNameNodes.push({
+          type: 'attribute',
+          isTheFirstLineOnTheSameLineAsTheOpeningTag:
+            parentNodeStartLineIndex === nodeStartLineIndex,
+          elementName: ctx.parentNode.name,
+          range: [classNameNodeRangeStart, classNameNodeRangeEnd],
+          startLineIndex: nodeStartLineIndex,
+        });
+      }
+    }
+  }
+}
+
+function handleHtmlComment(ctx: CaseHandlerContext) {
+  if (
+    isTypeof(
+      ctx.node,
+      z.object({
+        value: z.string(),
+      }),
+    ) &&
+    ctx.node.value.trim() === 'prettier-ignore'
+  ) {
+    ctx.prettierIgnoreNodes.push(ctx.currentASTNode);
+  }
+}
+
+function handleHtmlElement(ctx: CaseHandlerContext) {
+  ctx.nonCommentNodes.push(ctx.currentASTNode);
+
+  if (
+    isTypeof(
+      ctx.node,
+      z.object({
+        startSourceSpan: z.object({
+          end: z.object({
+            line: z.number(),
+            offset: z.number(),
+          }),
+        }),
+        name: z.string(),
+        children: z.array(
+          z.object({
+            value: z.string(),
+          }),
+        ),
+        attrs: z.array(
+          z.object({
+            name: z.string(),
+            value: z.unknown(),
+          }),
+        ),
+      }),
+    ) &&
+    ctx.node.name === 'script'
+  ) {
+    const textNodeInScript = ctx.node.children.at(0);
+
+    if (ctx.node.attrs.find((attr) => attr.name === 'lang' && attr.value === 'ts')) {
+      // Note: In fact, the script element is not a `keywordStartingNode`, but it is considered a kind of safe list to maintain the `classNameNode`s obtained from the code inside the element.
+      ctx.keywordStartingNodes.push(ctx.currentASTNode);
+
+      if (textNodeInScript) {
+        const openingTagEndingLineIndex = ctx.node.startSourceSpan.end.line;
+        const openingTagEndingOffset = ctx.node.startSourceSpan.end.offset;
+
+        const typescriptAst = parseTypescript(textNodeInScript.value, {
+          ...ctx.options,
+          parser: 'typescript',
+        });
+        const targetClassNameNodesInScript = findTargetClassNameNodesForTypescript(
+          typescriptAst,
+          ctx.options,
+        ).map<ClassNameNode>((classNameNode) => {
+          const [classNameNodeRangeStart, classNameNodeRangeEnd] = classNameNode.range;
+
+          return {
+            ...classNameNode,
+            range: [
+              classNameNodeRangeStart + openingTagEndingOffset,
+              classNameNodeRangeEnd + openingTagEndingOffset,
+            ],
+            startLineIndex: classNameNode.startLineIndex + openingTagEndingLineIndex,
+          };
+        });
+
+        ctx.classNameNodes.push(...targetClassNameNodesInScript);
+      }
+    } else if (
+      ctx.node.attrs.find(
+        (attr) => attr.name === 'type' && (attr.value === '' || attr.value === 'text/javascript'),
+      ) ||
+      !ctx.node.attrs.find((attr) => attr.name === 'type')
+    ) {
+      // Note: In fact, the script element is not a `keywordStartingNode`, but it is considered a kind of safe list to maintain the `classNameNode`s obtained from the code inside the element.
+      ctx.keywordStartingNodes.push(ctx.currentASTNode);
+
+      if (textNodeInScript) {
+        const openingTagEndingLineIndex = ctx.node.startSourceSpan.end.line;
+        const openingTagEndingOffset = ctx.node.startSourceSpan.end.offset;
+
+        const babelAst = parseBabel(textNodeInScript.value, {
+          ...ctx.options,
+          parser: 'babel',
+        });
+        const targetClassNameNodesInScript = findTargetClassNameNodesForBabel(
+          babelAst,
+          ctx.options,
+        ).map<ClassNameNode>((classNameNode) => {
+          const [classNameNodeRangeStart, classNameNodeRangeEnd] = classNameNode.range;
+
+          return {
+            ...classNameNode,
+            range: [
+              classNameNodeRangeStart + openingTagEndingOffset,
+              classNameNodeRangeEnd + openingTagEndingOffset,
+            ],
+            startLineIndex: classNameNode.startLineIndex + openingTagEndingLineIndex,
+          };
+        });
+
+        ctx.classNameNodes.push(...targetClassNameNodesInScript);
+      }
+    }
+  }
+}
+
+function handleAngularElement(ctx: CaseHandlerContext) {
+  ctx.nonCommentNodes.push(ctx.currentASTNode);
+
+  if (
+    isTypeof(
+      ctx.node,
+      z.object({
+        startSourceSpan: z.object({
+          end: z.object({
+            line: z.number(),
+            offset: z.number(),
+          }),
+        }),
+        name: z.string(),
+        children: z.array(
+          z.object({
+            value: z.string(),
+          }),
+        ),
+      }),
+    ) &&
+    ctx.node.name === 'script'
+  ) {
+    // Note: In fact, the script element is not a `keywordStartingNode`, but it is considered a kind of safe list to maintain the `classNameNode`s obtained from the code inside the element.
+    ctx.keywordStartingNodes.push(ctx.currentASTNode);
+
+    const textNodeInScript = ctx.node.children.at(0);
+
+    if (textNodeInScript) {
+      const openingTagEndingLineIndex = ctx.node.startSourceSpan.end.line;
+      const openingTagEndingOffset = ctx.node.startSourceSpan.end.offset;
+
+      const typescriptAst = parseTypescript(textNodeInScript.value, {
+        ...ctx.options,
+        parser: 'typescript',
+      });
+      const targetClassNameNodesInScript = findTargetClassNameNodesForTypescript(
+        typescriptAst,
+        ctx.options,
+      ).map<ClassNameNode>((classNameNode) => {
+        const [classNameNodeRangeStart, classNameNodeRangeEnd] = classNameNode.range;
+
+        return {
+          ...classNameNode,
+          range: [
+            classNameNodeRangeStart + openingTagEndingOffset,
+            classNameNodeRangeEnd + openingTagEndingOffset,
+          ],
+          startLineIndex: classNameNode.startLineIndex + openingTagEndingLineIndex,
+        };
+      });
+
+      ctx.classNameNodes.push(...targetClassNameNodesInScript);
+    }
+  }
+}
+
 const babelCaseHandlers: CaseHandlers = {
   CallExpression: handleJavaScriptCallExpression,
   JSXAttribute: handleJavaScriptJSXAttribute,
@@ -5248,6 +5648,21 @@ const parserCaseHandlers: ParserCaseHandlers = {
     MustacheTag: handleSvelteMustacheTag,
     RefinedScript: handleSvelteRefinedScript,
     Text: handleSvelteText,
+  },
+  html: {
+    attribute: handleHtmlAttribute,
+    element: handleHtmlElement,
+    comment: handleHtmlComment,
+  },
+  angular: {
+    attribute: handleHtmlAttribute,
+    element: handleAngularElement,
+    comment: handleHtmlComment,
+  },
+  vue: {
+    attribute: handleHtmlAttribute,
+    element: handleAngularElement,
+    comment: handleHtmlComment,
   },
 };
 
@@ -5490,6 +5905,141 @@ export function findTargetClassNameNodesBasedOnJavaScript(
   if (!ast.type) {
     ast.type = 'Root';
   }
+  recursion(ast);
+
+  return filterAndSortClassNameNodes(
+    nonCommentNodes,
+    prettierIgnoreNodes,
+    keywordStartingNodes,
+    classNameNodes,
+  );
+}
+
+export function findTargetClassNameNodesBasedOnHtml(
+  formattedText: string,
+  ast: AST,
+  options: ResolvedOptions,
+): ClassNameNode[] {
+  const supportedAttributes: string[] = [
+    'class',
+    'className',
+    ...(options.parser === 'angular' ? ['ngClass'] : []),
+    ...options.customAttributes,
+  ];
+  const supportedFunctions: string[] = ['classNames', ...options.customFunctions];
+  /**
+   * Most nodes
+   */
+  const nonCommentNodes: ASTNode[] = [];
+  /**
+   * Nodes with a valid 'prettier-ignore' syntax
+   */
+  const prettierIgnoreNodes: ASTNode[] = [];
+  /**
+   * Nodes starting with supported attribute names or supported function names
+   */
+  const keywordStartingNodes: ASTNode[] = [];
+  /**
+   * Class names enclosed in delimiters
+   */
+  const classNameNodes: ClassNameNode[] = [];
+
+  function recursion(
+    node: unknown,
+    parentNode?: { kind: string; type?: undefined } | { kind?: undefined; type: string },
+  ): void {
+    if (
+      !isTypeof(node, z.object({ kind: z.string() })) &&
+      !isTypeof(node, z.object({ type: z.string() }))
+    ) {
+      return;
+    }
+
+    const nodeType = isTypeof(node, z.object({ kind: z.string() })) ? node.kind : node.type;
+
+    let recursiveProps: string[] = [];
+
+    switch (nodeType) {
+      case 'angularControlFlowBlock':
+      case 'root': {
+        recursiveProps = ['children'];
+        break;
+      }
+      case 'element': {
+        recursiveProps = ['attrs', 'children'];
+        break;
+      }
+      default: {
+        break;
+      }
+    }
+
+    Object.entries(node).forEach(([key, value]) => {
+      if (!recursiveProps.includes(key)) {
+        return;
+      }
+
+      if (Array.isArray(value)) {
+        value.forEach((childNode: unknown) => {
+          recursion(childNode, node);
+        });
+        return;
+      }
+
+      recursion(value, node);
+    });
+
+    if (
+      !isTypeof(
+        node,
+        z.object({
+          sourceSpan: z.object({
+            start: z.object({
+              offset: z.number(),
+            }),
+            end: z.object({
+              offset: z.number(),
+            }),
+          }),
+        }),
+      )
+    ) {
+      return;
+    }
+
+    const currentNodeRangeStart = node.sourceSpan.start.offset;
+    const currentNodeRangeEnd = node.sourceSpan.end.offset;
+
+    const currentASTNode: ASTNode = {
+      type: nodeType,
+      range: [currentNodeRangeStart, currentNodeRangeEnd],
+      start: currentNodeRangeStart,
+      end: currentNodeRangeEnd,
+    };
+
+    const handler = parserCaseHandlers[String(options.parser)]?.[nodeType];
+
+    if (handler) {
+      const context: CaseHandlerContext = {
+        formattedText,
+        options,
+        supportedAttributes,
+        supportedFunctions,
+        nonCommentNodes,
+        prettierIgnoreNodes,
+        keywordStartingNodes,
+        classNameNodes,
+        node,
+        parentNode,
+        currentASTNode,
+      };
+
+      handler(context);
+    } else {
+      nonCommentNodes.push(currentASTNode);
+    }
+  }
+
   recursion(ast);
 
   return filterAndSortClassNameNodes(

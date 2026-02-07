@@ -2,11 +2,9 @@ import type { AST } from 'prettier';
 
 import { parseAndAssemble } from './experimental';
 import {
-  findTargetClassNameNodesForHtml,
-  findTargetClassNameNodesForVue,
-  findTargetClassNameNodesForAngular,
   findTargetClassNameNodesForAstro,
   findTargetClassNameNodesBasedOnJavaScript,
+  findTargetClassNameNodesBasedOnHtml,
 } from './finder';
 import { type ClassNameNode, SPACE, TAB } from './utils';
 
@@ -36,16 +34,10 @@ export async function parseLineByLineAndReplaceAsync({
       targetClassNameNodes = findTargetClassNameNodesBasedOnJavaScript(formattedText, ast, options);
       break;
     }
-    case 'angular': {
-      targetClassNameNodes = findTargetClassNameNodesForAngular(ast, options);
-      break;
-    }
-    case 'html': {
-      targetClassNameNodes = findTargetClassNameNodesForHtml(ast, options);
-      break;
-    }
+    case 'html':
+    case 'angular':
     case 'vue': {
-      targetClassNameNodes = findTargetClassNameNodesForVue(ast, options);
+      targetClassNameNodes = findTargetClassNameNodesBasedOnHtml(formattedText, ast, options);
       break;
     }
     case 'astro': {
