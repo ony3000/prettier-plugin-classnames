@@ -1,38 +1,18 @@
-import type { AST, Parser, Plugin } from 'prettier';
+import type { Parser, Plugin } from 'prettier';
 import { format } from 'prettier';
 import { parsers as babelParsers } from 'prettier/plugins/babel';
 import { parsers as htmlParsers } from 'prettier/plugins/html';
 import { parsers as typescriptParsers } from 'prettier/plugins/typescript';
 
-import { parseLineByLineAndReplaceAsync, refineSvelteAst } from './core-parts';
-
-const EOL = '\n';
-
-const SPACE = ' ';
+import { advancedParse } from './core-parts/parser';
+import { parseLineByLineAndReplaceAsync } from './core-parts/processor';
+import { EOL, SPACE } from './core-parts/utils';
 
 function addIndent(text: string, width = 2) {
   return text
     .split(EOL)
     .map((line) => `${SPACE.repeat(width)}${line}`)
     .join(EOL);
-}
-
-async function advancedParse(
-  text: string,
-  parserName: SupportedParserNames,
-  defaultParser: Parser,
-  options: ResolvedOptions,
-): Promise<AST> {
-  const preprocessedText = await (defaultParser.preprocess
-    ? defaultParser.preprocess(text, options)
-    : text);
-  let ast = await defaultParser.parse(preprocessedText, options);
-
-  if (parserName === 'svelte') {
-    ast = refineSvelteAst(preprocessedText, ast);
-  }
-
-  return ast;
 }
 
 function transformParser(
