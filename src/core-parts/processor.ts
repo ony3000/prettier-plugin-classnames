@@ -2,14 +2,11 @@ import type { AST } from 'prettier';
 
 import { parseAndAssemble } from './experimental';
 import {
-  findTargetClassNameNodesForBabel,
-  findTargetClassNameNodesForTypescript,
   findTargetClassNameNodesForHtml,
   findTargetClassNameNodesForVue,
   findTargetClassNameNodesForAngular,
   findTargetClassNameNodesForAstro,
-  findTargetClassNameNodesForSvelte,
-  findTargetClassNameNodesForOxc,
+  findTargetClassNameNodesBasedOnJavaScript,
 } from './finder';
 import { type ClassNameNode, SPACE, TAB } from './utils';
 
@@ -30,21 +27,13 @@ export async function parseLineByLineAndReplaceAsync({
 
   let targetClassNameNodes: ClassNameNode[] = [];
   switch (options.parser) {
-    case 'astro': {
-      targetClassNameNodes = findTargetClassNameNodesForAstro(formattedText, ast, options);
-      break;
-    }
-    case 'svelte': {
-      targetClassNameNodes = findTargetClassNameNodesForSvelte(formattedText, ast, options);
-      break;
-    }
     case 'babel':
-    case 'babel-ts': {
-      targetClassNameNodes = findTargetClassNameNodesForBabel(ast, options);
-      break;
-    }
-    case 'typescript': {
-      targetClassNameNodes = findTargetClassNameNodesForTypescript(ast, options);
+    case 'babel-ts':
+    case 'typescript':
+    case 'oxc':
+    case 'oxc-ts':
+    case 'svelte': {
+      targetClassNameNodes = findTargetClassNameNodesBasedOnJavaScript(formattedText, ast, options);
       break;
     }
     case 'angular': {
@@ -59,9 +48,8 @@ export async function parseLineByLineAndReplaceAsync({
       targetClassNameNodes = findTargetClassNameNodesForVue(ast, options);
       break;
     }
-    case 'oxc':
-    case 'oxc-ts': {
-      targetClassNameNodes = findTargetClassNameNodesForOxc(ast, options, formattedText);
+    case 'astro': {
+      targetClassNameNodes = findTargetClassNameNodesForAstro(formattedText, ast, options);
       break;
     }
     default: {
