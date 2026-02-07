@@ -3164,358 +3164,6 @@ export function findTargetClassNameNodesForAngular(
 /**
  * @deprecated
  */
-export function findTargetClassNameNodesForAstro(
-  formattedText: string,
-  ast: AST,
-  options: ResolvedOptions,
-): ClassNameNode[] {
-  const supportedAttributes: string[] = [
-    'class',
-    'className',
-    'class:list',
-    ...options.customAttributes,
-  ];
-  const supportedFunctions: string[] = ['classNames', ...options.customFunctions];
-  /**
-   * Most nodes
-   */
-  const nonCommentNodes: ASTNodeLegacy[] = [];
-  /**
-   * Nodes with a valid 'prettier-ignore' syntax
-   */
-  const prettierIgnoreNodes: ASTNodeLegacy[] = [];
-  /**
-   * Nodes starting with supported attribute names or supported function names
-   */
-  const keywordStartingNodes: ASTNodeLegacy[] = [];
-  /**
-   * Class names enclosed in delimiters
-   */
-  const classNameNodes: ClassNameNode[] = [];
-
-  const totalTextLengthUptoSpecificIndexLine = formattedText
-    .split(EOL)
-    .slice(0, -1)
-    .map((line) => `${line}${EOL}`.length)
-    .map((_, index, array) =>
-      array
-        .slice(0, index + 1)
-        .reduce((prevResult, currentLength) => prevResult + currentLength, 0),
-    );
-  totalTextLengthUptoSpecificIndexLine.unshift(0);
-
-  function recursion(node: unknown, parentNode?: { type?: string }): void {
-    if (!isTypeof(node, z.object({ type: z.string() }))) {
-      return;
-    }
-
-    let recursiveProps: string[] = [];
-
-    switch (node.type) {
-      case 'component':
-      case 'element': {
-        recursiveProps = ['attributes', 'children'];
-        break;
-      }
-      case 'expression':
-      case 'fragment':
-      case 'root': {
-        recursiveProps = ['children'];
-        break;
-      }
-      default: {
-        break;
-      }
-    }
-
-    Object.entries(node).forEach(([key, value]) => {
-      if (!recursiveProps.includes(key)) {
-        return;
-      }
-
-      if (Array.isArray(value)) {
-        value.forEach((childNode: unknown) => {
-          recursion(childNode, node);
-        });
-        return;
-      }
-
-      recursion(value, node);
-    });
-
-    if (
-      !isTypeof(
-        node,
-        z.object({
-          position: z.object({
-            start: z.object({
-              line: z.number(),
-              column: z.number(),
-            }),
-            end: z
-              .object({
-                line: z.number(),
-                column: z.number(),
-              })
-              .optional(),
-          }),
-          name: z.unknown(),
-          value: z.unknown(),
-        }),
-      )
-    ) {
-      return;
-    }
-
-    const currentNodeRangeStart =
-      totalTextLengthUptoSpecificIndexLine[node.position.start.line - 1] +
-      (node.position.start.column - 1);
-    const currentNodeRangeEnd = node.position.end
-      ? totalTextLengthUptoSpecificIndexLine[node.position.end.line - 1] +
-        (node.position.end.column - 1)
-      : currentNodeRangeStart +
-        (node.type === 'attribute'
-          ? `${node.name}=${UNKNOWN_DELIMITER}${node.value}${UNKNOWN_DELIMITER}`.length
-          : `${node.value}`.length);
-    const currentASTNode: ASTNodeLegacy = {
-      type: node.type,
-      range: [currentNodeRangeStart, currentNodeRangeEnd],
-    };
-
-    switch (node.type) {
-      case 'frontmatter': {
-        nonCommentNodes.push(currentASTNode);
-
-        if (
-          isTypeof(
-            node,
-            z.object({
-              value: z.string(),
-            }),
-          )
-        ) {
-          // Note: In fact, the frontmatter is not a `keywordStartingNode`, but it is considered a kind of safe list to maintain the `classNameNode`s obtained from the code inside the frontmatter.
-          keywordStartingNodes.push(currentASTNode);
-
-          const typescriptAst = parseTypescript(node.value, {
-            ...options,
-            parser: 'typescript',
-          });
-          const targetClassNameNodesInFrontMatter = findTargetClassNameNodesForTypescript(
-            typescriptAst,
-            {
-              ...options,
-              customAttributes: supportedAttributes,
-              customFunctions: supportedFunctions,
-            },
-          ).map<ClassNameNode>((classNameNode) => {
-            const [classNameNodeRangeStart, classNameNodeRangeEnd] = classNameNode.range;
-
-            const frontMatterOffset = '---'.length;
-
-            return {
-              ...classNameNode,
-              range: [
-                classNameNodeRangeStart + frontMatterOffset,
-                classNameNodeRangeEnd + frontMatterOffset,
-              ],
-              startLineIndex: classNameNode.startLineIndex,
-            };
-          });
-
-          classNameNodes.push(...targetClassNameNodesInFrontMatter);
-        }
-        break;
-      }
-      case 'attribute': {
-        nonCommentNodes.push(currentASTNode);
-
-        if (
-          isTypeof(
-            parentNode,
-            z.object({
-              position: z.object({
-                start: z.object({
-                  line: z.number(),
-                }),
-              }),
-              name: z.string(),
-            }),
-          ) &&
-          (parentNode.type === 'element' || parentNode.type === 'component') &&
-          isTypeof(
-            node,
-            z.object({
-              kind: z.string(),
-              name: z.string(),
-              value: z.string(),
-            }),
-          )
-        ) {
-          const attributeStart = `${node.name}=${UNKNOWN_DELIMITER}`;
-
-          if (node.kind === 'expression') {
-            keywordStartingNodes.push(currentASTNode);
-
-            const isSupportedAttribute = supportedAttributes.includes(node.name);
-
-            const jsxStart = `<div ${isSupportedAttribute ? 'className' : node.name}={`;
-            const jsxEnd = '}></div>';
-
-            const typescriptAst = parseTypescript(`${jsxStart}${node.value}${jsxEnd}`, {
-              ...options,
-              parser: 'typescript',
-            });
-            const targetClassNameNodesInAttribute = findTargetClassNameNodesForTypescript(
-              typescriptAst,
-              {
-                ...options,
-                customAttributes: supportedAttributes,
-                customFunctions: supportedFunctions,
-              },
-            ).map<ClassNameNode>((classNameNode) => {
-              const [classNameNodeRangeStart, classNameNodeRangeEnd] = classNameNode.range;
-
-              if (
-                classNameNode.type === 'expression' &&
-                classNameNode.delimiterType !== 'backtick' &&
-                classNameNode.startLineIndex === 0
-              ) {
-                classNameNode.isTheFirstLineOnTheSameLineAsTheAttributeName = true;
-              }
-
-              const attributeOffset =
-                -jsxStart.length + currentNodeRangeStart + attributeStart.length;
-
-              return {
-                ...classNameNode,
-                range: [
-                  classNameNodeRangeStart + attributeOffset,
-                  classNameNodeRangeEnd + attributeOffset,
-                ],
-                startLineIndex: classNameNode.startLineIndex + node.position.start.line - 1,
-              };
-            });
-
-            classNameNodes.push(...targetClassNameNodesInAttribute);
-          } else if (node.kind === 'quoted') {
-            if (supportedAttributes.includes(node.name)) {
-              keywordStartingNodes.push(currentASTNode);
-
-              const parentNodeStartLineIndex = parentNode.position.start.line - 1;
-              const nodeStartLineIndex = node.position.start.line - 1;
-
-              classNameNodes.push({
-                type: 'attribute',
-                isTheFirstLineOnTheSameLineAsTheOpeningTag:
-                  parentNodeStartLineIndex === nodeStartLineIndex,
-                elementName: parentNode.name,
-                range: [currentNodeRangeStart + attributeStart.length - 1, currentNodeRangeEnd],
-                startLineIndex: node.position.start.line - 1,
-              });
-            }
-          }
-        }
-        break;
-      }
-      case 'element': {
-        nonCommentNodes.push(currentASTNode);
-
-        if (
-          isTypeof(
-            node,
-            z.object({
-              name: z.string(),
-              children: z.array(
-                z.object({
-                  value: z.string(),
-                  position: z.object({
-                    start: z.object({
-                      line: z.number(),
-                      offset: z.number(),
-                    }),
-                  }),
-                }),
-              ),
-            }),
-          ) &&
-          node.name === 'script'
-        ) {
-          // Note: In fact, the script element is not a `keywordStartingNode`, but it is considered a kind of safe list to maintain the `classNameNode`s obtained from the code inside the element.
-          keywordStartingNodes.push(currentASTNode);
-
-          const textNodeInScript = node.children.at(0);
-
-          if (textNodeInScript) {
-            const openingTagEndingLineIndex = textNodeInScript.position.start.line - 1;
-            const openingTagEndingOffset = textNodeInScript.position.start.offset;
-
-            const typescriptAst = parseTypescript(textNodeInScript.value, {
-              ...options,
-              parser: 'typescript',
-            });
-            const targetClassNameNodesInScript = findTargetClassNameNodesForTypescript(
-              typescriptAst,
-              options,
-            ).map<ClassNameNode>((classNameNode) => {
-              const [classNameNodeRangeStart, classNameNodeRangeEnd] = classNameNode.range;
-
-              return {
-                ...classNameNode,
-                range: [
-                  classNameNodeRangeStart + openingTagEndingOffset,
-                  classNameNodeRangeEnd + openingTagEndingOffset,
-                ],
-                startLineIndex: classNameNode.startLineIndex + openingTagEndingLineIndex,
-              };
-            });
-
-            classNameNodes.push(...targetClassNameNodesInScript);
-          }
-        }
-        break;
-      }
-      case 'comment': {
-        if (
-          isTypeof(
-            node,
-            z.object({
-              value: z.string(),
-            }),
-          ) &&
-          node.value.trim() === 'prettier-ignore'
-        ) {
-          const commentOffset = '<!--'.length;
-
-          prettierIgnoreNodes.push({
-            ...currentASTNode,
-            range: [currentNodeRangeStart - commentOffset, currentNodeRangeEnd],
-          });
-        }
-        break;
-      }
-      default: {
-        if (node.type !== 'text') {
-          nonCommentNodes.push(currentASTNode);
-        }
-        break;
-      }
-    }
-  }
-
-  recursion(ast);
-
-  return filterAndSortClassNameNodes(
-    nonCommentNodes,
-    prettierIgnoreNodes,
-    keywordStartingNodes,
-    classNameNodes,
-  );
-}
-
-/**
- * @deprecated
- */
 export function findTargetClassNameNodesForSvelte(
   formattedText: string,
   ast: AST,
@@ -5593,6 +5241,224 @@ function handleAngularElement(ctx: CaseHandlerContext) {
   }
 }
 
+function handleAstroAttribute(ctx: CaseHandlerContext) {
+  ctx.nonCommentNodes.push(ctx.currentASTNode);
+
+  if (
+    isTypeof(
+      ctx.parentNode,
+      z.object({
+        position: z.object({
+          start: z.object({
+            line: z.number(),
+          }),
+        }),
+        name: z.string(),
+      }),
+    ) &&
+    (ctx.parentNode.type === 'element' || ctx.parentNode.type === 'component') &&
+    isTypeof(
+      ctx.node,
+      z.object({
+        position: z.object({
+          start: z.object({
+            line: z.number(),
+            column: z.number(),
+          }),
+          end: z
+            .object({
+              line: z.number(),
+              column: z.number(),
+            })
+            .optional(),
+        }),
+        kind: z.string(),
+        name: z.string(),
+        value: z.string(),
+      }),
+    )
+  ) {
+    const typedNode = ctx.node;
+
+    const attributeStart = `${ctx.node.name}=${UNKNOWN_DELIMITER}`;
+
+    if (ctx.node.kind === 'expression') {
+      ctx.keywordStartingNodes.push(ctx.currentASTNode);
+
+      const isSupportedAttribute = ctx.supportedAttributes.includes(ctx.node.name);
+
+      const jsxStart = `<div ${isSupportedAttribute ? 'className' : ctx.node.name}={`;
+      const jsxEnd = '}></div>';
+
+      const typescriptAst = parseTypescript(`${jsxStart}${ctx.node.value}${jsxEnd}`, {
+        ...ctx.options,
+        parser: 'typescript',
+      });
+      const targetClassNameNodesInAttribute = findTargetClassNameNodesForTypescript(typescriptAst, {
+        ...ctx.options,
+        customAttributes: ctx.supportedAttributes,
+        customFunctions: ctx.supportedFunctions,
+      }).map<ClassNameNode>((classNameNode) => {
+        const [classNameNodeRangeStart, classNameNodeRangeEnd] = classNameNode.range;
+
+        if (
+          classNameNode.type === 'expression' &&
+          classNameNode.delimiterType !== 'backtick' &&
+          classNameNode.startLineIndex === 0
+        ) {
+          classNameNode.isTheFirstLineOnTheSameLineAsTheAttributeName = true;
+        }
+
+        const attributeOffset = -jsxStart.length + ctx.currentASTNode.start + attributeStart.length;
+
+        return {
+          ...classNameNode,
+          range: [
+            classNameNodeRangeStart + attributeOffset,
+            classNameNodeRangeEnd + attributeOffset,
+          ],
+          startLineIndex: classNameNode.startLineIndex + typedNode.position.start.line - 1,
+        };
+      });
+
+      ctx.classNameNodes.push(...targetClassNameNodesInAttribute);
+    } else if (ctx.node.kind === 'quoted') {
+      if (ctx.supportedAttributes.includes(ctx.node.name)) {
+        ctx.keywordStartingNodes.push(ctx.currentASTNode);
+
+        const parentNodeStartLineIndex = ctx.parentNode.position.start.line - 1;
+        const nodeStartLineIndex = ctx.node.position.start.line - 1;
+
+        ctx.classNameNodes.push({
+          type: 'attribute',
+          isTheFirstLineOnTheSameLineAsTheOpeningTag:
+            parentNodeStartLineIndex === nodeStartLineIndex,
+          elementName: ctx.parentNode.name,
+          range: [ctx.currentASTNode.start + attributeStart.length - 1, ctx.currentASTNode.end],
+          startLineIndex: ctx.node.position.start.line - 1,
+        });
+      }
+    }
+  }
+}
+
+function handleAstroComment(ctx: CaseHandlerContext) {
+  if (
+    isTypeof(
+      ctx.node,
+      z.object({
+        value: z.string(),
+      }),
+    ) &&
+    ctx.node.value.trim() === 'prettier-ignore'
+  ) {
+    const commentOffset = '<!--'.length;
+
+    ctx.prettierIgnoreNodes.push({
+      ...ctx.currentASTNode,
+      range: [ctx.currentASTNode.start - commentOffset, ctx.currentASTNode.end],
+    });
+  }
+}
+
+function handleAstroElement(ctx: CaseHandlerContext) {
+  ctx.nonCommentNodes.push(ctx.currentASTNode);
+
+  if (
+    isTypeof(
+      ctx.node,
+      z.object({
+        name: z.string(),
+        children: z.array(
+          z.object({
+            value: z.string(),
+            position: z.object({
+              start: z.object({
+                line: z.number(),
+                offset: z.number(),
+              }),
+            }),
+          }),
+        ),
+      }),
+    ) &&
+    ctx.node.name === 'script'
+  ) {
+    // Note: In fact, the script element is not a `keywordStartingNode`, but it is considered a kind of safe list to maintain the `classNameNode`s obtained from the code inside the element.
+    ctx.keywordStartingNodes.push(ctx.currentASTNode);
+
+    const textNodeInScript = ctx.node.children.at(0);
+
+    if (textNodeInScript) {
+      const openingTagEndingLineIndex = textNodeInScript.position.start.line - 1;
+      const openingTagEndingOffset = textNodeInScript.position.start.offset;
+
+      const typescriptAst = parseTypescript(textNodeInScript.value, {
+        ...ctx.options,
+        parser: 'typescript',
+      });
+      const targetClassNameNodesInScript = findTargetClassNameNodesForTypescript(
+        typescriptAst,
+        ctx.options,
+      ).map<ClassNameNode>((classNameNode) => {
+        const [classNameNodeRangeStart, classNameNodeRangeEnd] = classNameNode.range;
+
+        return {
+          ...classNameNode,
+          range: [
+            classNameNodeRangeStart + openingTagEndingOffset,
+            classNameNodeRangeEnd + openingTagEndingOffset,
+          ],
+          startLineIndex: classNameNode.startLineIndex + openingTagEndingLineIndex,
+        };
+      });
+
+      ctx.classNameNodes.push(...targetClassNameNodesInScript);
+    }
+  }
+}
+
+function handleAstroFrontmatter(ctx: CaseHandlerContext) {
+  ctx.nonCommentNodes.push(ctx.currentASTNode);
+
+  if (
+    isTypeof(
+      ctx.node,
+      z.object({
+        value: z.string(),
+      }),
+    )
+  ) {
+    // Note: In fact, the frontmatter is not a `keywordStartingNode`, but it is considered a kind of safe list to maintain the `classNameNode`s obtained from the code inside the frontmatter.
+    ctx.keywordStartingNodes.push(ctx.currentASTNode);
+
+    const typescriptAst = parseTypescript(ctx.node.value, {
+      ...ctx.options,
+      parser: 'typescript',
+    });
+    const targetClassNameNodesInFrontMatter = findTargetClassNameNodesForTypescript(typescriptAst, {
+      ...ctx.options,
+      customAttributes: ctx.supportedAttributes,
+      customFunctions: ctx.supportedFunctions,
+    }).map<ClassNameNode>((classNameNode) => {
+      const [classNameNodeRangeStart, classNameNodeRangeEnd] = classNameNode.range;
+
+      const frontMatterOffset = '---'.length;
+
+      return {
+        ...classNameNode,
+        range: [
+          classNameNodeRangeStart + frontMatterOffset,
+          classNameNodeRangeEnd + frontMatterOffset,
+        ],
+        startLineIndex: classNameNode.startLineIndex,
+      };
+    });
+
+    ctx.classNameNodes.push(...targetClassNameNodesInFrontMatter);
+  }
+}
+
 const babelCaseHandlers: CaseHandlers = {
   CallExpression: handleJavaScriptCallExpression,
   JSXAttribute: handleJavaScriptJSXAttribute,
@@ -5663,6 +5529,12 @@ const parserCaseHandlers: ParserCaseHandlers = {
     attribute: handleHtmlAttribute,
     element: handleAngularElement,
     comment: handleHtmlComment,
+  },
+  astro: {
+    frontmatter: handleAstroFrontmatter,
+    attribute: handleAstroAttribute,
+    element: handleAstroElement,
+    comment: handleAstroComment,
   },
 };
 
@@ -6037,6 +5909,163 @@ export function findTargetClassNameNodesBasedOnHtml(
       handler(context);
     } else {
       nonCommentNodes.push(currentASTNode);
+    }
+  }
+
+  recursion(ast);
+
+  return filterAndSortClassNameNodes(
+    nonCommentNodes,
+    prettierIgnoreNodes,
+    keywordStartingNodes,
+    classNameNodes,
+  );
+}
+
+export function findTargetClassNameNodesBasedOnAstro(
+  formattedText: string,
+  ast: AST,
+  options: ResolvedOptions,
+): ClassNameNode[] {
+  const supportedAttributes: string[] = [
+    'class',
+    'className',
+    'class:list',
+    ...options.customAttributes,
+  ];
+  const supportedFunctions: string[] = ['classNames', ...options.customFunctions];
+  /**
+   * Most nodes
+   */
+  const nonCommentNodes: ASTNode[] = [];
+  /**
+   * Nodes with a valid 'prettier-ignore' syntax
+   */
+  const prettierIgnoreNodes: ASTNode[] = [];
+  /**
+   * Nodes starting with supported attribute names or supported function names
+   */
+  const keywordStartingNodes: ASTNode[] = [];
+  /**
+   * Class names enclosed in delimiters
+   */
+  const classNameNodes: ClassNameNode[] = [];
+
+  const totalTextLengthUptoSpecificIndexLine = formattedText
+    .split(EOL)
+    .slice(0, -1)
+    .map((line) => `${line}${EOL}`.length)
+    .map((_, index, array) =>
+      array
+        .slice(0, index + 1)
+        .reduce((prevResult, currentLength) => prevResult + currentLength, 0),
+    );
+  totalTextLengthUptoSpecificIndexLine.unshift(0);
+
+  function recursion(node: unknown, parentNode?: { type: string }): void {
+    if (!isTypeof(node, z.object({ type: z.string() }))) {
+      return;
+    }
+
+    let recursiveProps: string[] = [];
+
+    switch (node.type) {
+      case 'component':
+      case 'element': {
+        recursiveProps = ['attributes', 'children'];
+        break;
+      }
+      case 'expression':
+      case 'fragment':
+      case 'root': {
+        recursiveProps = ['children'];
+        break;
+      }
+      default: {
+        break;
+      }
+    }
+
+    Object.entries(node).forEach(([key, value]) => {
+      if (!recursiveProps.includes(key)) {
+        return;
+      }
+
+      if (Array.isArray(value)) {
+        value.forEach((childNode: unknown) => {
+          recursion(childNode, node);
+        });
+        return;
+      }
+
+      recursion(value, node);
+    });
+
+    if (
+      !isTypeof(
+        node,
+        z.object({
+          position: z.object({
+            start: z.object({
+              line: z.number(),
+              column: z.number(),
+            }),
+            end: z
+              .object({
+                line: z.number(),
+                column: z.number(),
+              })
+              .optional(),
+          }),
+          name: z.unknown(),
+          value: z.unknown(),
+        }),
+      )
+    ) {
+      return;
+    }
+
+    const nodeType = node.type;
+    const currentNodeRangeStart =
+      totalTextLengthUptoSpecificIndexLine[node.position.start.line - 1] +
+      (node.position.start.column - 1);
+    const currentNodeRangeEnd = node.position.end
+      ? totalTextLengthUptoSpecificIndexLine[node.position.end.line - 1] +
+        (node.position.end.column - 1)
+      : currentNodeRangeStart +
+        (node.type === 'attribute'
+          ? `${node.name}=${UNKNOWN_DELIMITER}${node.value}${UNKNOWN_DELIMITER}`.length
+          : `${node.value}`.length);
+
+    const currentASTNode: ASTNode = {
+      type: node.type,
+      range: [currentNodeRangeStart, currentNodeRangeEnd],
+      start: currentNodeRangeStart,
+      end: currentNodeRangeEnd,
+    };
+
+    const handler = parserCaseHandlers[String(options.parser)]?.[nodeType];
+
+    if (handler) {
+      const context: CaseHandlerContext = {
+        formattedText,
+        options,
+        supportedAttributes,
+        supportedFunctions,
+        nonCommentNodes,
+        prettierIgnoreNodes,
+        keywordStartingNodes,
+        classNameNodes,
+        node,
+        parentNode,
+        currentASTNode,
+      };
+
+      handler(context);
+    } else {
+      if (node.type !== 'text') {
+        nonCommentNodes.push(currentASTNode);
+      }
     }
   }
 

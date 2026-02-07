@@ -2,9 +2,9 @@ import type { AST } from 'prettier';
 
 import { parseAndAssemble } from './experimental';
 import {
-  findTargetClassNameNodesForAstro,
   findTargetClassNameNodesBasedOnJavaScript,
   findTargetClassNameNodesBasedOnHtml,
+  findTargetClassNameNodesBasedOnAstro,
 } from './finder';
 import { type ClassNameNode, SPACE, TAB } from './utils';
 
@@ -41,7 +41,7 @@ export async function parseLineByLineAndReplaceAsync({
       break;
     }
     case 'astro': {
-      targetClassNameNodes = findTargetClassNameNodesForAstro(formattedText, ast, options);
+      targetClassNameNodes = findTargetClassNameNodesBasedOnAstro(formattedText, ast, options);
       break;
     }
     default: {
