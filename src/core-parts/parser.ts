@@ -1,84 +1,13 @@
-import type { AST } from 'prettier';
+import type { AST, Parser } from 'prettier';
 import { z } from 'zod';
 
-import { parseAndAssemble } from './experimental';
-import {
-  findTargetClassNameNodesForBabel,
-  findTargetClassNameNodesForTypescript,
-  findTargetClassNameNodesForHtml,
-  findTargetClassNameNodesForVue,
-  findTargetClassNameNodesForAngular,
-  findTargetClassNameNodesForAstro,
-  findTargetClassNameNodesForSvelte,
-  findTargetClassNameNodesForOxc,
-} from './finder';
-import type { ClassNameNode } from './shared';
-import { EOL, SPACE, TAB, isTypeof } from './shared';
+import { EOL, isTypeof } from './utils';
 
 function base64Decode(input: string): string {
   return Buffer.from(input, 'base64').toString('utf8');
 }
 
-export async function parseLineByLineAndReplaceAsync({
-  formattedText,
-  ast,
-  options,
-}: {
-  formattedText: string;
-  ast: AST;
-  options: ResolvedOptions;
-}): Promise<string> {
-  if (formattedText === '') {
-    return formattedText;
-  }
-
-  const indentUnit = options.useTabs ? TAB : SPACE.repeat(options.tabWidth);
-
-  let targetClassNameNodes: ClassNameNode[] = [];
-  switch (options.parser) {
-    case 'astro': {
-      targetClassNameNodes = findTargetClassNameNodesForAstro(formattedText, ast, options);
-      break;
-    }
-    case 'svelte': {
-      targetClassNameNodes = findTargetClassNameNodesForSvelte(formattedText, ast, options);
-      break;
-    }
-    case 'babel':
-    case 'babel-ts': {
-      targetClassNameNodes = findTargetClassNameNodesForBabel(ast, options);
-      break;
-    }
-    case 'typescript': {
-      targetClassNameNodes = findTargetClassNameNodesForTypescript(ast, options);
-      break;
-    }
-    case 'angular': {
-      targetClassNameNodes = findTargetClassNameNodesForAngular(ast, options);
-      break;
-    }
-    case 'html': {
-      targetClassNameNodes = findTargetClassNameNodesForHtml(ast, options);
-      break;
-    }
-    case 'vue': {
-      targetClassNameNodes = findTargetClassNameNodesForVue(ast, options);
-      break;
-    }
-    case 'oxc':
-    case 'oxc-ts': {
-      targetClassNameNodes = findTargetClassNameNodesForOxc(ast, options, formattedText);
-      break;
-    }
-    default: {
-      break;
-    }
-  }
-
-  return parseAndAssemble(formattedText, indentUnit, targetClassNameNodes, options);
-}
-
-export function refineSvelteAst(preprocessedText: string, ast: AST) {
+function refineSvelteAst(preprocessedText: string, ast: AST) {
   if (!ast.instance) {
     return ast;
   }
@@ -196,6 +125,24 @@ export function refineSvelteAst(preprocessedText: string, ast: AST) {
       value: plainContent,
     },
   };
+
+  return ast;
+}
+
+export async function advancedParse(
+  text: string,
+  parserName: SupportedParserNames,
+  defaultParser: Parser,
+  options: ResolvedOptions,
+): Promise<AST> {
+  const preprocessedText = await (defaultParser.preprocess
+    ? defaultParser.preprocess(text, options)
+    : text);
+  let ast = await defaultParser.parse(preprocessedText, options);
+
+  if (parserName === 'svelte') {
+    ast = refineSvelteAst(preprocessedText, ast);
+  }
 
   return ast;
 }
