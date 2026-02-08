@@ -5,9 +5,11 @@ exports[`'long enough (1) - single line with no…' > expectation 1`] = `
 <template>
   <div>
     <div
-      [class]="'lorem ipsum dolor sit amet consectetur adipiscing elit proin
+      [class]="
+        'lorem ipsum dolor sit amet consectetur adipiscing elit proin
         ex massa hendrerit eu posuere eu volutpat id neque
-        pellentesque'"
+        pellentesque'
+      "
     >
       <slot></slot>
     </div>
@@ -21,9 +23,11 @@ exports[`'long enough (2) - single line with sp…' > expectation 1`] = `
 <template>
   <div>
     <div
-      [class]="' lorem ipsum dolor sit amet consectetur adipiscing elit
+      [class]="
+        ' lorem ipsum dolor sit amet consectetur adipiscing elit
         proin ex massa hendrerit eu posuere eu volutpat id neque
-        pellentesque '"
+        pellentesque '
+      "
     >
       <slot></slot>
     </div>
@@ -37,9 +41,11 @@ exports[`'long enough (3) - multiple lines' > expectation 1`] = `
 <template>
   <div>
     <div
-      [class]="'lorem ipsum dolor sit amet consectetur adipiscing elit proin
+      [class]="
+        'lorem ipsum dolor sit amet consectetur adipiscing elit proin
         ex massa hendrerit eu posuere eu volutpat id neque
-        pellentesque'"
+        pellentesque'
+      "
     >
       <slot></slot>
     </div>
@@ -53,7 +59,9 @@ exports[`'near boundary (1) - single line with …' > expectation 1`] = `
 <template>
   <div>
     <div
-      [class]="'lorem ipsum dolor sit amet consectetur adipiscing elit proin'"
+      [class]="
+        'lorem ipsum dolor sit amet consectetur adipiscing elit proin'
+      "
     >
       <slot></slot>
     </div>
@@ -67,8 +75,10 @@ exports[`'near boundary (2) - single line with …' > expectation 1`] = `
 <template>
   <div>
     <div
-      [class]="' lorem ipsum dolor sit amet consectetur adipiscing elit
-        proin '"
+      [class]="
+        ' lorem ipsum dolor sit amet consectetur adipiscing elit
+        proin '
+      "
     >
       <slot></slot>
     </div>
@@ -82,7 +92,9 @@ exports[`'near boundary (3) - multiple lines' > expectation 1`] = `
 <template>
   <div>
     <div
-      [class]="'lorem ipsum dolor sit amet consectetur adipiscing elit proin'"
+      [class]="
+        'lorem ipsum dolor sit amet consectetur adipiscing elit proin'
+      "
     >
       <slot></slot>
     </div>
@@ -132,8 +144,10 @@ exports[`'syntax variants (1) - component' > expectation 1`] = `
 <template>
   <div>
     <Box
-      [class]="'lorem ipsum dolor sit amet consectetur adipiscing elit proin
-        ex massa hendrerit eu posuere'"
+      [class]="
+        'lorem ipsum dolor sit amet consectetur adipiscing elit proin
+        ex massa hendrerit eu posuere'
+      "
     >
       <slot></slot>
     </Box>
@@ -147,8 +161,10 @@ exports[`'syntax variants (2) - property binding' > expectation 1`] = `
 <template>
   <div>
     <div
-      [className]="'lorem ipsum dolor sit amet consectetur adipiscing elit proin
-        ex massa hendrerit eu posuere'"
+      [className]="
+        'lorem ipsum dolor sit amet consectetur adipiscing elit proin
+        ex massa hendrerit eu posuere'
+      "
     >
       <slot></slot>
     </div>
@@ -162,8 +178,10 @@ exports[`'syntax variants (3) - attribute bindi…' > expectation 1`] = `
 <template>
   <div>
     <div
-      [attr.class]="'lorem ipsum dolor sit amet consectetur adipiscing elit proin
-        ex massa hendrerit eu posuere'"
+      [attr.class]="
+        'lorem ipsum dolor sit amet consectetur adipiscing elit proin
+        ex massa hendrerit eu posuere'
+      "
     >
       <slot></slot>
     </div>
@@ -177,8 +195,10 @@ exports[`'syntax variants (4) - built-in direct…' > expectation 1`] = `
 <template>
   <div>
     <div
-      [ngClass]="'lorem ipsum dolor sit amet consectetur adipiscing elit proin
-        ex massa hendrerit eu posuere'"
+      [ngClass]="
+        'lorem ipsum dolor sit amet consectetur adipiscing elit proin
+        ex massa hendrerit eu posuere'
+      "
     >
       <slot></slot>
     </div>
