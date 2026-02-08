@@ -560,7 +560,6 @@ packages:
   '@oxc-parser/binding-linux-x64-gnu@0.97.0':
     resolution: {integrity: sha512-Ck7cJMsZX19B0dvsl1v9a8VLeL9kEfUc0zMBjkgYmJfhVuINHcnZlQs8E5zTfD+dpP1wYzUhwgqv3o6hl9QaXA==}
     engines: {node: ^20.19.0 || >=22.12.0}
-    cpu: [x64]
     os: [linux]
 
   '@oxc-parser/binding-linux-x64-musl@0.97.0':
