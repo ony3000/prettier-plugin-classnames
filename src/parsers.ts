@@ -2,6 +2,7 @@ import type { Parser, Plugin } from 'prettier';
 import { format } from 'prettier';
 import { parsers as babelParsers } from 'prettier/plugins/babel';
 import { parsers as htmlParsers } from 'prettier/plugins/html';
+import { parsers as postcssParsers } from 'prettier/plugins/postcss';
 import { parsers as typescriptParsers } from 'prettier/plugins/typescript';
 
 import { advancedParse } from './core-parts/parser';
@@ -186,6 +187,9 @@ export const parsers: { [parserName: string]: Parser } = {
   }),
   vue: transformParser('vue', {
     defaultParser: htmlParsers.vue,
+  }),
+  css: transformParser('css', {
+    defaultParser: postcssParsers.css,
   }),
   oxc: transformParser('oxc', {
     defaultParser: null,

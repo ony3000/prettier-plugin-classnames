@@ -42,6 +42,7 @@ declare global {
     | 'angular'
     | 'html'
     | 'vue'
+    | 'css'
     | 'oxc'
     | 'oxc-ts'
     | 'astro'
