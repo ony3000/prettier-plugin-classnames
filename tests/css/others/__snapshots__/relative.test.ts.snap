@@ -1,0 +1,55 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`'endOfLine: crlf' > expectation 1`] = `
+"/* --------------------------------------------------------| printWidth=60 (in snapshot) */
+.example {
+  @apply lorem ipsum dolor sit amet consectetur adipiscing elit proin
+    ex massa hendrerit eu posuere;
+  & > a {
+    @apply lorem ipsum dolor sit amet consectetur adipiscing elit proin
+      ex massa hendrerit eu posuere;
+    &:hover,
+    &:focus {
+      @apply lorem ipsum dolor sit amet consectetur adipiscing elit proin
+        ex massa hendrerit eu posuere;
+    }
+  }
+}
+"
+`;
+
+exports[`'tabWidth: 4' > expectation 1`] = `
+"/* --------------------------------------------------------| printWidth=60 (in snapshot) */
+.example {
+    @apply lorem ipsum dolor sit amet consectetur adipiscing elit proin
+        ex massa hendrerit eu posuere;
+    & > a {
+        @apply lorem ipsum dolor sit amet consectetur adipiscing elit proin
+            ex massa hendrerit eu posuere;
+        &:hover,
+        &:focus {
+            @apply lorem ipsum dolor sit amet consectetur adipiscing elit proin
+                ex massa hendrerit eu posuere;
+        }
+    }
+}
+"
+`;
+
+exports[`'useTabs: true' > expectation 1`] = `
+"/* --------------------------------------------------------| printWidth=60 (in snapshot) */
+.example {
+	@apply lorem ipsum dolor sit amet consectetur adipiscing elit proin
+		ex massa hendrerit eu posuere;
+	& > a {
+		@apply lorem ipsum dolor sit amet consectetur adipiscing elit proin
+			ex massa hendrerit eu posuere;
+		&:hover,
+		&:focus {
+			@apply lorem ipsum dolor sit amet consectetur adipiscing elit proin
+				ex massa hendrerit eu posuere;
+		}
+	}
+}
+"
+`;
