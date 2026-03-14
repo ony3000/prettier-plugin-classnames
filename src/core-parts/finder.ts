@@ -1726,6 +1726,20 @@ function handleCssCssAtrule(ctx: CaseHandlerContext) {
   }
 }
 
+function handleCssCssComment(ctx: CaseHandlerContext) {
+  if (
+    isTypeof(
+      ctx.node,
+      z.object({
+        text: z.string(),
+      }),
+    ) &&
+    ctx.node.text.trim() === 'prettier-ignore'
+  ) {
+    ctx.prettierIgnoreNodes.push(ctx.currentASTNode);
+  }
+}
+
 function handleAstroFrontmatter(ctx: CaseHandlerContext) {
   ctx.nonCommentNodes.push(ctx.currentASTNode);
 
@@ -1791,6 +1805,7 @@ const typescriptCaseHandlers: CaseHandlers = {
 
 const cssCaseHandlers: CaseHandlers = {
   'css-atrule': handleCssCssAtrule,
+  'css-comment': handleCssCssComment,
 };
 
 const parserCaseHandlers: ParserCaseHandlers = {
