@@ -194,6 +194,9 @@ export const parsers: { [parserName: string]: Parser } = {
   scss: transformParser('scss', {
     defaultParser: postcssParsers.scss,
   }),
+  less: transformParser('less', {
+    defaultParser: postcssParsers.less,
+  }),
   oxc: transformParser('oxc', {
     defaultParser: null,
     externalPluginName: '@prettier/plugin-oxc',
