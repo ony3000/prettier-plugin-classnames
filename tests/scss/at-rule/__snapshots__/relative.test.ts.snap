@@ -1,0 +1,283 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`'@color-profile' > expectation 1`] = `
+"/* --------------------------------------------------------| printWidth=60 (in snapshot) */
+@color-profile --swop5c {
+  @apply lorem ipsum dolor sit amet consectetur adipiscing elit proin
+    ex massa hendrerit eu posuere;
+}
+.header {
+  @apply lorem ipsum dolor sit amet consectetur adipiscing elit proin
+    ex massa hendrerit eu posuere;
+}
+"
+`;
+
+exports[`'@container' > expectation 1`] = `
+"/* --------------------------------------------------------| printWidth=60 (in snapshot) */
+/* A container context based on inline size */
+.post {
+  @apply lorem ipsum dolor sit amet consectetur adipiscing elit proin
+    ex massa hendrerit eu posuere;
+}
+
+/* Apply styles if the container is narrower than 650px */
+@container (width < 650px) {
+  .card {
+    @apply lorem ipsum dolor sit amet consectetur adipiscing elit proin
+      ex massa hendrerit eu posuere;
+  }
+}
+"
+`;
+
+exports[`'@counter-style' > expectation 1`] = `
+"/* --------------------------------------------------------| printWidth=60 (in snapshot) */
+@counter-style circled-alpha {
+  @apply lorem ipsum dolor sit amet consectetur adipiscing elit proin
+    ex massa hendrerit eu posuere;
+}
+
+.items {
+  @apply lorem ipsum dolor sit amet consectetur adipiscing elit proin
+    ex massa hendrerit eu posuere;
+}
+"
+`;
+
+exports[`'@font-face' > expectation 1`] = `
+"/* --------------------------------------------------------| printWidth=60 (in snapshot) */
+@font-face {
+  @apply lorem ipsum dolor sit amet consectetur adipiscing elit proin
+    ex massa hendrerit eu posuere;
+}
+
+body {
+  @apply lorem ipsum dolor sit amet consectetur adipiscing elit proin
+    ex massa hendrerit eu posuere;
+}
+"
+`;
+
+exports[`'@font-feature-values' > expectation 1`] = `
+"/* --------------------------------------------------------| printWidth=60 (in snapshot) */
+/* At-rule for "nice-style" in Font One */
+@font-feature-values Font One {
+  @styleset {
+    @apply lorem ipsum dolor sit amet consectetur adipiscing elit proin
+      ex massa hendrerit eu posuere;
+  }
+}
+
+/* At-rule for "nice-style" in Font Two */
+@font-feature-values Font Two {
+  @styleset {
+    @apply lorem ipsum dolor sit amet consectetur adipiscing elit proin
+      ex massa hendrerit eu posuere;
+  }
+}
+
+/* Apply the at-rules with a single declaration */
+.nice-look {
+  @apply lorem ipsum dolor sit amet consectetur adipiscing elit proin
+    ex massa hendrerit eu posuere;
+}
+"
+`;
+
+exports[`'@font-palette-values' > expectation 1`] = `
+"/* --------------------------------------------------------| printWidth=60 (in snapshot) */
+@import "https://fonts.googleapis.com/css2?family=Bungee+Spice";
+p {
+  @apply lorem ipsum dolor sit amet consectetur adipiscing elit proin
+    ex massa hendrerit eu posuere;
+}
+@font-palette-values --Alternate {
+  @apply lorem ipsum dolor sit amet consectetur adipiscing elit proin
+    ex massa hendrerit eu posuere;
+}
+.alternate {
+  @apply lorem ipsum dolor sit amet consectetur adipiscing elit proin
+    ex massa hendrerit eu posuere;
+}
+"
+`;
+
+exports[`'@keyframes' > expectation 1`] = `
+"/* --------------------------------------------------------| printWidth=60 (in snapshot) */
+p {
+  @apply lorem ipsum dolor sit amet consectetur adipiscing elit proin
+    ex massa hendrerit eu posuere;
+}
+
+@keyframes slide-in {
+  from {
+    @apply lorem ipsum dolor sit amet consectetur adipiscing elit proin
+      ex massa hendrerit eu posuere;
+  }
+
+  to {
+    @apply lorem ipsum dolor sit amet consectetur adipiscing elit proin
+      ex massa hendrerit eu posuere;
+  }
+}
+"
+`;
+
+exports[`'@layer' > expectation 1`] = `
+"/* --------------------------------------------------------| printWidth=60 (in snapshot) */
+p {
+  @apply lorem ipsum dolor sit amet consectetur adipiscing elit proin
+    ex massa hendrerit eu posuere;
+}
+
+@layer type {
+  .box p {
+    @apply lorem ipsum dolor sit amet consectetur adipiscing elit proin
+      ex massa hendrerit eu posuere;
+  }
+}
+"
+`;
+
+exports[`'@media' > expectation 1`] = `
+"/* --------------------------------------------------------| printWidth=60 (in snapshot) */
+@media print {
+  body {
+    @apply lorem ipsum dolor sit amet consectetur adipiscing elit proin
+      ex massa hendrerit eu posuere;
+  }
+}
+
+@media screen {
+  body {
+    @apply lorem ipsum dolor sit amet consectetur adipiscing elit proin
+      ex massa hendrerit eu posuere;
+  }
+}
+
+@media screen, print {
+  body {
+    @apply lorem ipsum dolor sit amet consectetur adipiscing elit proin
+      ex massa hendrerit eu posuere;
+  }
+}
+"
+`;
+
+exports[`'@page' > expectation 1`] = `
+"/* --------------------------------------------------------| printWidth=60 (in snapshot) */
+@page {
+  @apply lorem ipsum dolor sit amet consectetur adipiscing elit proin
+    ex massa hendrerit eu posuere;
+}
+
+section {
+  @apply lorem ipsum dolor sit amet consectetur adipiscing elit proin
+    ex massa hendrerit eu posuere;
+}
+
+@media print {
+  button {
+    @apply lorem ipsum dolor sit amet consectetur adipiscing elit proin
+      ex massa hendrerit eu posuere;
+  }
+}
+"
+`;
+
+exports[`'@position-try' > expectation 1`] = `
+"/* --------------------------------------------------------| printWidth=60 (in snapshot) */
+@position-try --custom-left {
+  @apply lorem ipsum dolor sit amet consectetur adipiscing elit proin
+    ex massa hendrerit eu posuere;
+}
+
+@position-try --custom-bottom {
+  @apply lorem ipsum dolor sit amet consectetur adipiscing elit proin
+    ex massa hendrerit eu posuere;
+}
+
+@position-try --custom-right {
+  @apply lorem ipsum dolor sit amet consectetur adipiscing elit proin
+    ex massa hendrerit eu posuere;
+}
+
+@position-try --custom-bottom-right {
+  @apply lorem ipsum dolor sit amet consectetur adipiscing elit proin
+    ex massa hendrerit eu posuere;
+}
+"
+`;
+
+exports[`'@property' > expectation 1`] = `
+"/* --------------------------------------------------------| printWidth=60 (in snapshot) */
+@property --myColor {
+  @apply lorem ipsum dolor sit amet consectetur adipiscing elit proin
+    ex massa hendrerit eu posuere;
+}
+
+@property --myWidth {
+  @apply lorem ipsum dolor sit amet consectetur adipiscing elit proin
+    ex massa hendrerit eu posuere;
+}
+
+p {
+  @apply lorem ipsum dolor sit amet consectetur adipiscing elit proin
+    ex massa hendrerit eu posuere;
+}
+"
+`;
+
+exports[`'@scope' > expectation 1`] = `
+"/* --------------------------------------------------------| printWidth=60 (in snapshot) */
+@scope (.light-scheme) {
+  :scope {
+    @apply lorem ipsum dolor sit amet consectetur adipiscing elit proin
+      ex massa hendrerit eu posuere;
+  }
+
+  a {
+    @apply lorem ipsum dolor sit amet consectetur adipiscing elit proin
+      ex massa hendrerit eu posuere;
+  }
+}
+
+@scope (.dark-scheme) {
+  :scope {
+    @apply lorem ipsum dolor sit amet consectetur adipiscing elit proin
+      ex massa hendrerit eu posuere;
+  }
+
+  a {
+    @apply lorem ipsum dolor sit amet consectetur adipiscing elit proin
+      ex massa hendrerit eu posuere;
+  }
+}
+"
+`;
+
+exports[`'@starting-style' > expectation 1`] = `
+"/* --------------------------------------------------------| printWidth=60 (in snapshot) */
+#target {
+  @apply lorem ipsum dolor sit amet consectetur adipiscing elit proin
+    ex massa hendrerit eu posuere;
+}
+
+@starting-style {
+  #target {
+    @apply lorem ipsum dolor sit amet consectetur adipiscing elit proin
+      ex massa hendrerit eu posuere;
+  }
+}
+"
+`;
+
+exports[`'@view-transition' > expectation 1`] = `
+"/* --------------------------------------------------------| printWidth=60 (in snapshot) */
+@view-transition {
+  @apply lorem ipsum dolor sit amet consectetur adipiscing elit proin
+    ex massa hendrerit eu posuere;
+}
+"
+`;
