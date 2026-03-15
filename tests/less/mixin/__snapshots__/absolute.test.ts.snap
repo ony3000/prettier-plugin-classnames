@@ -1,0 +1,121 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`'example' > expectation 1`] = `
+"/* --------------------------------------------------------| printWidth=60 (in snapshot) */
+.a,
+#b {
+  @apply lorem ipsum dolor sit amet consectetur adipiscing
+    elit proin ex massa hendrerit eu posuere;
+}
+.mixin-class {
+  .a();
+}
+.mixin-id {
+  #b();
+}
+"
+`;
+
+exports[`'guarded namespaces' > expectation 1`] = `
+"/* --------------------------------------------------------| printWidth=60 (in snapshot) */
+#namespace when (@mode = huge) {
+  .mixin() {
+    @apply lorem ipsum dolor sit amet consectetur adipiscing
+      elit proin ex massa hendrerit eu posuere;
+  }
+}
+
+#namespace {
+  .mixin() when (@mode = huge) {
+    @apply lorem ipsum dolor sit amet consectetur adipiscing
+      elit proin ex massa hendrerit eu posuere;
+  }
+}
+
+#sp_1 when (default()) {
+  #sp_2 when (default()) {
+    .mixin() when not(default()) {
+      @apply lorem ipsum dolor sit amet consectetur
+        adipiscing elit proin ex massa hendrerit eu posuere;
+    }
+  }
+}
+"
+`;
+
+exports[`'mixin guards' > expectation 1`] = `
+"/* --------------------------------------------------------| printWidth=60 (in snapshot) */
+.mixin(@a) when (lightness(@a) >= 50%) {
+  @apply lorem ipsum dolor sit amet consectetur adipiscing
+    elit proin ex massa hendrerit eu posuere;
+}
+.mixin(@a) when (lightness(@a) < 50%) {
+  @apply lorem ipsum dolor sit amet consectetur adipiscing
+    elit proin ex massa hendrerit eu posuere;
+}
+.mixin(@a) {
+  color: @a;
+}
+"
+`;
+
+exports[`'mixins with parentheses' > expectation 1`] = `
+"/* --------------------------------------------------------| printWidth=60 (in snapshot) */
+.my-mixin {
+  @apply lorem ipsum dolor sit amet consectetur adipiscing
+    elit proin ex massa hendrerit eu posuere;
+}
+.my-other-mixin() {
+  @apply lorem ipsum dolor sit amet consectetur adipiscing
+    elit proin ex massa hendrerit eu posuere;
+}
+.class {
+  .my-mixin();
+  .my-other-mixin();
+}
+"
+`;
+
+exports[`'namespaces' > expectation 1`] = `
+"/* --------------------------------------------------------| printWidth=60 (in snapshot) */
+#my-library {
+  .my-mixin() {
+    @apply lorem ipsum dolor sit amet consectetur adipiscing
+      elit proin ex massa hendrerit eu posuere;
+  }
+}
+// which can be used like this
+.class {
+  #my-library.my-mixin();
+}
+"
+`;
+
+exports[`'pattern-matching' > expectation 1`] = `
+"/* --------------------------------------------------------| printWidth=60 (in snapshot) */
+.mixin(dark, @color) {
+  color: darken(@color, 10%);
+}
+.mixin(light, @color) {
+  color: lighten(@color, 10%);
+}
+.mixin(@_, @color) {
+  @apply lorem ipsum dolor sit amet consectetur adipiscing
+    elit proin ex massa hendrerit eu posuere;
+}
+"
+`;
+
+exports[`'selectors in mixins' > expectation 1`] = `
+"/* --------------------------------------------------------| printWidth=60 (in snapshot) */
+.my-hover-mixin() {
+  &:hover {
+    @apply lorem ipsum dolor sit amet consectetur adipiscing
+      elit proin ex massa hendrerit eu posuere;
+  }
+}
+button {
+  .my-hover-mixin();
+}
+"
+`;

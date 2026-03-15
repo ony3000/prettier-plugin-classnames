@@ -1,0 +1,77 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`'::after' > expectation 1`] = `
+"/* --------------------------------------------------------| printWidth=60 (in snapshot) */
+.exciting-text::after {
+  @apply lorem ipsum dolor sit amet consectetur adipiscing
+    elit proin ex massa hendrerit eu posuere;
+}
+
+.boring-text::after {
+  @apply lorem ipsum dolor sit amet consectetur adipiscing
+    elit proin ex massa hendrerit eu posuere;
+}
+"
+`;
+
+exports[`'::before' > expectation 1`] = `
+"/* --------------------------------------------------------| printWidth=60 (in snapshot) */
+q::before {
+  @apply lorem ipsum dolor sit amet consectetur adipiscing
+    elit proin ex massa hendrerit eu posuere;
+}
+
+q::after {
+  @apply lorem ipsum dolor sit amet consectetur adipiscing
+    elit proin ex massa hendrerit eu posuere;
+}
+"
+`;
+
+exports[`'::first-letter' > expectation 1`] = `
+"/* --------------------------------------------------------| printWidth=60 (in snapshot) */
+p {
+  @apply lorem ipsum dolor sit amet consectetur adipiscing
+    elit proin ex massa hendrerit eu posuere;
+}
+
+h2 + p::first-letter {
+  @apply lorem ipsum dolor sit amet consectetur adipiscing
+    elit proin ex massa hendrerit eu posuere;
+}
+"
+`;
+
+exports[`'::marker' > expectation 1`] = `
+"/* --------------------------------------------------------| printWidth=60 (in snapshot) */
+ul li::marker {
+  @apply lorem ipsum dolor sit amet consectetur adipiscing
+    elit proin ex massa hendrerit eu posuere;
+}
+"
+`;
+
+exports[`'::placeholder' > expectation 1`] = `
+"/* --------------------------------------------------------| printWidth=60 (in snapshot) */
+input::placeholder {
+  @apply lorem ipsum dolor sit amet consectetur adipiscing
+    elit proin ex massa hendrerit eu posuere;
+}
+"
+`;
+
+exports[`'::selection' > expectation 1`] = `
+"/* --------------------------------------------------------| printWidth=60 (in snapshot) */
+/* Make selected text gold on a red background */
+::selection {
+  @apply lorem ipsum dolor sit amet consectetur adipiscing
+    elit proin ex massa hendrerit eu posuere;
+}
+
+/* Make selected text in a paragraph white on a blue background */
+p::selection {
+  @apply lorem ipsum dolor sit amet consectetur adipiscing
+    elit proin ex massa hendrerit eu posuere;
+}
+"
+`;
