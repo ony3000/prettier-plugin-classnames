@@ -4,6 +4,7 @@ import type { AST } from 'prettier';
 import {
   findTargetClassNameNodesBasedOnJavaScript,
   findTargetClassNameNodesBasedOnHtml,
+  findTargetClassNameNodesBasedOnCss,
   findTargetClassNameNodesBasedOnAstro,
 } from './finder';
 import {
@@ -643,6 +644,12 @@ export async function parseLineByLineAndReplaceAsync({
     case 'angular':
     case 'vue': {
       targetClassNameNodes = findTargetClassNameNodesBasedOnHtml(formattedText, ast, options);
+      break;
+    }
+    case 'css':
+    case 'scss':
+    case 'less': {
+      targetClassNameNodes = findTargetClassNameNodesBasedOnCss(formattedText, ast, options);
       break;
     }
     case 'astro': {

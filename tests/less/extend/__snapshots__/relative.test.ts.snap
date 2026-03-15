@@ -1,0 +1,154 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`'duplication detection' > expectation 1`] = `
+"/* --------------------------------------------------------| printWidth=60 (in snapshot) */
+.alert-info,
+.widget {
+  @apply lorem ipsum dolor sit amet consectetur adipiscing elit proin
+    ex massa hendrerit eu posuere;
+}
+
+.alert:extend(.alert-info, .widget) {
+}
+"
+`;
+
+exports[`'exact matching with extend' > expectation 1`] = `
+"/* --------------------------------------------------------| printWidth=60 (in snapshot) */
+.a.class,
+.class.a,
+.class > .a {
+  @apply lorem ipsum dolor sit amet consectetur adipiscing elit proin
+    ex massa hendrerit eu posuere;
+}
+.test:extend(.class) {
+} // this will NOT match the any selectors above
+"
+`;
+
+exports[`'example' > expectation 1`] = `
+"/* --------------------------------------------------------| printWidth=60 (in snapshot) */
+nav ul {
+  &:extend(.inline);
+  @apply lorem ipsum dolor sit amet consectetur adipiscing elit proin
+    ex massa hendrerit eu posuere;
+}
+.inline {
+  @apply lorem ipsum dolor sit amet consectetur adipiscing elit proin
+    ex massa hendrerit eu posuere;
+}
+"
+`;
+
+exports[`'extend "all"' > expectation 1`] = `
+"/* --------------------------------------------------------| printWidth=60 (in snapshot) */
+.a.b.test,
+.test.c {
+  @apply lorem ipsum dolor sit amet consectetur adipiscing elit proin
+    ex massa hendrerit eu posuere;
+}
+.test {
+  &:hover {
+    @apply lorem ipsum dolor sit amet consectetur adipiscing elit proin
+      ex massa hendrerit eu posuere;
+  }
+}
+
+.replacement:extend(.test all) {
+}
+"
+`;
+
+exports[`'extend attached to selector' > expectation 1`] = `
+"/* --------------------------------------------------------| printWidth=60 (in snapshot) */
+.big-division,
+.big-bag:extend(.bag),
+.big-bucket:extend(.bucket) {
+  @apply lorem ipsum dolor sit amet consectetur adipiscing elit proin
+    ex massa hendrerit eu posuere;
+}
+"
+`;
+
+exports[`'extending nested selectors' > expectation 1`] = `
+"/* --------------------------------------------------------| printWidth=60 (in snapshot) */
+.bucket {
+  tr {
+    // nested ruleset with target selector
+    @apply lorem ipsum dolor sit amet consectetur adipiscing elit proin
+      ex massa hendrerit eu posuere;
+  }
+}
+.some-class:extend(.bucket tr) {
+} // nested ruleset is recognized
+"
+`;
+
+exports[`'nth expression' > expectation 1`] = `
+"/* --------------------------------------------------------| printWidth=60 (in snapshot) */
+:nth-child(1n + 3) {
+  @apply lorem ipsum dolor sit amet consectetur adipiscing elit proin
+    ex massa hendrerit eu posuere;
+}
+.child:extend(:nth-child(n + 3)) {
+}
+
+[title="identifier"] {
+  @apply lorem ipsum dolor sit amet consectetur adipiscing elit proin
+    ex massa hendrerit eu posuere;
+}
+[title="identifier"] {
+  @apply lorem ipsum dolor sit amet consectetur adipiscing elit proin
+    ex massa hendrerit eu posuere;
+}
+[title="identifier"] {
+  @apply lorem ipsum dolor sit amet consectetur adipiscing elit proin
+    ex massa hendrerit eu posuere;
+}
+
+.noQuote:extend([title="identifier"]) {
+}
+.singleQuote:extend([title="identifier"]) {
+}
+.doubleQuote:extend([title="identifier"]) {
+}
+"
+`;
+
+exports[`'scoping / extend inside @media' > expectation 1`] = `
+"/* --------------------------------------------------------| printWidth=60 (in snapshot) */
+@media print {
+  .screenClass:extend(.selector) {
+  } // extend inside media
+  .selector {
+    // this will be matched - it is in the same media
+    @apply lorem ipsum dolor sit amet consectetur adipiscing elit proin
+      ex massa hendrerit eu posuere;
+  }
+}
+.selector {
+  // ruleset on top of style sheet - extend ignores it
+  @apply lorem ipsum dolor sit amet consectetur adipiscing elit proin
+    ex massa hendrerit eu posuere;
+}
+@media screen {
+  .selector {
+    // ruleset inside another media - extend ignores it
+    @apply lorem ipsum dolor sit amet consectetur adipiscing elit proin
+      ex massa hendrerit eu posuere;
+  }
+}
+"
+`;
+
+exports[`'selector interpolation with extend' > expectation 1`] = `
+"/* --------------------------------------------------------| printWidth=60 (in snapshot) */
+.bucket {
+  @apply lorem ipsum dolor sit amet consectetur adipiscing elit proin
+    ex massa hendrerit eu posuere;
+}
+@{variable}:extend(.bucket) {
+}
+@variable: .selector;
+"
+`;
