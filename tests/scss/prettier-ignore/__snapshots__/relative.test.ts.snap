@@ -1,0 +1,61 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`'comments that contain the phrase \`pre…' > expectation 1`] = `
+"/* --------------------------------------------------------| printWidth=60 (in snapshot) */
+/**
+ * prettier-ignore
+ */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  @apply lorem ipsum dolor sit amet consectetur adipiscing elit proin
+    ex massa hendrerit eu posuere;
+}
+"
+`;
+
+exports[`'ignore comment (1)' > expectation 1`] = `
+"/* --------------------------------------------------------| printWidth=60 (in snapshot) */
+/* prettier-ignore */
+#blue { @apply lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere; }
+"
+`;
+
+exports[`'ignore comment (2)' > expectation 1`] = `
+"/* --------------------------------------------------------| printWidth=60 (in snapshot) */
+@keyframes slide-and-fade {
+  /* prettier-ignore */
+  from { @apply lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere; }
+  50% {
+    @apply lorem ipsum dolor sit amet consectetur adipiscing elit proin
+      ex massa hendrerit eu posuere;
+  }
+  to {
+    @apply lorem ipsum dolor sit amet consectetur adipiscing elit proin
+      ex massa hendrerit eu posuere;
+  }
+}
+"
+`;
+
+exports[`'ignore comment (3)' > expectation 1`] = `
+"/* --------------------------------------------------------| printWidth=60 (in snapshot) */
+nav {
+  ul {
+    @apply lorem ipsum dolor sit amet consectetur adipiscing elit proin
+      ex massa hendrerit eu posuere;
+  }
+
+  // prettier-ignore
+  li { @apply lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere; }
+
+  a {
+    @apply lorem ipsum dolor sit amet consectetur adipiscing elit proin
+      ex massa hendrerit eu posuere;
+  }
+}
+"
+`;

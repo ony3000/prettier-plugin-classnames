@@ -1,0 +1,47 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`'child combinator' > expectation 1`] = `
+"/* --------------------------------------------------------| printWidth=60 (in snapshot) */
+span {
+  @apply lorem ipsum dolor sit amet consectetur adipiscing elit proin
+    ex massa hendrerit eu posuere;
+}
+
+div > span {
+  @apply lorem ipsum dolor sit amet consectetur adipiscing elit proin
+    ex massa hendrerit eu posuere;
+}
+"
+`;
+
+exports[`'descendant combinator' > expectation 1`] = `
+"/* --------------------------------------------------------| printWidth=60 (in snapshot) */
+li {
+  @apply lorem ipsum dolor sit amet consectetur adipiscing elit proin
+    ex massa hendrerit eu posuere;
+}
+
+li li {
+  @apply lorem ipsum dolor sit amet consectetur adipiscing elit proin
+    ex massa hendrerit eu posuere;
+}
+"
+`;
+
+exports[`'next-sibling combinator' > expectation 1`] = `
+"/* --------------------------------------------------------| printWidth=60 (in snapshot) */
+li:first-of-type + li {
+  @apply lorem ipsum dolor sit amet consectetur adipiscing elit proin
+    ex massa hendrerit eu posuere;
+}
+"
+`;
+
+exports[`'subsequent-sibling combinator' > expectation 1`] = `
+"/* --------------------------------------------------------| printWidth=60 (in snapshot) */
+p ~ span {
+  @apply lorem ipsum dolor sit amet consectetur adipiscing elit proin
+    ex massa hendrerit eu posuere;
+}
+"
+`;

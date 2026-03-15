@@ -1,0 +1,178 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`':active' > expectation 1`] = `
+"/* --------------------------------------------------------| printWidth=60 (in snapshot) */
+/* Unvisited links */
+a:link {
+  @apply lorem ipsum dolor sit amet consectetur adipiscing
+    elit proin ex massa hendrerit eu posuere;
+}
+/* Visited links */
+a:visited {
+  @apply lorem ipsum dolor sit amet consectetur adipiscing
+    elit proin ex massa hendrerit eu posuere;
+}
+/* Hovered links */
+a:hover {
+  @apply lorem ipsum dolor sit amet consectetur adipiscing
+    elit proin ex massa hendrerit eu posuere;
+}
+/* Active links */
+a:active {
+  @apply lorem ipsum dolor sit amet consectetur adipiscing
+    elit proin ex massa hendrerit eu posuere;
+}
+
+/* Active paragraphs */
+p:active {
+  @apply lorem ipsum dolor sit amet consectetur adipiscing
+    elit proin ex massa hendrerit eu posuere;
+}
+"
+`;
+
+exports[`':checked' > expectation 1`] = `
+"/* --------------------------------------------------------| printWidth=60 (in snapshot) */
+div,
+select {
+  @apply lorem ipsum dolor sit amet consectetur adipiscing
+    elit proin ex massa hendrerit eu posuere;
+}
+
+/* Labels for checked inputs */
+input:checked + label {
+  @apply lorem ipsum dolor sit amet consectetur adipiscing
+    elit proin ex massa hendrerit eu posuere;
+}
+
+/* Radio element, when checked */
+input[type="radio"]:checked {
+  @apply lorem ipsum dolor sit amet consectetur adipiscing
+    elit proin ex massa hendrerit eu posuere;
+}
+
+/* Checkbox element, when checked */
+input[type="checkbox"]:checked {
+  @apply lorem ipsum dolor sit amet consectetur adipiscing
+    elit proin ex massa hendrerit eu posuere;
+}
+
+/* Option elements, when selected */
+option:checked {
+  @apply lorem ipsum dolor sit amet consectetur adipiscing
+    elit proin ex massa hendrerit eu posuere;
+}
+"
+`;
+
+exports[`':disabled' > expectation 1`] = `
+"/* --------------------------------------------------------| printWidth=60 (in snapshot) */
+input[type="text"]:disabled {
+  @apply lorem ipsum dolor sit amet consectetur adipiscing
+    elit proin ex massa hendrerit eu posuere;
+}
+"
+`;
+
+exports[`':first-of-type' > expectation 1`] = `
+"/* --------------------------------------------------------| printWidth=60 (in snapshot) */
+p:first-of-type {
+  @apply lorem ipsum dolor sit amet consectetur adipiscing
+    elit proin ex massa hendrerit eu posuere;
+}
+"
+`;
+
+exports[`':focus' > expectation 1`] = `
+"/* --------------------------------------------------------| printWidth=60 (in snapshot) */
+.red-input:focus {
+  @apply lorem ipsum dolor sit amet consectetur adipiscing
+    elit proin ex massa hendrerit eu posuere;
+}
+
+.blue-input:focus {
+  @apply lorem ipsum dolor sit amet consectetur adipiscing
+    elit proin ex massa hendrerit eu posuere;
+}
+"
+`;
+
+exports[`':has()' > expectation 1`] = `
+"/* --------------------------------------------------------| printWidth=60 (in snapshot) */
+section:has(.featured) {
+  @apply lorem ipsum dolor sit amet consectetur adipiscing
+    elit proin ex massa hendrerit eu posuere;
+}
+"
+`;
+
+exports[`':hover' > expectation 1`] = `
+"/* --------------------------------------------------------| printWidth=60 (in snapshot) */
+a {
+  @apply lorem ipsum dolor sit amet consectetur adipiscing
+    elit proin ex massa hendrerit eu posuere;
+}
+
+a:hover {
+  @apply lorem ipsum dolor sit amet consectetur adipiscing
+    elit proin ex massa hendrerit eu posuere;
+}
+"
+`;
+
+exports[`':last-of-type' > expectation 1`] = `
+"/* --------------------------------------------------------| printWidth=60 (in snapshot) */
+p:last-of-type {
+  @apply lorem ipsum dolor sit amet consectetur adipiscing
+    elit proin ex massa hendrerit eu posuere;
+}
+"
+`;
+
+exports[`':not()' > expectation 1`] = `
+"/* --------------------------------------------------------| printWidth=60 (in snapshot) */
+.fancy {
+  @apply lorem ipsum dolor sit amet consectetur adipiscing
+    elit proin ex massa hendrerit eu posuere;
+}
+
+/* <p> elements that don't have a class \`.fancy\` */
+p:not(.fancy) {
+  @apply lorem ipsum dolor sit amet consectetur adipiscing
+    elit proin ex massa hendrerit eu posuere;
+}
+
+/* Elements that are not <p> elements */
+body :not(p) {
+  @apply lorem ipsum dolor sit amet consectetur adipiscing
+    elit proin ex massa hendrerit eu posuere;
+}
+
+/* Elements that are not <div>s or \`.fancy\` */
+body :not(div):not(.fancy) {
+  @apply lorem ipsum dolor sit amet consectetur adipiscing
+    elit proin ex massa hendrerit eu posuere;
+}
+
+/* Elements that are not <div>s or \`.fancy\` */
+body :not(div, .fancy) {
+  @apply lorem ipsum dolor sit amet consectetur adipiscing
+    elit proin ex massa hendrerit eu posuere;
+}
+
+/* Elements inside an <h2> that aren't a <span> with a class of \`.foo\` */
+h2 :not(span.foo) {
+  @apply lorem ipsum dolor sit amet consectetur adipiscing
+    elit proin ex massa hendrerit eu posuere;
+}
+"
+`;
+
+exports[`':root' > expectation 1`] = `
+"/* --------------------------------------------------------| printWidth=60 (in snapshot) */
+:root {
+  @apply lorem ipsum dolor sit amet consectetur adipiscing
+    elit proin ex massa hendrerit eu posuere;
+}
+"
+`;
