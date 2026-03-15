@@ -1684,6 +1684,62 @@ function handleAstroElement(ctx: CaseHandlerContext) {
   }
 }
 
+function handleCssCssAtrule(ctx: CaseHandlerContext) {
+  ctx.nonCommentNodes.push(ctx.currentASTNode);
+
+  if (
+    isTypeof(
+      ctx.node,
+      z.object({
+        name: z.literal('apply'),
+        nodes: z.undefined(),
+        raws: z.object({
+          afterName: z.string(),
+          params: z.string(),
+        }),
+        source: z.object({
+          start: z.object({
+            line: z.number(),
+          }),
+        }),
+      }),
+    )
+  ) {
+    // Note: In fact, the `@apply` rule is not a `keywordStartingNode`, but it is considered a kind of safe list to maintain the `classNameNode`s obtained from the code inside the rule.
+    ctx.keywordStartingNodes.push(ctx.currentASTNode);
+
+    const offset = '@apply'.length;
+
+    const classNameNodeRangeStart = ctx.currentASTNode.start + offset;
+    const classNameNodeRangeEnd = ctx.currentASTNode.end;
+
+    const nodeStartLineIndex = ctx.node.source.start.line - 1;
+
+    // Note: In fact, since CSS code does not have a delimiter, it might be better to create a new node type. However, if we consider the characters on the left and right of the class name as a delimiter, the formatting method is the same as AttributeNode, so I have processed it as an AttributeNode type for now.
+    ctx.classNameNodes.push({
+      type: 'attribute',
+      isTheFirstLineOnTheSameLineAsTheOpeningTag: true,
+      elementName: '',
+      range: [classNameNodeRangeStart, classNameNodeRangeEnd],
+      startLineIndex: nodeStartLineIndex,
+    });
+  }
+}
+
+function handleCssCssComment(ctx: CaseHandlerContext) {
+  if (
+    isTypeof(
+      ctx.node,
+      z.object({
+        text: z.string(),
+      }),
+    ) &&
+    ctx.node.text.trim() === 'prettier-ignore'
+  ) {
+    ctx.prettierIgnoreNodes.push(ctx.currentASTNode);
+  }
+}
+
 function handleAstroFrontmatter(ctx: CaseHandlerContext) {
   ctx.nonCommentNodes.push(ctx.currentASTNode);
 
@@ -1747,6 +1803,11 @@ const typescriptCaseHandlers: CaseHandlers = {
   Line: handleTypeScriptBlock,
 };
 
+const cssCaseHandlers: CaseHandlers = {
+  'css-atrule': handleCssCssAtrule,
+  'css-comment': handleCssCssComment,
+};
+
 const parserCaseHandlers: ParserCaseHandlers = {
   babel: {
     ...babelCaseHandlers,
@@ -1799,6 +1860,15 @@ const parserCaseHandlers: ParserCaseHandlers = {
     attribute: handleHtmlAttribute,
     element: handleAngularElement,
     comment: handleHtmlComment,
+  },
+  css: {
+    ...cssCaseHandlers,
+  },
+  scss: {
+    ...cssCaseHandlers,
+  },
+  less: {
+    ...cssCaseHandlers,
   },
   astro: {
     frontmatter: handleAstroFrontmatter,
@@ -2150,6 +2220,121 @@ export function findTargetClassNameNodesBasedOnHtml(
 
     const currentNodeRangeStart = node.sourceSpan.start.offset;
     const currentNodeRangeEnd = node.sourceSpan.end.offset;
+
+    const currentASTNode: ASTNode = {
+      type: nodeType,
+      start: currentNodeRangeStart,
+      end: currentNodeRangeEnd,
+    };
+
+    const handler = parserCaseHandlers[String(options.parser)]?.[nodeType];
+
+    if (handler) {
+      const context: CaseHandlerContext = {
+        formattedText,
+        options,
+        supportedAttributes,
+        supportedFunctions,
+        nonCommentNodes,
+        prettierIgnoreNodes,
+        keywordStartingNodes,
+        classNameNodes,
+        node,
+        parentNode,
+        currentASTNode,
+      };
+
+      handler(context);
+    } else {
+      nonCommentNodes.push(currentASTNode);
+    }
+  }
+
+  recursion(ast);
+
+  return filterAndSortClassNameNodes(
+    nonCommentNodes,
+    prettierIgnoreNodes,
+    keywordStartingNodes,
+    classNameNodes,
+  );
+}
+
+export function findTargetClassNameNodesBasedOnCss(
+  formattedText: string,
+  ast: AST,
+  options: ResolvedOptions,
+): ClassNameNode[] {
+  const supportedAttributes: string[] = ['class', 'className', ...options.customAttributes];
+  const supportedFunctions: string[] = ['classNames', ...options.customFunctions];
+  /**
+   * Most nodes
+   */
+  const nonCommentNodes: ASTNode[] = [];
+  /**
+   * Nodes with a valid 'prettier-ignore' syntax
+   */
+  const prettierIgnoreNodes: ASTNode[] = [];
+  /**
+   * Nodes starting with supported attribute names or supported function names
+   */
+  const keywordStartingNodes: ASTNode[] = [];
+  /**
+   * Class names enclosed in delimiters
+   */
+  const classNameNodes: ClassNameNode[] = [];
+
+  function recursion(node: unknown, parentNode?: { type: string }): void {
+    if (!isTypeof(node, z.object({ type: z.string() }))) {
+      return;
+    }
+
+    let recursiveProps: string[] = [];
+
+    switch (node.type) {
+      case 'css-atrule':
+      case 'css-root':
+      case 'css-rule': {
+        recursiveProps = ['nodes'];
+        break;
+      }
+      default: {
+        break;
+      }
+    }
+
+    Object.entries(node).forEach(([key, value]) => {
+      if (!recursiveProps.includes(key)) {
+        return;
+      }
+
+      if (Array.isArray(value)) {
+        value.forEach((childNode: unknown) => {
+          recursion(childNode, node);
+        });
+        return;
+      }
+
+      recursion(value, node);
+    });
+
+    if (
+      !isTypeof(
+        node,
+        z.object({
+          source: z.object({
+            startOffset: z.number(),
+            endOffset: z.number(),
+          }),
+        }),
+      )
+    ) {
+      return;
+    }
+
+    const nodeType = node.type;
+    const currentNodeRangeStart = node.source.startOffset;
+    const currentNodeRangeEnd = node.source.endOffset;
 
     const currentASTNode: ASTNode = {
       type: nodeType,
