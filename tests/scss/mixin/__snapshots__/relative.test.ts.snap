@@ -1,0 +1,20 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`'example' > expectation 1`] = `
+"/* --------------------------------------------------------| printWidth=60 (in snapshot) */
+@mixin theme($theme: DarkGray) {
+  @apply lorem ipsum dolor sit amet consectetur adipiscing elit proin
+    ex massa hendrerit eu posuere;
+}
+
+.info {
+  @include theme;
+}
+.alert {
+  @include theme($theme: DarkRed);
+}
+.success {
+  @include theme($theme: DarkGreen);
+}
+"
+`;
