@@ -72,6 +72,29 @@ export default {
 };
 ```
 
+### Markdown/MDX Override
+
+This plugin does not support Markdown and MDX, but if this plugin supports a language inside code blocks (e.g. Vue), unintended formatting may occur inside the code blocks.
+
+To prevent unintended formatting, you can use configuration overrides for Markdown and MDX.
+
+JSON example:
+
+```json
+{
+  "plugins": ["prettier-plugin-classnames"],
+  "customFunctions": ["clsx"],
+  "overrides": [
+    {
+      "files": ["*.md", "*.mdx"],
+      "options": {
+        "plugins": []
+      }
+    }
+  ]
+}
+```
+
 ## Options
 
 ### Custom Attributes
