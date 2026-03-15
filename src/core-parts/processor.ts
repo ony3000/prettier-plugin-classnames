@@ -646,7 +646,8 @@ export async function parseLineByLineAndReplaceAsync({
       targetClassNameNodes = findTargetClassNameNodesBasedOnHtml(formattedText, ast, options);
       break;
     }
-    case 'css': {
+    case 'css':
+    case 'scss': {
       targetClassNameNodes = findTargetClassNameNodesBasedOnCss(formattedText, ast, options);
       break;
     }

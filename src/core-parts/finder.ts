@@ -1864,6 +1864,9 @@ const parserCaseHandlers: ParserCaseHandlers = {
   css: {
     ...cssCaseHandlers,
   },
+  scss: {
+    ...cssCaseHandlers,
+  },
   astro: {
     frontmatter: handleAstroFrontmatter,
     attribute: handleAstroAttribute,
