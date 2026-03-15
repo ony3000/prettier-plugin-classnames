@@ -22,6 +22,24 @@ export const fixtures: Omit<Fixture, 'output'>[] = [
 `,
   },
   {
+    name: 'ignore comment (3)',
+    input: `
+/* --------------------------------------------------------| printWidth=60 (in snapshot) */
+nav {
+  ul {
+    @apply lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere;
+  }
+
+  // prettier-ignore
+  li { @apply lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere; }
+
+  a {
+    @apply lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere;
+  }
+}
+`,
+  },
+  {
     name: 'comments that contain the phrase `prettier-ignore` but do not prevent formatting',
     input: `
 /* --------------------------------------------------------| printWidth=60 (in snapshot) */
