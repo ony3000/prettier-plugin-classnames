@@ -40,3 +40,22 @@ exports[`'ignore comment (2)' > expectation 1`] = `
 }
 "
 `;
+
+exports[`'ignore comment (3)' > expectation 1`] = `
+"/* --------------------------------------------------------| printWidth=60 (in snapshot) */
+nav {
+  ul {
+    @apply lorem ipsum dolor sit amet consectetur adipiscing
+      elit proin ex massa hendrerit eu posuere;
+  }
+
+  // prettier-ignore
+  li { @apply lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere; }
+
+  a {
+    @apply lorem ipsum dolor sit amet consectetur adipiscing
+      elit proin ex massa hendrerit eu posuere;
+  }
+}
+"
+`;
