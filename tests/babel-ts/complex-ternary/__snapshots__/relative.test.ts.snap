@@ -9,9 +9,10 @@ export function Foo({ children }) {
         condition
           ? "lorem ipsum dolor sit amet"
           : condition
-            ? "lorem ipsum dolor sit amet consectetur adipiscing elit proin"
-            : \`lorem ipsum dolor sit amet consectetur adipiscing elit proin
-              ex massa hendrerit eu posuere\`
+            ? \`lorem ipsum dolor sit amet consectetur adipiscing elit
+              proin\`
+            : \`lorem ipsum dolor sit amet consectetur adipiscing elit
+              proin ex massa hendrerit eu posuere\`
       }
     >
       {children}
@@ -30,9 +31,10 @@ export function Foo({ children }) {
         condition
           ? "lorem ipsum dolor sit amet"
           : condition
-            ? "lorem ipsum dolor sit amet consectetur adipiscing elit proin"
-            : \`lorem ipsum dolor sit amet consectetur adipiscing elit proin
-              ex massa hendrerit eu posuere\`
+            ? \`lorem ipsum dolor sit amet consectetur adipiscing elit
+              proin\`
+            : \`lorem ipsum dolor sit amet consectetur adipiscing elit
+              proin ex massa hendrerit eu posuere\`
       }
     >
       {children}
@@ -99,11 +101,13 @@ export function Foo({ children }) {
         condition
           ? "lorem ipsum dolor sit amet"
           : condition
-            ? "lorem ipsum dolor sit amet consectetur adipiscing elit proin"
+            ? \`lorem ipsum dolor sit amet consectetur adipiscing elit
+              proin\`
             : condition
-              ? "lorem ipsum dolor sit amet consectetur adipiscing elit proin"
-              : \`lorem ipsum dolor sit amet consectetur adipiscing elit proin
-                ex massa hendrerit eu posuere\`
+              ? \`lorem ipsum dolor sit amet consectetur adipiscing elit
+                proin\`
+              : \`lorem ipsum dolor sit amet consectetur adipiscing elit
+                proin ex massa hendrerit eu posuere\`
       }
     >
       {children}
@@ -122,11 +126,13 @@ export function Foo({ children }) {
         condition
           ? "lorem ipsum dolor sit amet"
           : condition
-            ? "lorem ipsum dolor sit amet consectetur adipiscing elit proin"
+            ? \`lorem ipsum dolor sit amet consectetur adipiscing elit
+              proin\`
             : condition
-              ? "lorem ipsum dolor sit amet consectetur adipiscing elit proin"
-              : \`lorem ipsum dolor sit amet consectetur adipiscing elit proin
-                ex massa hendrerit eu posuere\`
+              ? \`lorem ipsum dolor sit amet consectetur adipiscing elit
+                proin\`
+              : \`lorem ipsum dolor sit amet consectetur adipiscing elit
+                proin ex massa hendrerit eu posuere\`
       }
     >
       {children}
@@ -145,7 +151,8 @@ export function Foo({ children }) {
         condition
           ? "lorem ipsum dolor sit amet"
           : condition
-            ? "lorem ipsum dolor sit amet consectetur adipiscing elit proin"
+            ? \`lorem ipsum dolor sit amet consectetur adipiscing elit
+              proin\`
             : condition
               ? \`lorem ipsum dolor sit amet
                 \${"consectetur adipiscing elit proin"} ex massa hendrerit eu
@@ -177,7 +184,8 @@ export function Foo({ children }) {
               : \`lorem ipsum dolor sit amet
                 \${"consectetur adipiscing elit proin"} ex massa hendrerit eu
                 posuere\`
-            : "lorem ipsum dolor sit amet consectetur adipiscing elit proin"
+            : \`lorem ipsum dolor sit amet consectetur adipiscing elit
+              proin\`
           : "lorem ipsum dolor sit amet"
       }
     >

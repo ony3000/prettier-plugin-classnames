@@ -10,8 +10,8 @@ exports[`'invalid ignore comment (1) - formatti…' > expectation 1`] = `
     <div
       :class="
         classNames(
-          \`lorem ipsum dolor sit amet consectetur adipiscing elit proin
-          ex massa hendrerit eu posuere\`,
+          \`lorem ipsum dolor sit amet consectetur adipiscing elit
+          proin ex massa hendrerit eu posuere\`,
         )
       "
     >
@@ -30,8 +30,8 @@ exports[`'invalid ignore comment (2) - formatti…' > expectation 1`] = `
     <div
       :class="
         classNames(
-          \`lorem ipsum dolor sit amet consectetur adipiscing elit proin
-          ex massa hendrerit eu posuere\`,
+          \`lorem ipsum dolor sit amet consectetur adipiscing elit
+          proin ex massa hendrerit eu posuere\`,
         )
       "
     >
@@ -87,8 +87,8 @@ exports[`'valid ignore comment (3) - class name…' > expectation 1`] = `
         classNames(
           // prettier-ignore
           'lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere',
-          \`lorem ipsum dolor sit amet consectetur adipiscing elit proin
-          ex massa hendrerit eu posuere\`,
+          \`lorem ipsum dolor sit amet consectetur adipiscing elit
+          proin ex massa hendrerit eu posuere\`,
         )
       "
     >
@@ -105,8 +105,8 @@ exports[`'valid ignore comment (4) - script tag' > expectation 1`] = `
 const combination = classNames(
   /* prettier-ignore */
   'lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere',
-  \`lorem ipsum dolor sit amet consectetur adipiscing elit proin
-  ex massa hendrerit eu posuere\`,
+  \`lorem ipsum dolor sit amet consectetur adipiscing elit
+  proin ex massa hendrerit eu posuere\`,
 );
 </script>
 "
@@ -118,8 +118,8 @@ exports[`'valid ignore comment (5) - script tag' > expectation 1`] = `
 const combination = classNames(
   // prettier-ignore
   'lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere',
-  \`lorem ipsum dolor sit amet consectetur adipiscing elit proin
-  ex massa hendrerit eu posuere\`,
+  \`lorem ipsum dolor sit amet consectetur adipiscing elit
+  proin ex massa hendrerit eu posuere\`,
 );
 </script>
 "
@@ -135,8 +135,8 @@ exports[`'valid ignore comment (6) - multi-line…' > expectation 1`] = `
 const combination = classNames(
   // prettier-ignore
   'lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere',
-  \`lorem ipsum dolor sit amet consectetur adipiscing elit proin
-  ex massa hendrerit eu posuere\`,
+  \`lorem ipsum dolor sit amet consectetur adipiscing elit
+  proin ex massa hendrerit eu posuere\`,
 );
 </script>
 "

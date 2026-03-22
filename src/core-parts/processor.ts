@@ -359,13 +359,12 @@ function formatTokens(
       const props = token.props as Omit<AttributeNode, 'range' | 'type'> & {
         indentLevel: number;
       };
-      const leadingText = isEndingPositionAbsolute
-        ? assembleTokens(formattedTokens.slice(0, tokenIndex))
-            .split(EOL)
-            .slice(-1)
-            .join('')
-            .replace(/\t/g, SPACE.repeat(options.tabWidth))
-        : '';
+      const rawLeadingText = assembleTokens(formattedTokens.slice(0, tokenIndex))
+        .split(EOL)
+        .slice(-1)
+        .join('')
+        .replace(/\t/g, SPACE.repeat(options.tabWidth));
+      const leadingText = isEndingPositionAbsolute ? rawLeadingText : rawLeadingText.trimStart();
       const trailingDelimiter = isEndingPositionAbsolute
         ? formattedTokens[tokenIndex + 1].body
         : '';
@@ -431,13 +430,12 @@ function formatTokens(
       const props = token.props as Omit<ExpressionNode, 'range' | 'type'> & {
         indentLevel: number;
       };
-      const leadingText = isEndingPositionAbsolute
-        ? assembleTokens(formattedTokens.slice(0, tokenIndex))
-            .split(EOL)
-            .slice(-1)
-            .join('')
-            .replace(/\t/g, SPACE.repeat(options.tabWidth))
-        : '';
+      const rawLeadingText = assembleTokens(formattedTokens.slice(0, tokenIndex))
+        .split(EOL)
+        .slice(-1)
+        .join('')
+        .replace(/\t/g, SPACE.repeat(options.tabWidth));
+      const leadingText = isEndingPositionAbsolute ? rawLeadingText : rawLeadingText.trimStart();
       const trailingDelimiter = isEndingPositionAbsolute
         ? formattedTokens[tokenIndex + 1].body
         : '';

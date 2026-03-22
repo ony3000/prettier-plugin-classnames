@@ -11,8 +11,8 @@ h3,
 h4,
 h5,
 h6 {
-  @apply lorem ipsum dolor sit amet consectetur adipiscing elit proin
-    ex massa hendrerit eu posuere;
+  @apply lorem ipsum dolor sit amet consectetur adipiscing
+    elit proin ex massa hendrerit eu posuere;
 }
 "
 `;
@@ -30,12 +30,12 @@ exports[`'ignore comment (2)' > expectation 1`] = `
   /* prettier-ignore */
   from { @apply lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere; }
   50% {
-    @apply lorem ipsum dolor sit amet consectetur adipiscing elit proin
-      ex massa hendrerit eu posuere;
+    @apply lorem ipsum dolor sit amet consectetur adipiscing
+      elit proin ex massa hendrerit eu posuere;
   }
   to {
-    @apply lorem ipsum dolor sit amet consectetur adipiscing elit proin
-      ex massa hendrerit eu posuere;
+    @apply lorem ipsum dolor sit amet consectetur adipiscing
+      elit proin ex massa hendrerit eu posuere;
   }
 }
 "
