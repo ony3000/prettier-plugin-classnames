@@ -49,4 +49,12 @@ export const options: SupportOptions = {
     description:
       'If a line wrapping occurs in a class name written in non-expression syntax, it is transformed into expression syntax. This transformation does not support reversible formatting.',
   },
+  classnamesPrintWidth: {
+    // @ts-ignore
+    since: '0.10.0',
+    type: 'int',
+    category: 'Format',
+    description:
+      'Specify the print width of the class name. If no value is provided, the `printWidth` value is used as default.',
+  },
 };
