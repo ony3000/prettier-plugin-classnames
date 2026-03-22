@@ -72,6 +72,29 @@ export default {
 };
 ```
 
+### Markdown/MDX Override
+
+This plugin does not support Markdown and MDX, but if this plugin supports a language inside code blocks (e.g. Vue), unintended formatting may occur inside the code blocks.
+
+To prevent unintended formatting, you can use configuration overrides for Markdown and MDX.
+
+JSON example:
+
+```json
+{
+  "plugins": ["prettier-plugin-classnames"],
+  "customFunctions": ["clsx"],
+  "overrides": [
+    {
+      "files": ["*.md", "*.mdx"],
+      "options": {
+        "plugins": []
+      }
+    }
+  ]
+}
+```
+
 ## Options
 
 ### Custom Attributes
@@ -155,6 +178,17 @@ If a line wrapping occurs in a class name written in non-expression syntax, it i
 Default | CLI&nbsp;Override | API&nbsp;Override
 --- | --- | ---
 `false` | `--syntax-transformation` | `syntaxTransformation: <boolean>`
+
+### Classnames Print Width
+
+First available in v0.10.0.
+
+Specify the print width of the class name. If no value is provided, the `printWidth` value is used as default.
+
+<!-- prettier-ignore -->
+Default | CLI&nbsp;Override | API&nbsp;Override
+--- | --- | ---
+`undefined` | `--classnames-print-width <number>` | `classnamesPrintWidth: <number>`
 
 ## Version correlation with sibling plugins
 
