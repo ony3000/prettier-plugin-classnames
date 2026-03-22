@@ -3,9 +3,9 @@
 exports[`'long enough (1)' > expectation 1`] = `
 "---
 //----------------------------------------------------------| printWidth=60 (in snapshot)
-const classes = tw\`lorem ipsum dolor sit amet consectetur adipiscing elit proin
-ex massa hendrerit eu posuere eu volutpat id neque
-pellentesque\`;
+const classes = tw\`lorem ipsum dolor sit amet consectetur
+adipiscing elit proin ex massa hendrerit eu posuere eu
+volutpat id neque pellentesque\`;
 ---
 "
 `;
@@ -13,9 +13,9 @@ pellentesque\`;
 exports[`'long enough (2)' > expectation 1`] = `
 "---
 //----------------------------------------------------------| printWidth=60 (in snapshot)
-const Bar = tw.foo\`lorem ipsum dolor sit amet consectetur adipiscing elit proin
-ex massa hendrerit eu posuere eu volutpat id neque
-pellentesque\`;
+const Bar = tw.foo\`lorem ipsum dolor sit amet consectetur
+adipiscing elit proin ex massa hendrerit eu posuere eu
+volutpat id neque pellentesque\`;
 ---
 "
 `;
@@ -25,8 +25,8 @@ exports[`'long enough (3)' > expectation 1`] = `
 //----------------------------------------------------------| printWidth=60 (in snapshot)
 const Bar = tw(
   Foo,
-)\`lorem ipsum dolor sit amet consectetur adipiscing elit proin
-ex massa hendrerit eu posuere eu volutpat id neque
+)\`lorem ipsum dolor sit amet consectetur adipiscing elit
+proin ex massa hendrerit eu posuere eu volutpat id neque
 pellentesque\`;
 ---
 "
@@ -35,7 +35,8 @@ pellentesque\`;
 exports[`'near boundary (1)' > expectation 1`] = `
 "---
 //----------------------------------------------------------| printWidth=60 (in snapshot)
-const classes = tw\`lorem ipsum dolor sit amet consectetur adipiscing elit proin\`;
+const classes = tw\`lorem ipsum dolor sit amet consectetur
+adipiscing elit proin\`;
 ---
 "
 `;
@@ -43,7 +44,8 @@ const classes = tw\`lorem ipsum dolor sit amet consectetur adipiscing elit proin
 exports[`'near boundary (2)' > expectation 1`] = `
 "---
 //----------------------------------------------------------| printWidth=60 (in snapshot)
-const Bar = tw.foo\`lorem ipsum dolor sit amet consectetur adipiscing elit proin\`;
+const Bar = tw.foo\`lorem ipsum dolor sit amet consectetur
+adipiscing elit proin\`;
 ---
 "
 `;
@@ -53,7 +55,8 @@ exports[`'near boundary (3)' > expectation 1`] = `
 //----------------------------------------------------------| printWidth=60 (in snapshot)
 const Bar = tw(
   Foo,
-)\`lorem ipsum dolor sit amet consectetur adipiscing elit proin\`;
+)\`lorem ipsum dolor sit amet consectetur adipiscing elit
+proin\`;
 ---
 "
 `;
@@ -87,10 +90,11 @@ exports[`'syntax variants - written as an objec…' > expectation 1`] = `
 //----------------------------------------------------------| printWidth=60 (in snapshot)
 const classes = {
   short: tw\`lorem ipsum dolor sit amet\`,
-  near: tw\`lorem ipsum dolor sit amet consectetur adipiscing elit proin\`,
-  long: tw\`lorem ipsum dolor sit amet consectetur adipiscing elit proin
-  ex massa hendrerit eu posuere eu volutpat id neque
-  pellentesque\`,
+  near: tw\`lorem ipsum dolor sit amet consectetur adipiscing
+  elit proin\`,
+  long: tw\`lorem ipsum dolor sit amet consectetur adipiscing
+  elit proin ex massa hendrerit eu posuere eu volutpat id
+  neque pellentesque\`,
 };
 ---
 "

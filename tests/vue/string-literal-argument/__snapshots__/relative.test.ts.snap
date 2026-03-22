@@ -7,8 +7,8 @@ exports[`'long enough (1) - single line with no…' > expectation 1`] = `
     <div
       v-bind:class="
         classNames(
-          \`lorem ipsum dolor sit amet consectetur adipiscing elit proin
-          ex massa hendrerit eu posuere eu volutpat id neque
+          \`lorem ipsum dolor sit amet consectetur adipiscing elit
+          proin ex massa hendrerit eu posuere eu volutpat id neque
           pellentesque\`,
         )
       "
@@ -47,8 +47,8 @@ exports[`'long enough (3) - multiple lines' > expectation 1`] = `
     <div
       v-bind:class="
         classNames(
-          \`lorem ipsum dolor sit amet consectetur adipiscing elit proin
-          ex massa hendrerit eu posuere eu volutpat id neque
+          \`lorem ipsum dolor sit amet consectetur adipiscing elit
+          proin ex massa hendrerit eu posuere eu volutpat id neque
           pellentesque\`,
         )
       "
@@ -67,7 +67,8 @@ exports[`'near boundary (1) - single line with …' > expectation 1`] = `
     <div
       v-bind:class="
         classNames(
-          'lorem ipsum dolor sit amet consectetur adipiscing elit proin',
+          \`lorem ipsum dolor sit amet consectetur adipiscing elit
+          proin\`,
         )
       "
     >
@@ -104,7 +105,8 @@ exports[`'near boundary (3) - multiple lines' > expectation 1`] = `
     <div
       v-bind:class="
         classNames(
-          'lorem ipsum dolor sit amet consectetur adipiscing elit proin',
+          \`lorem ipsum dolor sit amet consectetur adipiscing elit
+          proin\`,
         )
       "
     >
@@ -170,8 +172,8 @@ exports[`'syntax variants (1) - component' > expectation 1`] = `
     <Box
       v-bind:class="
         classNames(
-          \`lorem ipsum dolor sit amet consectetur adipiscing elit proin
-          ex massa hendrerit eu posuere\`,
+          \`lorem ipsum dolor sit amet consectetur adipiscing elit
+          proin ex massa hendrerit eu posuere\`,
         )
       "
     >
@@ -189,8 +191,8 @@ exports[`'syntax variants (2) - shorthand' > expectation 1`] = `
     <div
       :class="
         classNames(
-          \`lorem ipsum dolor sit amet consectetur adipiscing elit proin
-          ex massa hendrerit eu posuere\`,
+          \`lorem ipsum dolor sit amet consectetur adipiscing elit
+          proin ex massa hendrerit eu posuere\`,
         )
       "
     >

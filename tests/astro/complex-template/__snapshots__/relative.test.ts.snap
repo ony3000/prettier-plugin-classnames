@@ -76,8 +76,8 @@ exports[`'(5) nested expression - string litera…' > expectation 1`] = `
       class={\`lorem ipsum dolor sit amet \${
         condition
           ? "consectetur adipiscing elit proin"
-          : \`lorem ipsum dolor sit amet consectetur adipiscing elit proin
-            ex massa hendrerit eu posuere\`
+          : \`lorem ipsum dolor sit amet consectetur adipiscing elit
+            proin ex massa hendrerit eu posuere\`
         } ex massa hendrerit eu posuere\`}
     >
       <slot />
@@ -95,8 +95,8 @@ exports[`'(6) nested expression - template lite…' > expectation 1`] = `
       class={\`lorem ipsum dolor sit amet \${
         condition
           ? "consectetur adipiscing elit proin"
-          : \`lorem ipsum dolor sit amet consectetur adipiscing elit proin
-            ex massa hendrerit eu posuere\`
+          : \`lorem ipsum dolor sit amet consectetur adipiscing elit
+            proin ex massa hendrerit eu posuere\`
         } ex massa hendrerit eu posuere\`}
     >
       <slot />
@@ -115,8 +115,8 @@ exports[`'(7) double nested expression - string…' > expectation 1`] = `
         \${\`lorem ipsum dolor sit amet \${
           condition
             ? "consectetur adipiscing elit proin"
-            : \`lorem ipsum dolor sit amet consectetur adipiscing elit proin
-              ex massa hendrerit eu posuere\`
+            : \`lorem ipsum dolor sit amet consectetur adipiscing elit
+              proin ex massa hendrerit eu posuere\`
         } ex massa hendrerit eu posuere\`}
         ex massa hendrerit eu posuere\`}
     >
@@ -136,8 +136,8 @@ exports[`'(8) double nested expression - templa…' > expectation 1`] = `
         \${\`lorem ipsum dolor sit amet \${
           condition
             ? "consectetur adipiscing elit proin"
-            : \`lorem ipsum dolor sit amet consectetur adipiscing elit proin
-              ex massa hendrerit eu posuere\`
+            : \`lorem ipsum dolor sit amet consectetur adipiscing elit
+              proin ex massa hendrerit eu posuere\`
         } ex massa hendrerit eu posuere\`}
         ex massa hendrerit eu posuere\`}
     >

@@ -5,9 +5,9 @@ exports[`'long enough (1) - single line with no…' > expectation 1`] = `
 <div>
   <div>
     <div
-      class="lorem ipsum dolor sit amet consectetur adipiscing elit proin
-        ex massa hendrerit eu posuere eu volutpat id neque
-        pellentesque"
+      class="lorem ipsum dolor sit amet consectetur adipiscing
+        elit proin ex massa hendrerit eu posuere eu volutpat id
+        neque pellentesque"
     >
       <slot />
     </div>
@@ -21,9 +21,9 @@ exports[`'long enough (2) - single line with sp…' > expectation 1`] = `
 <div>
   <div>
     <div
-      class="lorem ipsum dolor sit amet consectetur adipiscing elit proin
-        ex massa hendrerit eu posuere eu volutpat id neque
-        pellentesque"
+      class="lorem ipsum dolor sit amet consectetur adipiscing
+        elit proin ex massa hendrerit eu posuere eu volutpat id
+        neque pellentesque"
     >
       <slot />
     </div>
@@ -37,9 +37,9 @@ exports[`'long enough (3) - multiple lines' > expectation 1`] = `
 <div>
   <div>
     <div
-      class="lorem ipsum dolor sit amet consectetur adipiscing elit proin
-        ex massa hendrerit eu posuere eu volutpat id neque
-        pellentesque"
+      class="lorem ipsum dolor sit amet consectetur adipiscing
+        elit proin ex massa hendrerit eu posuere eu volutpat id
+        neque pellentesque"
     >
       <slot />
     </div>
@@ -53,7 +53,8 @@ exports[`'near boundary (1) - single line with …' > expectation 1`] = `
 <div>
   <div>
     <div
-      class="lorem ipsum dolor sit amet consectetur adipiscing elit proin"
+      class="lorem ipsum dolor sit amet consectetur adipiscing
+        elit proin"
     >
       <slot />
     </div>
@@ -67,7 +68,8 @@ exports[`'near boundary (2) - single line with …' > expectation 1`] = `
 <div>
   <div>
     <div
-      class="lorem ipsum dolor sit amet consectetur adipiscing elit proin"
+      class="lorem ipsum dolor sit amet consectetur adipiscing
+        elit proin"
     >
       <slot />
     </div>
@@ -81,7 +83,8 @@ exports[`'near boundary (3) - multiple lines' > expectation 1`] = `
 <div>
   <div>
     <div
-      class="lorem ipsum dolor sit amet consectetur adipiscing elit proin"
+      class="lorem ipsum dolor sit amet consectetur adipiscing
+        elit proin"
     >
       <slot />
     </div>
@@ -131,8 +134,8 @@ exports[`'syntax variants - component' > expectation 1`] = `
 <div>
   <div>
     <Box
-      class="lorem ipsum dolor sit amet consectetur adipiscing elit proin
-        ex massa hendrerit eu posuere"
+      class="lorem ipsum dolor sit amet consectetur adipiscing
+        elit proin ex massa hendrerit eu posuere"
     >
       <slot />
     </Box>

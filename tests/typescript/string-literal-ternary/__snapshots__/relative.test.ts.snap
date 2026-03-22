@@ -7,11 +7,11 @@ export function Foo({ children }) {
     <div
       className={
         condition
-          ? \`lorem ipsum dolor sit amet consectetur adipiscing elit proin
-            ex massa hendrerit eu posuere eu volutpat id neque
+          ? \`lorem ipsum dolor sit amet consectetur adipiscing elit
+            proin ex massa hendrerit eu posuere eu volutpat id neque
             pellentesque\`
-          : \`lorem ipsum dolor sit amet consectetur adipiscing elit proin
-            ex massa hendrerit eu posuere eu volutpat id neque
+          : \`lorem ipsum dolor sit amet consectetur adipiscing elit
+            proin ex massa hendrerit eu posuere eu volutpat id neque
             pellentesque\`
       }
     >
@@ -51,11 +51,11 @@ export function Foo({ children }) {
     <div
       className={
         condition
-          ? \`lorem ipsum dolor sit amet consectetur adipiscing elit proin
-            ex massa hendrerit eu posuere eu volutpat id neque
+          ? \`lorem ipsum dolor sit amet consectetur adipiscing elit
+            proin ex massa hendrerit eu posuere eu volutpat id neque
             pellentesque\`
-          : \`lorem ipsum dolor sit amet consectetur adipiscing elit proin
-            ex massa hendrerit eu posuere eu volutpat id neque
+          : \`lorem ipsum dolor sit amet consectetur adipiscing elit
+            proin ex massa hendrerit eu posuere eu volutpat id neque
             pellentesque\`
       }
     >
@@ -73,8 +73,10 @@ export function Foo({ children }) {
     <div
       className={
         condition
-          ? "lorem ipsum dolor sit amet consectetur adipiscing elit proin"
-          : "lorem ipsum dolor sit amet consectetur adipiscing elit proin"
+          ? \`lorem ipsum dolor sit amet consectetur adipiscing elit
+            proin\`
+          : \`lorem ipsum dolor sit amet consectetur adipiscing elit
+            proin\`
       }
     >
       {children}
@@ -111,8 +113,10 @@ export function Foo({ children }) {
     <div
       className={
         condition
-          ? "lorem ipsum dolor sit amet consectetur adipiscing elit proin"
-          : "lorem ipsum dolor sit amet consectetur adipiscing elit proin"
+          ? \`lorem ipsum dolor sit amet consectetur adipiscing elit
+            proin\`
+          : \`lorem ipsum dolor sit amet consectetur adipiscing elit
+            proin\`
       }
     >
       {children}
@@ -183,10 +187,10 @@ export function Foo({ children }) {
     <Box
       className={
         condition
-          ? \`lorem ipsum dolor sit amet consectetur adipiscing elit proin
-            ex massa hendrerit eu posuere\`
-          : \`lorem ipsum dolor sit amet consectetur adipiscing elit proin
-            ex massa hendrerit eu posuere\`
+          ? \`lorem ipsum dolor sit amet consectetur adipiscing elit
+            proin ex massa hendrerit eu posuere\`
+          : \`lorem ipsum dolor sit amet consectetur adipiscing elit
+            proin ex massa hendrerit eu posuere\`
       }
     >
       {children}

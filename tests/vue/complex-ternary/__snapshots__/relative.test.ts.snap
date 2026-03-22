@@ -177,7 +177,8 @@ exports[`'(8) double nested ternary - nested ex…' > expectation 1`] = `
               : \`lorem ipsum dolor sit amet
                 \${'consectetur adipiscing elit proin'} ex massa hendrerit eu
                 posuere\`
-            : 'lorem ipsum dolor sit amet consectetur adipiscing elit proin'
+            : \`lorem ipsum dolor sit amet consectetur adipiscing elit
+              proin\`
           : 'lorem ipsum dolor sit amet'
       "
     >
