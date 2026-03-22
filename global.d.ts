@@ -31,6 +31,7 @@ declare global {
     customFunctions: string[];
     endingPosition: 'absolute' | 'relative';
     syntaxTransformation: boolean;
+    classnamesPrintWidth?: number;
   };
 
   type ResolvedOptions = ParserOptions & ThisPluginOptions;
