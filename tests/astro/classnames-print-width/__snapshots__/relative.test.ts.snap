@@ -5,8 +5,8 @@ exports[`'(1) If no value is provided, the \`pri…' > expectation 1`] = `
 <div>
   <div>
     <div
-      class="lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit
-        eu posuere eu volutpat id neque pellentesque"
+      class="lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa
+        hendrerit eu posuere eu volutpat id neque pellentesque"
     >
       <slot />
     </div>
@@ -20,9 +20,9 @@ exports[`'(2) \`classnamesPrintWidth\` is shorter…' > expectation 1`] = `
 <div>
   <div>
     <div
-      class="lorem ipsum dolor sit amet consectetur adipiscing elit proin
-        ex massa hendrerit eu posuere eu volutpat id neque
-        pellentesque"
+      class="lorem ipsum dolor sit amet consectetur adipiscing
+        elit proin ex massa hendrerit eu posuere eu volutpat id
+        neque pellentesque"
     >
       <slot />
     </div>
@@ -36,8 +36,8 @@ exports[`'(3) \`classnamesPrintWidth\` is longer …' > expectation 1`] = `
 <div>
   <div>
     <div
-      class="lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit
-        eu posuere eu volutpat id neque pellentesque"
+      class="lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa
+        hendrerit eu posuere eu volutpat id neque pellentesque"
     >
       <slot />
     </div>

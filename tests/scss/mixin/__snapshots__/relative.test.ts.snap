@@ -3,8 +3,8 @@
 exports[`'example' > expectation 1`] = `
 "/* --------------------------------------------------------| printWidth=60 (in snapshot) */
 @mixin theme($theme: DarkGray) {
-  @apply lorem ipsum dolor sit amet consectetur adipiscing elit proin
-    ex massa hendrerit eu posuere;
+  @apply lorem ipsum dolor sit amet consectetur adipiscing
+    elit proin ex massa hendrerit eu posuere;
 }
 
 .info {

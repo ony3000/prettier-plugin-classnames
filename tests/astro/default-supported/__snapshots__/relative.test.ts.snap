@@ -7,16 +7,16 @@ exports[`'supported attributes and supported fu…' > expectation 1`] = `
     <div>
       <div
         class={classNames(
-          \`lorem ipsum dolor sit amet consectetur adipiscing elit proin
-          ex massa hendrerit eu posuere\`,
+          \`lorem ipsum dolor sit amet consectetur adipiscing elit
+          proin ex massa hendrerit eu posuere\`,
         )}
       >
         <span>lorem ipsum</span>
       </div>
       <div
         className={classNames(
-          \`lorem ipsum dolor sit amet consectetur adipiscing elit proin
-          ex massa hendrerit eu posuere\`,
+          \`lorem ipsum dolor sit amet consectetur adipiscing elit
+          proin ex massa hendrerit eu posuere\`,
         )}
       >
         <span>lorem ipsum</span>
@@ -24,8 +24,8 @@ exports[`'supported attributes and supported fu…' > expectation 1`] = `
       <div
         class:list={[
           classNames(
-            \`lorem ipsum dolor sit amet consectetur adipiscing elit proin
-            ex massa hendrerit eu posuere\`,
+            \`lorem ipsum dolor sit amet consectetur adipiscing elit
+            proin ex massa hendrerit eu posuere\`,
           ),
         ]}
       >
@@ -44,16 +44,16 @@ exports[`'supported attributes and unsupported …' > expectation 1`] = `
     <div>
       <div
         class={foo(
-          \`lorem ipsum dolor sit amet consectetur adipiscing elit proin
-          ex massa hendrerit eu posuere\`,
+          \`lorem ipsum dolor sit amet consectetur adipiscing elit
+          proin ex massa hendrerit eu posuere\`,
         )}
       >
         <span>lorem ipsum</span>
       </div>
       <div
         className={foo(
-          \`lorem ipsum dolor sit amet consectetur adipiscing elit proin
-          ex massa hendrerit eu posuere\`,
+          \`lorem ipsum dolor sit amet consectetur adipiscing elit
+          proin ex massa hendrerit eu posuere\`,
         )}
       >
         <span>lorem ipsum</span>
@@ -61,8 +61,8 @@ exports[`'supported attributes and unsupported …' > expectation 1`] = `
       <div
         class:list={[
           foo(
-            \`lorem ipsum dolor sit amet consectetur adipiscing elit proin
-            ex massa hendrerit eu posuere\`,
+            \`lorem ipsum dolor sit amet consectetur adipiscing elit
+            proin ex massa hendrerit eu posuere\`,
           ),
         ]}
       >
@@ -81,8 +81,8 @@ exports[`'unsupported attributes and supported …' > expectation 1`] = `
     <div>
       <div
         title={classNames(
-          \`lorem ipsum dolor sit amet consectetur adipiscing elit proin
-          ex massa hendrerit eu posuere\`,
+          \`lorem ipsum dolor sit amet consectetur adipiscing elit
+          proin ex massa hendrerit eu posuere\`,
         )}
       >
         <span>lorem ipsum</span>
