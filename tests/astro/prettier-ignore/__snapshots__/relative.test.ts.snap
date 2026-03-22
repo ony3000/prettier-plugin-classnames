@@ -8,8 +8,8 @@ exports[`'invalid ignore comment (1) - formatti…' > expectation 1`] = `
   <div>
     <div
       class={classNames(
-        \`lorem ipsum dolor sit amet consectetur adipiscing elit proin
-        ex massa hendrerit eu posuere\`,
+        \`lorem ipsum dolor sit amet consectetur adipiscing elit
+        proin ex massa hendrerit eu posuere\`,
       )}
     >
       <slot />
@@ -25,8 +25,8 @@ exports[`'invalid ignore comment (2) - formatti…' > expectation 1`] = `
   <div>
     <div
       class={classNames(
-        \`lorem ipsum dolor sit amet consectetur adipiscing elit proin
-        ex massa hendrerit eu posuere\`,
+        \`lorem ipsum dolor sit amet consectetur adipiscing elit
+        proin ex massa hendrerit eu posuere\`,
       )}
     >
       <slot />
@@ -79,8 +79,8 @@ exports[`'valid ignore comment (3) - class name…' > expectation 1`] = `
       class={classNames(
         // prettier-ignore
         'lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere',
-        \`lorem ipsum dolor sit amet consectetur adipiscing elit proin
-        ex massa hendrerit eu posuere\`,
+        \`lorem ipsum dolor sit amet consectetur adipiscing elit
+        proin ex massa hendrerit eu posuere\`,
       )}
     >
       <slot />
@@ -98,8 +98,8 @@ exports[`'valid ignore comment (4) - class name…' > expectation 1`] = `
       class={classNames([
         // prettier-ignore
         'lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere',
-        \`lorem ipsum dolor sit amet consectetur adipiscing elit proin
-        ex massa hendrerit eu posuere\`,
+        \`lorem ipsum dolor sit amet consectetur adipiscing elit
+        proin ex massa hendrerit eu posuere\`,
       ])}
     >
       <slot />
@@ -115,8 +115,8 @@ exports[`'valid ignore comment (5) - frontmatter' > expectation 1`] = `
 const combination = classNames(
   /* prettier-ignore */
   'lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere',
-  \`lorem ipsum dolor sit amet consectetur adipiscing elit proin
-  ex massa hendrerit eu posuere\`,
+  \`lorem ipsum dolor sit amet consectetur adipiscing elit
+  proin ex massa hendrerit eu posuere\`,
 );
 ---
 "
@@ -128,8 +128,8 @@ exports[`'valid ignore comment (6) - frontmatter' > expectation 1`] = `
 const combination = classNames(
   // prettier-ignore
   'lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere',
-  \`lorem ipsum dolor sit amet consectetur adipiscing elit proin
-  ex massa hendrerit eu posuere\`,
+  \`lorem ipsum dolor sit amet consectetur adipiscing elit
+  proin ex massa hendrerit eu posuere\`,
 );
 ---
 "
@@ -141,8 +141,8 @@ exports[`'valid ignore comment (7) - script tag' > expectation 1`] = `
   const combination = classNames(
     /* prettier-ignore */
     'lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere',
-    \`lorem ipsum dolor sit amet consectetur adipiscing elit proin
-    ex massa hendrerit eu posuere\`,
+    \`lorem ipsum dolor sit amet consectetur adipiscing elit
+    proin ex massa hendrerit eu posuere\`,
   );
 </script>
 "
@@ -154,8 +154,8 @@ exports[`'valid ignore comment (8) - script tag' > expectation 1`] = `
   const combination = classNames(
     // prettier-ignore
     'lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere',
-    \`lorem ipsum dolor sit amet consectetur adipiscing elit proin
-    ex massa hendrerit eu posuere\`,
+    \`lorem ipsum dolor sit amet consectetur adipiscing elit
+    proin ex massa hendrerit eu posuere\`,
   );
 </script>
 "
@@ -169,8 +169,8 @@ exports[`'valid ignore comment (9) - multi-line…' > expectation 1`] = `
   const combination = classNames(
     // prettier-ignore
     'lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere',
-    \`lorem ipsum dolor sit amet consectetur adipiscing elit proin
-    ex massa hendrerit eu posuere\`,
+    \`lorem ipsum dolor sit amet consectetur adipiscing elit
+    proin ex massa hendrerit eu posuere\`,
   );
 </script>
 "

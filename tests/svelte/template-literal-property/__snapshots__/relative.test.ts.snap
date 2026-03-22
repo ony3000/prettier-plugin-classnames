@@ -6,8 +6,8 @@ exports[`'long enough (1) - single line with no…' > expectation 1`] = `
   <div>
     <div
       class={classNames({
-        [\`lorem ipsum dolor sit amet consectetur adipiscing elit proin
-        ex massa hendrerit eu posuere eu volutpat id neque
+        [\`lorem ipsum dolor sit amet consectetur adipiscing elit
+        proin ex massa hendrerit eu posuere eu volutpat id neque
         pellentesque\`]: true,
       })}
     >
@@ -42,8 +42,8 @@ exports[`'long enough (3) - multiple lines' > expectation 1`] = `
   <div>
     <div
       class={classNames({
-        [\`lorem ipsum dolor sit amet consectetur adipiscing elit proin
-        ex massa hendrerit eu posuere eu volutpat id neque
+        [\`lorem ipsum dolor sit amet consectetur adipiscing elit
+        proin ex massa hendrerit eu posuere eu volutpat id neque
         pellentesque\`]: true,
       })}
     >
@@ -60,7 +60,8 @@ exports[`'near boundary (1) - single line with …' > expectation 1`] = `
   <div>
     <div
       class={classNames({
-        "lorem ipsum dolor sit amet consectetur adipiscing elit proin": true,
+        [\`lorem ipsum dolor sit amet consectetur adipiscing elit
+        proin\`]: true,
       })}
     >
       <slot />
@@ -93,7 +94,8 @@ exports[`'near boundary (3) - multiple lines' > expectation 1`] = `
   <div>
     <div
       class={classNames({
-        "lorem ipsum dolor sit amet consectetur adipiscing elit proin": true,
+        [\`lorem ipsum dolor sit amet consectetur adipiscing elit
+        proin\`]: true,
       })}
     >
       <slot />
@@ -157,8 +159,8 @@ exports[`'syntax variants - component' > expectation 1`] = `
   <div>
     <Box
       class={classNames({
-        [\`lorem ipsum dolor sit amet consectetur adipiscing elit proin
-        ex massa hendrerit eu posuere\`]: true,
+        [\`lorem ipsum dolor sit amet consectetur adipiscing elit
+        proin ex massa hendrerit eu posuere\`]: true,
       })}
     >
       <slot />

@@ -7,8 +7,8 @@ exports[`'variable interpolation' > expectation 1`] = `
 
 // Usage
 .@{my-selector} {
-  @apply lorem ipsum dolor sit amet consectetur adipiscing elit proin
-    ex massa hendrerit eu posuere;
+  @apply lorem ipsum dolor sit amet consectetur adipiscing
+    elit proin ex massa hendrerit eu posuere;
 }
 "
 `;
