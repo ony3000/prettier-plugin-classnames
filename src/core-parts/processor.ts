@@ -346,6 +346,7 @@ function formatTokens(
 ): TextToken[] {
   const formattedTokens = structuredClone(textTokens);
   const isEndingPositionAbsolute = options.endingPosition !== 'relative';
+  const refinedPrintWidth = options.classnamesPrintWidth ?? options.printWidth;
 
   for (let tokenIndex = formattedTokens.length - 1; tokenIndex >= 0; tokenIndex -= 1) {
     const token = formattedTokens[tokenIndex];
@@ -372,7 +373,7 @@ function formatTokens(
         trailingDelimiter.length,
       )}`;
 
-      let formattedClassName = formatClassName(classNameBase, options.printWidth).slice(
+      let formattedClassName = formatClassName(classNameBase, refinedPrintWidth).slice(
         leadingText.length,
       );
       const formattedLines = formattedClassName.split(EOL);
@@ -386,7 +387,7 @@ function formatTokens(
           ...(isEndingPositionAbsolute
             ? formatClassName(
                 formattedLines.slice(1).join(EOL),
-                options.printWidth - options.tabWidth * multiLineIndentLevel,
+                refinedPrintWidth - options.tabWidth * multiLineIndentLevel,
               ).split(EOL)
             : formattedLines.slice(1)),
         ].join(`${EOL}${indentUnit.repeat(multiLineIndentLevel)}`);
@@ -448,7 +449,7 @@ function formatTokens(
         trailingDelimiter.length,
       )}`;
 
-      let formattedClassName = `${formatClassName(classNameBase, options.printWidth).slice(
+      let formattedClassName = `${formatClassName(classNameBase, refinedPrintWidth).slice(
         leadingText.length,
       )}${!trailingDelimiter && hasTrailingSpace ? SPACE : ''}`;
       const formattedLines = formattedClassName.split(EOL);
@@ -466,7 +467,7 @@ function formatTokens(
           ...(isEndingPositionAbsolute
             ? `${formatClassName(
                 formattedLines.slice(1).join(EOL),
-                options.printWidth - options.tabWidth * multiLineIndentLevel,
+                refinedPrintWidth - options.tabWidth * multiLineIndentLevel,
               )}${!trailingDelimiter && hasTrailingSpace ? SPACE : ''}`.split(EOL)
             : formattedLines.slice(1)),
         ].join(`${EOL}${indentUnit.repeat(multiLineIndentLevel)}`);
