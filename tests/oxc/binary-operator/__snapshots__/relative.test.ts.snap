@@ -7,8 +7,8 @@ export function Foo({ children }) {
     <div
       className={
         truthyExpression &&
-        \`lorem ipsum dolor sit amet consectetur adipiscing elit proin
-        ex massa hendrerit eu posuere\`
+        \`lorem ipsum dolor sit amet consectetur adipiscing elit
+        proin ex massa hendrerit eu posuere\`
       }
     >
       {children}
@@ -27,8 +27,8 @@ export function Foo({ children }) {
         truthyExpression &&
         "lorem ipsum dolor sit amet" !==
           "consectetur adipiscing elit proin ex massa hendrerit eu posuere" &&
-        \`lorem ipsum dolor sit amet consectetur adipiscing elit proin
-        ex massa hendrerit eu posuere\`
+        \`lorem ipsum dolor sit amet consectetur adipiscing elit
+        proin ex massa hendrerit eu posuere\`
       }
     >
       {children}
@@ -46,10 +46,10 @@ export function Foo({ children }) {
       className={
         truthyExpression &&
         (condition
-          ? \`lorem ipsum dolor sit amet consectetur adipiscing elit proin
-            ex massa hendrerit eu posuere\`
-          : \`lorem ipsum dolor sit amet consectetur adipiscing elit proin
-            ex massa hendrerit eu posuere\`)
+          ? \`lorem ipsum dolor sit amet consectetur adipiscing elit
+            proin ex massa hendrerit eu posuere\`
+          : \`lorem ipsum dolor sit amet consectetur adipiscing elit
+            proin ex massa hendrerit eu posuere\`)
       }
     >
       {children}
@@ -66,8 +66,8 @@ export function Foo({ children }) {
     <div
       className={
         falsyExpression ||
-        \`lorem ipsum dolor sit amet consectetur adipiscing elit proin
-        ex massa hendrerit eu posuere\`
+        \`lorem ipsum dolor sit amet consectetur adipiscing elit
+        proin ex massa hendrerit eu posuere\`
       }
     >
       {children}
@@ -86,8 +86,8 @@ export function Foo({ children }) {
         falsyExpression ||
         "lorem ipsum dolor sit amet" ===
           "consectetur adipiscing elit proin ex massa hendrerit eu posuere" ||
-        \`lorem ipsum dolor sit amet consectetur adipiscing elit proin
-        ex massa hendrerit eu posuere\`
+        \`lorem ipsum dolor sit amet consectetur adipiscing elit
+        proin ex massa hendrerit eu posuere\`
       }
     >
       {children}
@@ -105,10 +105,10 @@ export function Foo({ children }) {
       className={
         falsyExpression ||
         (condition
-          ? \`lorem ipsum dolor sit amet consectetur adipiscing elit proin
-            ex massa hendrerit eu posuere\`
-          : \`lorem ipsum dolor sit amet consectetur adipiscing elit proin
-            ex massa hendrerit eu posuere\`)
+          ? \`lorem ipsum dolor sit amet consectetur adipiscing elit
+            proin ex massa hendrerit eu posuere\`
+          : \`lorem ipsum dolor sit amet consectetur adipiscing elit
+            proin ex massa hendrerit eu posuere\`)
       }
     >
       {children}
@@ -125,8 +125,8 @@ export function Foo({ children }) {
     <div
       className={
         null ??
-        \`lorem ipsum dolor sit amet consectetur adipiscing elit proin
-        ex massa hendrerit eu posuere\`
+        \`lorem ipsum dolor sit amet consectetur adipiscing elit
+        proin ex massa hendrerit eu posuere\`
       }
     >
       {children}
@@ -144,8 +144,8 @@ export function Foo({ children }) {
       className={
         null ??
         void "lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere" ??
-        \`lorem ipsum dolor sit amet consectetur adipiscing elit proin
-        ex massa hendrerit eu posuere\`
+        \`lorem ipsum dolor sit amet consectetur adipiscing elit
+        proin ex massa hendrerit eu posuere\`
       }
     >
       {children}
@@ -163,10 +163,10 @@ export function Foo({ children }) {
       className={
         null ??
         (condition
-          ? \`lorem ipsum dolor sit amet consectetur adipiscing elit proin
-            ex massa hendrerit eu posuere\`
-          : \`lorem ipsum dolor sit amet consectetur adipiscing elit proin
-            ex massa hendrerit eu posuere\`)
+          ? \`lorem ipsum dolor sit amet consectetur adipiscing elit
+            proin ex massa hendrerit eu posuere\`
+          : \`lorem ipsum dolor sit amet consectetur adipiscing elit
+            proin ex massa hendrerit eu posuere\`)
       }
     >
       {children}

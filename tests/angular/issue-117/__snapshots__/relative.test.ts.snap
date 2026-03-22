@@ -4,23 +4,23 @@ exports[`'(1) @defer block' > expectation 1`] = `
 "<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
 @defer {
   <div
-    class="lorem ipsum dolor sit amet consectetur adipiscing elit proin
-      ex massa hendrerit eu posuere"
+    class="lorem ipsum dolor sit amet consectetur adipiscing
+      elit proin ex massa hendrerit eu posuere"
   ></div>
 } @placeholder {
   <div
-    class="lorem ipsum dolor sit amet consectetur adipiscing elit proin
-      ex massa hendrerit eu posuere"
+    class="lorem ipsum dolor sit amet consectetur adipiscing
+      elit proin ex massa hendrerit eu posuere"
   ></div>
 } @loading {
   <div
-    class="lorem ipsum dolor sit amet consectetur adipiscing elit proin
-      ex massa hendrerit eu posuere"
+    class="lorem ipsum dolor sit amet consectetur adipiscing
+      elit proin ex massa hendrerit eu posuere"
   ></div>
 } @error {
   <div
-    class="lorem ipsum dolor sit amet consectetur adipiscing elit proin
-      ex massa hendrerit eu posuere"
+    class="lorem ipsum dolor sit amet consectetur adipiscing
+      elit proin ex massa hendrerit eu posuere"
   ></div>
 }
 "

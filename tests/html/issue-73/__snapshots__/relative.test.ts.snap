@@ -11,9 +11,9 @@ exports[`'(1) Tagged templates are not supporte…' > expectation 1`] = `
 exports[`'(2) Tagged templates are supported by…' > expectation 1`] = `
 "<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
 <script setup lang="ts">
-  const classes = tw\`lorem ipsum dolor sit amet consectetur adipiscing elit proin
-  ex massa hendrerit eu posuere eu volutpat id neque
-  pellentesque\`;
+  const classes = tw\`lorem ipsum dolor sit amet consectetur
+  adipiscing elit proin ex massa hendrerit eu posuere eu
+  volutpat id neque pellentesque\`;
 </script>
 "
 `;
@@ -22,8 +22,8 @@ exports[`'(3) If a tagged template is written a…' > expectation 1`] = `
 "<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
 <script setup lang="ts">
   const classes = classNames(
-    tw\`lorem ipsum dolor sit amet consectetur adipiscing elit proin
-    ex massa hendrerit eu posuere eu volutpat id neque
+    tw\`lorem ipsum dolor sit amet consectetur adipiscing elit
+    proin ex massa hendrerit eu posuere eu volutpat id neque
     pellentesque\`,
   );
 </script>

@@ -5,16 +5,16 @@ exports[`'(1) JSX Assignment' > expectation 1`] = `
 function Foo() {
   let elem = (
     <div
-      className="lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit
-        eu posuere eu volutpat id neque pellentesque"
+      className="lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa
+        hendrerit eu posuere eu volutpat id neque pellentesque"
     >
       content
     </div>
   );
   elem = (
     <div
-      className="lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit
-        eu posuere eu volutpat id neque pellentesque"
+      className="lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa
+        hendrerit eu posuere eu volutpat id neque pellentesque"
     >
       content
     </div>
