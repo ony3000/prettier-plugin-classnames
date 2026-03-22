@@ -179,6 +179,17 @@ Default | CLI&nbsp;Override | API&nbsp;Override
 --- | --- | ---
 `false` | `--syntax-transformation` | `syntaxTransformation: <boolean>`
 
+### Classnames Print Width
+
+First available in v0.10.0.
+
+Specify the print width of the class name. If no value is provided, the `printWidth` value is used as default.
+
+<!-- prettier-ignore -->
+Default | CLI&nbsp;Override | API&nbsp;Override
+--- | --- | ---
+`undefined` | `--classnames-print-width <number>` | `classnamesPrintWidth: <number>`
+
 ## Version correlation with sibling plugins
 
 Starting with `0.6.0`, when there is a minor release on one side, I plan to reflect that change on the other side as well if possible.
