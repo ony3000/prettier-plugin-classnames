@@ -17,9 +17,9 @@ exports[`'(2) Long enough class names cause syn…' > expectation 1`] = `
 <div>
   <div>
     <div
-      class={\`lorem ipsum dolor sit amet consectetur adipiscing elit proin
-        ex massa hendrerit eu posuere eu volutpat id neque
-        pellentesque\`}
+      class={\`lorem ipsum dolor sit amet consectetur adipiscing
+        elit proin ex massa hendrerit eu posuere eu volutpat id
+        neque pellentesque\`}
     >
       <slot />
     </div>

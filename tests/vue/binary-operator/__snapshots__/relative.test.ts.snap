@@ -7,8 +7,8 @@ exports[`'(1) When expressions are joined by th…' > expectation 1`] = `
     <div
       :class="
         truthyExpression &&
-        \`lorem ipsum dolor sit amet consectetur adipiscing elit proin
-        ex massa hendrerit eu posuere\`
+        \`lorem ipsum dolor sit amet consectetur adipiscing elit
+        proin ex massa hendrerit eu posuere\`
       "
     >
       <slot></slot>
@@ -27,8 +27,8 @@ exports[`'(2) When expressions are joined by th…' > expectation 1`] = `
         truthyExpression &&
         'lorem ipsum dolor sit amet' !==
           'consectetur adipiscing elit proin ex massa hendrerit eu posuere' &&
-        \`lorem ipsum dolor sit amet consectetur adipiscing elit proin
-        ex massa hendrerit eu posuere\`
+        \`lorem ipsum dolor sit amet consectetur adipiscing elit
+        proin ex massa hendrerit eu posuere\`
       "
     >
       <slot></slot>
@@ -46,10 +46,10 @@ exports[`'(3) When expressions are joined by th…' > expectation 1`] = `
       :class="
         truthyExpression &&
         (condition
-          ? \`lorem ipsum dolor sit amet consectetur adipiscing elit proin
-            ex massa hendrerit eu posuere\`
-          : \`lorem ipsum dolor sit amet consectetur adipiscing elit proin
-            ex massa hendrerit eu posuere\`)
+          ? \`lorem ipsum dolor sit amet consectetur adipiscing elit
+            proin ex massa hendrerit eu posuere\`
+          : \`lorem ipsum dolor sit amet consectetur adipiscing elit
+            proin ex massa hendrerit eu posuere\`)
       "
     >
       <slot></slot>
@@ -66,8 +66,8 @@ exports[`'(4) When expressions are joined by th…' > expectation 1`] = `
     <div
       :class="
         falsyExpression ||
-        \`lorem ipsum dolor sit amet consectetur adipiscing elit proin
-        ex massa hendrerit eu posuere\`
+        \`lorem ipsum dolor sit amet consectetur adipiscing elit
+        proin ex massa hendrerit eu posuere\`
       "
     >
       <slot></slot>
@@ -86,8 +86,8 @@ exports[`'(5) When expressions are joined by th…' > expectation 1`] = `
         falsyExpression ||
         'lorem ipsum dolor sit amet' ===
           'consectetur adipiscing elit proin ex massa hendrerit eu posuere' ||
-        \`lorem ipsum dolor sit amet consectetur adipiscing elit proin
-        ex massa hendrerit eu posuere\`
+        \`lorem ipsum dolor sit amet consectetur adipiscing elit
+        proin ex massa hendrerit eu posuere\`
       "
     >
       <slot></slot>
@@ -105,10 +105,10 @@ exports[`'(6) When expressions are joined by th…' > expectation 1`] = `
       :class="
         falsyExpression ||
         (condition
-          ? \`lorem ipsum dolor sit amet consectetur adipiscing elit proin
-            ex massa hendrerit eu posuere\`
-          : \`lorem ipsum dolor sit amet consectetur adipiscing elit proin
-            ex massa hendrerit eu posuere\`)
+          ? \`lorem ipsum dolor sit amet consectetur adipiscing elit
+            proin ex massa hendrerit eu posuere\`
+          : \`lorem ipsum dolor sit amet consectetur adipiscing elit
+            proin ex massa hendrerit eu posuere\`)
       "
     >
       <slot></slot>
@@ -125,8 +125,8 @@ exports[`'(7) When expressions are joined by th…' > expectation 1`] = `
     <div
       :class="
         null ??
-        \`lorem ipsum dolor sit amet consectetur adipiscing elit proin
-        ex massa hendrerit eu posuere\`
+        \`lorem ipsum dolor sit amet consectetur adipiscing elit
+        proin ex massa hendrerit eu posuere\`
       "
     >
       <slot></slot>
@@ -144,8 +144,8 @@ exports[`'(8) When expressions are joined by th…' > expectation 1`] = `
       :class="
         null ??
         void 'lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere' ??
-        \`lorem ipsum dolor sit amet consectetur adipiscing elit proin
-        ex massa hendrerit eu posuere\`
+        \`lorem ipsum dolor sit amet consectetur adipiscing elit
+        proin ex massa hendrerit eu posuere\`
       "
     >
       <slot></slot>
@@ -163,10 +163,10 @@ exports[`'(9) When expressions are joined by th…' > expectation 1`] = `
       :class="
         null ??
         (condition
-          ? \`lorem ipsum dolor sit amet consectetur adipiscing elit proin
-            ex massa hendrerit eu posuere\`
-          : \`lorem ipsum dolor sit amet consectetur adipiscing elit proin
-            ex massa hendrerit eu posuere\`)
+          ? \`lorem ipsum dolor sit amet consectetur adipiscing elit
+            proin ex massa hendrerit eu posuere\`
+          : \`lorem ipsum dolor sit amet consectetur adipiscing elit
+            proin ex massa hendrerit eu posuere\`)
       "
     >
       <slot></slot>

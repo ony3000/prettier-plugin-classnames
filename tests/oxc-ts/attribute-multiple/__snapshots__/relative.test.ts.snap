@@ -8,9 +8,9 @@ export function Foo({ children }) {
       dir="ltr"
       id="lorem-ipsum"
       title="lorem ipsum"
-      className="lorem ipsum dolor sit amet consectetur adipiscing elit proin
-        ex massa hendrerit eu posuere eu volutpat id neque
-        pellentesque"
+      className="lorem ipsum dolor sit amet consectetur adipiscing
+        elit proin ex massa hendrerit eu posuere eu volutpat id
+        neque pellentesque"
     >
       {children}
     </div>
@@ -27,9 +27,9 @@ export function Foo({ children }) {
       dir="ltr"
       id="lorem-ipsum"
       title="lorem ipsum"
-      className="lorem ipsum dolor sit amet consectetur adipiscing elit proin
-        ex massa hendrerit eu posuere eu volutpat id neque
-        pellentesque"
+      className="lorem ipsum dolor sit amet consectetur adipiscing
+        elit proin ex massa hendrerit eu posuere eu volutpat id
+        neque pellentesque"
     >
       {children}
     </div>
@@ -46,9 +46,9 @@ export function Foo({ children }) {
       dir="ltr"
       id="lorem-ipsum"
       title="lorem ipsum"
-      className="lorem ipsum dolor sit amet consectetur adipiscing elit proin
-        ex massa hendrerit eu posuere eu volutpat id neque
-        pellentesque"
+      className="lorem ipsum dolor sit amet consectetur adipiscing
+        elit proin ex massa hendrerit eu posuere eu volutpat id
+        neque pellentesque"
     >
       {children}
     </div>
@@ -65,7 +65,8 @@ export function Foo({ children }) {
       dir="ltr"
       id="lorem-ipsum"
       title="lorem ipsum"
-      className="lorem ipsum dolor sit amet consectetur adipiscing elit proin"
+      className="lorem ipsum dolor sit amet consectetur adipiscing
+        elit proin"
     >
       {children}
     </div>
@@ -82,7 +83,8 @@ export function Foo({ children }) {
       dir="ltr"
       id="lorem-ipsum"
       title="lorem ipsum"
-      className="lorem ipsum dolor sit amet consectetur adipiscing elit proin"
+      className="lorem ipsum dolor sit amet consectetur adipiscing
+        elit proin"
     >
       {children}
     </div>
@@ -99,7 +101,8 @@ export function Foo({ children }) {
       dir="ltr"
       id="lorem-ipsum"
       title="lorem ipsum"
-      className="lorem ipsum dolor sit amet consectetur adipiscing elit proin"
+      className="lorem ipsum dolor sit amet consectetur adipiscing
+        elit proin"
     >
       {children}
     </div>
@@ -167,8 +170,8 @@ export function Foo({ children }) {
       dir="ltr"
       id="lorem-ipsum"
       title="lorem ipsum"
-      className="lorem ipsum dolor sit amet consectetur adipiscing elit proin
-        ex massa hendrerit eu posuere"
+      className="lorem ipsum dolor sit amet consectetur adipiscing
+        elit proin ex massa hendrerit eu posuere"
     >
       {children}
     </Box>
