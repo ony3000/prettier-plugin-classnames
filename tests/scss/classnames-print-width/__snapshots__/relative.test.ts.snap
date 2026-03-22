@@ -3,8 +3,8 @@
 exports[`'(1) If no value is provided, the \`pri…' > expectation 1`] = `
 "/* ----------------------------------------------------------------------------| printWidth=80 (in snapshot) */
 .example {
-  @apply lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit
-    eu posuere eu volutpat id neque pellentesque;
+  @apply lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa
+    hendrerit eu posuere eu volutpat id neque pellentesque;
 }
 "
 `;
@@ -13,9 +13,9 @@ exports[`'(2) \`classnamesPrintWidth\` is shorter…' > expectation 1`] = `
 "/* ----------------------------------------------------------------------------| printWidth=80 (in snapshot) */
 /* ---------------------------------------------------------| printWidth=60 (in snapshot) */
 .example {
-  @apply lorem ipsum dolor sit amet consectetur adipiscing elit proin
-    ex massa hendrerit eu posuere eu volutpat id neque
-    pellentesque;
+  @apply lorem ipsum dolor sit amet consectetur adipiscing
+    elit proin ex massa hendrerit eu posuere eu volutpat id
+    neque pellentesque;
 }
 "
 `;
@@ -24,8 +24,8 @@ exports[`'(3) \`classnamesPrintWidth\` is longer …' > expectation 1`] = `
 "/* ----------------------------------------------------------------------------| printWidth=80 (in snapshot) */
 /* ---------------------------------------------------------| printWidth=60 (in snapshot) */
 .example {
-  @apply lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit
-    eu posuere eu volutpat id neque pellentesque;
+  @apply lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa
+    hendrerit eu posuere eu volutpat id neque pellentesque;
 }
 "
 `;

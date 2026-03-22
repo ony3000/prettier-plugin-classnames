@@ -9,12 +9,12 @@ exports[`'example' > expectation 1`] = `
 };
 
 .navbar {
-  @apply lorem ipsum dolor sit amet consectetur adipiscing elit proin
-    ex massa hendrerit eu posuere;
+  @apply lorem ipsum dolor sit amet consectetur adipiscing
+    elit proin ex massa hendrerit eu posuere;
 
   @media (min-width: @sizes[tablet]) {
-    @apply lorem ipsum dolor sit amet consectetur adipiscing elit proin
-      ex massa hendrerit eu posuere;
+    @apply lorem ipsum dolor sit amet consectetur adipiscing
+      elit proin ex massa hendrerit eu posuere;
   }
 }
 "
