@@ -188,7 +188,7 @@ Specify the print width of the class name. If no value is provided, the `printWi
 <!-- prettier-ignore -->
 Default | CLI&nbsp;Override | API&nbsp;Override
 --- | --- | ---
-`undefined` | `--classnames-print-width` | `classnamesPrintWidth: <number>`
+`undefined` | `--classnames-print-width <number>` | `classnamesPrintWidth: <number>`
 
 ## Version correlation with sibling plugins
 
