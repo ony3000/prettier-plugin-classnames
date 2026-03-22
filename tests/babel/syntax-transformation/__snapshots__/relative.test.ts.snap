@@ -17,9 +17,9 @@ exports[`'(2) Long enough class names cause syn…' > expectation 1`] = `
 export function Foo({ children }) {
   return (
     <div
-      className={\`lorem ipsum dolor sit amet consectetur adipiscing elit proin
-        ex massa hendrerit eu posuere eu volutpat id neque
-        pellentesque\`}
+      className={\`lorem ipsum dolor sit amet consectetur
+        adipiscing elit proin ex massa hendrerit eu posuere eu
+        volutpat id neque pellentesque\`}
     >
       {children}
     </div>

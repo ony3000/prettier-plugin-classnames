@@ -8,9 +8,10 @@ exports[`'(1) nested ternary - string literal t…' > expectation 1`] = `
       class={condition
         ? "lorem ipsum dolor sit amet"
         : condition
-          ? "lorem ipsum dolor sit amet consectetur adipiscing elit proin"
-          : \`lorem ipsum dolor sit amet consectetur adipiscing elit proin
-            ex massa hendrerit eu posuere\`}
+          ? \`lorem ipsum dolor sit amet consectetur adipiscing elit
+            proin\`
+          : \`lorem ipsum dolor sit amet consectetur adipiscing elit
+            proin ex massa hendrerit eu posuere\`}
     >
       <slot />
     </div>
@@ -27,9 +28,10 @@ exports[`'(2) nested ternary - template literal…' > expectation 1`] = `
       class={condition
         ? "lorem ipsum dolor sit amet"
         : condition
-          ? "lorem ipsum dolor sit amet consectetur adipiscing elit proin"
-          : \`lorem ipsum dolor sit amet consectetur adipiscing elit proin
-            ex massa hendrerit eu posuere\`}
+          ? \`lorem ipsum dolor sit amet consectetur adipiscing elit
+            proin\`
+          : \`lorem ipsum dolor sit amet consectetur adipiscing elit
+            proin ex massa hendrerit eu posuere\`}
     >
       <slot />
     </div>
@@ -90,11 +92,13 @@ exports[`'(5) double nested ternary - string li…' > expectation 1`] = `
       class={condition
         ? "lorem ipsum dolor sit amet"
         : condition
-          ? "lorem ipsum dolor sit amet consectetur adipiscing elit proin"
+          ? \`lorem ipsum dolor sit amet consectetur adipiscing elit
+            proin\`
           : condition
-            ? "lorem ipsum dolor sit amet consectetur adipiscing elit proin"
-            : \`lorem ipsum dolor sit amet consectetur adipiscing elit proin
-              ex massa hendrerit eu posuere\`}
+            ? \`lorem ipsum dolor sit amet consectetur adipiscing elit
+              proin\`
+            : \`lorem ipsum dolor sit amet consectetur adipiscing elit
+              proin ex massa hendrerit eu posuere\`}
     >
       <slot />
     </div>
@@ -111,11 +115,13 @@ exports[`'(6) double nested ternary - template …' > expectation 1`] = `
       class={condition
         ? "lorem ipsum dolor sit amet"
         : condition
-          ? "lorem ipsum dolor sit amet consectetur adipiscing elit proin"
+          ? \`lorem ipsum dolor sit amet consectetur adipiscing elit
+            proin\`
           : condition
-            ? "lorem ipsum dolor sit amet consectetur adipiscing elit proin"
-            : \`lorem ipsum dolor sit amet consectetur adipiscing elit proin
-              ex massa hendrerit eu posuere\`}
+            ? \`lorem ipsum dolor sit amet consectetur adipiscing elit
+              proin\`
+            : \`lorem ipsum dolor sit amet consectetur adipiscing elit
+              proin ex massa hendrerit eu posuere\`}
     >
       <slot />
     </div>
@@ -132,7 +138,8 @@ exports[`'(7) double nested ternary - nested ex…' > expectation 1`] = `
       class={condition
         ? "lorem ipsum dolor sit amet"
         : condition
-          ? "lorem ipsum dolor sit amet consectetur adipiscing elit proin"
+          ? \`lorem ipsum dolor sit amet consectetur adipiscing elit
+            proin\`
           : condition
             ? \`lorem ipsum dolor sit amet
               \${"consectetur adipiscing elit proin"} ex massa hendrerit eu
@@ -162,7 +169,8 @@ exports[`'(8) double nested ternary - nested ex…' > expectation 1`] = `
             : \`lorem ipsum dolor sit amet
               \${"consectetur adipiscing elit proin"} ex massa hendrerit eu
               posuere\`
-          : "lorem ipsum dolor sit amet consectetur adipiscing elit proin"
+          : \`lorem ipsum dolor sit amet consectetur adipiscing elit
+            proin\`
         : "lorem ipsum dolor sit amet"}
     >
       <slot />
