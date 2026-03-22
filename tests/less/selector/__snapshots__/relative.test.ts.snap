@@ -60,8 +60,8 @@ a[href$=".org"] {
 /* Links that start with "https://" and end in ".org" */
 a[href^="https://"][href$=".org"]
 {
-  @apply lorem ipsum dolor sit amet consectetur adipiscing elit proin
-    ex massa hendrerit eu posuere;
+  @apply lorem ipsum dolor sit amet consectetur adipiscing
+    elit proin ex massa hendrerit eu posuere;
 }
 "
 `;
