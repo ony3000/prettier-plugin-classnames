@@ -3,18 +3,18 @@
 exports[`'example' > expectation 1`] = `
 "/* --------------------------------------------------------| printWidth=60 (in snapshot) */
 button when (@my-option = true) {
-  @apply lorem ipsum dolor sit amet consectetur adipiscing elit proin
-    ex massa hendrerit eu posuere;
+  @apply lorem ipsum dolor sit amet consectetur adipiscing
+    elit proin ex massa hendrerit eu posuere;
 }
 
 & when (@my-option = true) {
   button {
-    @apply lorem ipsum dolor sit amet consectetur adipiscing elit proin
-      ex massa hendrerit eu posuere;
+    @apply lorem ipsum dolor sit amet consectetur adipiscing
+      elit proin ex massa hendrerit eu posuere;
   }
   a {
-    @apply lorem ipsum dolor sit amet consectetur adipiscing elit proin
-      ex massa hendrerit eu posuere;
+    @apply lorem ipsum dolor sit amet consectetur adipiscing
+      elit proin ex massa hendrerit eu posuere;
   }
 }
 "

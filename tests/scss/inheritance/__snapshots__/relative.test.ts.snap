@@ -4,14 +4,14 @@ exports[`'example' > expectation 1`] = `
 "/* --------------------------------------------------------| printWidth=60 (in snapshot) */
 /* This CSS will print because %message-shared is extended. */
 %message-shared {
-  @apply lorem ipsum dolor sit amet consectetur adipiscing elit proin
-    ex massa hendrerit eu posuere;
+  @apply lorem ipsum dolor sit amet consectetur adipiscing
+    elit proin ex massa hendrerit eu posuere;
 }
 
 // This CSS won't print because %equal-heights is never extended.
 %equal-heights {
-  @apply lorem ipsum dolor sit amet consectetur adipiscing elit proin
-    ex massa hendrerit eu posuere;
+  @apply lorem ipsum dolor sit amet consectetur adipiscing
+    elit proin ex massa hendrerit eu posuere;
 }
 
 .message {
@@ -20,20 +20,20 @@ exports[`'example' > expectation 1`] = `
 
 .success {
   @extend %message-shared;
-  @apply lorem ipsum dolor sit amet consectetur adipiscing elit proin
-    ex massa hendrerit eu posuere;
+  @apply lorem ipsum dolor sit amet consectetur adipiscing
+    elit proin ex massa hendrerit eu posuere;
 }
 
 .error {
   @extend %message-shared;
-  @apply lorem ipsum dolor sit amet consectetur adipiscing elit proin
-    ex massa hendrerit eu posuere;
+  @apply lorem ipsum dolor sit amet consectetur adipiscing
+    elit proin ex massa hendrerit eu posuere;
 }
 
 .warning {
   @extend %message-shared;
-  @apply lorem ipsum dolor sit amet consectetur adipiscing elit proin
-    ex massa hendrerit eu posuere;
+  @apply lorem ipsum dolor sit amet consectetur adipiscing
+    elit proin ex massa hendrerit eu posuere;
 }
 "
 `;

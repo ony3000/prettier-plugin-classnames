@@ -4,23 +4,23 @@ exports[`'(1) @defer block' > expectation 1`] = `
 "<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
 @defer {
   <div
-    class="lorem ipsum dolor sit amet consectetur adipiscing elit proin
-      ex massa hendrerit eu posuere"
+    class="lorem ipsum dolor sit amet consectetur adipiscing
+      elit proin ex massa hendrerit eu posuere"
   ></div>
 } @placeholder {
   <div
-    class="lorem ipsum dolor sit amet consectetur adipiscing elit proin
-      ex massa hendrerit eu posuere"
+    class="lorem ipsum dolor sit amet consectetur adipiscing
+      elit proin ex massa hendrerit eu posuere"
   ></div>
 } @loading {
   <div
-    class="lorem ipsum dolor sit amet consectetur adipiscing elit proin
-      ex massa hendrerit eu posuere"
+    class="lorem ipsum dolor sit amet consectetur adipiscing
+      elit proin ex massa hendrerit eu posuere"
   ></div>
 } @error {
   <div
-    class="lorem ipsum dolor sit amet consectetur adipiscing elit proin
-      ex massa hendrerit eu posuere"
+    class="lorem ipsum dolor sit amet consectetur adipiscing
+      elit proin ex massa hendrerit eu posuere"
   ></div>
 }
 "
@@ -31,29 +31,29 @@ exports[`'(2) @defer block with triggers and pa…' > expectation 1`] = `
 @defer (on timer(500ms); prefetch on idle) {
   <div
     [class]="
-      'lorem ipsum dolor sit amet consectetur adipiscing elit proin
-      ex massa hendrerit eu posuere'
+      'lorem ipsum dolor sit amet consectetur adipiscing elit
+      proin ex massa hendrerit eu posuere'
     "
   ></div>
 } @placeholder (minimum 500ms) {
   <div
     [class]="
-      'lorem ipsum dolor sit amet consectetur adipiscing elit proin
-      ex massa hendrerit eu posuere'
+      'lorem ipsum dolor sit amet consectetur adipiscing elit
+      proin ex massa hendrerit eu posuere'
     "
   ></div>
 } @loading (after 100ms; minimum 1s) {
   <div
     [class]="
-      'lorem ipsum dolor sit amet consectetur adipiscing elit proin
-      ex massa hendrerit eu posuere'
+      'lorem ipsum dolor sit amet consectetur adipiscing elit
+      proin ex massa hendrerit eu posuere'
     "
   ></div>
 } @error {
   <div
     [class]="
-      'lorem ipsum dolor sit amet consectetur adipiscing elit proin
-      ex massa hendrerit eu posuere'
+      'lorem ipsum dolor sit amet consectetur adipiscing elit
+      proin ex massa hendrerit eu posuere'
     "
   ></div>
 }
@@ -65,15 +65,15 @@ exports[`'(3) @for block' > expectation 1`] = `
 @for (item of items; track item.name) {
   <div
     [className]="
-      'lorem ipsum dolor sit amet consectetur adipiscing elit proin
-      ex massa hendrerit eu posuere'
+      'lorem ipsum dolor sit amet consectetur adipiscing elit
+      proin ex massa hendrerit eu posuere'
     "
   ></div>
 } @empty {
   <div
     [className]="
-      'lorem ipsum dolor sit amet consectetur adipiscing elit proin
-      ex massa hendrerit eu posuere'
+      'lorem ipsum dolor sit amet consectetur adipiscing elit
+      proin ex massa hendrerit eu posuere'
     "
   ></div>
 }
@@ -85,22 +85,22 @@ exports[`'(4) @if block' > expectation 1`] = `
 @if (a > b) {
   <div
     [attr.class]="
-      'lorem ipsum dolor sit amet consectetur adipiscing elit proin
-      ex massa hendrerit eu posuere'
+      'lorem ipsum dolor sit amet consectetur adipiscing elit
+      proin ex massa hendrerit eu posuere'
     "
   ></div>
 } @else if (b > a) {
   <div
     [attr.class]="
-      'lorem ipsum dolor sit amet consectetur adipiscing elit proin
-      ex massa hendrerit eu posuere'
+      'lorem ipsum dolor sit amet consectetur adipiscing elit
+      proin ex massa hendrerit eu posuere'
     "
   ></div>
 } @else {
   <div
     [attr.class]="
-      'lorem ipsum dolor sit amet consectetur adipiscing elit proin
-      ex massa hendrerit eu posuere'
+      'lorem ipsum dolor sit amet consectetur adipiscing elit
+      proin ex massa hendrerit eu posuere'
     "
   ></div>
 }
@@ -113,24 +113,24 @@ exports[`'(5) @switch block' > expectation 1`] = `
   @case (caseA) {
     <div
       [ngClass]="
-        'lorem ipsum dolor sit amet consectetur adipiscing elit proin
-        ex massa hendrerit eu posuere'
+        'lorem ipsum dolor sit amet consectetur adipiscing elit
+        proin ex massa hendrerit eu posuere'
       "
     ></div>
   }
   @case (caseB) {
     <div
       [ngClass]="
-        'lorem ipsum dolor sit amet consectetur adipiscing elit proin
-        ex massa hendrerit eu posuere'
+        'lorem ipsum dolor sit amet consectetur adipiscing elit
+        proin ex massa hendrerit eu posuere'
       "
     ></div>
   }
   @default {
     <div
       [ngClass]="
-        'lorem ipsum dolor sit amet consectetur adipiscing elit proin
-        ex massa hendrerit eu posuere'
+        'lorem ipsum dolor sit amet consectetur adipiscing elit
+        proin ex massa hendrerit eu posuere'
       "
     ></div>
   }
