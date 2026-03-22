@@ -35,6 +35,7 @@ function transformParser(
     ...(refinedParser ?? {}),
     // @ts-expect-error
     parse: async (text: string, options: ResolvedOptions): Promise<FormattedTextAST> => {
+      // NOTE: This statement is deprecated and will be removed in version 0.12.0. There are still no plans to support the `markdown` and `mdx` parsers. I just thought it would be better to guide users to override Prettier's configuration rather than branching inside this plugin.
       if (options.parentParser === 'markdown' || options.parentParser === 'mdx') {
         let codeblockStart = '```';
         const codeblockEnd = '```';
