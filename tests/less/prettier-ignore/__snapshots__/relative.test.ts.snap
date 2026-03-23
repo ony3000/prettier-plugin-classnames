@@ -11,8 +11,8 @@ h3,
 h4,
 h5,
 h6 {
-  @apply lorem ipsum dolor sit amet consectetur adipiscing elit proin
-    ex massa hendrerit eu posuere;
+  @apply lorem ipsum dolor sit amet consectetur adipiscing
+    elit proin ex massa hendrerit eu posuere;
 }
 "
 `;
@@ -30,12 +30,12 @@ exports[`'ignore comment (2)' > expectation 1`] = `
   /* prettier-ignore */
   from { @apply lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere; }
   50% {
-    @apply lorem ipsum dolor sit amet consectetur adipiscing elit proin
-      ex massa hendrerit eu posuere;
+    @apply lorem ipsum dolor sit amet consectetur adipiscing
+      elit proin ex massa hendrerit eu posuere;
   }
   to {
-    @apply lorem ipsum dolor sit amet consectetur adipiscing elit proin
-      ex massa hendrerit eu posuere;
+    @apply lorem ipsum dolor sit amet consectetur adipiscing
+      elit proin ex massa hendrerit eu posuere;
   }
 }
 "
@@ -45,16 +45,16 @@ exports[`'ignore comment (3)' > expectation 1`] = `
 "/* --------------------------------------------------------| printWidth=60 (in snapshot) */
 nav {
   ul {
-    @apply lorem ipsum dolor sit amet consectetur adipiscing elit proin
-      ex massa hendrerit eu posuere;
+    @apply lorem ipsum dolor sit amet consectetur adipiscing
+      elit proin ex massa hendrerit eu posuere;
   }
 
   // prettier-ignore
   li { @apply lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere; }
 
   a {
-    @apply lorem ipsum dolor sit amet consectetur adipiscing elit proin
-      ex massa hendrerit eu posuere;
+    @apply lorem ipsum dolor sit amet consectetur adipiscing
+      elit proin ex massa hendrerit eu posuere;
   }
 }
 "
