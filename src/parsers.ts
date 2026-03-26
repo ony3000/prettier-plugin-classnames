@@ -74,10 +74,9 @@ function transformParser(
 
       if (externalPluginName) {
         externalPlugin = plugins
-          .filter(
-            (plugin) =>
-              // @ts-expect-error: `name` is presumed to be injected internally by Prettier.
-              plugin.name === externalPluginName,
+          .filter((plugin) =>
+            // @ts-expect-error: `name` is presumed to be injected internally by Prettier.
+            plugin.name?.includes(externalPluginName),
           )
           .at(0);
 

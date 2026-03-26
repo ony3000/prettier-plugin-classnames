@@ -36,7 +36,8 @@ export const options: SupportOptions = {
       },
       {
         value: 'relative',
-        description: 'Each line ends at a `printWidth` distance from the start of the class name.',
+        description:
+          'Each line ends at a `printWidth` distance from the start of the non-whitespace text.',
       },
     ],
   },
