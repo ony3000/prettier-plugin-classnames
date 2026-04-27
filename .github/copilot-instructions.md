@@ -32,7 +32,7 @@ src/
 ├── printers.ts           # Minimal printer for FormattedTextAST
 └── core-parts/
     ├── utils.ts          # Shared types (ClassNameNode union, NodeRange, constants)
-    ├── parser.ts         # advancedParse(); Svelte-specific AST offset refinement
+    ├── parser.ts         # advancedParse(); Svelte-specific AST offset refinement (triggered when Svelte script contains TypeScript syntax — the preprocessor inserts a ✂prettier:content✂ attribute that shifts node offsets)
     ├── finder.ts         # AST traversal → ClassNameNode[] (~2,500 lines)
     └── processor.ts      # Wraps/reformats class name strings (~670 lines)
 ```
@@ -42,7 +42,7 @@ src/
 2. `advancedParse()` — build parser-specific AST (with Svelte offset fix)
 3. `findTargetClassNameNodes*()` — traverse AST, emit `ClassNameNode[]`
 4. `parseLineByLineAndReplaceAsync()` — rewrite class name strings with wrapping
-5. If the rewrite changed anything, run a second Prettier pass for consistency
+5. If the rewrite changed anything, run a second Prettier pass for consistency. If that second pass changes the output again (indentation set during the first wrap can be disrupted), run a third wrap pass.
 6. Return a `FormattedTextAST { type: 'FormattedText', body: string }` for the printer
 
 **finder.ts** exports four entry points, one per parser family:
@@ -50,6 +50,10 @@ src/
 - `findTargetClassNameNodesBasedOnHtml()` — html, angular, vue
 - `findTargetClassNameNodesBasedOnCss()` — css, scss, less
 - `findTargetClassNameNodesBasedOnAstro()` — astro
+
+Inside each entry point, the traversal uses a `CaseHandlerContext` that collects `keywordStartingNodes` — AST nodes whose name starts with a supported attribute or function name. These are passed to `filterAndSortClassNameNodes()` (called after traversal) to filter which nodes are actually targeted for wrapping.
+
+For `&&`, `||`, and `??` expressions in class name positions, **only the last operand** is wrapped across multiple lines. Non-last operands are frozen as `PreservingExpressionNode` (`ternary` or `logical`). This is an intentional design decision.
 
 **processor.ts** pipeline inside `parseLineByLineAndReplaceAsync()`:
 1. `structuringClassNameNodes()` — build parent→children hierarchy by range containment
@@ -96,4 +100,8 @@ tests/babel/string-literal-basic/
 - **Linting**: Biome recommended rules only; Biome formatter is disabled (Prettier owns formatting)
 - **TypeScript**: strict mode; target ES2015; no emit (type-check only in source)
 - **`ClassNameNode`** is a discriminated union (`AttributeNode | ExpressionNode | UnknownNode | PreservingExpressionNode`) — always use `isTypeof()` (Zod-based helper in utils.ts) for narrowing
+  - `UnknownNode` is an **intermediate state** created when a string literal is encountered during traversal; it is resolved into `AttributeNode` or `ExpressionNode` based on ancestor node type
+  - `PreservingExpressionNode` (`type: 'ternary' | 'logical'`) is not a class name node itself — it wraps ternary/logical expressions that must be frozen while their last operand is processed
+  - `AttributeNode.isTheFirstLineOnTheSameLineAsTheOpeningTag`, `AttributeNode.elementName`, and `ExpressionNode.isItFunctionArgument` are all **`@deprecated`** and planned for removal — do not use in new code
+  - `ExpressionNode.shouldKeepDelimiter` is `true` for nodes where the automatic delimiter conversion (single-quote / double-quote / backtick selection) cannot be applied and the original delimiter must be preserved
 - **Markdown/MDX** are intentionally unsupported as parsers — the README documents a workaround using `overrides` to prevent unintended formatting in code blocks
