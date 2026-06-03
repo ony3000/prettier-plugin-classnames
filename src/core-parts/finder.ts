@@ -1931,6 +1931,10 @@ export function findTargetClassNameNodesBasedOnJavaScript(
         recursiveProps = ['value'];
         break;
       }
+      case 'AwaitBlock': {
+        recursiveProps = ['pending', 'then', 'catch'];
+        break;
+      }
       case 'BinaryExpression': {
         recursiveProps = ['left', 'right'];
         break;
@@ -1938,6 +1942,17 @@ export function findTargetClassNameNodesBasedOnJavaScript(
       case 'CallExpression':
       case 'OptionalCallExpression': {
         recursiveProps = ['arguments'];
+        break;
+      }
+      case 'CatchBlock':
+      case 'ElseBlock':
+      case 'Fragment':
+      case 'JSXFragment':
+      case 'KeyBlock':
+      case 'PendingBlock':
+      case 'SnippetBlock':
+      case 'ThenBlock': {
+        recursiveProps = ['children'];
         break;
       }
       case 'ChainExpression':
@@ -1965,9 +1980,9 @@ export function findTargetClassNameNodesBasedOnJavaScript(
         recursiveProps = ['program'];
         break;
       }
-      case 'Fragment':
-      case 'JSXFragment': {
-        recursiveProps = ['children'];
+      case 'EachBlock':
+      case 'IfBlock': {
+        recursiveProps = ['children', 'else'];
         break;
       }
       case 'JSXElement': {
