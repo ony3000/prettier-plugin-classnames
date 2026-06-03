@@ -66,6 +66,18 @@ exports[`'(2) #each' > expectation 1`] = `
 "
 `;
 
+exports[`'(2-1) #each - This test works on pret…' > expectation 1`] = `
+"<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
+{#each { length: 8 }, index}
+  <div
+    class="lorem ipsum dolor sit amet consectetur adipiscing
+      elit proin ex massa hendrerit eu posuere eu volutpat id
+      neque pellentesque"
+  ></div>
+{/each}
+"
+`;
+
 exports[`'(3) #key' > expectation 1`] = `
 "<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
 {#key value}
@@ -115,5 +127,25 @@ exports[`'(4) #await' > expectation 1`] = `
       neque pellentesque"
   ></div>
 {/await}
+"
+`;
+
+exports[`'(5) #snippet - This test works on pre…' > expectation 1`] = `
+"<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
+{#snippet foo()}
+  <div
+    class="lorem ipsum dolor sit amet consectetur adipiscing
+      elit proin ex massa hendrerit eu posuere eu volutpat id
+      neque pellentesque"
+  ></div>
+{/snippet}
+
+{#snippet bar(param1, param2, paramN)}
+  <div
+    class="lorem ipsum dolor sit amet consectetur adipiscing
+      elit proin ex massa hendrerit eu posuere eu volutpat id
+      neque pellentesque"
+  ></div>
+{/snippet}
 "
 `;

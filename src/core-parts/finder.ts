@@ -1950,6 +1950,7 @@ export function findTargetClassNameNodesBasedOnJavaScript(
       case 'JSXFragment':
       case 'KeyBlock':
       case 'PendingBlock':
+      case 'SnippetBlock':
       case 'ThenBlock': {
         recursiveProps = ['children'];
         break;
