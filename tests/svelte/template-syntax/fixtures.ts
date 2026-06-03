@@ -44,6 +44,18 @@ export const fixtures: Omit<Fixture, 'output'>[] = [
     },
   },
   {
+    name: '(2-1) #each - This test works on prettier-plugin-svelte>=3.3',
+    input: `
+<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
+{#each { length: 8 }, index}
+  <div class="lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere eu volutpat id neque pellentesque"></div>
+{/each}
+`,
+    options: {
+      printWidth: 60,
+    },
+  },
+  {
     name: '(3) #key',
     input: `
 <!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
@@ -74,6 +86,22 @@ export const fixtures: Omit<Fixture, 'output'>[] = [
 {#await expression catch name}
   <div class="lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere eu volutpat id neque pellentesque"></div>
 {/await}
+`,
+    options: {
+      printWidth: 60,
+    },
+  },
+  {
+    name: '(5) #snippet - This test works on prettier-plugin-svelte>=3.1',
+    input: `
+<!-- ------------------------------------------------------| printWidth=60 (in snapshot) -->
+{#snippet foo()}
+  <div class="lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere eu volutpat id neque pellentesque"></div>
+{/snippet}
+
+{#snippet bar(param1, param2, paramN)}
+  <div class="lorem ipsum dolor sit amet consectetur adipiscing elit proin ex massa hendrerit eu posuere eu volutpat id neque pellentesque"></div>
+{/snippet}
 `,
     options: {
       printWidth: 60,
