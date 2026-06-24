@@ -37,8 +37,8 @@ importers:
         specifier: 0.11.0
         version: 0.11.0
       prettier-plugin-svelte:
-        specifier: 4.0.0
-        version: 4.0.0(prettier@3.8.1)(svelte@5.56.1)
+        specifier: 3.3.0
+        version: 3.3.0(prettier@3.8.1)(svelte@5.56.1)
       rimraf:
         specifier: 6.1.2
         version: 6.1.2
@@ -828,12 +828,11 @@ packages:
     resolution: {integrity: sha512-rl2hJ4Kty/aEfGjk3i4JS+bpng9MjgvwqLRNzeb9NqYhqKoWNwOR39cIJXFjU1vR3zYOPnwWNRMelKb0orunYA==}
     engines: {node: ^14.15.0 || >=16.0.0, pnpm: '>=7.14.0'}
 
-  prettier-plugin-svelte@4.0.0:
-    resolution: {integrity: sha512-StoBMZGsfE9ztz1i9ejLhYU2nlP1+FdoWqGCb7Bh7EGVVBW2smCcyoCPxWCdszVdx1SsDiK7n4uAv/YUsHqimQ==}
-    engines: {node: '>=20'}
+  prettier-plugin-svelte@3.3.0:
+    resolution: {integrity: sha512-iNoYiQUx4zwqbQDW/bk0WR75w+QiY4fHJQpGQ5v8Yr7X5m7YoSvs2buUnhoYFXNAL32ULVmrjPSc0vVOHJsO0Q==}
     peerDependencies:
       prettier: ^3.0.0
-      svelte: ^5.0.0
+      svelte: ^3.2.0 || ^4.0.0-next.0 || ^5.0.0-next.0
 
   prettier@3.8.1:
     resolution: {integrity: sha512-UOnG6LftzbdaHZcKoPFtOcCKztrQ57WkHDeRD9t/PTQtmT0NHSeWWepj6pS0z/N7+08BHFDQVUrfmfMRcZwbMg==}
@@ -1638,7 +1637,7 @@ snapshots:
       prettier: 3.8.1
       sass-formatter: 0.7.9
 
-  prettier-plugin-svelte@4.0.0(prettier@3.8.1)(svelte@5.56.1):
+  prettier-plugin-svelte@3.3.0(prettier@3.8.1)(svelte@5.56.1):
     dependencies:
       prettier: 3.8.1
       svelte: 5.56.1
