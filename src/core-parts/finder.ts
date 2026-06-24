@@ -853,20 +853,30 @@ function handleSvelteAttribute(ctx: CaseHandlerContext) {
       ctx.node,
       z.object({
         name: z.string(),
-        value: z.array(
+        value: z.union([
+          z.array(
+            z.object({
+              type: z.string(),
+              start: z.number(),
+              end: z.number(),
+            }),
+          ),
           z.object({
             type: z.string(),
             start: z.number(),
             end: z.number(),
           }),
-        ),
+        ]),
       }),
     ) &&
     ctx.supportedAttributes.includes(ctx.node.name)
   ) {
     ctx.keywordStartingNodes.push(ctx.currentASTNode);
 
-    const hasExpression = ctx.node.value.some((childNode) => childNode.type === 'MustacheTag');
+    const childNodes = Array.isArray(ctx.node.value) ? ctx.node.value : [ctx.node.value];
+    const hasExpression = childNodes.some(
+      (childNode) => childNode.type === 'MustacheTag' || childNode.type === 'ExpressionTag',
+    );
 
     if (hasExpression) {
       let minRangeStart = Infinity;
@@ -1842,6 +1852,7 @@ const parserCaseHandlers: ParserCaseHandlers = {
     Line: handleTypeScriptBlock,
     Attribute: handleSvelteAttribute,
     Comment: handleSvelteComment,
+    ExpressionTag: handleSvelteMustacheTag,
     MustacheTag: handleSvelteMustacheTag,
     RefinedScript: handleSvelteRefinedScript,
     Text: handleSvelteText,
@@ -1944,15 +1955,18 @@ export function findTargetClassNameNodesBasedOnJavaScript(
         recursiveProps = ['arguments'];
         break;
       }
+      case 'Fragment':
+      case 'JSXFragment': {
+        recursiveProps = ['children', 'nodes'];
+        break;
+      }
       case 'CatchBlock':
       case 'ElseBlock':
-      case 'Fragment':
-      case 'JSXFragment':
       case 'KeyBlock':
       case 'PendingBlock':
       case 'SnippetBlock':
       case 'ThenBlock': {
-        recursiveProps = ['children'];
+        recursiveProps = ['children', 'body', 'fragment'];
         break;
       }
       case 'ChainExpression':
@@ -1966,9 +1980,14 @@ export function findTargetClassNameNodesBasedOnJavaScript(
         recursiveProps = ['consequent', 'alternate'];
         break;
       }
+      case 'Component':
       case 'Element':
-      case 'InlineComponent': {
-        recursiveProps = ['attributes', 'children'];
+      case 'InlineComponent':
+      case 'RegularElement':
+      case 'SvelteComponent':
+      case 'SvelteElement':
+      case 'SvelteFragment': {
+        recursiveProps = ['attributes', 'children', 'fragment'];
         break;
       }
       case 'ExportDefaultDeclaration':
@@ -1980,9 +1999,12 @@ export function findTargetClassNameNodesBasedOnJavaScript(
         recursiveProps = ['program'];
         break;
       }
-      case 'EachBlock':
+      case 'EachBlock': {
+        recursiveProps = ['children', 'else', 'body', 'fallback', 'context'];
+        break;
+      }
       case 'IfBlock': {
-        recursiveProps = ['children', 'else'];
+        recursiveProps = ['children', 'else', 'consequent', 'alternate', 'test'];
         break;
       }
       case 'JSXElement': {
@@ -1997,6 +2019,7 @@ export function findTargetClassNameNodesBasedOnJavaScript(
         recursiveProps = ['leadingComments'];
         break;
       }
+      case 'ExpressionTag':
       case 'MustacheTag': {
         recursiveProps = ['expression'];
         break;
@@ -2019,7 +2042,7 @@ export function findTargetClassNameNodesBasedOnJavaScript(
         break;
       }
       case 'Root': {
-        recursiveProps = ['html', 'instance'];
+        recursiveProps = ['html', 'instance', 'module', 'fragment'];
         break;
       }
       case 'Script': {
