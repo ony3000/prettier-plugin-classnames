@@ -8,25 +8,42 @@ function base64Decode(input: string): string {
 }
 
 function refineSvelteAst(preprocessedText: string, ast: AST) {
-  if (!ast.instance) {
+  const svelteAst = ast as AST & {
+    module?: unknown;
+    instance?: unknown;
+  };
+  const scriptInfos = [
+    { key: 'module' as const, node: svelteAst.module },
+    { key: 'instance' as const, node: svelteAst.instance },
+  ]
+    .filter(
+      (
+        info,
+      ): info is {
+        key: 'module' | 'instance';
+        node: { start: number; end: number; content?: { body?: unknown[] } };
+      } =>
+        isTypeof(
+          info.node,
+          z.object({
+            start: z.number(),
+            end: z.number(),
+          }),
+        ),
+    )
+    .map(({ key, node }) => ({
+      key,
+      node,
+      originalStart: node.start,
+      originalEnd: node.end,
+    }))
+    .sort((a, b) => a.originalStart - b.originalStart);
+
+  if (scriptInfos.length === 0) {
     return ast;
   }
 
-  const scriptTag = preprocessedText.slice(ast.instance.start, ast.instance.end);
-  const matchResult = scriptTag.match(/ ✂prettier:content✂="([^"]*)"/);
-
-  if (matchResult === null) {
-    return ast;
-  }
-
-  const [temporaryAttributeWithLeadingSpace, encodedContent] = matchResult;
-  const plainContent = base64Decode(encodedContent);
-
-  const restoreTextOffset =
-    plainContent.length - (temporaryAttributeWithLeadingSpace.length + '{}'.length);
-  const restoreLineOffset = plainContent.split(EOL).length - 1;
-
-  function recursion(node: unknown): void {
+  function shiftNode(node: unknown, thresholdEnd: number, textOffset: number, lineOffset: number): void {
     if (!isTypeof(node, z.object({ type: z.string() }))) {
       return;
     }
@@ -38,12 +55,12 @@ function refineSvelteAst(preprocessedText: string, ast: AST) {
 
       if (Array.isArray(value)) {
         value.forEach((childNode: unknown) => {
-          recursion(childNode);
+          shiftNode(childNode, thresholdEnd, textOffset, lineOffset);
         });
         return;
       }
 
-      recursion(value);
+      shiftNode(value, thresholdEnd, textOffset, lineOffset);
     });
 
     if (
@@ -58,8 +75,8 @@ function refineSvelteAst(preprocessedText: string, ast: AST) {
       return;
     }
 
-    if (ast.instance.end <= node.start) {
-      node.start += restoreTextOffset;
+    if (thresholdEnd <= node.start) {
+      node.start += textOffset;
 
       if (
         isTypeof(
@@ -75,12 +92,12 @@ function refineSvelteAst(preprocessedText: string, ast: AST) {
       ) {
         node.loc.start = {
           ...node.loc.start,
-          line: node.loc.start.line + restoreLineOffset,
+          line: node.loc.start.line + lineOffset,
         };
       }
     }
-    if (ast.instance.end <= node.end) {
-      node.end += restoreTextOffset;
+    if (thresholdEnd <= node.end) {
+      node.end += textOffset;
 
       if (
         isTypeof(
@@ -96,36 +113,79 @@ function refineSvelteAst(preprocessedText: string, ast: AST) {
       ) {
         node.loc.end = {
           ...node.loc.end,
-          line: node.loc.end.line + restoreLineOffset,
+          line: node.loc.end.line + lineOffset,
         };
       }
     }
   }
 
-  recursion(ast.html);
-  recursion(ast.fragment);
+  let cumulativeTextOffset = 0;
+  let cumulativeLineOffset = 0;
 
-  ast.instance = {
-    type: 'RefinedScript',
-    start: ast.instance.start,
-    end: ast.instance.end + restoreTextOffset,
-    loc: {
-      start: {
-        line: preprocessedText.slice(0, ast.instance.start).split(EOL).length,
-      },
-    },
-    content: {
-      type: 'RefinedScriptSource',
-      start: ast.instance.end + restoreTextOffset - ('</script>'.length + plainContent.length),
-      end: ast.instance.end + restoreTextOffset - '</script>'.length,
+  scriptInfos.forEach(({ key, node, originalStart, originalEnd }, scriptIndex) => {
+    const scriptTag = preprocessedText.slice(originalStart, originalEnd);
+    const matchResult = scriptTag.match(/ ✂prettier:content✂="([^"]*)"/);
+
+    if (matchResult === null) {
+      return;
+    }
+
+    const [temporaryAttributeWithLeadingSpace, encodedContent] = matchResult;
+    const plainContent = base64Decode(encodedContent);
+
+    const restoreTextOffset =
+      plainContent.length - (temporaryAttributeWithLeadingSpace.length + '{}'.length);
+    const restoreLineOffset = plainContent.split(EOL).length - 1;
+    const currentStart = originalStart + cumulativeTextOffset;
+    const currentEnd = originalEnd + cumulativeTextOffset;
+    const currentStartLine =
+      preprocessedText.slice(0, originalStart).split(EOL).length + cumulativeLineOffset;
+    const firstBodyNode = node.content?.body?.at(0);
+    const contentStartLine = isTypeof(
+      firstBodyNode,
+      z.object({
+        loc: z.object({
+          start: z.object({
+            line: z.number(),
+          }),
+        }),
+      }),
+    )
+      ? firstBodyNode.loc.start.line + cumulativeLineOffset
+      : currentStartLine + 1;
+
+    shiftNode(svelteAst.html, currentEnd, restoreTextOffset, restoreLineOffset);
+    shiftNode(svelteAst.fragment, currentEnd, restoreTextOffset, restoreLineOffset);
+
+    scriptInfos.slice(scriptIndex + 1).forEach(({ key: nextKey }) => {
+      shiftNode(svelteAst[nextKey], currentEnd, restoreTextOffset, restoreLineOffset);
+    });
+
+    svelteAst[key] = {
+      type: 'RefinedScript',
+      start: currentStart,
+      end: currentEnd + restoreTextOffset,
       loc: {
         start: {
-          line: ast.instance.content.body[0].loc.start.line,
+          line: currentStartLine,
         },
       },
-      value: plainContent,
-    },
-  };
+      content: {
+        type: 'RefinedScriptSource',
+        start: currentEnd + restoreTextOffset - ('</script>'.length + plainContent.length),
+        end: currentEnd + restoreTextOffset - '</script>'.length,
+        loc: {
+          start: {
+            line: contentStartLine,
+          },
+        },
+        value: plainContent,
+      },
+    };
+
+    cumulativeTextOffset += restoreTextOffset;
+    cumulativeLineOffset += restoreLineOffset;
+  });
 
   return ast;
 }
