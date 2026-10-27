@@ -160,7 +160,7 @@ function handleJavaScriptCallExpression(ctx: CaseHandlerContext) {
       ctx.node,
       z.object({
         callee: z.object({
-          type: z.unknown(),
+          type: z.unknown().optional(),
           name: z.string(),
         }),
       }),
@@ -229,7 +229,7 @@ function handleJavaScriptConditionalExpression(ctx: CaseHandlerContext) {
           end: z.number().optional(),
         }),
         z.object({
-          loc: z.undefined(),
+          loc: z.undefined().optional(),
           start: z.number(),
           end: z.number(),
         }),
@@ -310,7 +310,7 @@ function handleJavaScriptJSXAttribute(ctx: CaseHandlerContext) {
           name: recursiveSchema,
         }),
         z.object({
-          loc: z.undefined(),
+          loc: z.undefined().optional(),
           start: z.number(),
           end: z.number(),
           name: recursiveSchema,
@@ -330,16 +330,16 @@ function handleJavaScriptJSXAttribute(ctx: CaseHandlerContext) {
           start: z.number().optional(),
           end: z.number().optional(),
           name: z.object({
-            type: z.unknown(),
+            type: z.unknown().optional(),
             name: z.string(),
           }),
         }),
         z.object({
-          loc: z.undefined(),
+          loc: z.undefined().optional(),
           start: z.number(),
           end: z.number(),
           name: z.object({
-            type: z.unknown(),
+            type: z.unknown().optional(),
             name: z.string(),
           }),
         }),
@@ -397,7 +397,7 @@ function handleJavaScriptJSXExpressionContainer(ctx: CaseHandlerContext) {
           end: z.number().optional(),
         }),
         z.object({
-          loc: z.undefined(),
+          loc: z.undefined().optional(),
           start: z.number(),
           end: z.number(),
         }),
@@ -462,7 +462,7 @@ function handleJavaScriptLogicalExpression(ctx: CaseHandlerContext) {
           end: z.number().optional(),
         }),
         z.object({
-          loc: z.undefined(),
+          loc: z.undefined().optional(),
           start: z.number(),
           end: z.number(),
         }),
@@ -742,7 +742,7 @@ function handleJavaScriptTemplateLiteral(ctx: CaseHandlerContext) {
           ),
         }),
         z.object({
-          loc: z.undefined(),
+          loc: z.undefined().optional(),
           start: z.number(),
           end: z.number(),
           quasis: z.array(
@@ -816,7 +816,7 @@ function handleTypeScriptLiteral(ctx: CaseHandlerContext) {
         }),
         z.object({
           value: z.string(),
-          loc: z.undefined(),
+          loc: z.undefined().optional(),
           start: z.number(),
           end: z.number(),
           raw: z.string(),
@@ -1365,7 +1365,7 @@ function handleHtmlElement(ctx: CaseHandlerContext) {
         attrs: z.array(
           z.object({
             name: z.string(),
-            value: z.unknown(),
+            value: z.unknown().optional(),
           }),
         ),
       }),
@@ -1702,7 +1702,7 @@ function handleCssCssAtrule(ctx: CaseHandlerContext) {
       ctx.node,
       z.object({
         name: z.literal('apply'),
-        nodes: z.undefined(),
+        nodes: z.undefined().optional(),
         raws: z.object({
           afterName: z.string(),
           params: z.string(),
@@ -2089,8 +2089,8 @@ export function findTargetClassNameNodesBasedOnJavaScript(
       isTypeof(
         node,
         z.object({
-          start: z.undefined(),
-          end: z.undefined(),
+          start: z.undefined().optional(),
+          end: z.undefined().optional(),
           range: z.custom<NodeRange>((value) => isTypeof(value, z.tuple([z.number(), z.number()]))),
         }),
       )
@@ -2508,8 +2508,8 @@ export function findTargetClassNameNodesBasedOnAstro(
               })
               .optional(),
           }),
-          name: z.unknown(),
-          value: z.unknown(),
+          name: z.unknown().optional(),
+          value: z.unknown().optional(),
         }),
       )
     ) {
