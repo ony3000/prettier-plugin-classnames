@@ -1,6 +1,6 @@
 {
   "name": "prettier-plugin-classnames",
-  "version": "0.10.3",
+  "version": "0.10.4",
   "description": "A Prettier plugin that wraps verbose class name based on the `printWidth` option.",
   "keywords": [
     "prettier",
@@ -33,7 +33,7 @@
     "snapshot": "vitest -u"
   },
   "dependencies": {
-    "zod": "3.22.4"
+    "zod": "4.6.7"
   },
   "devDependencies": {
     "@biomejs/biome": "2.0.0",
@@ -48,7 +48,7 @@
     "rimraf": "6.1.2",
     "typescript": "5.8.3",
     "vite-tsconfig-paths": "4.2.3",
-    "vitest": "3.1.4"
+    "vitest": "4.1.0"
   },
   "peerDependencies": {
     "@prettier/plugin-oxc": "*",

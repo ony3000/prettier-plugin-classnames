@@ -30,7 +30,7 @@ jobs:
           ref: testing-prettier-${{ matrix.prettier-version }}
       - uses: actions/setup-node@v3
         with:
-          node-version: 18
+          node-version: 24
           registry-url: https://registry.npmjs.org/
       - uses: pnpm/action-setup@v2
         with:
