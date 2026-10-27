@@ -1,8 +1,8 @@
 import type { AST, ParserOptions } from 'prettier';
 import { parsers as babelParsers } from 'prettier/plugins/babel';
 import { parsers as typescriptParsers } from 'prettier/plugins/typescript';
-import { z } from 'zod';
 
+import * as schemas from './schemas';
 import {
   type NodeRange,
   type ExpressionNode,
@@ -43,19 +43,8 @@ type ParserCaseHandlers = Partial<{
   [parserName: string]: CaseHandlers;
 }>;
 
-type JSXOpeningElementNameAsString = {
-  type: 'JSXIdentifier';
-  name: string;
-};
-
-type JSXOpeningElementNameAsObject = {
-  type: 'JSXMemberExpression';
-  object: JSXOpeningElementNameAsString | JSXOpeningElementNameAsObject;
-  property: JSXOpeningElementNameAsString;
-};
-
 function getElementName(
-  param: JSXOpeningElementNameAsString | JSXOpeningElementNameAsObject,
+  param: schemas.JSXOpeningElementNameAsString | schemas.JSXOpeningElementNameAsObject,
 ): string {
   if (param.type === 'JSXIdentifier') {
     return param.name;
@@ -156,15 +145,7 @@ function handleJavaScriptCallExpression(ctx: CaseHandlerContext) {
   ctx.nonCommentNodes.push(ctx.currentASTNode);
 
   if (
-    isTypeof(
-      ctx.node,
-      z.object({
-        callee: z.object({
-          type: z.unknown().optional(),
-          name: z.string(),
-        }),
-      }),
-    ) &&
+    isTypeof(ctx.node, schemas.javaScriptCallExpressionSchema) &&
     ctx.node.callee.type === 'Identifier' &&
     ctx.supportedFunctions.includes(ctx.node.callee.name)
   ) {
@@ -215,27 +196,7 @@ function handleJavaScriptConditionalExpression(ctx: CaseHandlerContext) {
     }
   });
 
-  if (
-    isTypeof(
-      ctx.node,
-      z.union([
-        z.object({
-          loc: z.object({
-            start: z.object({
-              line: z.number(),
-            }),
-          }),
-          start: z.number().optional(),
-          end: z.number().optional(),
-        }),
-        z.object({
-          loc: z.undefined().optional(),
-          start: z.number(),
-          end: z.number(),
-        }),
-      ]),
-    )
-  ) {
+  if (isTypeof(ctx.node, schemas.javaScriptConditionalExpressionSchema)) {
     const currentNodeStartLineNumber = ctx.node.loc
       ? ctx.node.loc.start.line
       : getStartLineNumber(ctx.formattedText, ctx.node);
@@ -249,21 +210,7 @@ function handleJavaScriptConditionalExpression(ctx: CaseHandlerContext) {
 }
 
 function handleJavaScriptFile(ctx: CaseHandlerContext) {
-  if (
-    isTypeof(
-      ctx.node,
-      z.object({
-        comments: z.array(
-          z.object({
-            type: z.string(),
-            value: z.string(),
-            start: z.number(),
-            end: z.number(),
-          }),
-        ),
-      }),
-    )
-  ) {
+  if (isTypeof(ctx.node, schemas.javaScriptFileSchema)) {
     ctx.node.comments.forEach((comment) => {
       if (comment.value.trim() === 'prettier-ignore') {
         ctx.prettierIgnoreNodes.push({
@@ -279,72 +226,10 @@ function handleJavaScriptFile(ctx: CaseHandlerContext) {
 function handleJavaScriptJSXAttribute(ctx: CaseHandlerContext) {
   ctx.nonCommentNodes.push(ctx.currentASTNode);
 
-  const recursiveSchema: z.ZodType<JSXOpeningElementNameAsString | JSXOpeningElementNameAsObject> =
-    z.union([
-      z.object({
-        type: z.literal('JSXIdentifier'),
-        name: z.string(),
-      }),
-      z.object({
-        type: z.literal('JSXMemberExpression'),
-        object: z.lazy(() => recursiveSchema),
-        property: z.object({
-          type: z.literal('JSXIdentifier'),
-          name: z.string(),
-        }),
-      }),
-    ]);
-
   if (
-    isTypeof(
-      ctx.parentNode,
-      z.union([
-        z.object({
-          loc: z.object({
-            start: z.object({
-              line: z.number(),
-            }),
-          }),
-          start: z.number().optional(),
-          end: z.number().optional(),
-          name: recursiveSchema,
-        }),
-        z.object({
-          loc: z.undefined().optional(),
-          start: z.number(),
-          end: z.number(),
-          name: recursiveSchema,
-        }),
-      ]),
-    ) &&
+    isTypeof(ctx.parentNode, schemas.jsxOpeningElementSchema) &&
     ctx.parentNode.type === 'JSXOpeningElement' &&
-    isTypeof(
-      ctx.node,
-      z.union([
-        z.object({
-          loc: z.object({
-            start: z.object({
-              line: z.number(),
-            }),
-          }),
-          start: z.number().optional(),
-          end: z.number().optional(),
-          name: z.object({
-            type: z.unknown().optional(),
-            name: z.string(),
-          }),
-        }),
-        z.object({
-          loc: z.undefined().optional(),
-          start: z.number(),
-          end: z.number(),
-          name: z.object({
-            type: z.unknown().optional(),
-            name: z.string(),
-          }),
-        }),
-      ]),
-    ) &&
+    isTypeof(ctx.node, schemas.jsxAttributeSchema) &&
     ctx.node.name.type === 'JSXIdentifier' &&
     ctx.supportedAttributes.includes(ctx.node.name.name)
   ) {
@@ -383,27 +268,7 @@ function handleJavaScriptJSXAttribute(ctx: CaseHandlerContext) {
 function handleJavaScriptJSXExpressionContainer(ctx: CaseHandlerContext) {
   ctx.nonCommentNodes.push(ctx.currentASTNode);
 
-  if (
-    isTypeof(
-      ctx.node,
-      z.union([
-        z.object({
-          loc: z.object({
-            start: z.object({
-              line: z.number(),
-            }),
-          }),
-          start: z.number().optional(),
-          end: z.number().optional(),
-        }),
-        z.object({
-          loc: z.undefined().optional(),
-          start: z.number(),
-          end: z.number(),
-        }),
-      ]),
-    )
-  ) {
+  if (isTypeof(ctx.node, schemas.javaScriptJSXExpressionContainerSchema)) {
     const currentNodeStartLineNumber = ctx.node.loc
       ? ctx.node.loc.start.line
       : getStartLineNumber(ctx.formattedText, ctx.node);
@@ -448,27 +313,7 @@ function handleJavaScriptJSXExpressionContainer(ctx: CaseHandlerContext) {
 function handleJavaScriptLogicalExpression(ctx: CaseHandlerContext) {
   ctx.nonCommentNodes.push(ctx.currentASTNode);
 
-  if (
-    isTypeof(
-      ctx.node,
-      z.union([
-        z.object({
-          loc: z.object({
-            start: z.object({
-              line: z.number(),
-            }),
-          }),
-          start: z.number().optional(),
-          end: z.number().optional(),
-        }),
-        z.object({
-          loc: z.undefined().optional(),
-          start: z.number(),
-          end: z.number(),
-        }),
-      ]),
-    )
-  ) {
+  if (isTypeof(ctx.node, schemas.javaScriptLogicalExpressionSchema)) {
     const currentNodeStartLineNumber = ctx.node.loc
       ? ctx.node.loc.start.line
       : getStartLineNumber(ctx.formattedText, ctx.node);
@@ -484,17 +329,7 @@ function handleJavaScriptLogicalExpression(ctx: CaseHandlerContext) {
 function handleJavaScriptObjectProperty(ctx: CaseHandlerContext) {
   ctx.nonCommentNodes.push(ctx.currentASTNode);
 
-  if (
-    isTypeof(
-      ctx.node,
-      z.object({
-        key: z.object({
-          start: z.number(),
-          end: z.number(),
-        }),
-      }),
-    )
-  ) {
+  if (isTypeof(ctx.node, schemas.javaScriptObjectPropertySchema)) {
     const objectKeyRangeStart = ctx.node.key.start;
     const objectKeyRangeEnd = ctx.node.key.end;
 
@@ -526,22 +361,7 @@ function handleJavaScriptObjectProperty(ctx: CaseHandlerContext) {
 function handleJavaScriptStringLiteral(ctx: CaseHandlerContext) {
   ctx.nonCommentNodes.push(ctx.currentASTNode);
 
-  if (
-    isTypeof(
-      ctx.node,
-      z.object({
-        loc: z.object({
-          start: z.object({
-            line: z.number(),
-          }),
-        }),
-        extra: z.object({
-          raw: z.string(),
-        }),
-        value: z.string(),
-      }),
-    )
-  ) {
+  if (isTypeof(ctx.node, schemas.javaScriptStringLiteralSchema)) {
     ctx.classNameNodes.push({
       type: 'unknown',
       delimiterType:
@@ -563,34 +383,8 @@ function handleJavaScriptTaggedTemplateExpression(ctx: CaseHandlerContext) {
   ctx.nonCommentNodes.push(ctx.currentASTNode);
 
   if (
-    (isTypeof(
-      ctx.node,
-      z.object({
-        tag: z.object({
-          type: z.literal('Identifier'),
-          name: z.string(),
-          start: z.number(),
-          end: z.number(),
-        }),
-      }),
-    ) &&
-      ctx.node.tag.name === 'css') ||
-    (isTypeof(
-      ctx.node,
-      z.object({
-        tag: z.object({
-          type: z.literal('MemberExpression'),
-          start: z.number(),
-          end: z.number(),
-          object: z.object({
-            name: z.string(),
-          }),
-          property: z.object({
-            name: z.string(),
-          }),
-        }),
-      }),
-    ) &&
+    (isTypeof(ctx.node, schemas.taggedIdentifierOffsetsSchema) && ctx.node.tag.name === 'css') ||
+    (isTypeof(ctx.node, schemas.taggedMemberOffsetsSchema) &&
       ctx.node.tag.object.name === 'String' &&
       ctx.node.tag.property.name === 'raw')
   ) {
@@ -607,32 +401,8 @@ function handleJavaScriptTaggedTemplateExpression(ctx: CaseHandlerContext) {
   }
 
   if (
-    (isTypeof(
-      ctx.node,
-      z.object({
-        tag: z.object({
-          type: z.literal('Identifier'),
-          name: z.string(),
-          range: z.custom<NodeRange>((value) => isTypeof(value, z.tuple([z.number(), z.number()]))),
-        }),
-      }),
-    ) &&
-      ctx.node.tag.name === 'css') ||
-    (isTypeof(
-      ctx.node,
-      z.object({
-        tag: z.object({
-          type: z.literal('MemberExpression'),
-          range: z.custom<NodeRange>((value) => isTypeof(value, z.tuple([z.number(), z.number()]))),
-          object: z.object({
-            name: z.string(),
-          }),
-          property: z.object({
-            name: z.string(),
-          }),
-        }),
-      }),
-    ) &&
+    (isTypeof(ctx.node, schemas.taggedIdentifierRangeSchema) && ctx.node.tag.name === 'css') ||
+    (isTypeof(ctx.node, schemas.taggedMemberRangeSchema) &&
       ctx.node.tag.object.name === 'String' &&
       ctx.node.tag.property.name === 'raw')
   ) {
@@ -648,41 +418,11 @@ function handleJavaScriptTaggedTemplateExpression(ctx: CaseHandlerContext) {
   }
 
   if (
-    (isTypeof(
-      ctx.node,
-      z.object({
-        tag: z.object({
-          type: z.literal('Identifier'),
-          name: z.string(),
-        }),
-      }),
-    ) &&
+    (isTypeof(ctx.node, schemas.taggedIdentifierSchema) &&
       ctx.supportedFunctions.includes(ctx.node.tag.name)) ||
-    (isTypeof(
-      ctx.node,
-      z.object({
-        tag: z.object({
-          type: z.literal('MemberExpression'),
-          object: z.object({
-            type: z.literal('Identifier'),
-            name: z.string(),
-          }),
-        }),
-      }),
-    ) &&
+    (isTypeof(ctx.node, schemas.taggedMemberSchema) &&
       ctx.supportedFunctions.includes(ctx.node.tag.object.name)) ||
-    (isTypeof(
-      ctx.node,
-      z.object({
-        tag: z.object({
-          type: z.literal('CallExpression'),
-          callee: z.object({
-            type: z.literal('Identifier'),
-            name: z.string(),
-          }),
-        }),
-      }),
-    ) &&
+    (isTypeof(ctx.node, schemas.taggedCallSchema) &&
       ctx.supportedFunctions.includes(ctx.node.tag.callee.name))
   ) {
     ctx.keywordStartingNodes.push(ctx.currentASTNode);
@@ -719,45 +459,7 @@ function handleJavaScriptTaggedTemplateExpression(ctx: CaseHandlerContext) {
 function handleJavaScriptTemplateLiteral(ctx: CaseHandlerContext) {
   ctx.nonCommentNodes.push(ctx.currentASTNode);
 
-  if (
-    isTypeof(
-      ctx.node,
-      z.union([
-        z.object({
-          loc: z.object({
-            start: z.object({
-              line: z.number(),
-            }),
-          }),
-          start: z.number().optional(),
-          end: z.number().optional(),
-          quasis: z.array(
-            z.object({
-              type: z.literal('TemplateElement'),
-              value: z.object({
-                cooked: z.string(),
-              }),
-              tail: z.boolean(),
-            }),
-          ),
-        }),
-        z.object({
-          loc: z.undefined().optional(),
-          start: z.number(),
-          end: z.number(),
-          quasis: z.array(
-            z.object({
-              type: z.literal('TemplateElement'),
-              value: z.object({
-                cooked: z.string(),
-              }),
-              tail: z.boolean(),
-            }),
-          ),
-        }),
-      ]),
-    )
-  ) {
+  if (isTypeof(ctx.node, schemas.javaScriptTemplateLiteralSchema)) {
     const { cooked } = ctx.node.quasis[0].value;
 
     const hasSingleQuote = cooked.indexOf(SINGLE_QUOTE) !== -1;
@@ -784,12 +486,7 @@ function handleJavaScriptTemplateLiteral(ctx: CaseHandlerContext) {
 
 function handleTypeScriptBlock(ctx: CaseHandlerContext) {
   if (
-    isTypeof(
-      ctx.node,
-      z.object({
-        value: z.string(),
-      }),
-    ) &&
+    isTypeof(ctx.node, schemas.typeScriptBlockSchema) &&
     ctx.node.value.trim() === 'prettier-ignore'
   ) {
     ctx.prettierIgnoreNodes.push(ctx.currentASTNode);
@@ -799,31 +496,7 @@ function handleTypeScriptBlock(ctx: CaseHandlerContext) {
 function handleTypeScriptLiteral(ctx: CaseHandlerContext) {
   ctx.nonCommentNodes.push(ctx.currentASTNode);
 
-  if (
-    isTypeof(
-      ctx.node,
-      z.union([
-        z.object({
-          value: z.string(),
-          loc: z.object({
-            start: z.object({
-              line: z.number(),
-            }),
-          }),
-          start: z.number().optional(),
-          end: z.number().optional(),
-          raw: z.string(),
-        }),
-        z.object({
-          value: z.string(),
-          loc: z.undefined().optional(),
-          start: z.number(),
-          end: z.number(),
-          raw: z.string(),
-        }),
-      ]),
-    )
-  ) {
+  if (isTypeof(ctx.node, schemas.typeScriptLiteralSchema)) {
     const currentNodeStartLineNumber = ctx.node.loc
       ? ctx.node.loc.start.line
       : getStartLineNumber(ctx.formattedText, ctx.node);
@@ -849,26 +522,7 @@ function handleSvelteAttribute(ctx: CaseHandlerContext) {
   ctx.nonCommentNodes.push(ctx.currentASTNode);
 
   if (
-    isTypeof(
-      ctx.node,
-      z.object({
-        name: z.string(),
-        value: z.union([
-          z.array(
-            z.object({
-              type: z.string(),
-              start: z.number(),
-              end: z.number(),
-            }),
-          ),
-          z.object({
-            type: z.string(),
-            start: z.number(),
-            end: z.number(),
-          }),
-        ]),
-      }),
-    ) &&
+    isTypeof(ctx.node, schemas.svelteAttributeSchema) &&
     ctx.supportedAttributes.includes(ctx.node.name)
   ) {
     ctx.keywordStartingNodes.push(ctx.currentASTNode);
@@ -945,12 +599,7 @@ function handleSvelteAttribute(ctx: CaseHandlerContext) {
 
 function handleSvelteComment(ctx: CaseHandlerContext) {
   if (
-    isTypeof(
-      ctx.node,
-      z.object({
-        data: z.string(),
-      }),
-    ) &&
+    isTypeof(ctx.node, schemas.svelteCommentSchema) &&
     ctx.node.data.trim() === 'prettier-ignore'
   ) {
     ctx.prettierIgnoreNodes.push(ctx.currentASTNode);
@@ -1001,23 +650,7 @@ function handleSvelteMustacheTag(ctx: CaseHandlerContext) {
 function handleSvelteRefinedScript(ctx: CaseHandlerContext) {
   ctx.nonCommentNodes.push(ctx.currentASTNode);
 
-  if (
-    isTypeof(
-      ctx.node,
-      z.object({
-        content: z.object({
-          start: z.number(),
-          end: z.number(),
-          loc: z.object({
-            start: z.object({
-              line: z.number(),
-            }),
-          }),
-          value: z.string(),
-        }),
-      }),
-    )
-  ) {
+  if (isTypeof(ctx.node, schemas.svelteRefinedScriptSchema)) {
     // Note: In fact, the script element is not a `keywordStartingNode`, but it is considered a kind of safe list to maintain the `classNameNode`s obtained from the code inside the element.
     ctx.keywordStartingNodes.push(ctx.currentASTNode);
 
@@ -1057,20 +690,8 @@ function handleSvelteRefinedScript(ctx: CaseHandlerContext) {
 
 function handleSvelteText(ctx: CaseHandlerContext) {
   if (
-    isTypeof(
-      ctx.parentNode,
-      z.object({
-        type: z.literal('Attribute'),
-        name: z.string(),
-      }),
-    ) &&
-    isTypeof(
-      ctx.node,
-      z.object({
-        data: z.string(),
-        start: z.number(),
-      }),
-    )
+    isTypeof(ctx.parentNode, schemas.svelteTextParentSchema) &&
+    isTypeof(ctx.node, schemas.svelteTextSchema)
   ) {
     ctx.nonCommentNodes.push(ctx.currentASTNode);
 
@@ -1099,38 +720,9 @@ function handleHtmlAttribute(ctx: CaseHandlerContext) {
   ctx.nonCommentNodes.push(ctx.currentASTNode);
 
   if (
-    isTypeof(
-      ctx.parentNode,
-      z.object({
-        sourceSpan: z.object({
-          start: z.object({
-            line: z.number(),
-          }),
-        }),
-        name: z.string(),
-      }),
-    ) &&
+    isTypeof(ctx.parentNode, schemas.htmlAttributeParentSchema) &&
     (ctx.parentNode?.kind ?? ctx.parentNode?.type) === 'element' &&
-    isTypeof(
-      ctx.node,
-      z.object({
-        sourceSpan: z.object({
-          start: z.object({
-            line: z.number(),
-          }),
-        }),
-        name: z.string(),
-        value: z.string(),
-        valueSpan: z.object({
-          start: z.object({
-            offset: z.number(),
-          }),
-          end: z.object({
-            offset: z.number(),
-          }),
-        }),
-      }),
-    )
+    isTypeof(ctx.node, schemas.htmlAttributeSchema)
   ) {
     const typedNode = ctx.node;
 
@@ -1204,19 +796,7 @@ function handleHtmlAttribute(ctx: CaseHandlerContext) {
 
           ctx.classNameNodes.push(...targetClassNameNodesInAttribute);
         } catch (error) {
-          if (
-            isTypeof(
-              error,
-              z.object({
-                message: z.string(),
-                loc: z.object({
-                  start: z.object({
-                    line: z.number(),
-                  }),
-                }),
-              }),
-            )
-          ) {
+          if (isTypeof(error, schemas.htmlAttributeErrorSchema)) {
             if (error.message.match(/^Unterminated string constant./) === null) {
               break;
             }
@@ -1331,12 +911,7 @@ function handleHtmlAttribute(ctx: CaseHandlerContext) {
 
 function handleHtmlComment(ctx: CaseHandlerContext) {
   if (
-    isTypeof(
-      ctx.node,
-      z.object({
-        value: z.string(),
-      }),
-    ) &&
+    isTypeof(ctx.node, schemas.htmlCommentSchema) &&
     ctx.node.value.trim() === 'prettier-ignore'
   ) {
     ctx.prettierIgnoreNodes.push(ctx.currentASTNode);
@@ -1346,32 +921,7 @@ function handleHtmlComment(ctx: CaseHandlerContext) {
 function handleHtmlElement(ctx: CaseHandlerContext) {
   ctx.nonCommentNodes.push(ctx.currentASTNode);
 
-  if (
-    isTypeof(
-      ctx.node,
-      z.object({
-        startSourceSpan: z.object({
-          end: z.object({
-            line: z.number(),
-            offset: z.number(),
-          }),
-        }),
-        name: z.string(),
-        children: z.array(
-          z.object({
-            value: z.string(),
-          }),
-        ),
-        attrs: z.array(
-          z.object({
-            name: z.string(),
-            value: z.unknown().optional(),
-          }),
-        ),
-      }),
-    ) &&
-    ctx.node.name === 'script'
-  ) {
+  if (isTypeof(ctx.node, schemas.htmlElementSchema) && ctx.node.name === 'script') {
     const textNodeInScript = ctx.node.children.at(0);
 
     if (ctx.node.attrs.find((attr) => attr.name === 'lang' && attr.value === 'ts')) {
@@ -1452,26 +1002,7 @@ function handleHtmlElement(ctx: CaseHandlerContext) {
 function handleAngularElement(ctx: CaseHandlerContext) {
   ctx.nonCommentNodes.push(ctx.currentASTNode);
 
-  if (
-    isTypeof(
-      ctx.node,
-      z.object({
-        startSourceSpan: z.object({
-          end: z.object({
-            line: z.number(),
-            offset: z.number(),
-          }),
-        }),
-        name: z.string(),
-        children: z.array(
-          z.object({
-            value: z.string(),
-          }),
-        ),
-      }),
-    ) &&
-    ctx.node.name === 'script'
-  ) {
+  if (isTypeof(ctx.node, schemas.angularElementSchema) && ctx.node.name === 'script') {
     // Note: In fact, the script element is not a `keywordStartingNode`, but it is considered a kind of safe list to maintain the `classNameNode`s obtained from the code inside the element.
     ctx.keywordStartingNodes.push(ctx.currentASTNode);
 
@@ -1513,38 +1044,9 @@ function handleAstroAttribute(ctx: CaseHandlerContext) {
   ctx.nonCommentNodes.push(ctx.currentASTNode);
 
   if (
-    isTypeof(
-      ctx.parentNode,
-      z.object({
-        position: z.object({
-          start: z.object({
-            line: z.number(),
-          }),
-        }),
-        name: z.string(),
-      }),
-    ) &&
+    isTypeof(ctx.parentNode, schemas.astroAttributeParentSchema) &&
     (ctx.parentNode.type === 'element' || ctx.parentNode.type === 'component') &&
-    isTypeof(
-      ctx.node,
-      z.object({
-        position: z.object({
-          start: z.object({
-            line: z.number(),
-            column: z.number(),
-          }),
-          end: z
-            .object({
-              line: z.number(),
-              column: z.number(),
-            })
-            .optional(),
-        }),
-        kind: z.string(),
-        name: z.string(),
-        value: z.string(),
-      }),
-    )
+    isTypeof(ctx.node, schemas.astroAttributeSchema)
   ) {
     const typedNode = ctx.node;
 
@@ -1616,12 +1118,7 @@ function handleAstroAttribute(ctx: CaseHandlerContext) {
 
 function handleAstroComment(ctx: CaseHandlerContext) {
   if (
-    isTypeof(
-      ctx.node,
-      z.object({
-        value: z.string(),
-      }),
-    ) &&
+    isTypeof(ctx.node, schemas.astroCommentSchema) &&
     ctx.node.value.trim() === 'prettier-ignore'
   ) {
     const commentOffset = '<!--'.length;
@@ -1637,26 +1134,7 @@ function handleAstroComment(ctx: CaseHandlerContext) {
 function handleAstroElement(ctx: CaseHandlerContext) {
   ctx.nonCommentNodes.push(ctx.currentASTNode);
 
-  if (
-    isTypeof(
-      ctx.node,
-      z.object({
-        name: z.string(),
-        children: z.array(
-          z.object({
-            value: z.string(),
-            position: z.object({
-              start: z.object({
-                line: z.number(),
-                offset: z.number(),
-              }),
-            }),
-          }),
-        ),
-      }),
-    ) &&
-    ctx.node.name === 'script'
-  ) {
+  if (isTypeof(ctx.node, schemas.astroElementSchema) && ctx.node.name === 'script') {
     // Note: In fact, the script element is not a `keywordStartingNode`, but it is considered a kind of safe list to maintain the `classNameNode`s obtained from the code inside the element.
     ctx.keywordStartingNodes.push(ctx.currentASTNode);
 
@@ -1697,24 +1175,7 @@ function handleAstroElement(ctx: CaseHandlerContext) {
 function handleCssCssAtrule(ctx: CaseHandlerContext) {
   ctx.nonCommentNodes.push(ctx.currentASTNode);
 
-  if (
-    isTypeof(
-      ctx.node,
-      z.object({
-        name: z.literal('apply'),
-        nodes: z.undefined().optional(),
-        raws: z.object({
-          afterName: z.string(),
-          params: z.string(),
-        }),
-        source: z.object({
-          start: z.object({
-            line: z.number(),
-          }),
-        }),
-      }),
-    )
-  ) {
+  if (isTypeof(ctx.node, schemas.cssCssAtruleSchema)) {
     // Note: In fact, the `@apply` rule is not a `keywordStartingNode`, but it is considered a kind of safe list to maintain the `classNameNode`s obtained from the code inside the rule.
     ctx.keywordStartingNodes.push(ctx.currentASTNode);
 
@@ -1738,12 +1199,7 @@ function handleCssCssAtrule(ctx: CaseHandlerContext) {
 
 function handleCssCssComment(ctx: CaseHandlerContext) {
   if (
-    isTypeof(
-      ctx.node,
-      z.object({
-        text: z.string(),
-      }),
-    ) &&
+    isTypeof(ctx.node, schemas.cssCssCommentSchema) &&
     ctx.node.text.trim() === 'prettier-ignore'
   ) {
     ctx.prettierIgnoreNodes.push(ctx.currentASTNode);
@@ -1753,14 +1209,7 @@ function handleCssCssComment(ctx: CaseHandlerContext) {
 function handleAstroFrontmatter(ctx: CaseHandlerContext) {
   ctx.nonCommentNodes.push(ctx.currentASTNode);
 
-  if (
-    isTypeof(
-      ctx.node,
-      z.object({
-        value: z.string(),
-      }),
-    )
-  ) {
+  if (isTypeof(ctx.node, schemas.astroFrontmatterSchema)) {
     // Note: In fact, the frontmatter is not a `keywordStartingNode`, but it is considered a kind of safe list to maintain the `classNameNode`s obtained from the code inside the frontmatter.
     ctx.keywordStartingNodes.push(ctx.currentASTNode);
 
@@ -1914,7 +1363,7 @@ export function findTargetClassNameNodesBasedOnJavaScript(
   const classNameNodes: ClassNameNode[] = [];
 
   function recursion(node: unknown, parentNode?: { type: string }): void {
-    if (!isTypeof(node, z.object({ type: z.string() }))) {
+    if (!isTypeof(node, schemas.nodeTypeSchema)) {
       return;
     }
 
@@ -2085,16 +1534,7 @@ export function findTargetClassNameNodesBasedOnJavaScript(
       recursion(value, node);
     });
 
-    if (
-      isTypeof(
-        node,
-        z.object({
-          start: z.undefined().optional(),
-          end: z.undefined().optional(),
-          range: z.custom<NodeRange>((value) => isTypeof(value, z.tuple([z.number(), z.number()]))),
-        }),
-      )
-    ) {
+    if (isTypeof(node, schemas.nodeWithRangeSchema)) {
       const [rangeStart, rangeEnd] = node.range;
 
       // @ts-expect-error: Make the structure of the AST consistent.
@@ -2103,15 +1543,7 @@ export function findTargetClassNameNodesBasedOnJavaScript(
       node.end = rangeEnd;
     }
 
-    if (
-      !isTypeof(
-        node,
-        z.object({
-          start: z.number(),
-          end: z.number(),
-        }),
-      )
-    ) {
+    if (!isTypeof(node, schemas.nodeOffsetsSchema)) {
       return;
     }
 
@@ -2197,14 +1629,11 @@ export function findTargetClassNameNodesBasedOnHtml(
     node: unknown,
     parentNode?: { kind: string; type?: undefined } | { kind?: undefined; type: string },
   ): void {
-    if (
-      !isTypeof(node, z.object({ kind: z.string() })) &&
-      !isTypeof(node, z.object({ type: z.string() }))
-    ) {
+    if (!isTypeof(node, schemas.nodeKindSchema) && !isTypeof(node, schemas.nodeTypeSchema)) {
       return;
     }
 
-    const nodeType = isTypeof(node, z.object({ kind: z.string() })) ? node.kind : node.type;
+    const nodeType = isTypeof(node, schemas.nodeKindSchema) ? node.kind : node.type;
 
     let recursiveProps: string[] = [];
 
@@ -2238,21 +1667,7 @@ export function findTargetClassNameNodesBasedOnHtml(
       recursion(value, node);
     });
 
-    if (
-      !isTypeof(
-        node,
-        z.object({
-          sourceSpan: z.object({
-            start: z.object({
-              offset: z.number(),
-            }),
-            end: z.object({
-              offset: z.number(),
-            }),
-          }),
-        }),
-      )
-    ) {
+    if (!isTypeof(node, schemas.htmlNodeSourceSchema)) {
       return;
     }
 
@@ -2323,7 +1738,7 @@ export function findTargetClassNameNodesBasedOnCss(
   const classNameNodes: ClassNameNode[] = [];
 
   function recursion(node: unknown, parentNode?: { type: string }): void {
-    if (!isTypeof(node, z.object({ type: z.string() }))) {
+    if (!isTypeof(node, schemas.nodeTypeSchema)) {
       return;
     }
 
@@ -2356,17 +1771,7 @@ export function findTargetClassNameNodesBasedOnCss(
       recursion(value, node);
     });
 
-    if (
-      !isTypeof(
-        node,
-        z.object({
-          source: z.object({
-            startOffset: z.number(),
-            endOffset: z.number(),
-          }),
-        }),
-      )
-    ) {
+    if (!isTypeof(node, schemas.cssNodeSourceSchema)) {
       return;
     }
 
@@ -2454,7 +1859,7 @@ export function findTargetClassNameNodesBasedOnAstro(
   totalTextLengthUptoSpecificIndexLine.unshift(0);
 
   function recursion(node: unknown, parentNode?: { type: string }): void {
-    if (!isTypeof(node, z.object({ type: z.string() }))) {
+    if (!isTypeof(node, schemas.nodeTypeSchema)) {
       return;
     }
 
@@ -2492,27 +1897,7 @@ export function findTargetClassNameNodesBasedOnAstro(
       recursion(value, node);
     });
 
-    if (
-      !isTypeof(
-        node,
-        z.object({
-          position: z.object({
-            start: z.object({
-              line: z.number(),
-              column: z.number(),
-            }),
-            end: z
-              .object({
-                line: z.number(),
-                column: z.number(),
-              })
-              .optional(),
-          }),
-          name: z.unknown().optional(),
-          value: z.unknown().optional(),
-        }),
-      )
-    ) {
+    if (!isTypeof(node, schemas.astroNodePositionSchema)) {
       return;
     }
 

@@ -1,6 +1,6 @@
 import type { AST, Parser } from 'prettier';
-import { z } from 'zod';
 
+import * as schemas from './schemas';
 import { EOL, isTypeof } from './utils';
 
 function base64Decode(input: string): string {
@@ -22,14 +22,7 @@ function refineSvelteAst(preprocessedText: string, ast: AST) {
       ): info is {
         key: 'module' | 'instance';
         node: { start: number; end: number; content?: { body?: unknown[] } };
-      } =>
-        isTypeof(
-          info.node,
-          z.object({
-            start: z.number(),
-            end: z.number(),
-          }),
-        ),
+      } => isTypeof(info.node, schemas.nodeOffsetsSchema),
     )
     .map(({ key, node }) => ({
       key,
@@ -43,8 +36,13 @@ function refineSvelteAst(preprocessedText: string, ast: AST) {
     return ast;
   }
 
-  function shiftNode(node: unknown, thresholdEnd: number, textOffset: number, lineOffset: number): void {
-    if (!isTypeof(node, z.object({ type: z.string() }))) {
+  function shiftNode(
+    node: unknown,
+    thresholdEnd: number,
+    textOffset: number,
+    lineOffset: number,
+  ): void {
+    if (!isTypeof(node, schemas.nodeTypeSchema)) {
       return;
     }
 
@@ -63,33 +61,14 @@ function refineSvelteAst(preprocessedText: string, ast: AST) {
       shiftNode(value, thresholdEnd, textOffset, lineOffset);
     });
 
-    if (
-      !isTypeof(
-        node,
-        z.object({
-          start: z.number(),
-          end: z.number(),
-        }),
-      )
-    ) {
+    if (!isTypeof(node, schemas.nodeOffsetsSchema)) {
       return;
     }
 
     if (thresholdEnd <= node.start) {
       node.start += textOffset;
 
-      if (
-        isTypeof(
-          node,
-          z.object({
-            loc: z.object({
-              start: z.object({
-                line: z.number(),
-              }),
-            }),
-          }),
-        )
-      ) {
+      if (isTypeof(node, schemas.startLineLocationSchema)) {
         node.loc.start = {
           ...node.loc.start,
           line: node.loc.start.line + lineOffset,
@@ -99,18 +78,7 @@ function refineSvelteAst(preprocessedText: string, ast: AST) {
     if (thresholdEnd <= node.end) {
       node.end += textOffset;
 
-      if (
-        isTypeof(
-          node,
-          z.object({
-            loc: z.object({
-              end: z.object({
-                line: z.number(),
-              }),
-            }),
-          }),
-        )
-      ) {
+      if (isTypeof(node, schemas.endLineLocationSchema)) {
         node.loc.end = {
           ...node.loc.end,
           line: node.loc.end.line + lineOffset,
@@ -141,16 +109,7 @@ function refineSvelteAst(preprocessedText: string, ast: AST) {
     const currentStartLine =
       preprocessedText.slice(0, originalStart).split(EOL).length + cumulativeLineOffset;
     const firstBodyNode = node.content?.body?.at(0);
-    const contentStartLine = isTypeof(
-      firstBodyNode,
-      z.object({
-        loc: z.object({
-          start: z.object({
-            line: z.number(),
-          }),
-        }),
-      }),
-    )
+    const contentStartLine = isTypeof(firstBodyNode, schemas.startLineLocationSchema)
       ? firstBodyNode.loc.start.line + cumulativeLineOffset
       : currentStartLine + 1;
 
