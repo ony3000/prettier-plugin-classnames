@@ -1,4 +1,4 @@
-import type { ZodTypeAny, infer as ZodInfer } from 'zod';
+import type { ZodType, infer as ZodInfer } from 'zod';
 
 export type NodeRange = [number, number];
 
@@ -94,9 +94,6 @@ export const BACKTICK = '`';
  */
 export const UNKNOWN_DELIMITER = '?';
 
-export function isTypeof<T extends ZodTypeAny>(
-  arg: unknown,
-  expectedSchema: T,
-): arg is ZodInfer<T> {
+export function isTypeof<T extends ZodType>(arg: unknown, expectedSchema: T): arg is ZodInfer<T> {
   return expectedSchema.safeParse(arg).success;
 }
